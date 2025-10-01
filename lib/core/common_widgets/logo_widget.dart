@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/utilities/size_config.dart';
 
 // ignore: must_be_immutable
@@ -26,7 +27,7 @@ class CustomLogo extends StatelessWidget {
               bottomLeft: Radius.circular(26.36),
             ),
           ),
-          child: Icon(Icons.add),
+          child: Icon(Icons.add, color: AppColors.white, size: 24,weight: 900),
         ),
 
         Container(
@@ -39,7 +40,15 @@ class CustomLogo extends StatelessWidget {
               bottomRight: Radius.circular(26.36),
             ),
           ),
-          child: Center(child: Text("GHO RX")),
+          child: Center(child: Text("GHORx",
+          style: TextStyle(
+            fontFamily: "Roboto",
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: AppColors.white,
+          )
+          ),
+          ),
         ),
       ],
     );

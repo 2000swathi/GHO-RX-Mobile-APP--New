@@ -1,84 +1,66 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/auth/bloc/auth_event.dart';
-import 'package:ghorx_mobile_app_new/features/auth/bloc/auth_state.dart';
-import 'package:ghorx_mobile_app_new/features/auth/repository/auth_repository.dart';
-import 'bloc/auth_bloc.dart';
-import 'bloc/auth_state.dart' as bloc;
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/logo_widget.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 
 class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
-
-  // Controllers for user input
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  LoginScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => AuthBloc(authRepository: AuthRepository()),
-      child: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state is AuthSuccess) {
-            Navigator.pushReplacementNamed(context, '/home');
-          } else if (state is AuthFailure) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.error)));
+    bool obscurePassword = true;
+
+    return Scaffold(
+     body: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+       children: [
+        CustomLogo(),
+        SizedBox(height: 20,
+         ),
+         Text("Welcome to GHORx",
+         style: AppFonts.heading,
+         ),
+         Text("Log in to streamline global case acceptance and secure teleconsultations. Efficiency meets expert collaboration.",
+         style: AppFonts.subtext,
+         textAlign: TextAlign.center,
+         ),
+         SizedBox(height: 20,
+         ),
+         CustomTextFormField(
+         name: "Email",
+         hintText: "Enter your email",
+         controller: emailController,
+         ),
+         SizedBox(height: 20,
+         ),
+         CustomTextFormField(
+          name: "Password",
+          hintText: 
+          "Enter your password",
+          controller: passwordController,
+          obscureText: true,
+          suffixIcon: IconButton(onPressed: () {
+            
+          },
+           icon: Icon(
+             obscurePassword ? Icons.visibility_off : Icons.visibility,
+           )),
+         ),
+         SizedBox(height: 30,
+         ),
+         CustomButton(
+          text: "Login",
+          onPressed: () {
+            print("Loginbutton Pressed");
           }
-        },
-        child: Scaffold(
-          appBar: AppBar(title: const Text("Login")),
-          body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Email
-                TextField(
-                  controller: emailController,
-                  decoration: const InputDecoration(
-                    labelText: "Email",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 16),
-
-                // Password
-                TextField(
-                  controller: passwordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: "Password",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 24),
-
-                // BlocBuilder for loading button
-                BlocBuilder<AuthBloc, AuthState>(
-                  builder: (context, state) {
-                    if (state is bloc.AuthLoading) {
-                      return const CircularProgressIndicator();
-                    }
-                    return ElevatedButton(
-                      onPressed: () {
-                        context.read<AuthBloc>().add(
-                          LoginRequested(
-                            email: emailController.text.trim(),
-                            password: passwordController.text.trim(),
-                          ),
-                        );
-                      },
-                      child: const Text("Login"),
-                    );
-                  },
-                ),
-              ],
-            ),
           ),
-        ),
-      ),
+       ],
+     ),
     );
   }
 }
