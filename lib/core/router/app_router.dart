@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../views/splash_screen.dart';
+import '../../features/splash/splash_screen.dart';
 class AppRouter {
   static const String splash = '/';
 
