@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ghorx_mobile_app_new/features/auth/otp_screen.dart';
+import 'package:ghorx_mobile_app_new/features/auth/register_screen.dart';
 import '../../features/auth/login_screen.dart';
 import '../../features/splash/splash_screen.dart';
 
