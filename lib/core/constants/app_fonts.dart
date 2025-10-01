@@ -52,7 +52,7 @@ class AppFonts {
     fontFamily: primaryFont,
     fontSize: 16,
     fontWeight: FontWeight.w400,
-    color: AppColors.commonwhite,
+    color: AppColors.white,
   );
   
 }
