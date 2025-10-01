@@ -9,36 +9,42 @@ class AppFonts {
     fontFamily: primaryFont,
     fontSize: 24,
     fontWeight: FontWeight.w700,
-    color: AppColors.textcolor,
+    color: AppColors.textPrimary,
   );
 
   static const TextStyle subheading = TextStyle(
     fontFamily: primaryFont,
     fontSize: 18,
     fontWeight: FontWeight.w600,
-    color: AppColors.textcolor,
+    color: AppColors.textPrimary,
   );
 
   static const TextStyle hinttext = TextStyle(
     fontFamily: primaryFont,
     fontSize: 16,
     fontWeight: FontWeight.w400,
-    color: AppColors.hinttextcolor,
+    color: AppColors.offgreycolor,
+  );
+  static const TextStyle hinttext2 = TextStyle(
+    fontFamily: primaryFont,
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: AppColors.hint1color,
   );
 
-  static const TextStyle label = TextStyle(
+  static const TextStyle labelItalic = TextStyle(
     fontFamily: primaryFont,
     fontSize: 10,
     fontWeight: FontWeight.w400,
     fontStyle: FontStyle.italic,
-    color: AppColors.textcolor,
+    color: AppColors.textPrimary,
   );
 
   static const TextStyle subtext = TextStyle(
     fontFamily: primaryFont,
     fontSize: 14,
     fontWeight: FontWeight.w400,
-    color: AppColors.textcolor,
+    color: AppColors.textPrimary,
   );
 
   static const TextStyle textblue = TextStyle(
@@ -46,6 +52,18 @@ class AppFonts {
     fontSize: 16,
     fontWeight: FontWeight.w400,
     color: AppColors.primarycolor,
+  );
+  static const TextStyle textprimary = TextStyle(
+    fontFamily: primaryFont,
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textPrimary,
+  );
+  static const TextStyle textSecondary = TextStyle(
+    fontFamily: primaryFont,
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textSecondary,
   );
 
   static const TextStyle textwhite = TextStyle(

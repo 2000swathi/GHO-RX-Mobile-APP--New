@@ -2,65 +2,124 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/logo_widget.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
+import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
 
 import 'bloc/auth_bloc.dart';
 import 'bloc/auth_event.dart';
+import 'bloc/auth_state.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  LoginScreen({super.key});
+  final _formKey = GlobalKey<FormState>();
+  bool _obscurePassword = true;
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomLogo(),
-            SizedBox(height: 20),
-            Text("Welcome to GHORx", style: AppFonts.heading),
-            Text(
-              "Log in to streamline global case acceptance and secure teleconsultations. Efficiency meets expert collaboration.",
-              style: AppFonts.subtext,
-              textAlign: TextAlign.center,
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Login successful! Welcome."),
+              backgroundColor: AppColors.successcolor,
             ),
-            SizedBox(height: 20),
-            CustomTextFormField(
-              name: "Email",
-              hintText: "Enter your email",
-              controller: emailController,
+          );
+          // Navigator.pushReplacementNamed(context, '/otp');
+        } else if (state is AuthFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.error),
+              backgroundColor: AppColors.warningred,
             ),
-            SizedBox(height: 20),
-            CustomTextFormField(
-              name: "Password",
-              hintText: "Enter your password",
-              controller: passwordController,
-              obscureText: true,
-              suffixIcon: IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.visibility),
-              ),
-            ),
-            SizedBox(height: 30),
-            CustomButton(
-              text: "Login",
-              onPressed: () {
-                context.read<AuthBloc>().add(
-                  LoginRequested(
-                    email: emailController.text.trim(),
-                    password: passwordController.text.trim(),
+          );
+        }
+      },
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomLogo(),
+                SizedBox(height: 20),
+                Text("Welcome to GHORx", style: AppFonts.heading),
+                Text(
+                  "Log in to streamline global case acceptance and secure teleconsultations. Efficiency meets expert collaboration.",
+                  style: AppFonts.subtext,
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 20),
+                CustomTextFormField(
+                  name: "Email",
+                  hintText: "Enter your email",
+                  controller: emailController,
+                  validator: Validation.validateEmail,
+                ),
+                SizedBox(height: 20),
+                CustomTextFormField(
+                  name: "Password",
+                  hintText: "Enter your password",
+                  controller: passwordController,
+                  obscureText: _obscurePassword,
+                  validator: Validation.validatePassword,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscurePassword
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      color: AppColors.hint1color,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
                   ),
-                );
-              },
+                ),
+                SizedBox(height: 30),
+                BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, state) {
+                    if (state is AuthLoading) {
+                      return LoadingAnimation();
+                    }
+                    return CustomButton(
+                      text: "Sign In",
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          context.read<AuthBloc>().add(
+                            LoginRequested(
+                              email: emailController.text.trim(),
+                              password: passwordController.text.trim(),
+                            ),
+                          );
+                        }
+                      },
+                    );
+                  },
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

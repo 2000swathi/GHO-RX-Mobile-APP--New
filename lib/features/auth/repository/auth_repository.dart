@@ -9,10 +9,7 @@ class AuthRepository {
     required String password,
   }) async {
     final data = {
-      ...ApiUtils.getCommonParams(
-        action: "reviewer",
-        token: "8f78e9b615c14cfaa28dda35fdbd721e",
-      ),
+      ...ApiUtils.getCommonParams(action: "reviewer", token: ""),
       "Tags": [
         {"T": "dk1", "V": email},
         {"T": "dk2", "V": password},
@@ -22,20 +19,16 @@ class AuthRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
-      if (response["Status"] == 1) {
-        print("success");
-      }
-      return response;
-    } on DioException catch (e) {
-      if (e.response != null && e.response?.data != null) {
-        final apiMessage =
-            e.response?.data['msg'] ?? e.response?.data.toString();
-        throw Exception(apiMessage);
+
+      if (response['Status'] == 1) {
+        return response;
       } else {
-        throw Exception(e.message);
+        throw Exception(response['Info'] ?? 'Invalid credentials');
       }
+    } on DioException catch (e) {
+      throw Exception("Network error: ${e.message}");
     } catch (e) {
-      throw Exception(e.toString());
+      rethrow; 
     }
   }
 }

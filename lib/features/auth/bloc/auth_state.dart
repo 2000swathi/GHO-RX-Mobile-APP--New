@@ -12,6 +12,7 @@ class AuthInitial extends AuthState {}
 class AuthLoading extends AuthState {}
 
 class AuthSuccess extends AuthState {
+  
   final Map<String, dynamic> data;
 
   const AuthSuccess(this.data);
