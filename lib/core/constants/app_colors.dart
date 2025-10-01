@@ -9,5 +9,5 @@ class AppColors {
   static const Color offgreycolor = Color(0xffCCCDCD);
   static const Color warningred = Color(0xffF36C6C);
   static const Color successcolor = Color.fromARGB(232, 2, 250, 39); 
-  static const Color commonwhite = Color(0xffFFFFFF); 
+  static const Color white = Color(0xffFFFFFF); 
 }
