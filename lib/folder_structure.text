@@ -1,0 +1,18 @@
+lib/
+├─ main.dart
+├─ core/
+│  ├─ constants/
+│  │   ├─ app_colors.dart
+│  │   └─ app_fonts.dart   
+│  ├─ router/
+│  │   └─ app_router.dart   
+|  ├─ import/
+|  |    └─ import.dart 
+├─ utilites/
+│  ├─ shared_preference.dart   
+├─ bloc/
+|    ├─ auth/
+│    ├─ home/
+│
+├─ views/  
+
