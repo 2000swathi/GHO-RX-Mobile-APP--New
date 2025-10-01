@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
               backgroundColor: AppColors.successcolor,
             ),
           );
-          // Navigator.pushReplacementNamed(context, '/otp');
+          Navigator.pushReplacementNamed(context, '/otp');
         } else if (state is AuthFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -53,6 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       },
       child: Scaffold(
+         resizeToAvoidBottomInset: true,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Form(
@@ -60,9 +61,11 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(height: 100),
                 CustomLogo(),
-                SizedBox(height: 20),
+                SizedBox(height: 30),
                 Text("Welcome to GHORx", style: AppFonts.heading),
+                SizedBox(height: 18),
                 Text(
                   "Log in to streamline global case acceptance and secure teleconsultations. Efficiency meets expert collaboration.",
                   style: AppFonts.subtext,
@@ -117,6 +120,38 @@ class _LoginScreenState extends State<LoginScreen> {
                     );
                   },
                 ),
+                Spacer(),
+                Text(
+                  "Not a reviewer yet? Request to join GHO’s Reviewer Network.",
+                  textAlign: TextAlign.center,
+                  style: AppFonts.hinttext2,
+                ),
+                SizedBox(height: 10),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/register');
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      bottom: 1,
+                    ), 
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: AppColors.textPrimary,
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      "Join Reviewer Network",
+                      style: AppFonts.textprimary.copyWith(
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 15),
               ],
             ),
           ),

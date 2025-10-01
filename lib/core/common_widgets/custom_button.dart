@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
-import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
