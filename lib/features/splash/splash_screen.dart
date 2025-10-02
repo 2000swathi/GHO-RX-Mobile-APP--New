@@ -18,11 +18,7 @@ class SplashScreen extends StatelessWidget {
             Navigator.pushReplacementNamed(context, '/login');
           }
         },
-        child: Scaffold(
-          body: Center(
-            child: CustomLogo(isSplash: true),
-          ),
-        ),
+        child: Scaffold(body: Center(child: CustomLogo(isSplash: true))),
       ),
     );
   }
