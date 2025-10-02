@@ -6,6 +6,8 @@ import '../../features/splash/splash_screen.dart';
 class AppRouter {
   static const String splash = '/';
   static const String login = '/login';
+  static const String reset = '/reset';
+
 
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -14,6 +16,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const SplashScreen());
       case login:
         return MaterialPageRoute(builder: (_) =>  LoginScreen());
+      case reset:
+        return MaterialPageRoute(builder: (_) =>  ResetPasswordScreen());
  
            
       default:

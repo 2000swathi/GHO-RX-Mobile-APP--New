@@ -19,17 +19,21 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color color = AppColors.textcolor;
+    Color color = AppColors.hinttextcolor;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(name),
+        Text(name,
+        style: TextStyle(
+          color: AppColors.textcolor,
+        )),
         SizedBox(height: 8),
         TextFormField(
           controller: controller,
           obscureText: obscureText,
           decoration: InputDecoration(
             hintText: hintText,
+            hintStyle: TextStyle(color: AppColors.hinttextcolor),
             suffixIcon: suffixIcon,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),

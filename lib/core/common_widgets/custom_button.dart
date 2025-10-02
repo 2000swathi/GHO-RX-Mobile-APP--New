@@ -16,7 +16,7 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
-      borderRadius: BorderRadius.circular(6), // 👈 Add ripple clipping
+      borderRadius: BorderRadius.circular(6),
       child: Container(
         height: 42,
         width: double.infinity,
