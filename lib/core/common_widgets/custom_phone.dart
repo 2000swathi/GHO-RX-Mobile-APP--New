@@ -2,31 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 
-class CustomPhoneField extends StatefulWidget {
+class CustomPhoneField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
+  final String selectedCountryCode;
+  final List<String> countryCodes;
+  final ValueChanged<String?> onChanged;
+  final ValueChanged<String>? onPhoneChanged;
 
   const CustomPhoneField({
     super.key,
     required this.controller,
-    this.label = "Primary Mobile Number",
+    required this.label,
+    required this.selectedCountryCode,
+    required this.countryCodes,
+    required this.onChanged,
+    this.onPhoneChanged,
   });
-
-  @override
-  _CustomPhoneFieldState createState() => _CustomPhoneFieldState();
-}
-
-class _CustomPhoneFieldState extends State<CustomPhoneField> {
-  String selectedCountryCode = '91';
-  final List<String> countryCodes = ['91', '1', '44', '61'];
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(widget.label,
-            style: TextStyle(fontSize: 16, color: Colors.grey[700])),
+        Text(label, style: AppFonts.textSecondary),
         const SizedBox(height: 8),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -45,19 +44,16 @@ class _CustomPhoneFieldState extends State<CustomPhoneField> {
                     child: Text("+$code"),
                   );
                 }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedCountryCode = value!;
-                  });
-                },
+                onChanged: onChanged,
               ),
               const SizedBox(width: 5),
               Container(width: 1, height: 20, color: AppColors.offgreycolor),
               const SizedBox(width: 10),
               Expanded(
                 child: TextFormField(
-                  controller: widget.controller,
+                  controller: controller,
                   keyboardType: TextInputType.phone,
+                  onChanged: onPhoneChanged,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: "XXXXX XXXXX",

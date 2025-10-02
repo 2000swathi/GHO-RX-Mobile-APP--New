@@ -2,24 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 
-class CustomTextFormField extends StatelessWidget {
+class CustomDropdownFormField<T> extends StatelessWidget {
   final String name;
   final String hintText;
-  final TextEditingController? controller;
-  final bool obscureText;
-  final Widget? suffixIcon;
-  final Widget? prefixIcon;
-  final String? Function(String?)? validator;
-  final void Function(String)? onChanged;
+  final List<T> items;
+  final T? value;
+  final String? Function(T?)? validator;
+  final void Function(T?)? onChanged;
 
-  const CustomTextFormField({
+  const CustomDropdownFormField({
     super.key,
     required this.name,
     required this.hintText,
-    this.controller,
-    this.obscureText = false,
-    this.suffixIcon,
-    this.prefixIcon,
+    required this.items,
+    this.value,
     this.validator,
     this.onChanged,
   });
@@ -33,16 +29,12 @@ class CustomTextFormField extends StatelessWidget {
       children: [
         Text(name, style: AppFonts.textSecondary),
         const SizedBox(height: 8),
-        TextFormField(
-          controller: controller,
-          obscureText: obscureText,
+        DropdownButtonFormField<T>(
+          value: value,
           validator: validator,
           onChanged: onChanged,
+          hint: Text(hintText, style: AppFonts.hinttext),
           decoration: InputDecoration(
-            hintText: hintText,
-            hintStyle: AppFonts.hinttext,
-            suffixIcon: suffixIcon,
-            prefixIcon: prefixIcon,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: borderColor),
@@ -56,6 +48,13 @@ class CustomTextFormField extends StatelessWidget {
               borderSide: BorderSide(color: borderColor),
             ),
           ),
+          items:
+              items.map((item) {
+                return DropdownMenuItem<T>(
+                  value: item,
+                  child: Text(item.toString(), style: AppFonts.textprimary),
+                );
+              }).toList(),
         ),
       ],
     );
