@@ -86,7 +86,7 @@ class _OtpScreenState extends State<OtpScreen> {
             state.otpVerifyResponse.data[0][0].msg,
             true,
           );
-          Navigator.pushNamed(context, '/home');
+          Navigator.pushNamed(context, '/addPage');
         } else if (state is ResendOTPSuccess) {
           CustomSnackbar.show(context, "OTP resent successfully", true);
           setState(() {
