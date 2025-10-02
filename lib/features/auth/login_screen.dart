@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_snackbar.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/logo_widget.dart';
@@ -34,22 +35,16 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is AuthSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text("Login successful! Welcome."),
-              backgroundColor: AppColors.successcolor,
-            ),
+          CustomSnackbar.show(context, "Login Successfull.Welcome!", true);
+          await Navigator.pushNamed(
+            context,
+            '/otp',
+            arguments: state.otpResponse,
           );
-          Navigator.pushNamed(context, '/otp',arguments:state.otpResponse);
         } else if (state is AuthFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.error),
-              backgroundColor: AppColors.warningred,
-            ),
-          );
+          CustomSnackbar.show(context, state.error, false);
         }
       },
       child: Scaffold(
@@ -105,6 +100,19 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                             ),
                           ),
+                          SizedBox(height: 5),
+                          // Row(
+                          //   children: [
+                          //     Spacer(),
+                          //     InkWell(
+                          //       onTap: () {},
+                          //       child: Text(
+                          //         "Forget Password?",
+                          //         style: AppFonts.labelItalic,
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                           SizedBox(height: 30),
                           BlocBuilder<AuthBloc, AuthState>(
                             builder: (context, state) {
@@ -118,7 +126,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     context.read<AuthBloc>().add(
                                       LoginRequested(
                                         email: emailController.text.trim(),
-                                        password: passwordController.text.trim(),
+                                        password:
+                                            passwordController.text.trim(),
                                       ),
                                     );
                                   }
@@ -162,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               );
-            }
+            },
           ),
         ),
       ),
