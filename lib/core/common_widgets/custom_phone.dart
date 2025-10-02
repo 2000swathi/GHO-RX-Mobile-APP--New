@@ -7,12 +7,13 @@ class CustomPhoneField extends StatefulWidget {
   final String label;
 
   const CustomPhoneField({
-    Key? key,
+    super.key,
     required this.controller,
     this.label = "Primary Mobile Number",
-  }) : super(key: key);
+  });
 
   @override
+  // ignore: library_private_types_in_public_api
   _CustomPhoneFieldState createState() => _CustomPhoneFieldState();
 }
 

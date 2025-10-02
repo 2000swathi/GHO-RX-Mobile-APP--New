@@ -9,19 +9,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final int totalSteps;
 
   const CustomAppBar({
-    Key? key,
+    super.key,
     required this.title,
     required this.subtitle,
     required this.currentStep,
     required this.totalSteps,
-  }) : super(key: key);
+  });
 
   @override
-  Size get preferredSize => const Size.fromHeight(80);
+  Size get preferredSize => const Size.fromHeight(100); // 🔹 Increased height
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 100, // 🔹 Match the preferredSize
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: const BoxDecoration(
         color: AppColors.backgroundcolor,
@@ -29,8 +30,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           bottom: BorderSide(
             color: AppColors.offgreycolor,
             width: 1,
-          )
-        )
+          ),
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.all(6.0),
@@ -40,25 +41,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center, // 🔹 Center vertically
                 children: [
-                  Text(
-                    title,
-                    style: AppFonts.textblue,
-                  ),
-                   SizedBox(height: 4),
+                  Text(title, style: AppFonts.textblue),
+                  const SizedBox(height: 4),
                   Row(
                     children: [
-                      Text(
-                        subtitle,
-                        style: AppFonts.textappbar,
-                      ),
-                      SizedBox(width: 10),
-                      Icon(Icons.keyboard_arrow_down, size: 20),
+                      Text(subtitle, style: AppFonts.textappbar),
+                      const SizedBox(width: 10),
+                      const Icon(Icons.keyboard_arrow_down, size: 20),
                     ],
                   ),
                 ],
               ),
-        
               SizedBox(
                 width: 50,
                 height: 50,
@@ -72,7 +67,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         value: (currentStep - 1) / (totalSteps - 1),
                         strokeWidth: 4,
                         backgroundColor: AppColors.offgreycolor,
-                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.primarycolor),
+                        valueColor: const AlwaysStoppedAnimation<Color>(
+                          AppColors.primarycolor,
+                        ),
                       ),
                     ),
                     Text(

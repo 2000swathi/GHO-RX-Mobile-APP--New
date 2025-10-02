@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/features/auth/otp_screen.dart';
+import 'package:ghorx_mobile_app_new/features/auth/profile/personal_information.dart';
 import 'package:ghorx_mobile_app_new/features/auth/repository/model/login_model.dart';
 import 'package:ghorx_mobile_app_new/features/auth/add_page.dart';
 import '../../features/auth/login_screen.dart';
@@ -12,6 +13,7 @@ class AppRouter {
   static const String personalinformation = '/personalinformation';
   static const String otp = '/otp';
   static const String addPage = '/addPage';
+  static const String personalinfo = '/personalinfo';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -27,6 +29,8 @@ class AppRouter {
         );
       case addPage:
         return MaterialPageRoute(builder: (_) => AddPage());
+      case personalinfo:
+        return MaterialPageRoute(builder: (_) => PersonalInformationScreen());
 
       default:
         return MaterialPageRoute(

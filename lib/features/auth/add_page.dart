@@ -194,7 +194,9 @@ class AddPage extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 25, right: 25),
                       child: CustomButton(
                         text: "Continue",
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, "/personalinfo");
+                        },
                         iswhite: true,
                       ),
                     ),
