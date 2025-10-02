@@ -6,30 +6,20 @@ class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  const CustomButton({
-    super.key,
-    required this.text,
-    required this.onPressed,
-  });
+  const CustomButton({super.key, required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
-      borderRadius: BorderRadius.circular(6),
       child: Container(
         height: 42,
         width: double.infinity,
         decoration: BoxDecoration(
           color: AppColors.primarycolor,
-          borderRadius: const BorderRadius.all(Radius.circular(6)),
+          borderRadius: BorderRadius.all(Radius.circular(6)),
         ),
-        child: Center(
-          child: Text(
-            text,
-            style: AppFonts.textwhite,
-          ),
-        ),
+        child: Center(child: Text(text,style: AppFonts.textwhite,)),
       ),
     );
   }

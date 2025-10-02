@@ -10,11 +10,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LoginRequested>((event, emit) async {
       emit(AuthLoading());
       try {
-        final response = await authRepository.login(
+        final otpResponse  = await authRepository.login(
           email: event.email,
           password: event.password,
         );
-        emit(AuthSuccess(response));
+        emit(AuthSuccess(otpResponse));
       } on Exception catch (e) {
         emit(AuthFailure(e.toString()));
       }
