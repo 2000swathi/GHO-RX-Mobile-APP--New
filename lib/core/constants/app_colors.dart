@@ -10,6 +10,6 @@ class AppColors {
   static const Color hint2color = Color(0xffCBCBCB);
   static const Color offgreycolor = Color(0xffCCCDCD);
   static const Color warningred = Color(0xffF36C6C);
-  static const Color successcolor = Color.fromARGB(232, 2, 250, 39); 
+  static const Color successcolor = Color.fromARGB(232, 6, 110, 21); 
   static const Color white = Color(0xffFFFFFF); 
 }

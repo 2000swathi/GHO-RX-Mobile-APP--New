@@ -4,6 +4,7 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/logo_widget.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
+import 'package:ghorx_mobile_app_new/features/auth/repository/auth_model.dart';
 import 'package:pinput/pinput.dart';
 
 class OtpScreen extends StatelessWidget {
@@ -11,29 +12,25 @@ class OtpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   final defaultPinTheme = PinTheme(
+    final otpResponse =
+        ModalRoute.of(context)!.settings.arguments as OtpResponse;
+    final defaultPinTheme = PinTheme(
       width: 50,
       height: 60,
-      textStyle: const TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.w600,
-      ),
+      textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
       decoration: const BoxDecoration(
         border: Border(
-          bottom: BorderSide(
-            color: AppColors.secondarycolor,
-            width: 2,
-          ),
+          bottom: BorderSide(color: AppColors.secondarycolor, width: 2),
         ),
       ),
     );
 
     return Scaffold(
-     body: Padding(
-       padding: const EdgeInsets.symmetric(horizontal: 24),
-       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,  
-        mainAxisAlignment: MainAxisAlignment.center,      
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: 30),
             CustomLogo(),
@@ -41,10 +38,10 @@ class OtpScreen extends StatelessWidget {
             Text("OTP Verification", style: AppFonts.heading),
             SizedBox(height: 15),
             Text(
-                "OTP has been sent on your registered mobile number and email.",
-                style: AppFonts.subtext,
-                textAlign: TextAlign.center,
-              ),
+              otpResponse.info,
+              style: AppFonts.subtext,
+              textAlign: TextAlign.center,
+            ),
             SizedBox(height: 40),
             Pinput(
               length: 6,
@@ -64,9 +61,9 @@ class OtpScreen extends StatelessWidget {
                       color: AppColors.secondarycolor,
                       width: 2,
                     ),
-                  )
+                  ),
                 ),
-                ),
+              ),
             ),
             SizedBox(height: 20),
             Row(
@@ -77,13 +74,10 @@ class OtpScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 40),
-            CustomButton(
-              text: "Verify",
-             onPressed: () {}
-            ),
-          ],       
+            CustomButton(text: "Verify", onPressed: () {}),
+          ],
         ),
-     ),
+      ),
     );
   }
 }

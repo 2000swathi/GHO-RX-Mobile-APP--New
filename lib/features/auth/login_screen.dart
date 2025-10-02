@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
               backgroundColor: AppColors.successcolor,
             ),
           );
-          Navigator.pushReplacementNamed(context, '/otp');
+          Navigator.pushNamed(context, '/otp',arguments:state.otpResponse);
         } else if (state is AuthFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -53,107 +53,116 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       },
       child: Scaffold(
-         resizeToAvoidBottomInset: true,
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: 100),
-                CustomLogo(),
-                SizedBox(height: 30),
-                Text("Welcome to GHORx", style: AppFonts.heading),
-                SizedBox(height: 18),
-                Text(
-                  "Log in to streamline global case acceptance and secure teleconsultations. Efficiency meets expert collaboration.",
-                  style: AppFonts.subtext,
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 20),
-                CustomTextFormField(
-                  name: "Email",
-                  hintText: "Enter your email",
-                  controller: emailController,
-                  validator: Validation.validateEmail,
-                ),
-                SizedBox(height: 20),
-                CustomTextFormField(
-                  name: "Password",
-                  hintText: "Enter your password",
-                  controller: passwordController,
-                  obscureText: _obscurePassword,
-                  validator: Validation.validatePassword,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscurePassword
-                          ? Icons.visibility_off
-                          : Icons.visibility,
-                      color: AppColors.hint1color,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscurePassword = !_obscurePassword;
-                      });
-                    },
-                  ),
-                ),
-                SizedBox(height: 30),
-                BlocBuilder<AuthBloc, AuthState>(
-                  builder: (context, state) {
-                    if (state is AuthLoading) {
-                      return LoadingAnimation();
-                    }
-                    return CustomButton(
-                      text: "Sign In",
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          context.read<AuthBloc>().add(
-                            LoginRequested(
-                              email: emailController.text.trim(),
-                              password: passwordController.text.trim(),
+        resizeToAvoidBottomInset: true,
+        body: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: IntrinsicHeight(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(height: 100),
+                          CustomLogo(),
+                          SizedBox(height: 30),
+                          Text("Welcome to GHORx", style: AppFonts.heading),
+                          SizedBox(height: 18),
+                          Text(
+                            "Log in to streamline global case acceptance and secure teleconsultations. Efficiency meets expert collaboration.",
+                            style: AppFonts.subtext,
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 20),
+                          CustomTextFormField(
+                            name: "Email",
+                            hintText: "Enter your email",
+                            controller: emailController,
+                            validator: Validation.validateEmail,
+                          ),
+                          SizedBox(height: 20),
+                          CustomTextFormField(
+                            name: "Password",
+                            hintText: "Enter your password",
+                            controller: passwordController,
+                            obscureText: _obscurePassword,
+                            validator: Validation.validatePassword,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscurePassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: AppColors.hint1color,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _obscurePassword = !_obscurePassword;
+                                });
+                              },
                             ),
-                          );
-                        }
-                      },
-                    );
-                  },
-                ),
-                Spacer(),
-                Text(
-                  "Not a reviewer yet? Request to join GHO’s Reviewer Network.",
-                  textAlign: TextAlign.center,
-                  style: AppFonts.hinttext2,
-                ),
-                SizedBox(height: 10),
-                InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/register');
-                  },
-                  child: Container(
-                    padding: EdgeInsets.only(
-                      bottom: 1,
-                    ), 
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: AppColors.textPrimary,
-                          width: 1,
-                        ),
-                      ),
-                    ),
-                    child: Text(
-                      "Join Reviewer Network",
-                      style: AppFonts.textprimary.copyWith(
-                        color: AppColors.textPrimary,
+                          ),
+                          SizedBox(height: 30),
+                          BlocBuilder<AuthBloc, AuthState>(
+                            builder: (context, state) {
+                              if (state is AuthLoading) {
+                                return LoadingAnimation();
+                              }
+                              return CustomButton(
+                                text: "Sign In",
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    context.read<AuthBloc>().add(
+                                      LoginRequested(
+                                        email: emailController.text.trim(),
+                                        password: passwordController.text.trim(),
+                                      ),
+                                    );
+                                  }
+                                },
+                              );
+                            },
+                          ),
+                          Spacer(),
+                          Text(
+                            "Not a reviewer yet? Request to join GHO’s Reviewer Network.",
+                            textAlign: TextAlign.center,
+                            style: AppFonts.hinttext2,
+                          ),
+                          SizedBox(height: 10),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/register');
+                            },
+                            child: Container(
+                              padding: EdgeInsets.only(bottom: 1),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: AppColors.textPrimary,
+                                    width: 1,
+                                  ),
+                                ),
+                              ),
+                              child: Text(
+                                "Join Reviewer Network",
+                                style: AppFonts.textprimary.copyWith(
+                                  color: AppColors.textPrimary,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 15),
+                        ],
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: 15),
-              ],
-            ),
+              );
+            }
           ),
         ),
       ),
