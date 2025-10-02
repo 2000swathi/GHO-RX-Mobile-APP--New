@@ -1,13 +1,23 @@
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
-
-part 'auth_event.dart';
-part 'auth_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../repository/auth_repository.dart';
+import 'auth_event.dart';
+import 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc() : super(AuthInitial()) {
-    on<AuthEvent>((event, emit) {
-      // TODO: implement event handler
+  final AuthRepository authRepository;
+
+  AuthBloc({required this.authRepository}) : super(AuthInitial()) {
+    on<LoginRequested>((event, emit) async {
+      emit(AuthLoading());
+      try {
+        final response = await authRepository.login(
+          email: event.email,
+          password: event.password,
+        );
+        emit(AuthSuccess(response));
+      } on Exception catch (e) {
+        emit(AuthFailure(e.toString()));
+      }
     });
   }
 }

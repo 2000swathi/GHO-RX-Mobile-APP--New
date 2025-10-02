@@ -26,7 +26,7 @@ class CustomLogo extends StatelessWidget {
               bottomLeft: Radius.circular(26.36),
             ),
           ),
-          child: Icon(Icons.add),
+          child: Icon(Icons.add, color: AppColors.white, size: 24,weight: 900),
         ),
 
         Container(
@@ -39,7 +39,15 @@ class CustomLogo extends StatelessWidget {
               bottomRight: Radius.circular(26.36),
             ),
           ),
-          child: Center(child: Text("GHO RX")),
+          child: Center(child: Text("GHORx",
+          style: TextStyle(
+            fontFamily: "Roboto",
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: AppColors.white,
+          )
+          ),
+          ),
         ),
       ],
     );
