@@ -8,6 +8,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextEditingController? controller;
   final bool obscureText;
   final Widget? suffixIcon;
+  final Widget? prefixIcon;
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
 
@@ -18,6 +19,7 @@ class CustomTextFormField extends StatelessWidget {
     this.controller,
     this.obscureText = false,
     this.suffixIcon,
+    this.prefixIcon,
     this.validator,
     this.onChanged,
   });
@@ -31,26 +33,30 @@ class CustomTextFormField extends StatelessWidget {
       children: [
         Text(name, style: AppFonts.textSecondary),
         const SizedBox(height: 8),
-        TextFormField(
-          controller: controller,
-          obscureText: obscureText,
-          validator: validator,
-          onChanged: onChanged,
-          decoration: InputDecoration(
-            hintText: hintText,
-            hintStyle: AppFonts.hinttext,
-            suffixIcon: suffixIcon, // pass toggle icon from parent
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: borderColor),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: borderColor),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: borderColor),
+        SizedBox(
+          width: 380,
+          height: 50,
+          child: TextFormField(
+            controller: controller,
+            obscureText: obscureText,
+            validator: validator,
+            onChanged: onChanged,
+            decoration: InputDecoration(
+              hintText: hintText,
+              hintStyle: AppFonts.hinttext,
+              suffixIcon: suffixIcon, // pass toggle icon from parent
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: borderColor),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: borderColor),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: borderColor),
+              ),
             ),
           ),
         ),
