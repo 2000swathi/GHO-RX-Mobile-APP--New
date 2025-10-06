@@ -8,9 +8,9 @@ import 'package:ghorx_mobile_app_new/features/profile/widget/custom_cvfield.dart
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_dob.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_phone.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
-import 'package:ghorx_mobile_app_new/features/profile/widget/customradio_buttons.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
+import 'package:ghorx_mobile_app_new/features/profile/widget/gender_field.dart';
 
 class PersonalInformationScreen extends StatelessWidget {
   const PersonalInformationScreen({super.key});
@@ -130,6 +130,7 @@ class PersonalInformationScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         CustomDropdownField(
+                          validator: Validation.validateForState,
                           label: "State",
                           controller: stateController,
                           isPhoneField: false,
@@ -137,6 +138,7 @@ class PersonalInformationScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         CustomDropdownField(
+                          validator: Validation.validateForCity,
                           label: "City",
                           controller: cityController,
                           isPhoneField: false,
@@ -144,17 +146,20 @@ class PersonalInformationScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         CustomTextFormField(
+                          validator: Validation.validatePinCode,
                           name: "Zip/Postal Code",
                           hintText: "Enter your zip code",
                         ),
                         const SizedBox(height: 20),
                         CustomDOBField(
+                          validator: Validation.validateDOB,
                           label: "Date of Birth",
                           selectedDate: dob,
                           onDateSelected: (pickedDate) {},
                         ),
                         const SizedBox(height: 20),
                         CustomRadioField(
+                          validator: Validation.validateGender,
                           label: "Gender",
                           options: ["Male", "Female", "Other"],
                           selectedValue: selectedGender,
@@ -164,6 +169,7 @@ class PersonalInformationScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         CustomDropdownField(
+                          validator: Validation.validatePhone,
                           label: "Alternate Mobile Number",
                           controller: controller,
                           isPhoneField: true,
@@ -171,6 +177,7 @@ class PersonalInformationScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         CustomCVUpload(
+                          validator: Validation.validateCVfield,
                           label: "Upload CV",
                           onUploadPressed: () {},
                         ),
