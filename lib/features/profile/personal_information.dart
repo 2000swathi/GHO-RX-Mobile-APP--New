@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_appbar.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
+import 'package:ghorx_mobile_app_new/features/profile/bloc/personal_info_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/repository/country_repository.dart';
 import 'package:ghorx_mobile_app_new/features/profile/widget/custom_cvfield.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_dob.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_phone.dart';
@@ -22,7 +25,6 @@ class PersonalInformationScreen extends StatelessWidget {
     String selectedGender = "Male";
     DateTime? dob;
     final _formKey = GlobalKey<FormState>();
-
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -53,9 +55,15 @@ class PersonalInformationScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         CustomTextFormField(
-                          validator: Validation.validateFullName,
-                          name: "Full Name",
-                          hintText: "Enter your full name",
+                          validator: Validation.validateFirstName,
+                          name: "First Name",
+                          hintText: "Enter your first name",
+                        ),
+                        const SizedBox(height: 20),
+                        CustomTextFormField(
+                          validator: Validation.validateSecondtName,
+                          name: "Last Name",
+                          hintText: "Enter your second name",
                         ),
                         const SizedBox(height: 20),
                         CustomTextFormField(
@@ -78,12 +86,47 @@ class PersonalInformationScreen extends StatelessWidget {
                           hintText: "Enter your residential address",
                         ),
                         const SizedBox(height: 20),
-                        CustomDropdownField(
-                          validator: Validation.validateForCountry,
-                          label: "Country",
-                          controller: countryController,
-                          isPhoneField: false,
-                          dropdownPosition: "right",
+                        // CustomDropdownField(
+                        //   validator: Validation.validateForCountry,
+
+                        //   label: "Country",
+                        //   controller: countryController,
+                        //   isPhoneField: false,
+                        //   dropdownPosition: "right",
+                        // ),
+                        BlocProvider(
+                          create:
+                              (_) => PersonalInfoBloc(
+                                repository: CountryRepository(),
+                              )..add(FetchCountries()),
+                          child: BlocBuilder<
+                            PersonalInfoBloc,
+                            PersonalInfoState
+                          >(
+                            builder: (context, state) {
+                              if (state is PersonalInfoLoading) {
+                                return const CircularProgressIndicator();
+                              } else if (state is PersonalInfoLoaded) {
+                                return CustomDropdownField(
+                                  controller: countryController,
+                                  label: "Country",
+                                  dropdownPosition: "right",
+                                  isCountryDropdown: true,
+                                  countryItems:
+                                      state
+                                          .countries, 
+                                  validator:
+                                      (value) =>
+                                          value == null
+                                              ? "Please select country"
+                                              : null,
+                                );
+                              } else if (state is PersonalInfoError) {
+                                return Text('Error: ${state.message}');
+                              }
+                              return Container();
+                            },
+                          ),
                         ),
                         const SizedBox(height: 20),
                         CustomDropdownField(
@@ -132,11 +175,14 @@ class PersonalInformationScreen extends StatelessWidget {
                           onUploadPressed: () {},
                         ),
                         const SizedBox(height: 20),
-                        CustomButton(text: "Save & Continue", onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                          print("pressed");
-                          }
-                        }),
+                        CustomButton(
+                          text: "Save & Continue",
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              print("pressed");
+                            }
+                          },
+                        ),
                       ],
                     ),
                   ),
