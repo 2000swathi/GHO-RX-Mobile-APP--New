@@ -174,6 +174,15 @@ class Validation {
     return null;
   }
 
+  static String? validateForCountry(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Country is required';
+    } else if (value.trim().length > 15) {
+      return 'Maximum 15 characters allowed';
+    }
+    return null;
+  }
+
   static String? validateForCity(String? value) {
     if (value == null || value.trim().isEmpty) {
       return 'City is required';

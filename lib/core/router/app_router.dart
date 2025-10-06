@@ -26,7 +26,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => PersonalInformationScreen());
       case otp:
         return MaterialPageRoute(builder: (_) => OtpScreen());
-        case reset:
+      case reset:
         return MaterialPageRoute(builder: (_) =>  ResetPassword());
   
       default:
