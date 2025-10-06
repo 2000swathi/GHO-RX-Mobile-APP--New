@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_appbar.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
-import 'package:ghorx_mobile_app_new/core/common_widgets/custom_cvfield.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_dob.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_phone.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
-import 'package:ghorx_mobile_app_new/core/common_widgets/customradio_buttons.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
+import 'package:ghorx_mobile_app_new/features/profile/widget/custom_cvfield.dart';
+import 'package:ghorx_mobile_app_new/features/profile/widget/customradio_buttons.dart';
 
 class PersonalInformationScreen extends StatelessWidget {
   const PersonalInformationScreen({super.key});

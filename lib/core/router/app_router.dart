@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/features/auth/otp_screen.dart';
-import 'package:ghorx_mobile_app_new/features/auth/personal_information.dart';
 import 'package:ghorx_mobile_app_new/features/auth/repository/model/login_model.dart';
 import 'package:ghorx_mobile_app_new/features/auth/add_page.dart';
 import 'package:ghorx_mobile_app_new/features/auth/reset_password.dart';
+import 'package:ghorx_mobile_app_new/features/profile/personal_information.dart';
 import '../../features/auth/login_screen.dart';
 import '../../features/splash/splash_screen.dart';
 
