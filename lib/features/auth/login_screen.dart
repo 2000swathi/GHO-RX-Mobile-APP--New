@@ -101,18 +101,18 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           SizedBox(height: 5),
-                          // Row(
-                          //   children: [
-                          //     Spacer(),
-                          //     InkWell(
-                          //       onTap: () {},
-                          //       child: Text(
-                          //         "Forget Password?",
-                          //         style: AppFonts.labelItalic,
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
+                          Row(
+                            children: [
+                              Spacer(),
+                              InkWell(
+                                onTap: () {},
+                                child: Text(
+                                  "Forget Password?",
+                                  style: AppFonts.labelItalic,
+                                ),
+                              ),
+                            ],
+                          ),
                           SizedBox(height: 30),
                           BlocBuilder<AuthBloc, AuthState>(
                             builder: (context, state) {
@@ -144,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(height: 10),
                           InkWell(
                             onTap: () {
-                              Navigator.pushNamed(context, '/register');
+                              Navigator.pushNamed(context, '/addPage');
                             },
                             child: Container(
                               padding: EdgeInsets.only(bottom: 1),

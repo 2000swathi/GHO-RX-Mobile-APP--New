@@ -50,7 +50,7 @@ class AppFonts {
   static const TextStyle textblue = TextStyle(
     fontFamily: primaryFont,
     fontSize: 16,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w600,
     color: AppColors.primarycolor,
   );
   static const TextStyle textprimary = TextStyle(
@@ -72,5 +72,18 @@ class AppFonts {
     fontWeight: FontWeight.w400,
     color: AppColors.white,
   );
-  
+
+  static const TextStyle textappbar = TextStyle(
+    fontFamily: primaryFont,
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textSecondary,
+  );
+
+  static const TextStyle textprogressbar = TextStyle(
+    fontFamily: primaryFont,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: AppColors.primarycolor,
+  );
 }

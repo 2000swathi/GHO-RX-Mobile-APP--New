@@ -5,18 +5,35 @@ import 'package:ghorx_mobile_app_new/utilities/size_config.dart';
 // ignore: must_be_immutable
 class CustomLogo extends StatelessWidget {
   bool? isSplash;
+  bool? isSmall;
   MainAxisAlignment mainAxisAlignment;
   CustomLogo({
     super.key,
     this.isSplash = false,
+    this.isSmall = false,
     this.mainAxisAlignment = MainAxisAlignment.center,
   });
 
   @override
   Widget build(BuildContext context) {
-    double height = isSplash == true ? 43.9296875.h : 33.28564453125.h;
-    double width = isSplash == true ? 61.501220703125.w : 46.59990310668945.w;
-    double width2 = isSplash == true ? 126.5166015625.w : 95.86229705810547.w;
+    double height =
+        isSplash == true
+            ? 43.9296875.h
+            : isSmall == true
+            ? 21.462844848632812
+            : 33.28564453125.h;
+    double width =
+        isSplash == true
+            ? 61.501220703125.w
+            : isSmall == true
+            ? 30.047983169555664
+            : 46.59990310668945.w;
+    double width2 =
+        isSplash == true
+            ? 126.5166015625.w
+            : isSmall == true
+            ? 61.8125
+            : 95.86229705810547.w;
     return Row(
       mainAxisAlignment: mainAxisAlignment,
       children: [
@@ -31,7 +48,17 @@ class CustomLogo extends StatelessWidget {
               bottomLeft: Radius.circular(26.36),
             ),
           ),
-          child: Icon(Icons.add, color: AppColors.white, size: 24, weight: 900),
+          child: Icon(
+            Icons.add,
+            color: AppColors.white,
+            size:
+                isSplash == true
+                    ? 24
+                    : isSmall == true
+                    ? 15
+                    : 20,
+            weight: 900,
+          ),
         ),
 
         Container(
@@ -49,7 +76,12 @@ class CustomLogo extends StatelessWidget {
               "GHORx",
               style: TextStyle(
                 fontFamily: "Roboto",
-                fontSize: 22,
+                fontSize:
+                    isSplash == true
+                        ? 24
+                        : isSmall == true
+                        ? 15
+                        : 20,
                 fontWeight: FontWeight.bold,
                 color: AppColors.white,
               ),

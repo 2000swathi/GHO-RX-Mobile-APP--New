@@ -13,6 +13,7 @@ import 'package:ghorx_mobile_app_new/features/auth/repository/model/login_model.
 import 'package:ghorx_mobile_app_new/utilities/timer/otp_timer.dart';
 import 'package:pinput/pinput.dart';
 
+// ignore: must_be_immutable
 class OtpScreen extends StatefulWidget {
   OtpResponse otpResponse;
   OtpScreen({super.key, required this.otpResponse});
@@ -86,11 +87,10 @@ class _OtpScreenState extends State<OtpScreen> {
             state.otpVerifyResponse.data[0][0].msg,
             true,
           );
-          Navigator.pushNamed(context, '/home');
+          Navigator.pushNamed(context, '/addPage');
         } else if (state is ResendOTPSuccess) {
           CustomSnackbar.show(context, "OTP resent successfully", true);
           setState(() {
-            // Update OTP response with new data from resend API
             widget.otpResponse = state.otpResponse;
             _restartTimer();
           });
