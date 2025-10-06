@@ -7,12 +7,14 @@ class CustomDOBField extends StatefulWidget {
   final String label;
   final DateTime? selectedDate;
   final Function(DateTime) onDateSelected;
+  final String? Function(String?)? validator;
 
   const CustomDOBField({
     super.key,
     required this.label,
     required this.onDateSelected,
     this.selectedDate,
+    this.validator,
   });
 
   @override
@@ -26,9 +28,10 @@ class _CustomDOBFieldState extends State<CustomDOBField> {
   void initState() {
     super.initState();
     _controller = TextEditingController(
-      text: widget.selectedDate != null
-          ? DateFormat('dd / MM / yyyy').format(widget.selectedDate!)
-          : '',
+      text:
+          widget.selectedDate != null
+              ? DateFormat('dd / MM / yyyy').format(widget.selectedDate!)
+              : '',
     );
   }
 
@@ -58,41 +61,44 @@ class _CustomDOBFieldState extends State<CustomDOBField> {
         Text(widget.label, style: AppFonts.textSecondary),
         const SizedBox(height: 8),
         Container(
-          width: 380,
-          height: 50,
           decoration: BoxDecoration(
             border: Border.all(color: borderColor),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Row(
-            children: [
-              const SizedBox(width: 12),
-              Icon(
-                Icons.calendar_today_outlined,
-                color: AppColors.hint1color,
-                size: 20,
-              ),
-              const VerticalDivider(
-                width: 20,
-                thickness: 1,
-                color: AppColors.offgreycolor,
-                indent: 8,
-                endIndent: 8,
-              ),
-              Expanded(
-                child: TextFormField(
-                  controller: _controller,
-                  readOnly: true,
-                  style: AppFonts.textSecondary,
-                  decoration: InputDecoration(
-                    hintText: "DD / MM / YYYY",
-                    hintStyle: AppFonts.hinttext,
-                    border: InputBorder.none,
+          child: IntrinsicHeight(
+            child: Row(
+              children: [
+                const SizedBox(width: 12),
+                IconButton(
+                  onPressed: () => _selectDate(context),
+                  icon: Icon(
+                    Icons.calendar_today_outlined,
+                    color: AppColors.hint1color,
+                    size: 20,
                   ),
-                  onTap: () => _selectDate(context),
                 ),
-              ),
-            ],
+                VerticalDivider(
+                  width: 20,
+                  thickness: 1.5,
+                  color: AppColors.offgreycolor,
+                  indent: 14,
+                  endIndent: 14,
+                ),
+                Expanded(
+                  child: TextFormField(
+                    controller: _controller,
+                    readOnly: true,
+                    style: AppFonts.textSecondary,
+                    decoration: InputDecoration(
+                      hintText: "DD / MM / YYYY",
+                      hintStyle: AppFonts.hinttext,
+                      border: InputBorder.none,
+                    ),
+                    validator: widget.validator,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],

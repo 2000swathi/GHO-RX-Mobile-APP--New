@@ -6,12 +6,15 @@ class CustomCVUpload extends StatefulWidget {
   final String label;
   final Function()? onUploadPressed;
   final String? fileName;
+  final Function(String)? validator;
+
 
   const CustomCVUpload({
     super.key,
     required this.label,
     this.onUploadPressed,
     this.fileName,
+    this.validator,
   });
 
   @override
