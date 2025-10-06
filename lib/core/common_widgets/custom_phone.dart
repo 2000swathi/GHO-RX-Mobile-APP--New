@@ -11,14 +11,14 @@ class CustomDropdownField extends StatefulWidget {
   final List<String>? dropdownItems; 
 
   const CustomDropdownField({
-    Key? key,
+    super.key,
     required this.controller,
     this.label = "",
     this.isPhoneField = false,
     this.dropdownPosition = "left",
     this.dropdownItems,
     this.validator,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomDropdownField> createState() => _CustomDropdownFieldState();

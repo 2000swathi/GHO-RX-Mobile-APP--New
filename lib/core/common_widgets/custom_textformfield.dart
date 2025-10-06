@@ -33,26 +33,30 @@ class CustomTextFormField extends StatelessWidget {
       children: [
         Text(name, style: AppFonts.textSecondary),
         const SizedBox(height: 8),
-        TextFormField(
-          controller: controller,
-          obscureText: obscureText,
-          validator: validator,
-          onChanged: onChanged,
-          decoration: InputDecoration(
-            hintText: hintText,
-            hintStyle: AppFonts.hinttext,
-            suffixIcon: suffixIcon, // pass toggle icon from parent
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: borderColor),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: borderColor),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: borderColor),
+        SizedBox(
+          width: 380,
+          height: 50,
+          child: TextFormField(
+            controller: controller,
+            obscureText: obscureText,
+            validator: validator,
+            onChanged: onChanged,
+            decoration: InputDecoration(
+              hintText: hintText,
+              hintStyle: AppFonts.hinttext,
+              suffixIcon: suffixIcon,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: borderColor),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: borderColor),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: borderColor),
+              ),
             ),
           ),
         ),
