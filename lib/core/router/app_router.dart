@@ -5,7 +5,7 @@ import 'package:ghorx_mobile_app_new/features/auth/repository/model/login_model.
 import 'package:ghorx_mobile_app_new/features/auth/add_page.dart';
 import 'package:ghorx_mobile_app_new/features/auth/reset_password.dart';
 import 'package:ghorx_mobile_app_new/features/profile/accreditation&speciality.dart';
-import 'package:ghorx_mobile_app_new/features/profile/personal_information.dart';
+import 'package:ghorx_mobile_app_new/main_page.dart';
 import '../../features/auth/login_screen.dart';
 import '../../features/splash/splash_screen.dart';
 
