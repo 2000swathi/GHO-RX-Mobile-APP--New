@@ -4,7 +4,7 @@ import 'package:ghorx_mobile_app_new/features/profile/personal_information.dart'
 import 'package:ghorx_mobile_app_new/features/auth/repository/model/login_model.dart';
 import 'package:ghorx_mobile_app_new/features/auth/add_page.dart';
 import 'package:ghorx_mobile_app_new/features/auth/reset_password.dart';
-import 'package:ghorx_mobile_app_new/features/profile/accreditation&speciality.dart';
+import 'package:ghorx_mobile_app_new/features/profile/accr_spl.dart';
 import 'package:ghorx_mobile_app_new/main_page.dart';
 import '../../features/auth/login_screen.dart';
 import '../../features/splash/splash_screen.dart';
@@ -39,7 +39,6 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => PersonalInformationScreen());
       case accreditation:
         return MaterialPageRoute(builder: (_) => AccreditationSpl());
-
       case reset:
         return MaterialPageRoute(builder: (_) => ResetPassword());
       case mainPage:
