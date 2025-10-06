@@ -9,6 +9,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool obscureText;
   final Widget? suffixIcon;
   final Widget? prefixIcon;
+  final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
 
@@ -22,6 +23,7 @@ class CustomTextFormField extends StatelessWidget {
     this.prefixIcon,
     this.validator,
     this.onChanged,
+    this.keyboardType,
   });
 
   @override
@@ -34,6 +36,7 @@ class CustomTextFormField extends StatelessWidget {
         Text(name, style: AppFonts.textSecondary),
         const SizedBox(height: 8),
         TextFormField(
+          keyboardType: keyboardType,
           controller: controller,
           obscureText: obscureText,
           validator: validator,
@@ -41,7 +44,7 @@ class CustomTextFormField extends StatelessWidget {
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: AppFonts.hinttext,
-            suffixIcon: suffixIcon, // pass toggle icon from parent
+            suffixIcon: suffixIcon,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: borderColor),
