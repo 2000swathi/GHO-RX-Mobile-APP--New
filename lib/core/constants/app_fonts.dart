@@ -18,6 +18,12 @@ class AppFonts {
     fontWeight: FontWeight.w600,
     color: AppColors.textPrimary,
   );
+  static const TextStyle subheading16 = TextStyle(
+    fontFamily: primaryFont,
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textPrimary,
+  );
 
   static const TextStyle hinttext = TextStyle(
     fontFamily: primaryFont,

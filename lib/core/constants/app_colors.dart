@@ -10,11 +10,11 @@ class AppColors {
   static const Color hint2color = Color(0xffCBCBCB);
   static const Color offgreycolor = Color(0xffCCCDCD);
   static const Color warningred = Color(0xffF36C6C);
-  static const Color successcolor = Color.fromARGB(232, 6, 110, 21); 
-  static const Color white = Color(0xffFFFFFF); 
-  static const Color cards = Color(0xffE3E7FF); 
+  static const Color successcolor = Color.fromARGB(232, 6, 110, 21);
+
+  ////
+  static const Color white = Color(0xffFFFFFF);
+  static const Color cards = Color(0xffE3E7FF);
   static const Color red = Color(0xff983C3C);
   static const Color glasscontainer = Color(0xffF3F5F8);
-
-  
 }
