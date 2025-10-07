@@ -1,66 +1,52 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/Summery.dart';
+import 'package:ghorx_mobile_app_new/features/cases/customScrollableTabs.dart';
 import 'package:ghorx_mobile_app_new/features/cases/medicalreport.dart';
 import 'package:ghorx_mobile_app_new/features/cases/medications.dart';
 import 'package:ghorx_mobile_app_new/features/cases/patientqueries.dart';
 
-class TabItem {
-  final String label;
-  final IconData icon;
-  final TextStyle? style;
-  // final Color color;
+class CasesTabView extends StatefulWidget {
+  const CasesTabView({super.key});
 
-  TabItem({
-    required this.label, 
-  required this.icon,
-   this.style,
-  //  required this.color,
-   });
+  @override
+  State<CasesTabView> createState() => _CasesTabViewState();
 }
 
-class AppointmentNavController extends GetxController {
-  RxString selectedTab = 'Summary'.obs;
+class _CasesTabViewState extends State<CasesTabView> {
+  int selectedIndex = 0;
 
-  final List<TabItem> appointmentTabs = [
-    TabItem(
-      label: 'Summary',
-      icon: Icons.list_alt,
-     style: AppFonts.buttontxt16,
-    ),
-    TabItem(
-      label: 'Questions',
-      icon: Icons.question_answer_outlined,
-      // color: AppColors.skyBlueColor,
-      style: AppFonts.buttontxt16,
-    ),
-    TabItem(
-      label: 'Medical Report',
-      icon: Icons.medical_services_outlined,
-      // color: AppColors.skyBlueColor,
-      style: AppFonts.buttontxt16,
-    ),
-    TabItem(
-      label: 'Medications',
-      icon: Icons.medication_outlined,
-      // color: AppColors.skyBlueColor,
-      style: AppFonts.buttontxt16,
-    ),
+  final List<String> tabNames = [
+    "Summary",
+    "Patient Queries",
+    "Medical Report",
+    "Medications",
   ];
-  void changeTab(String label) {
-    selectedTab.value = label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        CustomScrollableTabs(
+          tabs: tabNames,
+          onTabSelected: (index) {
+            setState(() => selectedIndex = index);
+          },
+        ),
+
+        const SizedBox(height: 10),
+        _buildTabContent(selectedIndex),
+      ],
+    );
   }
-   Widget getSelectedAppointmentScreen() {
-    switch (selectedTab.value) {
-      case 'Summary':
+  Widget _buildTabContent(int index) {
+    switch (index) {
+      case 0:
         return Summerypage();
-      case 'Questions':
+      case 1:
         return Patientqueries();
-      case 'Medical Report':
+      case 2:
         return Medicalreport();
-      case 'Medications':
+      case 3:
         return Medications();
       default:
         return SizedBox(); // fallback
