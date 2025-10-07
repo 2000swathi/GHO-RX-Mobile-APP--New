@@ -12,4 +12,6 @@ class AppColors {
   static const Color warningred = Color(0xffF36C6C);
   static const Color successcolor = Color.fromARGB(232, 6, 110, 21); 
   static const Color white = Color(0xffFFFFFF); 
+  static const Color cards = Color(0xffE3E7FF); 
+  
 }
