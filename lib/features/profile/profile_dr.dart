@@ -16,6 +16,7 @@ class ProfileDr extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            SizedBox(height: 20,),
             ProfileDetails(
               heading: "Personal Information",
               ontap: () {
@@ -28,7 +29,6 @@ class ProfileDr extends StatelessWidget {
                 Navigator.pushNamed(context, "/drSpecialty");
               },
             ),
-
             ProfileDetails(
               heading: "Insurance",
               ontap: () {
