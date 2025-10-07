@@ -131,7 +131,7 @@ class CaseCard extends StatelessWidget {
               Expanded(
                 child: InkWell(
                   onTap: () {
-                    // Handle accept case
+                    Navigator.pushNamed(context, "/casedetails");
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 14),

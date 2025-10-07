@@ -15,8 +15,7 @@ class _MainPageState extends State<MainPage> {
 
   final List<Widget> _pages = [
     const Center(child: Text("Home")),
-
-    const CasesPage(),
+     CasesPage(),
     const ProfileDr(),
   ];
 
