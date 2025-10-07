@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:ghorx_mobile_app_new/features/auth/repository/model/login_model.dart';
-import 'package:ghorx_mobile_app_new/features/auth/repository/model/otp_model.dart';
+import 'package:ghorx_mobile_app_new/features/authentication/repository/model/login_model.dart';
+import 'package:ghorx_mobile_app_new/features/authentication/repository/model/otp_model.dart';
 import 'package:ghorx_mobile_app_new/utilities/network/api_utils.dart';
 import 'package:ghorx_mobile_app_new/utilities/network/dio_handler.dart';
 

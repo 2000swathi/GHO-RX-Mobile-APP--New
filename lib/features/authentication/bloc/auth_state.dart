@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:ghorx_mobile_app_new/features/auth/repository/model/login_model.dart';
-import 'package:ghorx_mobile_app_new/features/auth/repository/model/otp_model.dart';
+import 'package:ghorx_mobile_app_new/features/authentication/repository/model/login_model.dart';
+import 'package:ghorx_mobile_app_new/features/authentication/repository/model/otp_model.dart';
 
 abstract class AuthState extends Equatable {
   const AuthState();
@@ -14,7 +14,7 @@ class AuthInitial extends AuthState {}
 class AuthLoading extends AuthState {}
 
 // login
-class AuthSuccess extends AuthState {
+class AuthSuccess extends AuthState { 
   final OtpResponse otpResponse;
 
   const AuthSuccess(this.otpResponse);
