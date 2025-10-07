@@ -86,4 +86,18 @@ class AppFonts {
     fontWeight: FontWeight.w400,
     color: AppColors.primarycolor,
   );
+
+  static const TextStyle semiratechart = TextStyle(
+    fontFamily: primaryFont,
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle textred = TextStyle(
+    fontFamily: primaryFont,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: AppColors.red,
+  );
 }

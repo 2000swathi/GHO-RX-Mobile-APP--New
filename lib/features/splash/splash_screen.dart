@@ -15,7 +15,7 @@ class SplashScreen extends StatelessWidget {
       child: BlocListener<SplashBloc, SplashState>(
         listener: (context, state) {
           if (state is SplashCompleted) {
-            Navigator.pushReplacementNamed(context, '/case');
+            Navigator.pushReplacementNamed(context, '/mainpage');
           }
         },
         child: Scaffold(body: Center(child: CustomLogo(isSplash: true))),
