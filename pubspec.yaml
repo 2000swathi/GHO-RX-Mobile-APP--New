@@ -40,6 +40,7 @@ dependencies:
   equatable: ^2.0.7
   pinput: ^5.0.2
   flutter_svg: ^2.2.1
+  shared_preferences: ^2.5.3
   google_fonts: ^6.2.1
 
 dev_dependencies:
@@ -69,6 +70,7 @@ flutter:
     - assets/images/
     - assets/svg/
     - assets/icons/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
