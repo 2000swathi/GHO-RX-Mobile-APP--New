@@ -3,6 +3,7 @@ import 'package:ghorx_mobile_app_new/features/authentication/otp_screen.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/repository/model/login_model.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/add_page.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/reset_password.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/casedetails.dart';
 import 'package:ghorx_mobile_app_new/features/profile/dr_insurance.dart';
 import 'package:ghorx_mobile_app_new/features/profile/dr_license.dart';
 import 'package:ghorx_mobile_app_new/features/profile/dr_specialty.dart';
@@ -28,6 +29,7 @@ class AppRouter {
   static const String drInsurance = '/drInsurance';
   static const String drLicense = '/drLicense';
   static const String casepage = '/case';
+  static const String casedetails = '/casedetails';
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case splash:
@@ -56,6 +58,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => DrLicense());
       case casepage:
        return MaterialPageRoute(builder: (_) => CasesPage());
+      case casedetails:
+       return MaterialPageRoute(builder: (_) => CaseDetailsPage());
       default:
         return MaterialPageRoute(
           builder:

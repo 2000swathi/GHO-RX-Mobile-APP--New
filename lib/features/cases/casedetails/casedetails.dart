@@ -32,7 +32,7 @@ CaseDetailsPage({super.key});
               radius: 20,
               backgroundColor: const Color(0xFFE3F2FD),
               child: SvgPicture.asset(
-                'assets/icons/message.svg',
+                'assets/svg/email_svg.svg',
                 width: 40,
                 height: 40,
               ),

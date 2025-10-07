@@ -25,12 +25,6 @@ class AppFonts {
     fontWeight: FontWeight.w600,
     color: AppColors.textPrimary,
   );
-  static const TextStyle subheading16 = TextStyle(
-    fontFamily: primaryFont,
-    fontSize: 16,
-    fontWeight: FontWeight.w600,
-    color: AppColors.textPrimary,
-  );
 
   static const TextStyle hinttext = TextStyle(
     fontFamily: primaryFont,
@@ -78,7 +72,7 @@ class AppFonts {
     fontWeight: FontWeight.w400,
     color: AppColors.green,
   );
-   static const TextStyle textprimarygreen12 = TextStyle(
+  static const TextStyle textprimarygreen12 = TextStyle(
     fontFamily: primaryFont,
     fontSize: 12,
     fontWeight: FontWeight.w400,
@@ -125,14 +119,14 @@ class AppFonts {
     fontWeight: FontWeight.w400,
     color: AppColors.red,
   );
-//Roboto Condensed
-static TextStyle header_4 = GoogleFonts.asapCondensed(
+  //Roboto Condensed
+  static TextStyle header_4 = GoogleFonts.asapCondensed(
     color: AppColors.textPrimary,
     fontSize: 16,
     letterSpacing: 0,
     fontWeight: FontWeight.w400,
   );
-static TextStyle header_5 = GoogleFonts.asapCondensed(
+  static TextStyle header_5 = GoogleFonts.asapCondensed(
     color: AppColors.textPrimary,
     fontSize: 20,
     letterSpacing: 0,
@@ -146,7 +140,6 @@ static TextStyle header_5 = GoogleFonts.asapCondensed(
     fontWeight: FontWeight.w600,
   );
 
-
   // roboto flex
   static TextStyle buttontxt = GoogleFonts.robotoFlex(
     color: AppColors.white,
@@ -155,7 +148,7 @@ static TextStyle header_5 = GoogleFonts.asapCondensed(
     fontWeight: FontWeight.w500,
   );
   static TextStyle buttontxt16 = GoogleFonts.robotoFlex(
- color:  AppColors.textSecondary,
+    color: AppColors.textSecondary,
     fontSize: 16,
     letterSpacing: 0,
     fontWeight: FontWeight.w500,
