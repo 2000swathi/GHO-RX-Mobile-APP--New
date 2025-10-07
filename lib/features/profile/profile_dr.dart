@@ -9,14 +9,14 @@ class ProfileDr extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CaseAppBar(title: 'Profile'),
+      appBar: CaseAppBar(title: 'Welcome, Doctor', istrue: true),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(height: 20,),
+            SizedBox(height: 20),
             ProfileDetails(
               heading: "Personal Information",
               ontap: () {
