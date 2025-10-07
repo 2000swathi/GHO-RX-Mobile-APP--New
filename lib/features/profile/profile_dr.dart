@@ -7,7 +7,7 @@ class ProfileDr extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CaseAppBar(title: 'Cases',),
+      appBar: CaseAppBar(title: 'Profile',),
     );
   }
 }
