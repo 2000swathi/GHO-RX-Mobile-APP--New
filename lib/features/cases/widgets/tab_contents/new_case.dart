@@ -53,11 +53,11 @@ class CaseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColors.textPrimary.withOpacity(0.05),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -125,7 +125,12 @@ class CaseCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 10),
+                Divider(
+                  color: AppColors.primarycolor.withAlpha(15),
+                  thickness: 1,
+                ),
+                const SizedBox(height: 10),
                 Text(
                   description,
                   style: TextStyle(
@@ -153,9 +158,8 @@ class CaseCard extends StatelessWidget {
                 Expanded(
                   child: CustomButton(
                     text: "Deny",
-                    isiIon: true,
-
-                   color: AppColors.primarycolor.withAlpha(15),
+                    colortext: AppColors.primarycolor,
+                    color: AppColors.primarycolor.withAlpha(15),
                     onPressed: () {},
                   ),
                 ),

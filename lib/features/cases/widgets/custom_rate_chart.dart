@@ -28,72 +28,42 @@ class CompletionRateCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 195,
-      height: 285,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-        decoration: BoxDecoration(
-          color: const Color(0xFFF3E5F5),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-          
-            SizedBox(
-              width: 100,
-              height: 60,
-              child: CustomPaint(
-                painter: SemiCircleProgressPainter(
-                  progress: completionRate / 100,
-                ),
-                child: Center(
-                  child: Text(
+    return Center(
+      child: SizedBox(
+        width: 140,
+        height: 140,
+        child: CustomPaint(
+          painter: SemiCircleProgressPainter(
+            progress: completionRate / 100,
+          ),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
                     "$completionRate%",
                     style: const TextStyle(
-                      fontSize: 20,
+                      fontSize: 32,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF1976D2),
+                      color: Color(0xFF6B7FD7),
+                      height: 1,
                     ),
                   ),
-                ),
+                  const SizedBox(height: 4),
+                  Text(
+                    "Completion Rate",
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Colors.grey[700],
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
               ),
             ),
-           
-            Text(
-              "Completion Rate",
-              style: TextStyle(
-                fontSize: 13,
-                color: Colors.grey[800],
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 8),
-         
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 10,
-                  height: 10,
-                  decoration: const BoxDecoration(
-                    color: Colors.blue,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-                const SizedBox(width: 6),
-                Text(
-                  "$completed of $total completed",
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[700],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-          ],
+          ),
         ),
       ),
     );
@@ -103,40 +73,41 @@ class CompletionRateCard extends StatelessWidget {
 class SemiCircleProgressPainter extends CustomPainter {
   final double progress;
 
-    SemiCircleProgressPainter({required this.progress});
+  SemiCircleProgressPainter({required this.progress});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final center = Offset(size.width / 2, size.height);
-    final radius = size.width / 2 - 8;
-    const strokeWidth = 8.0;
+    final center = Offset(size.width / 2, size.height / 2 + 10);
+    final radius = size.width / 2.5;
+    const strokeWidth = 12.0;
 
+    // Background arc (light gray/purple)
     final backgroundPaint = Paint()
-      ..color = const Color(0xFFBBDEFB)
+      ..color = const Color(0xFFE0E0E0)
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.round;
 
+    // Progress arc (blue)
     final progressPaint = Paint()
-      ..color = const Color(0xFF5C9FE5)
+      ..color = const Color(0xFF6B9EFF)
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.round;
 
-    // Draw background arc
+    // Draw background semi-circle
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
-      math.pi,
-      math.pi,
+      math.pi, 
+      math.pi, 
       false,
       backgroundPaint,
     );
 
-    // Draw progress arc
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
-      math.pi,
-      math.pi * progress,
+      math.pi, 
+      math.pi * progress, 
       false,
       progressPaint,
     );
