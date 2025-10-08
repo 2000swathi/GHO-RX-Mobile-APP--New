@@ -1,20 +1,72 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/common_container.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
-import 'package:ghorx_mobile_app_new/core/common_widgets/reusable_button.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/widgets/case_appbar.dart';
+import 'package:ghorx_mobile_app_new/features/profile/bloc/profile_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/bloc/profile_event.dart';
+import 'package:ghorx_mobile_app_new/features/profile/bloc/profile_state.dart';
 import 'package:ghorx_mobile_app_new/utilities/size_config.dart';
+
+import '../profile/repository/Profile_repo.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final repository = ProfileRepository();
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CaseAppBar(title: "HELLO"),
+      appBar: CaseAppBar(
+        isHome: true,
+        widgets: Column(
+          children: [
+            SizedBox(height: 15),
+            Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: AppColors.profilepink.withAlpha(13),
+                  child: SvgPicture.asset("assets/svg/person.svg"),
+                ),
+                SizedBox(width: 5),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Hello", style: AppFonts.textblue),
+                    BlocProvider(
+                      create:
+                          (_) =>
+                              ProfileBloc(repository: repository)
+                                ..add(FetchPersonalInfo()),
+                      child: BlocBuilder<ProfileBloc, ProfileState>(
+                        builder: (context, state) {
+                          if (state is ProfileLoading) {
+                            return const Center(child: Text("loading...",style: AppFonts.labelItalic,));
+                          } else if (state is PersonalInfoState) {
+                            final info = state.personalInfomodel;
+                            return Text(
+                              "${info.firstName} ${info.lastName}",
+                              style: AppFonts.subtext,
+                            );
+                          } else if (state is ProfileError) {
+                            return Center(child: Text(state.message));
+                          }
+                          return Container();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -25,7 +77,7 @@ class HomePage extends StatelessWidget {
                 margin: EdgeInsets.only(bottom: 15),
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: BoxDecoration(
-                  color: Color(0xffFFF8E6),
+                  color: AppColors.profilepink.withAlpha(13),
                   border: Border.all(color: Color(0xffF6E3B3), width: 1),
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -57,7 +109,6 @@ class HomePage extends StatelessWidget {
                           Text(
                             "Profile Verification Pending",
                             style: AppFonts.textblue.copyWith(
-                              fontFamily: 'Roboto',
                               color: Color(0xff983C3C),
                             ),
                           ),
@@ -84,7 +135,6 @@ class HomePage extends StatelessWidget {
                     "Key Performance Indicators",
                     style: AppFonts.subtext.copyWith(
                       fontWeight: FontWeight.w600,
-                      fontFamily: 'Roboto',
                       fontSize: 16,
                     ),
                   ),
@@ -201,8 +251,6 @@ class HomePage extends StatelessWidget {
               ),
               SizedBox(height: 20.h),
               Container(
-                // height: 222.h,
-                // width: double.infinity,
                 decoration: BoxDecoration(
                   color: Color(0xffF7F8FF),
                   boxShadow: [
@@ -212,12 +260,6 @@ class HomePage extends StatelessWidget {
                       blurRadius: 8,
                       offset: Offset(0, 4),
                     ),
-                    // BoxShadow(
-                    //   color: Colors.blue.withAlpha(10), // colored soft shadow
-                    //   spreadRadius: 1,
-                    //   blurRadius: 12,
-                    //   offset: Offset(0, 6),
-                    // ),
                   ],
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
@@ -243,7 +285,6 @@ class HomePage extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(width: 83),
                       Padding(
                         padding: const EdgeInsets.only(right: 5, left: 5),
                         child: Row(
