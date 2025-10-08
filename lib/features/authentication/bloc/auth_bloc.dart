@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
 import '../repository/auth_repository.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
@@ -40,6 +41,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           otp: event.otp,
         );
         if (otpVerifyResponse.status == 1) {
+          final otpData =
+              otpVerifyResponse.data.isNotEmpty &&
+                      otpVerifyResponse.data[0].isNotEmpty
+                  ? otpVerifyResponse.data[0][0]
+                  : null;
+
+          if (otpData != null) {
+            await SharedPreference.saveAuthData(
+              token: otpData.token,
+              userId: otpData.id,
+            );
+          }
+
           emit(AuthOTPSuccess(otpVerifyResponse));
         } else {
           emit(
@@ -56,7 +70,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     //resend otp
-      on<OTPResend>((event, emit) async {
+    on<OTPResend>((event, emit) async {
       emit(AuthLoading());
       try {
         final otpresendResponse = await authRepository.otpResend(
@@ -77,6 +91,5 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthFailure(e.toString()));
       }
     });
-
   }
 }
