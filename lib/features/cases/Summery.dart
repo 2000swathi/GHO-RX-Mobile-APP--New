@@ -9,7 +9,7 @@ class Summerypage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-       margin: const EdgeInsets.all(1.0),
+      margin: const EdgeInsets.all(1.0),
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -19,7 +19,7 @@ class Summerypage extends StatelessWidget {
             color: Colors.grey.withOpacity(0.1),
             spreadRadius: 2,
             blurRadius: 5,
-            offset: const Offset(0, 3), 
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -28,69 +28,58 @@ class Summerypage extends StatelessWidget {
         children: [
           const Text(
             'Summary of Medical Records',
-            style: AppFonts.subheading16
+            style: AppFonts.subheading16,
           ),
           const SizedBox(height: 10),
           _buildAudioSummaryRow(),
-           const SizedBox(height: 10),
-           Text("I am a 60-year-old male experiencing slurred speech and weakness in my right arm for the past 2 hours. I consulted a doctor who mentioned it could be a possible stroke and advised immediate admission for further tests and treatment. As I am not fully convinced with the explanation and plan provided, I am seeking an urgent second opinion from a neurologist. I have attached the reports and necessary documents available with me for your review.",
-           style:AppFonts.textprimary ,),
-        ])
-    );
-  }
-}
-// ignore: unused_element
-Widget _buildAudioSummaryRow() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF0F4FF), 
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-             SvgPicture.asset(
-                'assets/svg/audio.svg',
-                width: 24,
-                height: 24,
-              ),
-              const SizedBox(width: 10),
-              Text(
-                'Audio Summary',
-                style: AppFonts.buttontxt16,
-              ),
-            ],
-          ),
- ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primarycolor, 
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              minimumSize: Size.zero, 
-            ),
-            child:  Row(
-              children: [
-                  SvgPicture.asset(
-                'assets/svg/play.svg',
-                width: 20,
-                height: 20,
-              ),
-               SizedBox(width: 4),
-                Text(
-                  'Play',
-                  style: TextStyle(color: Colors.white, fontSize: 14),
-                ),
-              ],
-            ),
+          const SizedBox(height: 10),
+          Text(
+            "I am a 60-year-old male experiencing slurred speech and weakness in my right arm for the past 2 hours. I consulted a doctor who mentioned it could be a possible stroke and advised immediate admission for further tests and treatment. As I am not fully convinced with the explanation and plan provided, I am seeking an urgent second opinion from a neurologist. I have attached the reports and necessary documents available with me for your review.",
+            style: AppFonts.textprimary,
           ),
         ],
       ),
     );
   }
+}
 
+// ignore: unused_element
+Widget _buildAudioSummaryRow() {
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+    decoration: BoxDecoration(
+      color: const Color(0xFFF0F4FF),
+      borderRadius: BorderRadius.circular(10),
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            SvgPicture.asset('assets/svg/audio.svg', width: 24, height: 24),
+            const SizedBox(width: 10),
+            Text('Audio Summary', style: AppFonts.buttontxt16),
+          ],
+        ),
+        ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primarycolor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            minimumSize: Size.zero,
+          ),
+          child: Row(
+            children: [
+              SvgPicture.asset('assets/svg/play.svg', width: 20, height: 20),
+              SizedBox(width: 4),
+              Text('Play', style: TextStyle(color: Colors.white, fontSize: 14)),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}

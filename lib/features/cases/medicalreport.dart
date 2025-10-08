@@ -1,23 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 
 class Medicalreport extends StatelessWidget {
-  const Medicalreport({super.key});
+ Medicalreport({super.key});
+
+  final List<Map<String, dynamic>> reports =  [
+    {
+      'icon': Icons.image,
+      'color': Colors.blue,
+      'title': 'MRI Lumbar Spine',
+      'subtitle': 'DICOM File',
+    },
+    {
+      'icon': Icons.picture_as_pdf,
+      'color': Colors.red,
+      'title': 'Nerve Conduction Study Report',
+      'subtitle': 'PDF File',
+    },
+    {
+      'icon': Icons.image,
+      'color': Colors.blue,
+      'title': 'HBA1c Lab Results',
+      'subtitle': 'JPEG File',
+    },
+    {
+      'icon': Icons.picture_as_pdf,
+      'color': Colors.red,
+      'title': 'Initial Consultation Notes',
+      'subtitle': 'PDF File',
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Container(
-    margin: const EdgeInsets.all(1.0),
-      padding: const EdgeInsets.all(8.0),
+    margin:  EdgeInsets.all(1.0),
+      padding: EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15.0),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.grey.withOpacity(0.1),
             spreadRadius: 2,
             blurRadius: 5,
-            offset: const Offset(0, 3), 
+            offset:  Offset(0, 3), 
           ),
         ],
       ),
@@ -32,18 +61,49 @@ class Medicalreport extends StatelessWidget {
               ),
               SizedBox(width: 7,),
                Container(
-                    padding: const EdgeInsets.symmetric(
+                    padding:  EdgeInsets.symmetric(
                       horizontal: 10,
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xffE8F5E9),
+                      color:  Color(0xffE8F5E9),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text('4 Files', style: AppFonts.textprimarygreen12,),
                   ),
-           ],
+           ]
          ),
+           SizedBox(height: 15),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: reports.length,
+            itemBuilder: (context, index) {
+              final report = reports[index];
+              return Container(
+                margin:  EdgeInsets.symmetric(vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  // ignore: deprecated_member_use
+                  border: Border.all(color: AppColors.primarycolor.withOpacity(0.5), width: 1),
+                  boxShadow: [
+                    BoxShadow(
+                      // ignore: deprecated_member_use
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 4,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: ListTile(
+                  leading: Icon(report['icon'] as IconData, color: report['color'] as Color),
+                  title: Text(report['title'] as String, style: AppFonts.textprimary),
+                  subtitle: Text(report['subtitle'] as String, style: AppFonts.subtext),
+                ),
+              );
+            },
+          )
         ],
       ),
     );

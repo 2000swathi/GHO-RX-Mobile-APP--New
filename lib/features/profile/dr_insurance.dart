@@ -74,6 +74,7 @@ class DrInsurance extends StatelessWidget {
   }
 
   Widget _buildRow(String label, String value) {
+    // ignore: unnecessary_null_comparison
     final displayValue = (value == null || value.isEmpty) ? "-" : value;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),

@@ -73,6 +73,7 @@ class DrLicense extends StatelessWidget {
 
   Widget _buildRow(String label, String value) {
     final displayValue =
+        // ignore: unnecessary_null_comparison
         (value.isEmpty || value == null || value.isEmpty) ? "-" : value;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
