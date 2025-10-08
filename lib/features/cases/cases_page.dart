@@ -173,10 +173,7 @@ class CasesPage extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: CasesTabView(),
-            ),
+            child: CasesTabView(),
           ),
         ],
       ),

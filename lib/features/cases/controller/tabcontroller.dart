@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/features/cases/Summery.dart';
-import 'package:ghorx_mobile_app_new/features/cases/customScrollableTabs.dart';
+import 'package:ghorx_mobile_app_new/features/cases/widgets/customScrollableTabs.dart';
 import 'package:ghorx_mobile_app_new/features/cases/medicalreport.dart';
 import 'package:ghorx_mobile_app_new/features/cases/medications.dart';
 import 'package:ghorx_mobile_app_new/features/cases/patientqueries.dart';
