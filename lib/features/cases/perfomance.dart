@@ -81,10 +81,7 @@ class PerformanceSnapshot extends StatelessWidget {
                       const SizedBox(height: 12),
                       const Text(
                         "Keep it up! You’re ahead of 75% of doctors.",
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: Colors.black54,
-                        ),
+                        style: TextStyle(fontSize: 11, color: Colors.black54),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -104,8 +101,11 @@ class PerformanceSnapshot extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.timer_outlined,
-                                  color: Colors.indigo.shade400, size: 22),
+                              Icon(
+                                Icons.timer_outlined,
+                                color: Colors.indigo.shade400,
+                                size: 22,
+                              ),
                               const SizedBox(width: 6),
                               Text(
                                 "Avg. Response Time",
@@ -131,8 +131,11 @@ class PerformanceSnapshot extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.account_balance_wallet_outlined,
-                                  color: Colors.indigo.shade400, size: 22),
+                              Icon(
+                                Icons.account_balance_wallet_outlined,
+                                color: Colors.indigo.shade400,
+                                size: 22,
+                              ),
                               const SizedBox(width: 6),
                               Text(
                                 "Total Earnings",
@@ -177,24 +180,18 @@ class GlassContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: margin,
-      height: height,
+      margin: const EdgeInsets.all(1.0),
+      padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         color: Colors.white.withOpacity(0.3),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.2),
-          width: 1,
-        ),
+        border: Border.all(color: Colors.white.withOpacity(0.2), width: 1),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: child,
-          ),
+          child: Padding(padding: const EdgeInsets.all(16), child: child),
         ),
       ),
     );

@@ -18,7 +18,7 @@ class _CasesTabViewState extends State<CasesTabView> {
   final List<String> tabNames = [
     "Summary",
     "Patient Queries",
-    "Medical Report",
+    "Medical Documnents",
     "Medications",
   ];
 
