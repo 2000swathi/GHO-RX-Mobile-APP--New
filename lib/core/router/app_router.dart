@@ -4,10 +4,6 @@ import 'package:ghorx_mobile_app_new/features/authentication/repository/model/lo
 import 'package:ghorx_mobile_app_new/features/authentication/add_page.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/reset_password.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/casedetails.dart';
-import 'package:ghorx_mobile_app_new/features/profile/dr_insurance.dart';
-import 'package:ghorx_mobile_app_new/features/profile/dr_license.dart';
-import 'package:ghorx_mobile_app_new/features/profile/dr_specialty.dart';
-import 'package:ghorx_mobile_app_new/features/profile/personal_info.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_page.dart';
 import 'package:ghorx_mobile_app_new/features/home/home_page.dart';
 import 'package:ghorx_mobile_app_new/main_page.dart';
@@ -51,14 +47,6 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => ResetPassword());
       case mainPage:
         return MaterialPageRoute(builder: (_) => MainPage());
-      case personalInfo:
-        return MaterialPageRoute(builder: (_) => PersonalInfoScreen());
-      case drSpecialty:
-        return MaterialPageRoute(builder: (_) => DrSpecialty());
-      case drInsurance:
-        return MaterialPageRoute(builder: (_) => DrInsurance());
-      case drLicense:
-        return MaterialPageRoute(builder: (_) => DrLicense());
       case casepage:
         return MaterialPageRoute(builder: (_) => CasesPage());
       case casedetails:
