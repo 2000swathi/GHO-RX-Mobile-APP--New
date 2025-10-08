@@ -78,6 +78,7 @@ class _ProfileDtlContainerState extends State<ProfileDtlContainer> {
                       widget: SvgPicture.asset("assets/svg/edit_svg.svg"),
                       isiIon: true,
                       color: AppColors.primarycolor.withAlpha(15),
+                      colortext: AppColors.primarycolor,
                       onPressed: () {},
                     ),
                   ],
