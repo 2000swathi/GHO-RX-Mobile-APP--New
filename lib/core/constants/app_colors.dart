@@ -21,4 +21,6 @@ class AppColors {
   static const Color lightgreen = Color(0xffE8F5E9);
   static const  Color skyBlueColor = Color(0xff2195B6);
   static const Color lightBlueColor = Color(0xffE3F2FD);
+  static const Color lightpink = Color(0xffFFF8E6);
+  static const Color profilepink = Color(0xffFF8A65);
 }
