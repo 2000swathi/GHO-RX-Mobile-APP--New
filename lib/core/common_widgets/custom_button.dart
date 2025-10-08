@@ -7,12 +7,18 @@ class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   bool iswhite;
+  Color? color;
+  bool? isiIon;
+  Widget? widget;
 
   CustomButton({
     super.key,
     required this.text,
     required this.onPressed,
     this.iswhite = false,
+    this.color = AppColors.primarycolor,
+    this.isiIon = false,
+    this.widget,
   });
 
   @override
@@ -23,13 +29,29 @@ class CustomButton extends StatelessWidget {
         height: 42,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: iswhite == true ? AppColors.white : AppColors.primarycolor,
+          color: iswhite == true ? AppColors.white : color,
           borderRadius: BorderRadius.all(Radius.circular(6)),
         ),
         child: Center(
-          child: Text(
-            text,
-            style: iswhite == true ? AppFonts.textblue : AppFonts.textwhite,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              isiIon == true ? (widget ?? SizedBox.shrink()) : SizedBox.shrink(),
+              isiIon == true ? SizedBox(width: 7) : SizedBox.shrink(),
+              Text(
+                text,
+                style:
+                    iswhite == true
+                        ? AppFonts.textblue
+                        : AppFonts.textwhite.copyWith(
+                          color:
+                              isiIon == true
+                                  ? AppColors.primarycolor
+                                  : AppColors.white,
+                        ),
+              ),
+            ],
           ),
         ),
       ),
