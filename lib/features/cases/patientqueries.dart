@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 
 class Patientqueries extends StatelessWidget {
@@ -18,7 +19,7 @@ class Patientqueries extends StatelessWidget {
     margin: const EdgeInsets.all(1.0),
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color:AppColors.white,
         borderRadius: BorderRadius.circular(15.0),
         boxShadow: [
           BoxShadow(
@@ -55,13 +56,13 @@ class Patientqueries extends StatelessWidget {
                           height: 50,
                           margin: const EdgeInsets.only(right: 8),
                           decoration: const BoxDecoration(
-                            color: Colors.orange,
+                            color: AppColors.yellow,
                           ),
                         ),
                         Expanded(
                           child: Text(
                             queries[index],
-                            style: AppFonts.textprimary.copyWith(height: 1.4),
+                            style: AppFonts.buttontxt16,
                           ),
                         ),
                       ],

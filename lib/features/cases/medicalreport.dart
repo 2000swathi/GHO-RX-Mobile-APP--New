@@ -8,25 +8,25 @@ class Medicalreport extends StatelessWidget {
   final List<Map<String, dynamic>> reports =  [
     {
       'icon': Icons.image,
-      'color': Colors.blue,
+      'color': AppColors.primarycolor,
       'title': 'MRI Lumbar Spine',
       'subtitle': 'DICOM File',
     },
     {
       'icon': Icons.picture_as_pdf,
-      'color': Colors.red,
+      'color':AppColors.warningred,
       'title': 'Nerve Conduction Study Report',
       'subtitle': 'PDF File',
     },
     {
       'icon': Icons.image,
-      'color': Colors.blue,
+      'color': AppColors.primarycolor,
       'title': 'HBA1c Lab Results',
       'subtitle': 'JPEG File',
     },
     {
       'icon': Icons.picture_as_pdf,
-      'color': Colors.red,
+      'color': AppColors.warningred,
       'title': 'Initial Consultation Notes',
       'subtitle': 'PDF File',
     },
@@ -38,12 +38,12 @@ class Medicalreport extends StatelessWidget {
     margin:  EdgeInsets.all(1.0),
       padding: EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(15.0),
         boxShadow: [
           BoxShadow(
             // ignore: deprecated_member_use
-            color: Colors.grey.withOpacity(0.1),
+            color: AppColors.hint2color.withOpacity(0.1),
             spreadRadius: 2,
             blurRadius: 5,
             offset:  Offset(0, 3), 
@@ -66,7 +66,7 @@ class Medicalreport extends StatelessWidget {
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color:  Color(0xffE8F5E9),
+                      color: AppColors.lightgreen ,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text('4 Files', style: AppFonts.textprimarygreen12,),
@@ -83,14 +83,14 @@ class Medicalreport extends StatelessWidget {
               return Container(
                 margin:  EdgeInsets.symmetric(vertical: 4),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.white,
                   borderRadius: BorderRadius.circular(12),
                   // ignore: deprecated_member_use
                   border: Border.all(color: AppColors.primarycolor.withOpacity(0.5), width: 1),
                   boxShadow: [
                     BoxShadow(
                       // ignore: deprecated_member_use
-                      color: Colors.black.withOpacity(0.05),
+                      color: AppColors.textPrimary.withOpacity(0.05),
                       blurRadius: 4,
                       offset: Offset(0, 2),
                     ),
@@ -98,8 +98,8 @@ class Medicalreport extends StatelessWidget {
                 ),
                 child: ListTile(
                   leading: Icon(report['icon'] as IconData, color: report['color'] as Color),
-                  title: Text(report['title'] as String, style: AppFonts.textprimary),
-                  subtitle: Text(report['subtitle'] as String, style: AppFonts.subtext),
+                  title: Text(report['title'] as String, style: AppFonts.subheading16),
+                  subtitle: Text(report['subtitle'] as String, style: AppFonts.hinttext2),
                 ),
               );
             },

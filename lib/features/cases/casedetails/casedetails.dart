@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/controller/tabcontroller.dart';
 
 class CaseDetailsPage extends StatelessWidget {
-// ignore: prefer_const_constructors_in_immutables
-CaseDetailsPage({super.key});
+  // ignore: prefer_const_constructors_in_immutables
+  CaseDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +99,7 @@ CaseDetailsPage({super.key});
                     //   isFilled: true,
                     //   onTap: () async {},
                     // ),
+                    Flexible(child: CustomButton(text: "Submit Opinion", onPressed: () {})),
                   ],
                 ),
               ),

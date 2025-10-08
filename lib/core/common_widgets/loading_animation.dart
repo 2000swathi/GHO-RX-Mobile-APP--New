@@ -8,7 +8,7 @@ class LoadingAnimation extends StatelessWidget {
   Widget build(BuildContext context) {
     return const CircularProgressIndicator(
       color: AppColors.primarycolor,
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(15),
     );
   }
 }

@@ -12,11 +12,11 @@ class Summerypage extends StatelessWidget {
       margin: const EdgeInsets.all(1.0),
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(15.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: AppColors.hint2color.withOpacity(0.1),
             spreadRadius: 2,
             blurRadius: 5,
             offset: const Offset(0, 3),
@@ -48,7 +48,7 @@ Widget _buildAudioSummaryRow() {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
     decoration: BoxDecoration(
-      color: const Color(0xFFF0F4FF),
+      color:AppColors.primarycolor.withAlpha( 30),
       borderRadius: BorderRadius.circular(10),
     ),
     child: Row(
@@ -75,7 +75,7 @@ Widget _buildAudioSummaryRow() {
             children: [
               SvgPicture.asset('assets/svg/play.svg', width: 20, height: 20),
               SizedBox(width: 4),
-              Text('Play', style: TextStyle(color: Colors.white, fontSize: 14)),
+              Text('Play', style: TextStyle(color:AppColors.white, fontSize: 14)),
             ],
           ),
         ),
