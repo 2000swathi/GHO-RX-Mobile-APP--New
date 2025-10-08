@@ -73,7 +73,6 @@ class CaseDetailsPage extends StatelessWidget {
                   Text("Due Date: Oct 14, 2025", style: AppFonts.textSecondary),
                 ],
               ),
-              //1st container
               const SizedBox(height: 14),
               Container(
                 padding: const EdgeInsets.all(12),
@@ -94,16 +93,10 @@ class CaseDetailsPage extends StatelessWidget {
                       ],
                     ),
                     SizedBox(width: 35),
-                    // ActionButtonCard(
-                    //   text: "Submit Opinion",
-                    //   isFilled: true,
-                    //   onTap: () async {},
-                    // ),
                     Flexible(child: CustomButton(text: "Submit Opinion", onPressed: () {})),
                   ],
                 ),
               ),
-              //2nd container
               const SizedBox(height: 14),
               Container(
                 padding: const EdgeInsets.all(12),
@@ -124,7 +117,6 @@ class CaseDetailsPage extends StatelessWidget {
                   ],
                 ),
               ),
-              //srollview tab
               const SizedBox(height: 14),
               const CasesTabView(),
               const SizedBox(height: 14),
