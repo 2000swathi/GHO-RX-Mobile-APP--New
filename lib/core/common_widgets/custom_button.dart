@@ -37,7 +37,9 @@ class CustomButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              isiIon == true ? (widget ?? SizedBox.shrink()) : SizedBox.shrink(),
+              isiIon == true
+                  ? (widget ?? SizedBox.shrink())
+                  : SizedBox.shrink(),
               isiIon == true ? SizedBox(width: 7) : SizedBox.shrink(),
               Text(
                 text,

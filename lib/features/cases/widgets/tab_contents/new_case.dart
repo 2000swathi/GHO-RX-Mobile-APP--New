@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 
 class NewCasesTab extends StatelessWidget {
@@ -152,7 +153,9 @@ class CaseCard extends StatelessWidget {
                 Expanded(
                   child: CustomButton(
                     text: "Deny",
-                    iswhite: true,
+                    isiIon: true,
+
+                   color: AppColors.primarycolor.withAlpha(15),
                     onPressed: () {},
                   ),
                 ),
