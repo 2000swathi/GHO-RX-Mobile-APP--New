@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_page.dart';
+import 'package:ghorx_mobile_app_new/features/home/home_page.dart';
 import 'package:ghorx_mobile_app_new/features/profile/profile_dr.dart';
 
 class MainPage extends StatefulWidget {
@@ -14,10 +15,10 @@ class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    const Center(child: Text("Home")),
-
+    HomePage(),
     const CasesPage(),
     const ProfileDr(),
+    const HomePage(),
   ];
 
   @override

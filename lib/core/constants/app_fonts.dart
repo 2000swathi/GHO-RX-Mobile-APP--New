@@ -86,4 +86,11 @@ class AppFonts {
     fontWeight: FontWeight.w400,
     color: AppColors.primarycolor,
   );
+
+  static const TextStyle numBold = TextStyle(
+    fontFamily: primaryFont,
+    fontSize: 32,
+    fontWeight: FontWeight.w800,
+    color: AppColors.textSecondary,
+  );
 }
