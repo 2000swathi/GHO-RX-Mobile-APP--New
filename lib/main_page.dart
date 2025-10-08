@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_page.dart';
 import 'package:ghorx_mobile_app_new/features/profile/profile_dr.dart';
@@ -15,7 +16,7 @@ class _MainPageState extends State<MainPage> {
 
   final List<Widget> _pages = [
     const Center(child: Text("Home")),
-     CasesPage(),
+    CasesPage(),
     const ProfileDr(),
   ];
 
@@ -33,14 +34,29 @@ class _MainPageState extends State<MainPage> {
             _currentIndex = index;
           });
         },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+        items: [
+          BottomNavigationBarItem(
+            icon:
+                _currentIndex == 0
+                    ? SvgPicture.asset("assets/svg/homeclick.svg")
+                    : SvgPicture.asset("assets/svg/home_svg.svg"),
+            label: "Home",
+          ),
 
           BottomNavigationBarItem(
-            icon: Icon(Icons.note_alt_sharp),
+            icon:
+                _currentIndex == 1
+                    ? SvgPicture.asset("assets/svg/caseclick.svg")
+                    : SvgPicture.asset("assets/svg/cases_svg.svg"),
             label: "Cases",
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+          BottomNavigationBarItem(
+            icon:
+                _currentIndex == 2
+                    ? SvgPicture.asset("assets/svg/profile_clik.svg")
+                    : SvgPicture.asset("assets/svg/profile_svg.svg"),
+            label: "Profile",
+          ),
         ],
       ),
     );
