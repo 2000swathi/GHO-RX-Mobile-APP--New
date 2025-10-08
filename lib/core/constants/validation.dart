@@ -201,6 +201,16 @@ class Validation {
     return null;
   }
 
+  static String? validateCVfield(
+    String? value, {
+    String fieldName = 'This field',
+  }) {
+    if (value == null || value.trim().isEmpty) {
+      return '$fieldName is required';
+    }
+    return null;
+  }
+
   static String? validatedobinput(String? value) {
     if (value == null || value.isEmpty) {
       return 'Date of Birth is required';

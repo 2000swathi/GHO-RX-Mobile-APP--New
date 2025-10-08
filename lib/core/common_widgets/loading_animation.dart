@@ -6,9 +6,13 @@ class LoadingAnimation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CircularProgressIndicator(
-      color: AppColors.primarycolor,
-      padding: EdgeInsets.all(10),
+    return const SizedBox(
+      width: 30,
+      height: 30,
+      child: CircularProgressIndicator(
+        color: AppColors.primarycolor,
+        strokeWidth: 4,
+      ),
     );
   }
 }

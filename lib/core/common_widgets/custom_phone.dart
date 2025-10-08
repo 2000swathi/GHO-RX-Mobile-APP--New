@@ -6,19 +6,23 @@ class CustomDropdownField extends StatefulWidget {
   final TextEditingController controller;
   final String label;
   final bool isPhoneField;
-  final String dropdownPosition;
-   final String? Function(String?)? validator;
-  final List<String>? dropdownItems; 
+  final String dropdownPosition; // left or right
+  final String? Function(String?)? validator;
+  final List<String>? dropdownItems; // generic list of items
+  final List<Map<String, dynamic>>? countryItems; // list of countries with CountryID, CountryName, CountryCode
+  final bool isCountryDropdown; // true if country list dropdown
 
   const CustomDropdownField({
-    Key? key,
+    super.key,
     required this.controller,
     this.label = "",
     this.isPhoneField = false,
     this.dropdownPosition = "left",
     this.dropdownItems,
     this.validator,
-  }) : super(key: key);
+    this.countryItems,
+    this.isCountryDropdown = false,
+  });
 
   @override
   State<CustomDropdownField> createState() => _CustomDropdownFieldState();
@@ -28,20 +32,32 @@ class _CustomDropdownFieldState extends State<CustomDropdownField> {
   String selectedCountryCode = '91';
   String? selectedItem;
 
-  final List<String> countryCodes = ['91', '1', '44', '61'];
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isCountryDropdown && widget.countryItems != null && widget.countryItems!.isNotEmpty) {
+      selectedCountryCode = widget.countryItems![0]['CountryCode'].toString();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-
     final leftDropdown = DropdownButton<String>(
       value: selectedCountryCode,
       underline: const SizedBox(),
-      items: countryCodes.map((code) {
-        return DropdownMenuItem(
-          value: code,
-          child: Text("+$code", style: AppFonts.textSecondary),
-        );
-      }).toList(),
+      items: widget.isCountryDropdown && widget.countryItems != null
+          ? widget.countryItems!.map((c) {
+              return DropdownMenuItem(
+                value: c['CountryCode'].toString(),
+                child: Text("+${c['CountryCode']}", style: AppFonts.textSecondary),
+              );
+            }).toList()
+          : <String>['91', '1', '44', '61'].map((code) {
+              return DropdownMenuItem(
+                value: code,
+                child: Text("+$code", style: AppFonts.textSecondary),
+              );
+            }).toList(),
       onChanged: (value) {
         setState(() {
           selectedCountryCode = value!;
@@ -49,17 +65,24 @@ class _CustomDropdownFieldState extends State<CustomDropdownField> {
       },
     );
 
-    final rightDropdown = widget.dropdownItems != null
+    final rightDropdown = (widget.dropdownItems != null || widget.isCountryDropdown)
         ? DropdownButton<String>(
             value: selectedItem,
             underline: const SizedBox(),
             icon: const Icon(Icons.arrow_drop_down),
-            items: widget.dropdownItems!.map((item) {
-              return DropdownMenuItem(
-                value: item,
-                child: Text(item, style: AppFonts.textSecondary),
-              );
-            }).toList(),
+            items: widget.isCountryDropdown && widget.countryItems != null
+                ? widget.countryItems!.map((c) {
+                    return DropdownMenuItem(
+                      value: c['CountryID'].toString(),
+                      child: Text(c['CountryName'], style: AppFonts.textSecondary),
+                    );
+                  }).toList()
+                : widget.dropdownItems!.map((item) {
+                    return DropdownMenuItem(
+                      value: item,
+                      child: Text(item, style: AppFonts.textSecondary),
+                    );
+                  }).toList(),
             onChanged: (value) {
               setState(() {
                 selectedItem = value;
@@ -68,31 +91,24 @@ class _CustomDropdownFieldState extends State<CustomDropdownField> {
           )
         : const Icon(Icons.arrow_drop_down);
 
-  
     final divider = Container(
       width: 1,
       height: 20,
       color: AppColors.offgreycolor,
     );
 
-   
     final textField = Expanded(
       child: TextFormField(
         controller: widget.controller,
-        keyboardType:
-            widget.isPhoneField ? TextInputType.phone : TextInputType.text,
+        keyboardType: widget.isPhoneField ? TextInputType.phone : TextInputType.text,
         decoration: InputDecoration(
           border: InputBorder.none,
           hintText: widget.dropdownPosition == "right"
               ? "Enter ${widget.label.toLowerCase()}"
               : widget.isPhoneField
-                  ? "XXXXX XXXXX" 
+                  ? "XXXXX XXXXX"
                   : "Enter ${widget.label.toLowerCase()}",
           hintStyle: AppFonts.hinttext,
-          prefixText: widget.isPhoneField && widget.dropdownPosition == "left"
-              ? ""
-              : null,
-          prefixStyle: AppFonts.textSecondary,
         ),
       ),
     );
