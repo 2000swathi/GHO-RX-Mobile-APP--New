@@ -32,7 +32,6 @@ class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
                     backgroundColor: AppColors.primarycolor.withAlpha(8),
                     child: SvgPicture.asset("assets/svg/notification_svg.svg"),
                   ),
-
                   SizedBox(width: 15),
                 ],
       ),
