@@ -21,7 +21,7 @@ class ProfileDr extends StatelessWidget {
       body: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 15,),
             child: Text(
               "Take a quick look at your profile and credentials before you continue.",
               style: AppFonts.buttontxt16.copyWith(

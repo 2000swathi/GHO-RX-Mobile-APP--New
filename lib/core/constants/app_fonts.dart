@@ -153,4 +153,11 @@ class AppFonts {
     letterSpacing: 0,
     fontWeight: FontWeight.w500,
   );
+
+  static const TextStyle numBold = TextStyle(
+    fontFamily: primaryFont,
+    fontSize: 28,
+    fontWeight: FontWeight.w800,
+    color: AppColors.textSecondary,
+  );
 }
