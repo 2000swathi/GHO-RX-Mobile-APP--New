@@ -1,21 +1,29 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 
 class CommonContainer extends StatelessWidget {
   final Color color;
   final Color textColor;
+  final Color data2Color;
   final Color borderColor;
   final String data;
   final String data1;
   final String data2;
+  final String data3;
+  final Icon? icon;
   const CommonContainer({
     super.key,
     required this.color,
     required this.borderColor,
+    required this.data2Color,
     required this.data,
     required this.data1,
     required this.data2,
+    required this.data3,
     required this.textColor,
+    this.icon,
   });
 
   @override
@@ -40,7 +48,27 @@ class CommonContainer extends StatelessWidget {
             ),
           ),
           Text(data1, style: AppFonts.numBold),
-          Text(data2, style: AppFonts.subtext),
+          RichText(
+            text: TextSpan(
+              children: [
+                if (icon != null) ...[
+                  WidgetSpan(
+                    child: SizedBox(width: 16, height: 16, child: icon),
+                  ),
+                ],
+                WidgetSpan(child: SizedBox(width: 2)),
+                TextSpan(
+                  text: data2,
+                  style: AppFonts.subtext.copyWith(
+                    color: data2Color,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                WidgetSpan(child: SizedBox(width: 6)),
+                TextSpan(text: data3, style: AppFonts.subtext),
+              ],
+            ),
+          ),
         ],
       ),
     );

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/common_container.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/reusable_button.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/widgets/case_appbar.dart';
+import 'package:ghorx_mobile_app_new/utilities/size_config.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -78,6 +80,7 @@ class HomePage extends StatelessWidget {
                 fontSize: 16,
               ),
             ),
+
             SizedBox(height: 15),
             Row(
               children: [
@@ -89,8 +92,10 @@ class HomePage extends StatelessWidget {
 
                     data: "Second Opinion",
                     data1: "17",
-
-                    data2: "vs last period",
+                    icon: Icon(Icons.expand_less, color: Colors.green),
+                    data2Color: Colors.green,
+                    data2: "+2%",
+                    data3: "vs last Period",
                   ),
                 ),
                 SizedBox(width: 12),
@@ -102,7 +107,13 @@ class HomePage extends StatelessWidget {
                     textColor: Color(0xffB93106),
                     data: "Total Consults",
                     data1: "3",
-                    data2: "vs last period",
+                    icon: Icon(
+                      Icons.arrow_drop_down_sharp,
+                      color: Color(0xff656A74),
+                    ),
+                    data2: "0%",
+                    data2Color: Color(0xff39393A),
+                    data3: "vs last period",
                   ),
                 ),
               ],
@@ -117,7 +128,13 @@ class HomePage extends StatelessWidget {
                     textColor: Color(0xff146B1A),
                     data: "Total Revenue",
                     data1: "\$150.31",
-                    data2: "vs last period",
+                    icon: Icon(
+                      Icons.arrow_upward_outlined,
+                      color: Colors.green,
+                    ),
+                    data2Color: Colors.green,
+                    data2: "+2%",
+                    data3: "vs last period",
                   ),
                 ),
                 SizedBox(width: 12),
@@ -128,12 +145,14 @@ class HomePage extends StatelessWidget {
                     textColor: Color(0xff404040).withAlpha(48),
                     data: "Next Payout",
                     data1: "\$80.00",
-                    data2: "Due: Oct 10",
+                    data2Color: Color(0xff94989B),
+                    data2: "Due:",
+                    data3: "Oct 10",
                   ),
                 ),
               ],
             ),
-            // SizedBox(height: 15),
+            SizedBox(height: 15.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -148,10 +167,10 @@ class HomePage extends StatelessWidget {
                 ),
               ],
             ),
-            // SizedBox(height: 20),
+            SizedBox(height: 10.h),
             Expanded(
               child: Container(
-                // height: 222,
+                // height: 222.h,
                 // width: double.infinity,
                 decoration: BoxDecoration(
                   color: Color(0xffF7F8FF),
@@ -165,43 +184,60 @@ class HomePage extends StatelessWidget {
 
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Case Identifier", style: AppFonts.subtext),
-                        Text("Allotted Time: 5hrs", style: AppFonts.subtext),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5, right: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Case Identifier", style: AppFonts.subtext),
+                          Text("Allotted Time: 5hrs", style: AppFonts.subtext),
+                        ],
+                      ),
                     ),
                     SizedBox(width: 83),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("GHO-2024-9481", style: AppFonts.subtext),
-                        Text("Due Date: Oct 9, 2024", style: AppFonts.subtext),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5, left: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Padding(padding: EdgeInsets.only(right: .12)),
+                          Text("GHO-2024-9481", style: AppFonts.subheading),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "Due Date:",
+                                  style: AppFonts.subtext,
+                                ),
+                                TextSpan(
+                                  text: "Oct 9,2024",
+                                  style: AppFonts.subtext,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    Text(
-                      "34-year-old female presenting with acute chest pain, radiating to left arm. Requesting urgent cardiologist \nopinion. ",
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: Text(
+                        "34-year-old female presenting with acute chest pain, radiating to left arm. Requesting urgent cardiologist \nopinion. ",
+                        style: AppFonts.textprimary,
+                      ),
                     ),
                     Row(
                       children: [
                         Padding(padding: EdgeInsets.all(2)),
                         Expanded(
-                          child: ReusableBtn(
-                            btnName: "Accept Case",
-                            onTap: () {},
-                            bgColor: Color(0xff667EFA),
-                            textColor: Color(0xffFFFFFF),
+                          child: CustomButton(
+                            text: "Accept Case",
+                            onPressed: () {},
                           ),
                         ),
                         SizedBox(width: 10),
                         Expanded(
-                          child: ReusableBtn(
-                            btnName: "Deny",
-                            onTap: () {},
-                            bgColor: Color(0xff667EFA).withAlpha(15),
-                            textColor: Color(0xff667EFA),
-                          ),
+                          child: CustomButton(text: "Deny", onPressed: () {}),
                         ),
                       ],
                     ),
