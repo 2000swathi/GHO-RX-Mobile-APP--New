@@ -156,7 +156,7 @@ class AppFonts {
 
   static const TextStyle numBold = TextStyle(
     fontFamily: primaryFont,
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: FontWeight.w800,
     color: AppColors.textSecondary,
   );
