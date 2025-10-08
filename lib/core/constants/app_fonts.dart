@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppFonts {
   static const String primaryFont = "Roboto";
@@ -15,6 +16,12 @@ class AppFonts {
   static const TextStyle subheading = TextStyle(
     fontFamily: primaryFont,
     fontSize: 18,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textPrimary,
+  );
+  static const TextStyle subheading16 = TextStyle(
+    fontFamily: primaryFont,
+    fontSize: 16,
     fontWeight: FontWeight.w600,
     color: AppColors.textPrimary,
   );
@@ -59,6 +66,18 @@ class AppFonts {
     fontWeight: FontWeight.w400,
     color: AppColors.textPrimary,
   );
+  static const TextStyle textprimarygreen = TextStyle(
+    fontFamily: primaryFont,
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: AppColors.green,
+  );
+  static const TextStyle textprimarygreen12 = TextStyle(
+    fontFamily: primaryFont,
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    color: AppColors.green,
+  );
   static const TextStyle textSecondary = TextStyle(
     fontFamily: primaryFont,
     fontSize: 16,
@@ -99,5 +118,39 @@ class AppFonts {
     fontSize: 14,
     fontWeight: FontWeight.w400,
     color: AppColors.red,
+  );
+  //Roboto Condensed
+  static TextStyle header_4 = GoogleFonts.asapCondensed(
+    color: AppColors.textPrimary,
+    fontSize: 16,
+    letterSpacing: 0,
+    fontWeight: FontWeight.w400,
+  );
+  static TextStyle header_5 = GoogleFonts.asapCondensed(
+    color: AppColors.textPrimary,
+    fontSize: 20,
+    letterSpacing: 0,
+    fontWeight: FontWeight.w700,
+  );
+  // ignore: non_constant_identifier_names
+  static TextStyle header_red = GoogleFonts.asapCondensed(
+    color: AppColors.warningred,
+    fontSize: 16,
+    letterSpacing: 0,
+    fontWeight: FontWeight.w600,
+  );
+
+  // roboto flex
+  static TextStyle buttontxt = GoogleFonts.robotoFlex(
+    color: AppColors.white,
+    fontSize: 16,
+    letterSpacing: 0,
+    fontWeight: FontWeight.w500,
+  );
+  static TextStyle buttontxt16 = GoogleFonts.robotoFlex(
+    color: AppColors.textSecondary,
+    fontSize: 16,
+    letterSpacing: 0,
+    fontWeight: FontWeight.w500,
   );
 }
