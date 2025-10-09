@@ -94,9 +94,12 @@ class CaseDetailsPage extends StatelessWidget {
                       ],
                     ),
                     SizedBox(width: 35),
-                    Flexible(child: CustomButton(text: "Submit Opinion", onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const Finalsubmission()));
-                    })),
+                    Flexible(
+                      child: CustomButton(
+                        text: "Submit Opinion",
+                        onPressed: () {},
+                      ),
+                    ),
                   ],
                 ),
               ),
