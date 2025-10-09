@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/features/cases/widgets/scrollabale_tabs.dart';
 import 'package:ghorx_mobile_app_new/features/cases/widgets/tab_contents/in_progress.dart';
 import 'package:ghorx_mobile_app_new/features/cases/widgets/tab_contents/new_case.dart';
@@ -22,18 +23,21 @@ class _CasesTabViewState extends State<CasesTabView> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CustomScrollableTabs(
-          tabs: tabNames,
-          onTabSelected: (index) {
-            setState(() => selectedIndex = index);
-          },
-        ),
-
-        const SizedBox(height: 10),
-        _buildTabContent(selectedIndex),
-      ],
+    return Container(
+      color: AppColors.white,
+      child: Column(
+        children: [
+          CustomScrollableTabs(
+            tabs: tabNames,
+            onTabSelected: (index) {
+              setState(() => selectedIndex = index);
+            },
+          ),
+      
+          const SizedBox(height: 10),
+          _buildTabContent(selectedIndex),
+        ],
+      ),
     );
   }
   Widget _buildTabContent(int index) {
