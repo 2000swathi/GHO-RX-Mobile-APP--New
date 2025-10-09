@@ -50,7 +50,7 @@ class Patientqueries extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onDoubleTap: () {
-                        EditProfileSheet.showSheet(context,queries[index] );
+                       
                       },
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
