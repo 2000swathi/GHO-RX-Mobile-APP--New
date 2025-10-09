@@ -6,19 +6,30 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart'
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/widgets/case_appbar.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_state.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/profile_repo.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/widget/edit_insurance_sheet.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/widget/edit_license_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/widget/edit_person_sheet.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/widget/edit_specialty_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/widget/profiledetails.dart';
-import 'bloc/profile_bloc.dart';
-import 'bloc/profile_state.dart';
 
-class ProfileDr extends StatelessWidget {
+class ProfileDr extends StatefulWidget {
   const ProfileDr({super.key});
+
+  @override
+  State<ProfileDr> createState() => _ProfileDrState();
+}
+
+class _ProfileDrState extends State<ProfileDr> {
+  int _expandedIndex = -1; // Track which container is open
 
   @override
   Widget build(BuildContext context) {
     final repository = ProfileRepository();
+
     return Scaffold(
       appBar: CaseAppBar(title: 'Welcome, Doctor', istrue: true),
       body: ListView(
@@ -34,11 +45,15 @@ class ProfileDr extends StatelessWidget {
             ),
           ),
           const Divider(),
-          SizedBox(height: 15),
-          ProfileDtlContainer(
+          const SizedBox(height: 15),
+
+          // --- Sections ---
+          _buildSection(
+            isadd: false,
+            index: 0,
             heading: "Personal informations",
             subheading: "View your basic and contact details.",
-            info: BlocProvider(
+            content: BlocProvider(
               create:
                   (_) =>
                       ProfileBloc(repository: repository)
@@ -49,38 +64,35 @@ class ProfileDr extends StatelessWidget {
                     return const Center(child: LoadingAnimation());
                   } else if (state is PersonalInfoState) {
                     final info = state.personalInfomodel;
-
                     return Column(
                       children: [
-                        ListView(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          children: [
-                            _buildRow(
-                              "Full Name",
-                              "${info.firstName} ${info.lastName}",
-                            ),
-                            _buildRow("Email", info.email),
-                            _buildRow("Phone", info.phone),
-                            _buildRow("Country", info.countryName),
-                            _buildRow(
-                              "Address",
-                              "${info.address1} ${info.address2} ${info.city} ${info.state}",
-                            ),
-                            _buildRow("Zip Code", info.zipCode),
-                            _buildRow("Birth Date", info.birthDate),
-                          ],
+                        _buildRow(
+                          "Full Name",
+                          "${info.firstName} ${info.lastName}",
                         ),
+                        _buildRow("Birth Date", info.birthDate),
+                        _buildRow("Email", info.email),
+                        _buildRow("Phone", info.phone),
+                        _buildRow("Country", info.countryName),
+                        _buildRow(
+                          "Address",
+                          "${info.address1} ${info.address2} ${info.city} ${info.state}",
+                        ),
+                        _buildRow("Zip Code", info.zipCode),
+
                         const SizedBox(height: 15),
-                        CustomButton(
-                          text: "Edit",
-                          widget: SvgPicture.asset("assets/svg/edit_svg.svg"),
-                          isiIon: true,
-                          color: AppColors.primarycolor.withAlpha(15),
-                          colortext: AppColors.primarycolor,
-                          onPressed: () {
-                            EditProfileSheet.showSheet(context, info);
-                          },
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                EditProfileSheet.showSheet(context, info);
+                              },
+                              child: SvgPicture.asset(
+                                "assets/svg/edit_svg.svg",
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     );
@@ -92,10 +104,12 @@ class ProfileDr extends StatelessWidget {
               ),
             ),
           ),
-          ProfileDtlContainer(
-            heading: "Accreditation & Speciality",
+
+          _buildSection(
+            index: 2,
+            heading: "Specialty",
             subheading: "Verify your qualifications and area of expertise.",
-            info: BlocProvider(
+            content: BlocProvider(
               create:
                   (_) =>
                       ProfileBloc(repository: repository)
@@ -106,31 +120,53 @@ class ProfileDr extends StatelessWidget {
                     return const Center(child: LoadingAnimation());
                   } else if (state is SpecialtyState) {
                     final specialtyList = state.specialtyModel.data;
-
                     if (specialtyList.isEmpty) {
                       return const Center(child: Text("No specialties found"));
                     }
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: specialtyList.length,
-                      itemBuilder: (context, index) {
-                        final specialty = specialtyList[index];
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildRow("Specialty", specialty.specialty),
-                            _buildRow(
-                              "Certified Board",
-                              specialty.certifiedBoard,
-                            ),
-                            _buildRow(
-                              "Specialty Type",
-                              specialty.specialtyType,
-                            ),
-                          ],
-                        );
-                      },
+                    return Column(
+                      children:
+                          specialtyList
+                              .map(
+                                (specialty) => Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _buildRow("Specialty", specialty.specialty),
+                                    _buildRow(
+                                      "Certified Board",
+                                      specialty.certifiedBoard,
+                                    ),
+                                    _buildRow(
+                                      "Specialty Type",
+                                      specialty.specialtyType,
+                                    ),
+
+                                    const SizedBox(height: 5),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/svg/trash.svg",
+                                          color: AppColors.primarycolor,
+                                        ),
+                                        SizedBox(width: 10),
+                                        InkWell(
+                                          onTap: () {
+                                            EditSpecialtySheet.showSheet(
+                                              context,
+                                              state.specialtyModel,
+                                            );
+                                          },
+                                          child: SvgPicture.asset(
+                                            "assets/svg/edit_svg.svg",
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Divider(color: AppColors.hint2color),
+                                  ],
+                                ),
+                              )
+                              .toList(),
                     );
                   } else if (state is ProfileError) {
                     return Center(child: Text(state.message));
@@ -140,10 +176,17 @@ class ProfileDr extends StatelessWidget {
               ),
             ),
           ),
-          ProfileDtlContainer(
+          _buildSection(
+            index: 1,
+            heading: "Accreditation",
+            subheading: "",
+            content: Text("no data"),
+          ),
+          _buildSection(
+            index: 3,
             heading: "Insurance",
             subheading: "Review your professional coverage details.",
-            info: BlocProvider(
+            content: BlocProvider(
               create:
                   (_) =>
                       ProfileBloc(repository: repository)
@@ -152,37 +195,54 @@ class ProfileDr extends StatelessWidget {
                 builder: (context, state) {
                   if (state is ProfileLoading) {
                     return const Center(child: LoadingAnimation());
-                  } else if (state is InsuranceState) {
+                  }
+                  if (state is InsuranceState) {
                     final insuranceList = state.insuranceModel.data;
-
                     if (insuranceList.isEmpty) {
                       return const Center(child: Text("No Insurance added"));
                     }
+                    return Column(
+                      children:
+                          insuranceList
+                              .map(
+                                (insurance) => Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _buildRow(
+                                      "ProviderID",
+                                      insurance.providerID.toString(),
+                                    ),
+                                    _buildRow(
+                                      "ProviderName",
+                                      insurance.providerName.toString(),
+                                    ),
 
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: insuranceList.length,
-                      itemBuilder: (context, index) {
-                        final insurance = insuranceList[index];
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildRow(
-                              "ProviderID",
-                              insurance.providerID.toString(),
-                            ),
-                            _buildRow(
-                              "ProviderName",
-                              insurance.providerName.toString(),
-                            ),
-                            _buildRow("IssueDate", "${insurance.issueDate}"),
-                            _buildRow("ExpiryDate", "${insurance.expiryDate}"),
-                          ],
-                        );
-                      },
+                                    const SizedBox(height: 15),
+                                    CustomButton(
+                                      text: "Edit",
+                                      widget: SvgPicture.asset(
+                                        "assets/svg/edit_svg.svg",
+                                      ),
+                                      isiIon: true,
+                                      color: AppColors.primarycolor.withAlpha(
+                                        15,
+                                      ),
+                                      colortext: AppColors.primarycolor,
+                                      onPressed: () {
+                                        EditInsuranceSheet.showSheet(
+                                          context,
+                                          state.insuranceModel,
+                                        );
+                                      },
+                                    ),
+                                    const SizedBox(height: 15),
+                                  ],
+                                ),
+                              )
+                              .toList(),
                     );
-                  } else if (state is ProfileError) {
+                  }
+                  if (state is ProfileError) {
                     return Center(child: Text(state.message));
                   }
                   return Container();
@@ -190,11 +250,12 @@ class ProfileDr extends StatelessWidget {
               ),
             ),
           ),
-          ProfileDtlContainer(
+          _buildSection(
+            index: 4,
             heading: "License",
             subheading:
                 "Check your official authorization to practice medicine.",
-            info: BlocProvider(
+            content: BlocProvider(
               create:
                   (_) =>
                       ProfileBloc(repository: repository)..add(FetchLicence()),
@@ -202,35 +263,53 @@ class ProfileDr extends StatelessWidget {
                 builder: (context, state) {
                   if (state is ProfileLoading) {
                     return const Center(child: LoadingAnimation());
-                  } else if (state is LicenseState) {
+                  }
+                  if (state is LicenseState) {
                     final licenseList = state.licenseModel.data;
-
                     if (licenseList.isEmpty) {
                       return const Center(child: Text("No license added"));
                     }
-
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: licenseList.length,
-                      itemBuilder: (context, index) {
-                        final license = licenseList[index];
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildRow("License Number", license.licenseNumber),
-                            _buildRow(
-                              "Issuing Authority",
-                              license.issuingAuthority,
-                            ),
-                            _buildRow("License Type", license.licenseType),
-                            _buildRow("Issue Date", license.issueDate),
-                            _buildRow("Expiry Date", license.expiryDate),
-                          ],
-                        );
-                      },
+                    return Column(
+                      children:
+                          licenseList
+                              .map(
+                                (license) => Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _buildRow(
+                                      "License Number",
+                                      license.licenseNumber,
+                                    ),
+                                    _buildRow(
+                                      "Issuing Authority",
+                                      license.issuingAuthority,
+                                    ),
+                                    const SizedBox(height: 15),
+                                    CustomButton(
+                                      text: "Edit",
+                                      widget: SvgPicture.asset(
+                                        "assets/svg/edit_svg.svg",
+                                      ),
+                                      isiIon: true,
+                                      color: AppColors.primarycolor.withAlpha(
+                                        15,
+                                      ),
+                                      colortext: AppColors.primarycolor,
+                                      onPressed: () {
+                                        EditLicenseSheet.showSheet(
+                                          context,
+                                          state.licenseModel,
+                                        );
+                                      },
+                                    ),
+                                    const SizedBox(height: 15),
+                                  ],
+                                ),
+                              )
+                              .toList(),
                     );
-                  } else if (state is ProfileError) {
+                  }
+                  if (state is ProfileError) {
                     return Center(child: Text(state.message));
                   }
                   return Container();
@@ -238,20 +317,51 @@ class ProfileDr extends StatelessWidget {
               ),
             ),
           ),
-          ProfileDtlContainer(
+          _buildSection(
+            index: 5,
+            heading: "Language",
+            subheading: "",
+            content: Text("no data"),
+          ),
+          _buildSection(
+            index: 6,
             heading: "Bank Information",
             subheading: "Check your registered bank or payment details.",
-            info: Text("no data"),
+            content: const Text("No bank information added"),
           ),
         ],
       ),
     );
   }
 
+  // Helper method to build a section with accordion behavior
+  Widget _buildSection({
+    required int index,
+    required String heading,
+    required String subheading,
+    required Widget content,
+    bool? isadd = true,
+  }) {
+    return ProfileDtlContainer(
+      isadd: isadd!,
+      key: ValueKey(heading),
+      heading: heading,
+      subheading: subheading,
+      info: content,
+      isExpanded: _expandedIndex == index,
+      onTap: () {
+        setState(() {
+          _expandedIndex = (_expandedIndex == index) ? -1 : index;
+        });
+      },
+    );
+  }
+
+  // Helper method to build a row
   Widget _buildRow(String label, String value) {
-    final displayValue = (value.isEmpty || value == "") ? "-" : value;
+    final displayValue = (value.isEmpty) ? "-" : value;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

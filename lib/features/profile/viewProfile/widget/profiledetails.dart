@@ -3,39 +3,35 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 
-class ProfileDtlContainer extends StatefulWidget {
+class ProfileDtlContainer extends StatelessWidget {
   final String heading;
   final String subheading;
   final Widget info;
+  final bool isExpanded;
+  final VoidCallback onTap;
+  final bool isadd;
 
   const ProfileDtlContainer({
     super.key,
     required this.heading,
     required this.subheading,
     required this.info,
+    required this.isExpanded,
+    required this.onTap,
+    this.isadd = true,
   });
 
   @override
-  State<ProfileDtlContainer> createState() => _ProfileDtlContainerState();
-}
-
-class _ProfileDtlContainerState extends State<ProfileDtlContainer> {
-  bool _isExpanded = false;
-  @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 15, right: 15, bottom: 25),
-      padding: const EdgeInsets.only(left: 15, right: 20, top: 15, bottom: 15),
+      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      padding: const EdgeInsets.only(left: 15, top: 15, bottom: 15, right: 20),
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(10),
       ),
       child: InkWell(
-        onTap: () {
-          setState(() {
-            _isExpanded = !_isExpanded;
-          });
-        },
+        onTap: onTap,
         child: Column(
           children: [
             Row(
@@ -45,7 +41,7 @@ class _ProfileDtlContainerState extends State<ProfileDtlContainer> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.heading,
+                        heading,
                         style: AppFonts.buttontxt.copyWith(
                           color: AppColors.textPrimary,
                           fontWeight: FontWeight.w600,
@@ -53,7 +49,7 @@ class _ProfileDtlContainerState extends State<ProfileDtlContainer> {
                         ),
                       ),
                       Text(
-                        widget.subheading,
+                        subheading,
                         style: AppFonts.subtext.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -61,16 +57,21 @@ class _ProfileDtlContainerState extends State<ProfileDtlContainer> {
                     ],
                   ),
                 ),
-                _isExpanded == true
+                isExpanded
                     ? SvgPicture.asset("assets/svg/arrow_up_svg.svg")
                     : SvgPicture.asset("assets/svg/arrow_under_svg.svg"),
               ],
             ),
-            _isExpanded == true
-                ? Column(
-                  children: [Divider(color: AppColors.hint2color), widget.info],
-                )
-                : SizedBox.shrink(),
+            if (isExpanded)
+              Column(
+                children: [
+                  Divider(color: AppColors.hint2color),
+                  info,
+                  isadd == true
+                      ? Text("Add", style: AppFonts.textprogressbar)
+                      : SizedBox.shrink(),
+                ],
+              ),
           ],
         ),
       ),

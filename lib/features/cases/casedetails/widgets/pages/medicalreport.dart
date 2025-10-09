@@ -56,7 +56,7 @@ class Medicalreport extends StatelessWidget {
          Row(
            children: [
              const Text(
-                'Reports & Imaging Files',
+                'Medical Documents',
                 style: AppFonts.subheading16
               ),
               SizedBox(width: 7,),

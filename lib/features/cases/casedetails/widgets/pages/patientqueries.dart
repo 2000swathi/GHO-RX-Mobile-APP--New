@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/patient_queries_POPUP.dart';
 
 class Patientqueries extends StatelessWidget {
   Patientqueries({super.key});
@@ -23,7 +24,6 @@ class Patientqueries extends StatelessWidget {
         borderRadius: BorderRadius.circular(15.0),
         boxShadow: [
           BoxShadow(
-            // ignore: deprecated_member_use
             color: Colors.grey.withAlpha(1),
             spreadRadius: 2,
             blurRadius: 5,
@@ -35,7 +35,7 @@ class Patientqueries extends StatelessWidget {
            crossAxisAlignment: CrossAxisAlignment.start,
         children: [
          const Text(
-            'Patient Queries',
+            'Q&A',
             style: AppFonts.subheading16 
           ),
            const SizedBox(height: 15),
@@ -48,24 +48,30 @@ class Patientqueries extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Column(
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 5,
-                          height: 50,
-                          margin: const EdgeInsets.only(right: 8),
-                          decoration: const BoxDecoration(
-                            color: AppColors.yellow,
+                    GestureDetector(
+                      onDoubleTap: () {
+                         QuestionansSheet.showSheet(context,queries[index] );
+                       
+                      },
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 5,
+                            height: 50,
+                            margin: const EdgeInsets.only(right: 8),
+                            decoration: const BoxDecoration(
+                              color: AppColors.yellow,
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            queries[index],
-                            style: AppFonts.buttontxt16,
+                          Expanded(
+                            child: Text(
+                              queries[index],
+                              style: AppFonts.buttontxt16,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Row(
