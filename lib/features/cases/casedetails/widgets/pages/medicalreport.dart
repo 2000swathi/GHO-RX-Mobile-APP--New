@@ -43,7 +43,7 @@ class Medicalreport extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             // ignore: deprecated_member_use
-            color: AppColors.hint2color.withOpacity(0.1),
+            color: AppColors.hint2color.withAlpha(1),
             spreadRadius: 2,
             blurRadius: 5,
             offset:  Offset(0, 3), 
@@ -86,11 +86,11 @@ class Medicalreport extends StatelessWidget {
                   color: AppColors.white,
                   borderRadius: BorderRadius.circular(12),
                   // ignore: deprecated_member_use
-                  border: Border.all(color: AppColors.primarycolor.withOpacity(0.5), width: 1),
+                  border: Border.all(color: AppColors.primarycolor.withAlpha(5), width: 1),
                   boxShadow: [
                     BoxShadow(
                       // ignore: deprecated_member_use
-                      color: AppColors.textPrimary.withOpacity(0.05),
+                      color: AppColors.textPrimary.withAlpha(5),
                       blurRadius: 4,
                       offset: Offset(0, 2),
                     ),
