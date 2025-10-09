@@ -10,6 +10,8 @@ class CustomBottomSheet {
     required List<Widget> content,
     required Widget actionButton,
   }) {
+    final ScrollController scrollController = ScrollController();
+
     showModalBottomSheet(
       backgroundColor: AppColors.white,
       shape: const RoundedRectangleBorder(
@@ -22,44 +24,60 @@ class CustomBottomSheet {
 
         return SizedBox(
           height: screenHeight * 0.9,
-
           child: Padding(
             padding: EdgeInsets.only(
               top: 20,
               bottom: MediaQuery.of(context).viewInsets.bottom + 20,
               left: 15,
-              right: 15,
             ),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      InkWell(
-                        onTap: () => Navigator.pop(context),
-                        child: SvgPicture.asset(
-                          "assets/svg/back_arrow_svg.svg",
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    InkWell(
+                      onTap: () => Navigator.pop(context),
+                      child: SvgPicture.asset("assets/svg/back_arrow_svg.svg"),
+                    ),
+                    const SizedBox(width: 15),
+                    Text(heading, style: AppFonts.semiratechart),
+                    const Spacer(),
+                    InkWell(
+                      onTap: () => Navigator.pop(context),
+                      child: SvgPicture.asset(
+                        "assets/svg/close_svg_button.svg",
+                      ),
+                    ),
+                    SizedBox(width: 15),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                const Divider(color: Color(0xffE7E9EF), thickness: 1),
+                const SizedBox(height: 10),
+
+                // Scrollable content with Scrollbar
+                Expanded(
+                  child: Scrollbar(
+                    controller: scrollController,
+                    thumbVisibility: true,
+                    radius: const Radius.circular(5),
+                    thickness: 5,
+                    child: SingleChildScrollView(
+                      controller: scrollController,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Column(
+                          children: [
+                            ...content,
+                            const SizedBox(height: 20),
+                            actionButton,
+                          ],
                         ),
                       ),
-                      const SizedBox(width: 15),
-                      Text(heading, style: AppFonts.semiratechart),
-                      const Spacer(),
-                      InkWell(
-                        onTap: () => Navigator.pop(context),
-                        child: SvgPicture.asset(
-                          "assets/svg/close_svg_button.svg",
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                  const SizedBox(height: 10),
-                  const Divider(color: Color(0xffE7E9EF), thickness: 1),
-                  const SizedBox(height: 10),
-                  ...content,
-                  const SizedBox(height: 20),
-                  actionButton,
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         );
