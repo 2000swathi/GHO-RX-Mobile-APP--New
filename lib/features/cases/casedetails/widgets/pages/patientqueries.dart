@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/patient_queries_POPUP.dart';
-import 'package:ghorx_mobile_app_new/features/profile/widget/edit_profile_sheet.dart';
 
 class Patientqueries extends StatelessWidget {
   Patientqueries({super.key});
