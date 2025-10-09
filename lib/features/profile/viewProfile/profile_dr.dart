@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/widgets/case_appbar.dart';
-import 'package:ghorx_mobile_app_new/features/profile/bloc/profile_event.dart';
-import 'package:ghorx_mobile_app_new/features/profile/repository/Profile_repo.dart';
-import 'package:ghorx_mobile_app_new/features/profile/widget/profiledetails.dart';
-import '../bloc/profile_bloc.dart';
-import '../bloc/profile_state.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/profile_repo.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/widget/edit_person_sheet.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/widget/profiledetails.dart';
+import 'bloc/profile_bloc.dart';
+import 'bloc/profile_state.dart';
 
 class ProfileDr extends StatelessWidget {
   const ProfileDr({super.key});
@@ -21,7 +24,7 @@ class ProfileDr extends StatelessWidget {
       body: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15,),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Text(
               "Take a quick look at your profile and credentials before you continue.",
               style: AppFonts.buttontxt16.copyWith(
@@ -46,23 +49,39 @@ class ProfileDr extends StatelessWidget {
                     return const Center(child: LoadingAnimation());
                   } else if (state is PersonalInfoState) {
                     final info = state.personalInfomodel;
-                    return ListView(
-                      shrinkWrap: true,
-                      children: [
-                        _buildRow(
-                          "Full Name",
-                          "${info.firstName} ${info.lastName}",
-                        ),
-                        _buildRow("Email", info.email),
-                        _buildRow("Phone", info.phone),
-                        _buildRow("Country", info.countryName),
-                        _buildRow(
-                          "Address",
-                          "${info.address1} ${info.address2} ${info.city}${info.state}",
-                        ),
 
-                        _buildRow("Zip Code", info.zipCode),
-                        _buildRow("Birth Date", info.birthDate),
+                    return Column(
+                      children: [
+                        ListView(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          children: [
+                            _buildRow(
+                              "Full Name",
+                              "${info.firstName} ${info.lastName}",
+                            ),
+                            _buildRow("Email", info.email),
+                            _buildRow("Phone", info.phone),
+                            _buildRow("Country", info.countryName),
+                            _buildRow(
+                              "Address",
+                              "${info.address1} ${info.address2} ${info.city} ${info.state}",
+                            ),
+                            _buildRow("Zip Code", info.zipCode),
+                            _buildRow("Birth Date", info.birthDate),
+                          ],
+                        ),
+                        const SizedBox(height: 15),
+                        CustomButton(
+                          text: "Edit",
+                          widget: SvgPicture.asset("assets/svg/edit_svg.svg"),
+                          isiIon: true,
+                          color: AppColors.primarycolor.withAlpha(15),
+                          colortext: AppColors.primarycolor,
+                          onPressed: () {
+                            EditProfileSheet.showSheet(context, info);
+                          },
+                        ),
                       ],
                     );
                   } else if (state is ProfileError) {

@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/cases_page.dart';
 import 'package:ghorx_mobile_app_new/features/home/home_page.dart';
-import 'package:ghorx_mobile_app_new/features/profile/widget/profile_dr.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/profile_dr.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});

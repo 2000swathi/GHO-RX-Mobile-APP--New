@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/repository/auth_repository.dart';
-import 'package:ghorx_mobile_app_new/features/profile/bloc/profile_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/profile_repo.dart';
 import 'package:ghorx_mobile_app_new/features/splash/bloc/spalsh_event.dart';
 import 'package:ghorx_mobile_app_new/features/splash/bloc/splash_bloc.dart';
 
-import '../../features/profile/repository/Profile_repo.dart';
 
 class AppBlocProvider extends StatelessWidget {
   final Widget child;
