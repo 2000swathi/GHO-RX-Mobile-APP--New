@@ -47,6 +47,7 @@ class _ProfileDrState extends State<ProfileDr> {
           const Divider(),
           const SizedBox(height: 15),
           // --- Sections ---
+          
           _buildSection(
             index: 0,
             heading: "Personal informations",
