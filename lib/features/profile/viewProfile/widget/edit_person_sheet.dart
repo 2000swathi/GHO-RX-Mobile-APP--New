@@ -67,6 +67,13 @@ class EditProfileSheet {
         const SizedBox(height: 10),
         CustomDropdownField(isPhoneField: true, controller: phoneController),
         const SizedBox(height: 10),
+        CustomDropdownField(
+          controller: countryController,
+          label: "Country",
+          dropdownPosition: "right",
+          dropdownItems: ["India", "USA", "Australia"],
+        ),
+        SizedBox(height: 10),
         CustomTextFormField(
           controller: emailController,
           name: "Email",
@@ -83,6 +90,24 @@ class EditProfileSheet {
           controller: address2Controller,
           name: "Address 2",
           hintText: "Enter your residential address",
+        ),
+        SizedBox(height: 10),
+        CustomTextFormField(
+          controller: cityController,
+          name: "City",
+          hintText: "Enter your City ",
+        ),
+        SizedBox(height: 10),
+        CustomTextFormField(
+          controller: stateController,
+          name: "State",
+          hintText: "Enter your state",
+        ),
+        SizedBox(height: 10),
+        CustomTextFormField(
+          controller: zipcodeController,
+          name: "Zip Code",
+          hintText: "Enter your City ",
         ),
         SizedBox(height: 10),
       ],
