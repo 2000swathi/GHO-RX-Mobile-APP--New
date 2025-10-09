@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/final_opinion_confirmation.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/pages/recordaudio.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/pages/writtenreport.dart';
 
@@ -73,7 +74,10 @@ class _FinalsubmissionState extends State<Finalsubmission>
                 children: [
                   SvgPicture.asset(
                     "assets/svg/person.svg",
-                    colorFilter: ColorFilter.mode(AppColors.textPrimary, BlendMode.srcIn),
+                    colorFilter: ColorFilter.mode(
+                      AppColors.textPrimary,
+                      BlendMode.srcIn,
+                    ),
                     width: 16,
                   ),
                   SizedBox(width: 7),
@@ -176,18 +180,18 @@ class _FinalsubmissionState extends State<Finalsubmission>
                         ),
                       ),
                       Container(
-                        constraints:  BoxConstraints(minHeight: 300),
+                        constraints: BoxConstraints(minHeight: 300),
                         child: Stack(
                           children: [
                             Visibility(
                               visible: _tabController.index == 0,
                               maintainState: true,
-                              child:  Writtenreport(),
+                              child: Writtenreport(),
                             ),
                             Visibility(
                               visible: _tabController.index == 1,
                               maintainState: true,
-                              child:  Recordaudio(),
+                              child: Recordaudio(),
                             ),
                           ],
                         ),
@@ -196,7 +200,16 @@ class _FinalsubmissionState extends State<Finalsubmission>
                         padding: EdgeInsets.all(16.0),
                         child: CustomButton(
                           text: "Review & Confirm Submission",
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (context) =>
+                                        const FinalOpinionConfirmation(),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ],

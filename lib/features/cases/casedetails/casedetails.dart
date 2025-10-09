@@ -4,8 +4,10 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/finalsubmission.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/cases_tab_view.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/medicalreport.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/medications.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/patientqueries.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/summary.dart';
 
 class CaseDetailsPage extends StatelessWidget {
   const CaseDetailsPage({super.key});
@@ -69,7 +71,10 @@ class CaseDetailsPage extends StatelessWidget {
                 children: [
                   SvgPicture.asset(
                     "assets/svg/person.svg",
-                    colorFilter: ColorFilter.mode(AppColors.textPrimary, BlendMode.srcIn),
+                    colorFilter: ColorFilter.mode(
+                      AppColors.textPrimary,
+                      BlendMode.srcIn,
+                    ),
                     width: 16,
                   ),
                   SizedBox(width: 7),
@@ -119,29 +124,100 @@ class CaseDetailsPage extends StatelessWidget {
                   ),
                 ],
               ),
+              //pages
               SizedBox(height: 14),
-               Container(
-                padding:  EdgeInsets.all(12),
+              Summerypage(),
+              SizedBox(height: 14),
+              Container(
+                margin: const EdgeInsets.all(1.0),
+                padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey.shade300),
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(15.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.hint2color.withAlpha(1),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Summary", style: AppFonts.subheading16),
-                    SizedBox(height: 8),
-                    Text(
-                      "I am a 60-year-old male experiencing slurred speech and weakness in my right arm for the past 2 hours. I consulted a doctor who mentioned it could be a possible stroke and advised immediate admission for further tests and treatment. As I am not fully convinced with the explanation and plan provided, I am seeking anurgent second opinion from a .",
-                        style: AppFonts.textprimary,
+                    Text("Audio Summary", style: AppFonts.subheading16),
+                    SizedBox(height: 10),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.primarycolor.withAlpha(30),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              SvgPicture.asset(
+                                'assets/svg/audio.svg',
+                                width: 24,
+                                height: 24,
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                'Audio Summary',
+                                style: AppFonts.buttontxt16,
+                              ),
+                            ],
+                          ),
+                          ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primarycolor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
+                              minimumSize: Size.zero,
+                            ),
+                            child: Row(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/svg/play.svg',
+                                  width: 20,
+                                  height: 20,
+                                ),
+                                SizedBox(width: 4),
+                                Text(
+                                  'Play',
+                                  style: TextStyle(
+                                    color: AppColors.white,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
-               SizedBox(height: 14),
+              SizedBox(height: 14),
               Medicalreport(),
-               SizedBox(height: 14),
+              SizedBox(height: 14),
+              Patientqueries(),
+              SizedBox(height: 14),
+              Medications(),
+              SizedBox(height: 14),
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
@@ -161,34 +237,22 @@ class CaseDetailsPage extends StatelessWidget {
                       ],
                     ),
                     SizedBox(width: 35),
-                    Flexible(child: CustomButton(text: "Submit Opinion", onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const Finalsubmission()));
-                    })),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 14),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey.shade300),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("overview", style: AppFonts.header_red),
-                    const SizedBox(height: 8),
-                    Text(
-                      "60-year-old male with slurred speech and weakness in right arm for 2 hours. Requesting urgent neurologist opinion.",
-                      style: AppFonts.textprimary,
+                    Flexible(
+                      child: CustomButton(
+                        text: "Submit Opinion",
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Finalsubmission(),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 14),
-              const CasesTabView(),
               const SizedBox(height: 14),
             ],
           ),
