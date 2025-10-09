@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/pages/recordaudio.dart';
 
 class Finalsubmission extends StatelessWidget {
   const Finalsubmission({super.key});
@@ -100,10 +101,8 @@ class Finalsubmission extends StatelessWidget {
                               padding: EdgeInsets.all(8.0),
                               child: Text('Start typing your structured report here (e.g., Summary of Findings, Recommendations, Next Steps...)',style: AppFonts.hinttext,),
                             ),
-                           
-                           Center(
-                              child: Text('Attach / Record Audio View'),
-                            ),
+                            //file upload and record audio page
+                           Recordaudio()
                           ],
                         ),
                       ),
