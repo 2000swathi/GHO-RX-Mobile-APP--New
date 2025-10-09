@@ -6,12 +6,12 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/widgets/case_appbar.dart';
-import 'package:ghorx_mobile_app_new/features/profile/bloc/profile_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/bloc/profile_event.dart';
-import 'package:ghorx_mobile_app_new/features/profile/bloc/profile_state.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_state.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/profile_repo.dart';
 import 'package:ghorx_mobile_app_new/utilities/size_config.dart';
 
-import '../profile/repository/Profile_repo.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

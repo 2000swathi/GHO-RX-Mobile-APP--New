@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
-import 'package:ghorx_mobile_app_new/features/profile/widget/edit_profile_sheet.dart';
 
 class ProfileDtlContainer extends StatefulWidget {
   final String heading;
@@ -70,21 +68,7 @@ class _ProfileDtlContainerState extends State<ProfileDtlContainer> {
             ),
             _isExpanded == true
                 ? Column(
-                  children: [
-                    Divider(color: AppColors.hint2color),
-                    widget.info,
-                    SizedBox(height: 15),
-                    CustomButton(
-                      text: "Edit",
-                      widget: SvgPicture.asset("assets/svg/edit_svg.svg"),
-                      isiIon: true,
-                      color: AppColors.primarycolor.withAlpha(15),
-                      colortext: AppColors.primarycolor,
-                      onPressed: () {
-                        EditProfileSheet.showSheet(context);
-                      },
-                    ),
-                  ],
+                  children: [Divider(color: AppColors.hint2color), widget.info],
                 )
                 : SizedBox.shrink(),
           ],
