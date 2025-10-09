@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
-import 'package:ghorx_mobile_app_new/features/cases/controller/tabcontroller.dart';
-import 'package:ghorx_mobile_app_new/features/cases/widgets/buttons.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/finalsubmission.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/cases_tab_view.dart';
 
 class CaseDetailsPage extends StatelessWidget {
-// ignore: prefer_const_constructors_in_immutables
-CaseDetailsPage({super.key});
+  const CaseDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +34,8 @@ CaseDetailsPage({super.key});
               backgroundColor: const Color(0xFFE3F2FD),
               child: SvgPicture.asset(
                 'assets/svg/email_svg.svg',
-                width: 40,
-                height: 40,
+                width: 20,
+                height: 20,
               ),
             ),
           ),
@@ -56,7 +57,7 @@ CaseDetailsPage({super.key});
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xffE8F5E9),
+                      color: AppColors.lightgreen,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text('In Review', style: AppFonts.textprimarygreen),
@@ -73,7 +74,6 @@ CaseDetailsPage({super.key});
                   Text("Due Date: Oct 14, 2025", style: AppFonts.textSecondary),
                 ],
               ),
-              //1st container
               const SizedBox(height: 14),
               Container(
                 padding: const EdgeInsets.all(12),
@@ -94,15 +94,12 @@ CaseDetailsPage({super.key});
                       ],
                     ),
                     SizedBox(width: 35),
-                    ActionButtonCard(
-                      text: "Submit Opinion",
-                      isFilled: true,
-                      onTap: () async {},
-                    ),
+                    Flexible(child: CustomButton(text: "Submit Opinion", onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const Finalsubmission()));
+                    })),
                   ],
                 ),
               ),
-              //2nd container
               const SizedBox(height: 14),
               Container(
                 padding: const EdgeInsets.all(12),
@@ -123,7 +120,6 @@ CaseDetailsPage({super.key});
                   ],
                 ),
               ),
-              //srollview tab
               const SizedBox(height: 14),
               const CasesTabView(),
               const SizedBox(height: 14),

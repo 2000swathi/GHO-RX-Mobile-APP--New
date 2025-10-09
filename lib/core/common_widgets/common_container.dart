@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/utilities/size_config.dart';
@@ -33,7 +31,6 @@ class CommonContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      // height: 130,
       decoration: BoxDecoration(
         color: color,
         border: Border.all(color: borderColor, width: 1),

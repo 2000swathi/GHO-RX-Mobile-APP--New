@@ -4,8 +4,7 @@ import 'package:ghorx_mobile_app_new/features/cases/widgets/case_appbar.dart';
 import 'package:ghorx_mobile_app_new/features/cases/widgets/cases_screens.dart';
 
 class CasesPage extends StatelessWidget {
-  // ignore: prefer_const_constructors_in_immutables
-  CasesPage({super.key});
+  const CasesPage({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -134,7 +134,7 @@ class AppFonts {
   );
   // ignore: non_constant_identifier_names
   static TextStyle header_red = GoogleFonts.asapCondensed(
-    color: AppColors.warningred,
+    color: AppColors.red,
     fontSize: 16,
     letterSpacing: 0,
     fontWeight: FontWeight.w600,

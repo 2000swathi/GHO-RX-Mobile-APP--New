@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ghorx_mobile_app_new/features/cases/Summery.dart';
-import 'package:ghorx_mobile_app_new/features/cases/customScrollableTabs.dart';
-import 'package:ghorx_mobile_app_new/features/cases/medicalreport.dart';
-import 'package:ghorx_mobile_app_new/features/cases/medications.dart';
-import 'package:ghorx_mobile_app_new/features/cases/patientqueries.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/summary.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/custom_scrollable_tabs.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/medicalreport.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/medications.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/patientqueries.dart';
 
 class CasesTabView extends StatefulWidget {
   const CasesTabView({super.key});
@@ -17,8 +17,8 @@ class _CasesTabViewState extends State<CasesTabView> {
 
   final List<String> tabNames = [
     "Summary",
-    "Patient Queries",
-    "Medical Report",
+    "Questions",
+    "Medical Documents",
     "Medications",
   ];
 
@@ -33,7 +33,7 @@ class _CasesTabViewState extends State<CasesTabView> {
           },
         ),
 
-        const SizedBox(height: 10),
+        const SizedBox(height: 8),
         _buildTabContent(selectedIndex),
       ],
     );
@@ -49,7 +49,7 @@ class _CasesTabViewState extends State<CasesTabView> {
       case 3:
         return Medications();
       default:
-        return SizedBox(); // fallback
+        return SizedBox(); 
     }
   }
 }
