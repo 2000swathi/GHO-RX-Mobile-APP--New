@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 
 class CustomScrollableTabs extends StatefulWidget {
   final List<String> tabs;
@@ -42,12 +43,12 @@ class _CustomScrollableTabsState extends State<CustomScrollableTabs>
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 42,
+      height: 40,
       child: TabBar(
         controller: _tabController,
         isScrollable: true,
-        labelColor: Colors.blueAccent,
-        unselectedLabelColor: Colors.black87,
+        labelColor: AppColors.primarycolor,
+        unselectedLabelColor: AppColors.textPrimary,
         labelStyle: const TextStyle(
           fontWeight: FontWeight.w600,
           fontSize: 14,
@@ -56,9 +57,10 @@ class _CustomScrollableTabsState extends State<CustomScrollableTabs>
           fontWeight: FontWeight.w400,
           fontSize: 14,
         ),
-        indicatorColor: Colors.blueAccent,
+        indicatorColor: AppColors.primarycolor,
         indicatorWeight: 2.2,
         indicatorSize: TabBarIndicatorSize.label,
+        dividerColor: Colors.transparent,
         tabs: widget.tabs.map((text) => Tab(text: text)).toList(),
       ),
     );
