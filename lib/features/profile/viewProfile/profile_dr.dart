@@ -153,6 +153,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                         );
                                       },
                                     ),
+                                    const SizedBox(height: 15),
                                   ],
                                 ),
                               )
@@ -225,6 +226,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                         );
                                       },
                                     ),
+                                    const SizedBox(height: 15),
                                   ],
                                 ),
                               )
@@ -273,16 +275,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                       "Issuing Authority",
                                       license.issuingAuthority,
                                     ),
-                                    _buildRow(
-                                      "License Type",
-                                      license.licenseType,
-                                    ),
-                                    _buildRow("Issue Date", license.issueDate),
-                                    _buildRow(
-                                      "Expiry Date",
-                                      license.expiryDate,
-                                    ),
-                                     const SizedBox(height: 15),
+                                    const SizedBox(height: 15),
                                     CustomButton(
                                       text: "Edit",
                                       widget: SvgPicture.asset(
@@ -300,6 +293,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                         );
                                       },
                                     ),
+                                    const SizedBox(height: 15),
                                   ],
                                 ),
                               )

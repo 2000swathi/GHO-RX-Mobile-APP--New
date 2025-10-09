@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_phone.dart';
@@ -17,14 +18,15 @@ class EditLicenseSheet {
       text: info.data[0].licenseType,
     );
     final TextEditingController issueDateController = TextEditingController(
-      text: info.data[0].issueDate);
+      text: info.data[0].issueDate,
+    );
     final TextEditingController expDateController = TextEditingController(
       text: info.data[0].expiryDate,
     );
 
     CustomBottomSheet.show(
       context: context,
-      heading: "Edit Specialty",
+      heading: "Edit License",
       content: [
         CustomTextFormField(
           controller: lNumController,
@@ -32,14 +34,14 @@ class EditLicenseSheet {
           hintText: "Enter Lisence Number",
         ),
         SizedBox(height: 10),
-       CustomDropdownField(
+        CustomDropdownField(
           controller: issueAuthController,
           label: "Issuing Authority",
           dropdownPosition: "right",
           dropdownItems: [],
         ),
         SizedBox(height: 10),
-       CustomDropdownField(
+        CustomDropdownField(
           controller: lTypeController,
           label: "License Type",
           dropdownPosition: "right",
@@ -59,7 +61,15 @@ class EditLicenseSheet {
         ),
         SizedBox(height: 10),
       ],
-      actionButton: CustomButton(text: "Edit Request", onPressed: () {}),
+      actionButton: Row(
+        children: [
+          Expanded(flex: 1, child: SvgPicture.asset("assets/svg/trash.svg")),
+          Expanded(
+            flex: 4,
+            child: CustomButton(text: "Edit Request", onPressed: () {}),
+          ),
+        ],
+      ),
     );
   }
 }
