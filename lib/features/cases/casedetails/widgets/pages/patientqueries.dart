@@ -35,7 +35,7 @@ class Patientqueries extends StatelessWidget {
            crossAxisAlignment: CrossAxisAlignment.start,
         children: [
          const Text(
-            'Patient Queries',
+            'Q&A',
             style: AppFonts.subheading16 
           ),
            const SizedBox(height: 15),
