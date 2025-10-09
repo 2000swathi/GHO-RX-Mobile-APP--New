@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 
 class NewCasesTab extends StatelessWidget {
   const NewCasesTab({super.key});
@@ -50,11 +53,11 @@ class CaseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColors.textPrimary.withOpacity(0.05),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -75,13 +78,7 @@ class CaseCard extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Case Identifier',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey[600],
-                          ),
-                        ),
+                        Text('Case Identifier', style: AppFonts.subtext),
                         const SizedBox(height: 4),
                         Text(
                           caseId,
@@ -95,26 +92,45 @@ class CaseCard extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text(
-                          'Allotted Time: $allottedTime',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey[600],
+                        RichText(
+                          text: TextSpan(
+                            text: "Allotted Time:",
+                            style: AppFonts.subtext,
+                            children: [
+                              TextSpan(
+                                text: ' $allottedTime',
+                                style: AppFonts.subtext.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(height: 4),
-                        Text(
-                          'Due Date: $dueDate',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey[600],
+                        RichText(
+                          text: TextSpan(
+                            text: "Due Date:",
+                            style: AppFonts.subtext,
+                            children: [
+                              TextSpan(
+                                text: ' $dueDate',
+                                style: AppFonts.subtext.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 10),
+                Divider(
+                  color: AppColors.primarycolor.withAlpha(15),
+                  thickness: 1,
+                ),
+                const SizedBox(height: 10),
                 Text(
                   description,
                   style: TextStyle(
@@ -126,61 +142,29 @@ class CaseCard extends StatelessWidget {
               ],
             ),
           ),
-          Row(
-            children: [
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, "/casedetails");
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    decoration: BoxDecoration(
-                      color: Colors.indigo[400],
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(8),
-                      ),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Accept Case',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                Expanded(
+                  child: CustomButton(
+                    text: "Accept Case",
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/casedetails");
+                    },
                   ),
                 ),
-              ),
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    // Handle deny
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    decoration: BoxDecoration(
-                      color: Colors.indigo[50],
-                      borderRadius: const BorderRadius.only(
-                        bottomRight: Radius.circular(8),
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Deny',
-                        style: TextStyle(
-                          color: Colors.indigo[400],
-                          fontWeight: FontWeight.w500,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: CustomButton(
+                    text: "Deny",
+                    colortext: AppColors.primarycolor,
+                    color: AppColors.primarycolor.withAlpha(15),
+                    onPressed: () {},
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

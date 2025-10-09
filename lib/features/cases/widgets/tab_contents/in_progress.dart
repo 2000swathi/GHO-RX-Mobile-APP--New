@@ -105,46 +105,53 @@ class CaseCard extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Case Identifier',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey[600],
-                          ),
-                        ),
+                        Text('Case Identifier', style: AppFonts.subtext),
                         const SizedBox(height: 4),
-                        Text(
-                          caseId,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                        Text(caseId, style: AppFonts.subheading),
                       ],
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text(
-                          'Allotted Time: $allottedTime',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey[600],
+                        RichText(
+                          text: TextSpan(
+                            text: "Allotted Time:",
+                            style: AppFonts.subtext,
+                            children: [
+                              TextSpan(
+                                text: ' $allottedTime',
+                                style: AppFonts.subtext.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(height: 4),
-                        Text(
-                          'Due Date: $dueDate',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey[600],
+                        RichText(
+                          text: TextSpan(
+                            text: "Due Date:",
+                            style: AppFonts.subtext,
+                            children: [
+                              TextSpan(
+                                text: ' $dueDate',
+                                style: AppFonts.subtext.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+               const SizedBox(height: 10),
+                Divider(
+                  color: AppColors.primarycolor.withAlpha(15),
+                  thickness: 1,
+                ),
+                const SizedBox(height: 10),
                 Text(
                   description,
                   style: TextStyle(
@@ -156,15 +163,14 @@ class CaseCard extends StatelessWidget {
                 SizedBox(height: 20),
                 Row(
                   children: [
-                    Text("Last Edited: $lastedited",
-                    style: AppFonts.labelItalic,
+                    Text(
+                      "Last Edited: $lastedited",
+                      style: AppFonts.labelItalic,
                     ),
                     Spacer(),
                     Icon(Icons.circle, color: AppColors.red, size: 8),
                     const SizedBox(width: 4),
-                    Text("$timeleft",
-                    style: AppFonts.labelItalic,
-                    ),
+                    Text("$timeleft", style: AppFonts.labelItalic),
                   ],
                 ),
               ],
