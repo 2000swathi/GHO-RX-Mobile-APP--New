@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/final_opinion_confirmation.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/pages/recordaudio.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/pages/writtenreport.dart';
 
@@ -199,7 +200,16 @@ class _FinalsubmissionState extends State<Finalsubmission>
                         padding: EdgeInsets.all(16.0),
                         child: CustomButton(
                           text: "Review & Confirm Submission",
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (context) =>
+                                        const FinalOpinionConfirmation(),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ],
