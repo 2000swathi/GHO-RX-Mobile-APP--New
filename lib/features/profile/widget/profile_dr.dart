@@ -7,8 +7,8 @@ import 'package:ghorx_mobile_app_new/features/cases/widgets/case_appbar.dart';
 import 'package:ghorx_mobile_app_new/features/profile/bloc/profile_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/repository/Profile_repo.dart';
 import 'package:ghorx_mobile_app_new/features/profile/widget/profiledetails.dart';
-import 'bloc/profile_bloc.dart';
-import 'bloc/profile_state.dart';
+import '../bloc/profile_bloc.dart';
+import '../bloc/profile_state.dart';
 
 class ProfileDr extends StatelessWidget {
   const ProfileDr({super.key});
