@@ -17,8 +17,8 @@ class _CasesTabViewState extends State<CasesTabView> {
 
   final List<String> tabNames = [
     "Summary",
-    "Patient Queries",
-    "Medical Documnents",
+    "Questions",
+    "Medical Documents",
     "Medications",
   ];
 
@@ -33,7 +33,7 @@ class _CasesTabViewState extends State<CasesTabView> {
           },
         ),
 
-        const SizedBox(height: 10),
+        const SizedBox(height: 8),
         _buildTabContent(selectedIndex),
       ],
     );

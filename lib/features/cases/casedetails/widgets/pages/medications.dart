@@ -34,7 +34,7 @@ class Medications extends StatelessWidget {
         borderRadius: BorderRadius.circular(15.0),
         boxShadow: [
           BoxShadow(
-            color:AppColors.hint2color.withOpacity(0.1),
+            color:AppColors.hint2color.withAlpha(1),
             spreadRadius: 2,
             blurRadius: 5,
             offset: const Offset(0, 3), 
@@ -73,7 +73,7 @@ class Medications extends StatelessWidget {
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                             decoration: BoxDecoration(
-                              color: AppColors.yellow.withOpacity(0.10),
+                              color: AppColors.yellow.withAlpha(10),
                               borderRadius: BorderRadius.circular(0),
                             ),
                             child: Column(
