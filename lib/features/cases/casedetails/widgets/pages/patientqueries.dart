@@ -50,6 +50,7 @@ class Patientqueries extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onDoubleTap: () {
+                         QuestionansSheet.showSheet(context,queries[index] );
                        
                       },
                       child: Row(

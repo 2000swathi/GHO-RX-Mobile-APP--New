@@ -6,7 +6,7 @@ import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/patientquery_tabs.dart';
 
-class EditProfileSheet {
+class QuestionansSheet {
   static void showSheet(BuildContext context, String quires) {
     CustomBottomSheet.show(
       context: context,
