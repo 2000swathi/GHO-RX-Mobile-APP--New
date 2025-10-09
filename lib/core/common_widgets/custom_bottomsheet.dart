@@ -22,64 +22,73 @@ class CustomBottomSheet {
       builder: (context) {
         final screenHeight = MediaQuery.of(context).size.height;
 
-        return SizedBox(
-          height: screenHeight * 0.9,
-          child: Padding(
-            padding: EdgeInsets.only(
-              top: 20,
-              bottom: MediaQuery.of(context).viewInsets.bottom + 20,
-              left: 15,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    InkWell(
-                      onTap: () => Navigator.pop(context),
-                      child: SvgPicture.asset("assets/svg/back_arrow_svg.svg"),
-                    ),
-                    const SizedBox(width: 15),
-                    Text(heading, style: AppFonts.semiratechart),
-                    const Spacer(),
-                    InkWell(
-                      onTap: () => Navigator.pop(context),
-                      child: SvgPicture.asset(
-                        "assets/svg/close_svg_button.svg",
-                      ),
-                    ),
-                    SizedBox(width: 15),
-                  ],
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            return ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: screenHeight * 0.9),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: 20,
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+                  left: 15,
                 ),
-                const SizedBox(height: 10),
-                const Divider(color: Color(0xffE7E9EF), thickness: 1),
-                const SizedBox(height: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Header
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: () => Navigator.pop(context),
+                          child: SvgPicture.asset(
+                            "assets/svg/back_arrow_svg.svg",
+                          ),
+                        ),
+                        const SizedBox(width: 15),
+                        Expanded(
+                          child: Text(heading, style: AppFonts.semiratechart),
+                        ),
+                        InkWell(
+                          onTap: () => Navigator.pop(context),
+                          child: SvgPicture.asset(
+                            "assets/svg/close_svg_button.svg",
+                          ),
+                        ),
+                        SizedBox(width: 15),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Divider(color: AppColors.hint2color, thickness: 1),
+                    const SizedBox(height: 10),
 
-                // Scrollable content with Scrollbar
-                Expanded(
-                  child: Scrollbar(
-                    controller: scrollController,
-                    thumbVisibility: true,
-                    radius: const Radius.circular(5),
-                    thickness: 5,
-                    child: SingleChildScrollView(
-                      controller: scrollController,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: Column(
-                          children: [
-                            ...content,
-                            const SizedBox(height: 20),
-                            actionButton,
-                          ],
+                    Flexible(
+                      child: Scrollbar(
+                        controller: scrollController,
+                        thumbVisibility: true,
+                        radius: const Radius.circular(5),
+                        thickness: 5,
+                        child: SingleChildScrollView(
+                          controller: scrollController,
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ...content,
+                                const SizedBox(height: 20),
+                                actionButton,
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         );
       },
     );

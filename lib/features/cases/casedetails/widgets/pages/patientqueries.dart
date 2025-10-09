@@ -24,7 +24,6 @@ class Patientqueries extends StatelessWidget {
         borderRadius: BorderRadius.circular(15.0),
         boxShadow: [
           BoxShadow(
-            // ignore: deprecated_member_use
             color: Colors.grey.withAlpha(1),
             spreadRadius: 2,
             blurRadius: 5,
@@ -51,7 +50,7 @@ class Patientqueries extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onDoubleTap: () {
-                        PatientQueriesPopup.showSheet(context, queries[index]);
+                        EditProfileSheet.showSheet(context,queries[index] );
                       },
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
