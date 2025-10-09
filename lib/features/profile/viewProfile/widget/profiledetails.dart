@@ -9,6 +9,7 @@ class ProfileDtlContainer extends StatelessWidget {
   final Widget info;
   final bool isExpanded;
   final VoidCallback onTap;
+  final bool isadd;
 
   const ProfileDtlContainer({
     super.key,
@@ -17,13 +18,14 @@ class ProfileDtlContainer extends StatelessWidget {
     required this.info,
     required this.isExpanded,
     required this.onTap,
+    this.isadd = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-      padding: const EdgeInsets.all(15),
+      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      padding: const EdgeInsets.only(left: 15, top: 15, bottom: 15, right: 20),
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(10),
@@ -65,6 +67,9 @@ class ProfileDtlContainer extends StatelessWidget {
                 children: [
                   Divider(color: AppColors.hint2color),
                   info,
+                  isadd == true
+                      ? Text("Add", style: AppFonts.textprogressbar)
+                      : SizedBox.shrink(),
                 ],
               ),
           ],

@@ -112,16 +112,7 @@ class EditProfileSheet {
         ),
         SizedBox(height: 10),
       ],
-      actionButton: Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: SvgPicture.asset("assets/svg/trash.svg")),
-          Expanded(
-            flex: 4,
-            child: CustomButton(text: "Edit Request", onPressed: () {})),
-        ],
-      ),
+      actionButton:CustomButton(text: "Submit Request", onPressed: () {})
     );
   }
 }

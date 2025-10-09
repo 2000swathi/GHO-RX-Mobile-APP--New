@@ -46,9 +46,10 @@ class _ProfileDrState extends State<ProfileDr> {
           ),
           const Divider(),
           const SizedBox(height: 15),
+
           // --- Sections ---
-          
           _buildSection(
+            isadd: false,
             index: 0,
             heading: "Personal informations",
             subheading: "View your basic and contact details.",
@@ -80,15 +81,18 @@ class _ProfileDrState extends State<ProfileDr> {
                         _buildRow("Zip Code", info.zipCode),
 
                         const SizedBox(height: 15),
-                        CustomButton(
-                          text: "Edit",
-                          widget: SvgPicture.asset("assets/svg/edit_svg.svg"),
-                          isiIon: true,
-                          color: AppColors.primarycolor.withAlpha(15),
-                          colortext: AppColors.primarycolor,
-                          onPressed: () {
-                            EditProfileSheet.showSheet(context, info);
-                          },
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                EditProfileSheet.showSheet(context, info);
+                              },
+                              child: SvgPicture.asset(
+                                "assets/svg/edit_svg.svg",
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     );
@@ -136,25 +140,29 @@ class _ProfileDrState extends State<ProfileDr> {
                                       specialty.specialtyType,
                                     ),
 
-                                    const SizedBox(height: 15),
-                                    CustomButton(
-                                      text: "Edit",
-                                      widget: SvgPicture.asset(
-                                        "assets/svg/edit_svg.svg",
-                                      ),
-                                      isiIon: true,
-                                      color: AppColors.primarycolor.withAlpha(
-                                        15,
-                                      ),
-                                      colortext: AppColors.primarycolor,
-                                      onPressed: () {
-                                        EditSpecialtySheet.showSheet(
-                                          context,
-                                          state.specialtyModel,
-                                        );
-                                      },
+                                    const SizedBox(height: 5),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/svg/trash.svg",
+                                          color: AppColors.primarycolor,
+                                        ),
+                                        SizedBox(width: 10),
+                                        InkWell(
+                                          onTap: () {
+                                            EditSpecialtySheet.showSheet(
+                                              context,
+                                              state.specialtyModel,
+                                            );
+                                          },
+                                          child: SvgPicture.asset(
+                                            "assets/svg/edit_svg.svg",
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    const SizedBox(height: 15),
+                                    Divider(color: AppColors.hint2color),
                                   ],
                                 ),
                               )
@@ -332,8 +340,10 @@ class _ProfileDrState extends State<ProfileDr> {
     required String heading,
     required String subheading,
     required Widget content,
+    bool? isadd = true,
   }) {
     return ProfileDtlContainer(
+      isadd: isadd!,
       key: ValueKey(heading),
       heading: heading,
       subheading: subheading,
