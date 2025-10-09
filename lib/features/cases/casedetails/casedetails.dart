@@ -5,6 +5,7 @@ import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/finalsubmission.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/cases_tab_view.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/medicalreport.dart';
 
 class CaseDetailsPage extends StatelessWidget {
   const CaseDetailsPage({super.key});
@@ -65,16 +66,82 @@ class CaseDetailsPage extends StatelessWidget {
                 ],
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text("Allotted Time: 6 hrs", style: AppFonts.textSecondary),
-                  const SizedBox(width: 4),
-                  Icon(Icons.circle, size: 6, color: Colors.grey[600]),
-                  const SizedBox(width: 4),
-                  Text("Due Date: Oct 14, 2025", style: AppFonts.textSecondary),
+                  SvgPicture.asset(
+                    "assets/svg/person.svg",
+                    colorFilter: ColorFilter.mode(AppColors.textPrimary, BlendMode.srcIn),
+                    width: 16,
+                  ),
+                  SizedBox(width: 7),
+                  Text(
+                    "Male",
+                    style: AppFonts.subheading16.copyWith(fontSize: 14),
+                  ),
+                  SizedBox(width: 15),
+                  SvgPicture.asset("assets/svg/calender.svg"),
+                  SizedBox(width: 7),
+                  Text(
+                    "12 Dec 1987 (38 years)",
+                    style: AppFonts.subheading16.copyWith(fontSize: 14),
+                  ),
                 ],
               ),
-              const SizedBox(height: 14),
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "3 hours left",
+                    style: AppFonts.textSecondary.copyWith(
+                      fontSize: 14,
+                      color: AppColors.red,
+                    ),
+                  ),
+                  SizedBox(width: 3),
+                  Icon(Icons.circle, size: 6, color: AppColors.red),
+                  SizedBox(width: 3),
+                  Text(
+                    "Created: Oct 13, 2025",
+                    style: AppFonts.textSecondary.copyWith(
+                      fontSize: 14,
+                      color: AppColors.red,
+                    ),
+                  ),
+                  SizedBox(width: 3),
+                  Icon(Icons.circle, size: 6, color: AppColors.red),
+                  SizedBox(width: 3),
+                  Text(
+                    "Due Date: Oct 14, 2025",
+                    style: AppFonts.textSecondary.copyWith(
+                      fontSize: 14,
+                      color: AppColors.red,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 14),
+               Container(
+                padding:  EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey.shade300),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Summary", style: AppFonts.subheading16),
+                    SizedBox(height: 8),
+                    Text(
+                      "I am a 60-year-old male experiencing slurred speech and weakness in my right arm for the past 2 hours. I consulted a doctor who mentioned it could be a possible stroke and advised immediate admission for further tests and treatment. As I am not fully convinced with the explanation and plan provided, I am seeking anurgent second opinion from a .",
+                        style: AppFonts.textprimary,
+                    ),
+                  ],
+                ),
+              ),
+               SizedBox(height: 14),
+              Medicalreport(),
+               SizedBox(height: 14),
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
