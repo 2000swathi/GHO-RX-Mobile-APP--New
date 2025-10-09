@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/finalsubmission.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/cases_tab_view.dart';
 
 class CaseDetailsPage extends StatelessWidget {
@@ -55,7 +57,7 @@ class CaseDetailsPage extends StatelessWidget {
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xffE8F5E9),
+                      color: AppColors.lightgreen,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text('In Review', style: AppFonts.textprimarygreen),
@@ -92,7 +94,9 @@ class CaseDetailsPage extends StatelessWidget {
                       ],
                     ),
                     SizedBox(width: 35),
-                    Flexible(child: CustomButton(text: "Submit Opinion", onPressed: () {})),
+                    Flexible(child: CustomButton(text: "Submit Opinion", onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const Finalsubmission()));
+                    })),
                   ],
                 ),
               ),
