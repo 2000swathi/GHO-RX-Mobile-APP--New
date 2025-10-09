@@ -1,31 +1,59 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
-import 'package:ghorx_mobile_app_new/features/cases/widgets/case_appbar.dart';
 import 'package:ghorx_mobile_app_new/features/cases/widgets/cases_screens.dart';
 import 'package:ghorx_mobile_app_new/features/cases/widgets/custom_rate_chart.dart';
 
 class CasesPage extends StatelessWidget {
-  // ignore: prefer_const_constructors_in_immutables
-  CasesPage({super.key});
+  const CasesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CaseAppBar(title: "Cases"),
+      appBar: AppBar(
+        title: Text("Cases", style: AppFonts.heading),
+        elevation: 0,
+        actions: [
+          CircleAvatar(
+            backgroundColor: AppColors.primarycolor.withAlpha(8),
+            child: SvgPicture.asset("assets/svg/email_svg.svg"),
+          ),
+          SizedBox(width: 15),
+          CircleAvatar(
+            backgroundColor: AppColors.primarycolor.withAlpha(8),
+            child: SvgPicture.asset("assets/svg/notification_svg.svg"),
+          ),
+          SizedBox(width: 15),
+        ],
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(255, 233, 193, 235),
+                Color.fromARGB(255, 242, 246, 227),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+      ),
       body: Column(
         children: [
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Color.fromARGB(255, 219, 202, 247), 
-                  Color.fromARGB(255, 237, 179, 240).withAlpha(5),
+                  Color.fromARGB(255, 233, 193, 235),
+                  Color.fromARGB(255, 233, 238, 212),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
             ),
+
             child: Padding(
               padding: const EdgeInsets.all(8),
               child: ClipRRect(
@@ -35,10 +63,7 @@ class CasesPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Performance Snapshot",
-                        style: AppFonts.subheading,
-                      ),
+                      Text("Performance Snapshot", style: AppFonts.subheading),
                       const SizedBox(height: 12),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,10 +72,7 @@ class CasesPage extends StatelessWidget {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(12),
                               child: BackdropFilter(
-                                filter: ImageFilter.blur(
-                                  sigmaX: 8,
-                                  sigmaY: 8,
-                                ),
+                                filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
                                 child: SizedBox(
                                   height: 286,
                                   width: 195,
@@ -94,7 +116,7 @@ class CasesPage extends StatelessWidget {
                                         ),
                                         const SizedBox(height: 12),
                                         const CustomRateChart(),
-                                        
+
                                         const Text(
                                           "Keep it up! You're ahead of 75% of doctors.",
                                           style: TextStyle(
@@ -122,7 +144,7 @@ class CasesPage extends StatelessWidget {
                                     ),
                                     child: SizedBox(
                                       height: 145,
-                                      width: 195, 
+                                      width: 195,
                                       child: Container(
                                         margin: const EdgeInsets.only(
                                           bottom: 10,

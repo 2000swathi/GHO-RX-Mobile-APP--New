@@ -21,7 +21,7 @@ class ProfileDr extends StatelessWidget {
       body: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 15,),
             child: Text(
               "Take a quick look at your profile and credentials before you continue.",
               style: AppFonts.buttontxt16.copyWith(
@@ -146,26 +146,23 @@ class ProfileDr extends StatelessWidget {
                       itemCount: insuranceList.length,
                       itemBuilder: (context, index) {
                         final insurance = insuranceList[index];
-                        return Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _buildRow(
-                                "ProviderID",
-                                insurance.providerID.toString(),
-                              ),
-                              _buildRow(
-                                "ProviderName",
-                                insurance.providerName.toString(),
-                              ),
-                              _buildRow("IssueDate", "${insurance.issueDate}"),
-                              _buildRow(
-                                "ExpiryDate",
-                                "${insurance.expiryDate}",
-                              ),
-                            ],
-                          ),
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildRow(
+                              "ProviderID",
+                              insurance.providerID.toString(),
+                            ),
+                            _buildRow(
+                              "ProviderName",
+                              insurance.providerName.toString(),
+                            ),
+                            _buildRow("IssueDate", "${insurance.issueDate}"),
+                            _buildRow(
+                              "ExpiryDate",
+                              "${insurance.expiryDate}",
+                            ),
+                          ],
                         );
                       },
                     );
@@ -202,24 +199,21 @@ class ProfileDr extends StatelessWidget {
                       itemCount: licenseList.length,
                       itemBuilder: (context, index) {
                         final license = licenseList[index];
-                        return Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _buildRow(
-                                "License Number",
-                                license.licenseNumber,
-                              ),
-                              _buildRow(
-                                "Issuing Authority",
-                                license.issuingAuthority,
-                              ),
-                              _buildRow("License Type", license.licenseType),
-                              _buildRow("Issue Date", license.issueDate),
-                              _buildRow("Expiry Date", license.expiryDate),
-                            ],
-                          ),
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildRow(
+                              "License Number",
+                              license.licenseNumber,
+                            ),
+                            _buildRow(
+                              "Issuing Authority",
+                              license.issuingAuthority,
+                            ),
+                            _buildRow("License Type", license.licenseType),
+                            _buildRow("Issue Date", license.issueDate),
+                            _buildRow("Expiry Date", license.expiryDate),
+                          ],
                         );
                       },
                     );
