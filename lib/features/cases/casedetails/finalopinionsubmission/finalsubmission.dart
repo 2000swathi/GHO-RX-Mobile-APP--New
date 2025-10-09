@@ -3,10 +3,32 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/final_opinion_confirmation.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/pages/recordaudio.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/pages/writtenreport.dart';
 
-class Finalsubmission extends StatelessWidget {
+class Finalsubmission extends StatefulWidget {
   const Finalsubmission({super.key});
+
+  @override
+  State<Finalsubmission> createState() => _FinalsubmissionState();
+}
+
+class _FinalsubmissionState extends State<Finalsubmission>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,30 +70,65 @@ class Finalsubmission extends StatelessWidget {
               ),
               SizedBox(height: 10),
               Row(
+                children: [
+                  SvgPicture.asset(
+                    "assets/svg/person.svg",
+                    colorFilter: ColorFilter.mode(
+                      AppColors.textPrimary,
+                      BlendMode.srcIn,
+                    ),
+                    width: 16,
+                  ),
+                  SizedBox(width: 7),
+                  Text(
+                    "Male",
+                    style: AppFonts.subheading16.copyWith(fontSize: 14),
+                  ),
+                  SizedBox(width: 15),
+                  SvgPicture.asset("assets/svg/calender.svg"),
+                  SizedBox(width: 7),
+                  Text(
+                    "12 Dec 1987 (38 years)",
+                    style: AppFonts.subheading16.copyWith(fontSize: 14),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Allotted Time: 6 hrs",
+                    "3 hours left",
                     style: AppFonts.textSecondary.copyWith(
-                      fontSize: 16,
+                      fontSize: 14,
                       color: AppColors.red,
                     ),
                   ),
-                  SizedBox(width: 4),
+                  SizedBox(width: 3),
                   Icon(Icons.circle, size: 6, color: AppColors.red),
-                  SizedBox(width: 4),
+                  SizedBox(width: 3),
+                  Text(
+                    "Created: Oct 13, 2025",
+                    style: AppFonts.textSecondary.copyWith(
+                      fontSize: 14,
+                      color: AppColors.red,
+                    ),
+                  ),
+                  SizedBox(width: 3),
+                  Icon(Icons.circle, size: 6, color: AppColors.red),
+                  SizedBox(width: 3),
                   Text(
                     "Due Date: Oct 14, 2025",
                     style: AppFonts.textSecondary.copyWith(
-                      fontSize: 16,
+                      fontSize: 14,
                       color: AppColors.red,
                     ),
                   ),
                 ],
               ),
               SizedBox(height: 20),
-              DefaultTabController(
-                length: 2,
+              // ignore: avoid_unnecessary_containers
+              Container(
                 child: Container(
                   constraints: BoxConstraints(maxWidth: 600),
                   margin: EdgeInsets.symmetric(horizontal: 4.0),
@@ -100,6 +157,7 @@ class Finalsubmission extends StatelessWidget {
                           ),
                         ),
                         child: TabBar(
+                          controller: _tabController,
                           indicator: UnderlineTabIndicator(
                             borderSide: BorderSide(
                               color: AppColors.primarycolor,
@@ -120,19 +178,20 @@ class Finalsubmission extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 300,
-                        child: TabBarView(
+                      Container(
+                        constraints: BoxConstraints(minHeight: 300),
+                        child: Stack(
                           children: [
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                'Start typing your structured report here (e.g., Summary of Findings, Recommendations, Next Steps...)',
-                                style: AppFonts.hinttext,
-                              ),
+                            Visibility(
+                              visible: _tabController.index == 0,
+                              maintainState: true,
+                              child: Writtenreport(),
                             ),
-
-                            Center(child: Text('Attach / Record Audio View')),
+                            Visibility(
+                              visible: _tabController.index == 1,
+                              maintainState: true,
+                              child: Recordaudio(),
+                            ),
                           ],
                         ),
                       ),
@@ -140,16 +199,7 @@ class Finalsubmission extends StatelessWidget {
                         padding: EdgeInsets.all(16.0),
                         child: CustomButton(
                           text: "Review & Confirm Submission",
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder:
-                                    (context) =>
-                                        const FinalOpinionConfirmation(),
-                              ),
-                            );
-                          },
+                          onPressed: () {},
                         ),
                       ),
                     ],

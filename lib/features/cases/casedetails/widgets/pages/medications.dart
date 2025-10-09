@@ -45,7 +45,7 @@ class Medications extends StatelessWidget {
            crossAxisAlignment: CrossAxisAlignment.start,
         children: [
          const Text(
-            'Current Medications',
+            'Medications',
             style: AppFonts.subheading16
           ),
             const SizedBox(height: 15),
