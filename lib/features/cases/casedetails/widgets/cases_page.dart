@@ -82,14 +82,14 @@ class CasesPage extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(12),
                                       gradient: LinearGradient(
                                         colors: [
-                                          Colors.white.withOpacity(0.3),
-                                          Colors.white.withOpacity(0.2),
+                                          AppColors.white.withOpacity(0.3),
+                                          AppColors.white.withOpacity(0.2),
                                         ],
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
                                       ),
                                       border: Border.all(
-                                        color: Colors.white.withOpacity(0.4),
+                                        color: AppColors.white.withOpacity(0.4),
                                         width: 1.5,
                                       ),
                                       boxShadow: [
@@ -155,14 +155,14 @@ class CasesPage extends StatelessWidget {
                                           ),
                                           gradient: LinearGradient(
                                             colors: [
-                                              Colors.white.withOpacity(0.3),
-                                              Colors.white.withOpacity(0.2),
+                                              AppColors.white.withOpacity(0.3),
+                                              AppColors.white.withOpacity(0.2),
                                             ],
                                             begin: Alignment.topLeft,
                                             end: Alignment.bottomRight,
                                           ),
                                           border: Border.all(
-                                            color: Colors.white.withOpacity(
+                                            color: AppColors.white.withOpacity(
                                               0.4,
                                             ),
                                             width: 1.5,
