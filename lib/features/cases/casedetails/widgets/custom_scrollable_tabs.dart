@@ -46,7 +46,7 @@ class _CustomScrollableTabsState extends State<CustomScrollableTabs> {
             },
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 4.0),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.symmetric( vertical: 10,horizontal: 3),
               decoration: BoxDecoration(
                 color: isSelected ? AppColors.lightBlueColor : Colors.transparent,
                 borderRadius: BorderRadius.circular(10),

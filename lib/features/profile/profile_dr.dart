@@ -33,7 +33,7 @@ class ProfileDr extends StatelessWidget {
           const Divider(),
           SizedBox(height: 15),
           ProfileDtlContainer(
-            heading: "Personal Informations",
+            heading: "Personal informations",
             subheading: "View your basic and contact details.",
             info: BlocProvider(
               create:
@@ -158,10 +158,7 @@ class ProfileDr extends StatelessWidget {
                               insurance.providerName.toString(),
                             ),
                             _buildRow("IssueDate", "${insurance.issueDate}"),
-                            _buildRow(
-                              "ExpiryDate",
-                              "${insurance.expiryDate}",
-                            ),
+                            _buildRow("ExpiryDate", "${insurance.expiryDate}"),
                           ],
                         );
                       },
@@ -202,10 +199,7 @@ class ProfileDr extends StatelessWidget {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildRow(
-                              "License Number",
-                              license.licenseNumber,
-                            ),
+                            _buildRow("License Number", license.licenseNumber),
                             _buildRow(
                               "Issuing Authority",
                               license.issuingAuthority,

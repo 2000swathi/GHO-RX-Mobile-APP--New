@@ -16,7 +16,7 @@ class Summerypage extends StatelessWidget {
         borderRadius: BorderRadius.circular(15.0),
         boxShadow: [
           BoxShadow(
-            color: AppColors.hint2color.withOpacity(0.1),
+            color: AppColors.hint2color.withAlpha(1),
             spreadRadius: 2,
             blurRadius: 5,
             offset: const Offset(0, 3),
