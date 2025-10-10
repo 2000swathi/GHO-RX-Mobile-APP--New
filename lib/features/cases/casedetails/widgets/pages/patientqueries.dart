@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 
@@ -16,10 +15,10 @@ class Patientqueries extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-    margin: const EdgeInsets.all(1.0),
-      padding: const EdgeInsets.all(8.0),
+      margin:  EdgeInsets.all(1.0),
+      padding:  EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color:AppColors.white,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(15.0),
         boxShadow: [
           BoxShadow(
@@ -27,25 +26,25 @@ class Patientqueries extends StatelessWidget {
             color: Colors.grey.withAlpha(1),
             spreadRadius: 2,
             blurRadius: 5,
-            offset: const Offset(0, 3), 
+            offset:  Offset(0, 3),
           ),
         ],
       ),
       child: Column(
-           crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-         const Text(
-            'Q&A',
-            style: AppFonts.subheading16 
+          Text(
+            "Q&A",
+            style: AppFonts.hinttext2.copyWith(fontWeight: FontWeight.w600),
           ),
-           const SizedBox(height: 15),
+          SizedBox(height: 15),
           ListView.builder(
-            shrinkWrap: true, 
-            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            physics:NeverScrollableScrollPhysics(),
             itemCount: queries.length,
             itemBuilder: (context, index) {
               return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: EdgeInsets.symmetric(vertical: 8.0),
                 child: Column(
                   children: [
                     Row(
@@ -53,9 +52,9 @@ class Patientqueries extends StatelessWidget {
                       children: [
                         Container(
                           width: 5,
-                          height: 50,
-                          margin: const EdgeInsets.only(right: 8),
-                          decoration: const BoxDecoration(
+                          height: 5,
+                          margin: EdgeInsets.only(right: 8),
+                          decoration: BoxDecoration(
                             color: AppColors.yellow,
                           ),
                         ),
@@ -64,22 +63,6 @@ class Patientqueries extends StatelessWidget {
                             queries[index],
                             style: AppFonts.buttontxt16,
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          'Reply',
-                          style: AppFonts.subheading16.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
-                        ),
-                        const SizedBox(width: 4),
-                        SvgPicture.asset(
-                          'assets/svg/replay.svg',
-                          width: 16,
-                          height: 16,
                         ),
                       ],
                     ),

@@ -69,6 +69,11 @@ class _FinalsubmissionState extends State<Finalsubmission>
                 style: AppFonts.subheading16.copyWith(fontSize: 14),
               ),
               SizedBox(height: 10),
+              Text(
+                "Patient: John Doe",
+                style: AppFonts.subheading16.copyWith(fontSize: 14),
+              ),
+              SizedBox(height: 10),
               Row(
                 children: [
                   SvgPicture.asset(
@@ -105,7 +110,7 @@ class _FinalsubmissionState extends State<Finalsubmission>
                   Icon(Icons.circle, size: 6, color: AppColors.red),
                   SizedBox(width: 3),
                   Text(
-                    "Created: Oct 13, 2025",
+                    "Oct 13, 2025",
                     style: AppFonts.textSecondary.copyWith(
                       fontSize: 14,
                       color: AppColors.red,

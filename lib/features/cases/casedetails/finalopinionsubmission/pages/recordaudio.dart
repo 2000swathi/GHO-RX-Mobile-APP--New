@@ -43,7 +43,13 @@ class Recordaudio extends StatelessWidget {
                       const SizedBox(height: 10.0),
                       SizedBox(
                         width: 100,
-                        child: CustomButton(text: "Select", onPressed: () {}),
+                        child: CustomButton(
+                          text: "Select",
+                          onPressed: () {},
+                          color: AppColors.white,
+                          colortext: AppColors.textPrimary,
+                          borderColor: AppColors.hint1color,
+                        ),
                       ),
                     ],
                   ),
