@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/summary.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/audiosummery.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/custom_scrollable_tabs.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/medicalreport.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/medications.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/patientqueries.dart';
+
 
 class CasesTabView extends StatefulWidget {
   const CasesTabView({super.key});
@@ -16,10 +15,8 @@ class _CasesTabViewState extends State<CasesTabView> {
   int selectedIndex = 0;
 
   final List<String> tabNames = [
-    "Summary",
-    "Questions",
+    "Audio Summary",
     "Medical Documents",
-    "Medications",
   ];
 
   @override
@@ -33,7 +30,7 @@ class _CasesTabViewState extends State<CasesTabView> {
           },
         ),
 
-        const SizedBox(height: 8),
+        SizedBox(height: 9),
         _buildTabContent(selectedIndex),
       ],
     );
@@ -41,13 +38,9 @@ class _CasesTabViewState extends State<CasesTabView> {
   Widget _buildTabContent(int index) {
     switch (index) {
       case 0:
-        return Summerypage();
+        return Audiosummery();
       case 1:
-        return Patientqueries();
-      case 2:
         return Medicalreport();
-      case 3:
-        return Medications();
       default:
         return SizedBox(); 
     }

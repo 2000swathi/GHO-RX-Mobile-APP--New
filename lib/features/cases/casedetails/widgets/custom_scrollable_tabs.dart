@@ -45,8 +45,8 @@ class _CustomScrollableTabsState extends State<CustomScrollableTabs> {
               widget.onTabSelected?.call(index);
             },
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 4.0),
-              padding: const EdgeInsets.symmetric( vertical: 10,horizontal: 3),
+              margin: EdgeInsets.symmetric(horizontal: 10.0),
+              padding: EdgeInsets.symmetric( vertical: 10,horizontal: 3),
               decoration: BoxDecoration(
                 color: isSelected ? AppColors.lightBlueColor : Colors.transparent,
                 borderRadius: BorderRadius.circular(10),
