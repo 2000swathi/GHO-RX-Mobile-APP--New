@@ -5,7 +5,6 @@ import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/cases_tab_view.dart';
 
-
 class CaseDetailsPage extends StatelessWidget {
   const CaseDetailsPage({super.key});
 
@@ -51,9 +50,9 @@ class CaseDetailsPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                "Patient: John Doe",
-                style: AppFonts.subheading16.copyWith(fontSize: 14),
-              ),
+                    "Patient: John Doe",
+                    style: AppFonts.subheading16.copyWith(fontSize: 14),
+                  ),
                   InkWell(
                     onTap: () {
                       Navigator.pushNamed(context, "/qaPage");
@@ -75,8 +74,7 @@ class CaseDetailsPage extends StatelessWidget {
                   ),
                 ],
               ),
-             
-              SizedBox(height: 10),
+              SizedBox(height: 8),
               Row(
                 children: [
                   SvgPicture.asset(
@@ -124,16 +122,12 @@ class CaseDetailsPage extends StatelessWidget {
                   ),
                 ],
               ),
-                SizedBox(height: 14),
-                          CustomButton(
-                text: "Submit Review",
-                onPressed: () {},
-              ),
-               SizedBox(height: 14),
-              CasesTabView(),
-              
               SizedBox(height: 14),
-             
+              CustomButton(text: "Submit Review", onPressed: () {}),
+              SizedBox(height: 14),
+              CasesTabView(),
+
+              SizedBox(height: 14),
             ],
           ),
         ),

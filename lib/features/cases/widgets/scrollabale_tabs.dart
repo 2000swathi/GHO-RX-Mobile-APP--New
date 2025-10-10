@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 
 class CustomScrollableTabs extends StatefulWidget {
   final List<String> tabs;
@@ -46,7 +47,7 @@ class _CustomScrollableTabsState extends State<CustomScrollableTabs>
   Widget build(BuildContext context) {
     return Container(
       height: widget.useBoxStyle ? 45 : 40,
-      color: Colors.white,
+      color:AppColors.hint2color.withAlpha(2),
       child: widget.useBoxStyle
           ? _buildBoxStyledTabs() 
           : _buildDefaultTabs(), 
@@ -55,56 +56,61 @@ class _CustomScrollableTabsState extends State<CustomScrollableTabs>
 
 
   Widget _buildBoxStyledTabs() {
-    return TabBar(
-      controller: _tabController,
-      isScrollable: true,
-      dividerColor: Colors.transparent,
-      indicator: UnderlineTabIndicator(
-        borderSide: BorderSide(
-          color: AppColors.primarycolor,
-          width: 2,
-        ),
-      ),
-      
-      labelPadding: const EdgeInsets.symmetric(horizontal: 16),
-      tabs: List.generate(widget.tabs.length, (index) {
-        final bool isSelected = index == selectedIndex;
-        return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          decoration: BoxDecoration(
-            color: isSelected
-                ? AppColors.primarycolor.withOpacity(0.1)
-                : Colors.transparent,
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Text(
-            widget.tabs[index],
-            style: TextStyle(
-              color: isSelected
-                  ? AppColors.primarycolor
-                  : AppColors.textPrimary.withOpacity(0.7),
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-              fontSize: 14,
+    return Container(
+      decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: AppColors.hint2color,
+                  width: 1.0,
+                ),
+              ),
             ),
+      child: TabBar(
+        controller: _tabController,
+        isScrollable: true,
+        dividerColor: Colors.transparent,
+        indicator: UnderlineTabIndicator(
+          borderSide: BorderSide(
+            color: AppColors.primarycolor,
+            
+            width: 2.2,
           ),
-        );
-      }),
+        ),
+        indicatorSize: TabBarIndicatorSize.tab, // Fill the container
+        labelPadding: const EdgeInsets.symmetric(horizontal: 8),
+        tabs: List.generate(widget.tabs.length, (index) {
+          final bool isSelected = index == selectedIndex;
+          return Tab(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: isSelected ? AppColors.lightBlueColor : Colors.transparent,
+                borderRadius: BorderRadius.circular(1),
+              ),
+              child: Text(
+                widget.tabs[index],
+                style: AppFonts.subtext.copyWith(
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  color: isSelected
+                      ? AppColors.primarycolor
+                      : AppColors.textSecondary,
+                ),
+              ),
+            ),
+          );
+        }),
+      ),
     );
   }
+
   Widget _buildDefaultTabs() {
     return TabBar(
       controller: _tabController,
       isScrollable: true,
       labelColor: AppColors.primarycolor,
       unselectedLabelColor: AppColors.textPrimary,
-      labelStyle: const TextStyle(
-        fontWeight: FontWeight.w600,
-        fontSize: 14,
-      ),
-      unselectedLabelStyle: const TextStyle(
-        fontWeight: FontWeight.w400,
-        fontSize: 14,
-      ),
+      labelStyle: AppFonts.subheading16.copyWith(fontSize: 14),
+      unselectedLabelStyle: AppFonts.subtext,
       indicatorColor: AppColors.primarycolor,
       indicatorWeight: 2.2,
       indicatorSize: TabBarIndicatorSize.label,
