@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/audiosummery.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/claiment.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/custom_scrollable_tabs.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/medicalreport.dart';
-
 
 class CasesTabView extends StatefulWidget {
   const CasesTabView({super.key});
@@ -15,8 +13,9 @@ class _CasesTabViewState extends State<CasesTabView> {
   int selectedIndex = 0;
 
   final List<String> tabNames = [
-    "Audio Summary",
-    "Medical Documents",
+    "Claimant",
+    "Questions",
+    'Review'
   ];
 
   @override
@@ -38,9 +37,9 @@ class _CasesTabViewState extends State<CasesTabView> {
   Widget _buildTabContent(int index) {
     switch (index) {
       case 0:
-        return Audiosummery();
+        return Clainment();
       case 1:
-        return Medicalreport();
+        return SizedBox();
       default:
         return SizedBox(); 
     }
