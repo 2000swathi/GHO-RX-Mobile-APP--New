@@ -108,7 +108,7 @@ class FinalOpinionConfirmation extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Review Carefullly",
+                            "Review Carefully",
                             style: AppFonts.textblue.copyWith(
                               color: Color(0xff983C3C),
                             ),
@@ -137,7 +137,7 @@ class FinalOpinionConfirmation extends StatelessWidget {
                 hintText: "Read more...",
               ),
               SizedBox(height: 10),
-              //////////////////////////////////
+
               CustomContainer(
                 greyHeading: "Attached Documents",
                 customWidgets: Container(
@@ -204,13 +204,6 @@ class FinalOpinionConfirmation extends StatelessWidget {
                     ),
                     qamsg1:
                         "Do my symptoms definitely suggest \na stroke, or could it be something else?",
-                    icon2: Icon(
-                      Icons.check,
-                      color: AppColors.profilepink,
-                      size: 13.33,
-                    ),
-                    qamsg2: "Support",
-                    qamsg3: "Answer",
                   ),
                   SizedBox(height: 16),
                   CommonQa(
@@ -221,13 +214,6 @@ class FinalOpinionConfirmation extends StatelessWidget {
                     ),
                     qamsg1:
                         "What risks do I face if I delay admission or treatment?",
-                    icon2: Icon(
-                      Icons.check,
-                      color: AppColors.profilepink,
-                      size: 13.33,
-                    ),
-                    qamsg2: "Support",
-                    qamsg3: "Answer",
                   ),
                 ],
                 hintText: "View 2 more Q&A",

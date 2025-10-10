@@ -5,23 +5,17 @@ import 'package:ghorx_mobile_app_new/utilities/size_config.dart';
 
 class CommonQa extends StatelessWidget {
   final String qamsg1;
-  final String qamsg2;
-  final String qamsg3;
+
   final Icon icon1;
-  final Icon icon2;
-  const CommonQa({
-    super.key,
-    required this.qamsg1,
-    required this.icon1,
-    required this.icon2,
-    required this.qamsg2,
-    required this.qamsg3,
-  });
+
+  const CommonQa({super.key, required this.qamsg1, required this.icon1});
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // SizedBox(width: 10),
         Row(
           children: [
             icon1,
@@ -32,25 +26,6 @@ class CommonQa extends StatelessWidget {
                 style: AppFonts.buttontxt.copyWith(
                   color: AppColors.textPrimary,
                 ),
-              ),
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            SizedBox(width: 20),
-            icon2,
-            Text(
-              qamsg2,
-              style: AppFonts.textprimary.copyWith(
-                color: AppColors.profilepink,
-              ),
-            ),
-            SizedBox(width: 18.w),
-            Text(
-              qamsg3,
-              style: AppFonts.textprimary.copyWith(
-                color: AppColors.profilepink,
               ),
             ),
           ],

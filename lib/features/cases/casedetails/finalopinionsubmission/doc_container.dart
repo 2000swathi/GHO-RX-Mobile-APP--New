@@ -35,7 +35,7 @@ class DocContainer extends StatelessWidget {
             fileName,
             style: AppFonts.textprimary.copyWith(fontWeight: FontWeight.w600),
           ),
-          SizedBox(height: 20),
+          // SizedBox(height: 20),
         ],
       ),
     );
