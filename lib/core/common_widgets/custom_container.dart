@@ -25,52 +25,55 @@ class CustomContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: AppColors.white,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 14, right: 14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 20),
-            Row(
-              children: [
-                SizedBox(height: 20.h),
+    return IntrinsicHeight(
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 10),
+
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: AppColors.white,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 14, right: 14),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    greyHeading,
+                    style: AppFonts.hinttext2.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Container(child: customWidgets),
+                  Spacer(),
+
+                  icon,
+                ],
+              ),
+
+              Column(children: customWidgets1 ?? []),
+
+              Text(
+                subHeading ?? '',
+                style: AppFonts.textprimary.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              if (datas != null && datas!.isNotEmpty)
+                Text(datas ?? '', style: AppFonts.textprimary),
+              if (hintText != null && hintText!.isNotEmpty)
                 Text(
-                  greyHeading,
-                  style: AppFonts.hinttext2.copyWith(
-                    fontWeight: FontWeight.w600,
+                  hintText ?? '',
+                  style: AppFonts.textappbar.copyWith(
+                    color: const Color.fromARGB(255, 0, 0, 0).withAlpha(50),
                   ),
                 ),
-                SizedBox(width: 10),
-                Container(child: customWidgets),
-                Spacer(),
-
-                icon,
-              ],
-            ),
-
-            Column(children: customWidgets1 ?? []),
-
-            // SizedBox(height: 8.h),
-            Text(
-              subHeading ?? '',
-              style: AppFonts.textprimary.copyWith(fontWeight: FontWeight.w500),
-            ),
-
-            Text(datas ?? '', style: AppFonts.textprimary),
-
-            Text(
-              hintText ?? '',
-              style: AppFonts.textappbar.copyWith(
-                color: AppColors.textPrimary.withAlpha(50),
-              ),
-            ),
-            // SizedBox(height: 20),
-          ],
+            ],
+          ),
         ),
       ),
     );

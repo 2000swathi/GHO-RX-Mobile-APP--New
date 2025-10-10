@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/final_opinion_confirmation.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/cases_tab_view.dart';
 
 class CaseDetailsPage extends StatelessWidget {
@@ -74,7 +75,12 @@ class CaseDetailsPage extends StatelessWidget {
                   ),
                 ],
               ),
+<<<<<<< HEAD
               SizedBox(height: 8),
+=======
+
+              SizedBox(height: 10),
+>>>>>>> final-Submisssionlast-review-page
               Row(
                 children: [
                   SvgPicture.asset(
@@ -123,7 +129,21 @@ class CaseDetailsPage extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 14),
+<<<<<<< HEAD
               CustomButton(text: "Submit Review", onPressed: () {}),
+=======
+              CustomButton(
+                text: "Submit Review",
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FinalOpinionConfirmation(),
+                    ),
+                  );
+                },
+              ),
+>>>>>>> final-Submisssionlast-review-page
               SizedBox(height: 14),
               CasesTabView(),
 
