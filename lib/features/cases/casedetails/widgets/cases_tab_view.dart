@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/claiment.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/questions.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/custom_scrollable_tabs.dart';
 
 class CasesTabView extends StatefulWidget {
@@ -39,7 +40,7 @@ class _CasesTabViewState extends State<CasesTabView> {
       case 0:
         return Clainment();
       case 1:
-        return SizedBox();
+        return QuestionTab();
       default:
         return SizedBox(); 
     }
