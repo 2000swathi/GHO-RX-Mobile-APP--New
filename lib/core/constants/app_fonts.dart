@@ -53,7 +53,7 @@ class AppFonts {
     fontWeight: FontWeight.w400,
     color: AppColors.textPrimary,
   );
-
+//
   static const TextStyle textblue = TextStyle(
     fontFamily: primaryFont,
     fontSize: 16,

@@ -11,8 +11,11 @@ class OpenCasesTab extends StatelessWidget {
       shrinkWrap: true,
       physics: BouncingScrollPhysics(),
       padding: const EdgeInsets.all(16),
-      children: const [
+      children:  [
         CaseCard(
+          ontap: () {
+            Navigator.pushNamed(context, "/casedetails");
+          },
           caseId: 'GHO-2024-9481',
           allottedTime: '5 hrs',
           dueDate: 'Oct 9, 2024',
@@ -37,6 +40,7 @@ class CaseCard extends StatelessWidget {
   final String allottedTime;
   final String dueDate;
   final String description;
+  final Function()? ontap;
 
   const CaseCard({
     super.key,
@@ -44,97 +48,101 @@ class CaseCard extends StatelessWidget {
     required this.allottedTime,
     required this.dueDate,
     required this.description,
+    this.ontap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppColors.hint2color),
-
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(50),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Case Identifier', style: AppFonts.subtext),
-                        const SizedBox(height: 4),
-                        Text(
-                          caseId,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            text: "Allotted Time:",
-                            style: AppFonts.subtext,
-                            children: [
-                              TextSpan(
-                                text: ' $allottedTime',
-                                style: AppFonts.subtext.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        RichText(
-                          text: TextSpan(
-                            text: "Due Date:",
-                            style: AppFonts.subtext,
-                            children: [
-                              TextSpan(
-                                text: ' $dueDate',
-                                style: AppFonts.subtext.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Divider(
-                  color: AppColors.primarycolor.withAlpha(15),
-                  thickness: 1,
-                ),
-                const SizedBox(height: 10),
-                Text(description, style: AppFonts.textappbar),
-              ],
+    return InkWell(
+      onTap:ontap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: AppColors.hint2color),
+      
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(50),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
             ),
-          ),
-        ],
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Case Identifier', style: AppFonts.subtext),
+                          const SizedBox(height: 4),
+                          Text(
+                            caseId,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              text: "Allotted Time:",
+                              style: AppFonts.subtext,
+                              children: [
+                                TextSpan(
+                                  text: ' $allottedTime',
+                                  style: AppFonts.subtext.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          RichText(
+                            text: TextSpan(
+                              text: "Due Date:",
+                              style: AppFonts.subtext,
+                              children: [
+                                TextSpan(
+                                  text: ' $dueDate',
+                                  style: AppFonts.subtext.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Divider(
+                    color: AppColors.primarycolor.withAlpha(15),
+                    thickness: 1,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(description, style: AppFonts.textappbar),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

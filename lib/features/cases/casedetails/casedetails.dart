@@ -45,7 +45,7 @@ class CaseDetailsPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding:  EdgeInsets.all(8.0),
+          padding:  EdgeInsets.symmetric(horizontal: 15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -53,16 +53,21 @@ class CaseDetailsPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Case ID: GHO-2024-9481", style: AppFonts.subheading),
-                  Container(
-                    padding:  EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
+                  InkWell(
+                    onTap: () {
+                      
+                    },
+                    child: Container(
+                      padding:  EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.lightgreen,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text('In Review', style: AppFonts.textprimarygreen),
                     ),
-                    decoration: BoxDecoration(
-                      color: AppColors.lightgreen,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text('In Review', style: AppFonts.textprimarygreen),
                   ),
                 ],
               ),
