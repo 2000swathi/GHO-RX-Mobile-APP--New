@@ -75,12 +75,8 @@ class CaseDetailsPage extends StatelessWidget {
                   ),
                 ],
               ),
-<<<<<<< HEAD
-              SizedBox(height: 8),
-=======
 
               SizedBox(height: 10),
->>>>>>> final-Submisssionlast-review-page
               Row(
                 children: [
                   SvgPicture.asset(
@@ -129,9 +125,6 @@ class CaseDetailsPage extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 14),
-<<<<<<< HEAD
-              CustomButton(text: "Submit Review", onPressed: () {}),
-=======
               CustomButton(
                 text: "Submit Review",
                 onPressed: () {
@@ -143,7 +136,6 @@ class CaseDetailsPage extends StatelessWidget {
                   );
                 },
               ),
->>>>>>> final-Submisssionlast-review-page
               SizedBox(height: 14),
               CasesTabView(),
 
