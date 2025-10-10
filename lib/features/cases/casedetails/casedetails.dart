@@ -30,10 +30,10 @@ class CaseDetailsPage extends StatelessWidget {
         title: Text("Case Details", style: AppFonts.heading),
         actions: [
           Padding(
-            padding:EdgeInsets.only(right: 16.0),
+            padding: EdgeInsets.only(right: 16.0),
             child: CircleAvatar(
               radius: 20,
-              backgroundColor:  Color(0xFFE3F2FD),
+              backgroundColor: Color(0xFFE3F2FD),
               child: SvgPicture.asset(
                 'assets/svg/email_svg.svg',
                 width: 20,
@@ -45,7 +45,7 @@ class CaseDetailsPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding:  EdgeInsets.symmetric(horizontal: 15),
+          padding: EdgeInsets.symmetric(horizontal: 15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -55,10 +55,10 @@ class CaseDetailsPage extends StatelessWidget {
                   Text("Case ID: GHO-2024-9481", style: AppFonts.subheading),
                   InkWell(
                     onTap: () {
-                      
+                      Navigator.pushNamed(context, "/qaPage");
                     },
                     child: Container(
-                      padding:  EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                         horizontal: 12,
                         vertical: 6,
                       ),
@@ -66,7 +66,10 @@ class CaseDetailsPage extends StatelessWidget {
                         color: AppColors.lightgreen,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Text('In Review', style: AppFonts.textprimarygreen),
+                      child: Text(
+                        'In Review',
+                        style: AppFonts.textprimarygreen,
+                      ),
                     ),
                   ),
                 ],
@@ -140,42 +143,6 @@ class CaseDetailsPage extends StatelessWidget {
               Medications(),
               SizedBox(height: 14),
               CasesTabView(),
-              SizedBox(height: 14),
-              Container(
-                padding: EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color:AppColors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.hint1color),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Payout", style: AppFonts.header_4),
-                        SizedBox(height: 4),
-                        Text("\$80.00", style: AppFonts.header_5),
-                      ],
-                    ),
-                    SizedBox(width: 35),
-                    Flexible(
-                      child: CustomButton(
-                        text: "Submit Opinion",
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Finalsubmission(),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
               SizedBox(height: 14),
             ],
           ),

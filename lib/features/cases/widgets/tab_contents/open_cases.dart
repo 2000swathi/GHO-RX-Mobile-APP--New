@@ -11,7 +11,7 @@ class OpenCasesTab extends StatelessWidget {
       shrinkWrap: true,
       physics: BouncingScrollPhysics(),
       padding: const EdgeInsets.all(16),
-      children:  [
+      children: [
         CaseCard(
           ontap: () {
             Navigator.pushNamed(context, "/casedetails");
@@ -24,6 +24,7 @@ class OpenCasesTab extends StatelessWidget {
         ),
         SizedBox(height: 16),
         CaseCard(
+          ontap: () {},
           caseId: 'GHO-2024-9532',
           allottedTime: '8 hrs',
           dueDate: 'Oct 12, 2024',
@@ -54,13 +55,13 @@ class CaseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap:ontap,
+      onTap: ontap,
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: AppColors.hint2color),
-      
+
           boxShadow: [
             BoxShadow(
               color: Colors.black.withAlpha(50),

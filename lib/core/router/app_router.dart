@@ -5,7 +5,7 @@ import 'package:ghorx_mobile_app_new/features/authentication/add_page.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/reset_password.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/casedetails.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/patient_queries/patient_queries.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/cases_page.dart';
+import 'package:ghorx_mobile_app_new/features/cases/cases_page.dart';
 import 'package:ghorx_mobile_app_new/features/home/home_page.dart';
 import 'package:ghorx_mobile_app_new/main_page.dart';
 import '../../features/authentication/login_screen.dart';
