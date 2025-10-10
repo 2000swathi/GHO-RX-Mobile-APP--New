@@ -185,7 +185,7 @@ class _PatientQueriesScreenState extends State<PatientQueriesScreen> {
                     SizedBox(width: 35),
                     Flexible(
                       child: CustomButton(
-                        text: "Submit Opinion",
+                        text: "Submit Answers",
                         onPressed: () {
                           Navigator.push(
                             context,

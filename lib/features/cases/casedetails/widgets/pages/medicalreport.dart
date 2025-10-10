@@ -13,7 +13,7 @@ class Medicalreport extends StatelessWidget {
       'subtitle': 'DICOM File',
     },
     {
-      'icon': "assets/svg/pdf Icons.svg",
+      'icon': "assets/svg/pdfIcons.svg",
       'title': 'Nerve Conduction Study Report',
       'subtitle': 'PDF File',
     },
@@ -23,7 +23,7 @@ class Medicalreport extends StatelessWidget {
       'subtitle': 'JPEG File',
     },
     {
-      'icon': "assets/svg/pdf Icons.svg",
+      'icon': "assets/svg/pdfIcons.svg",
       'title': 'Initial Consultation Notes',
       'subtitle': 'PDF File',
     },

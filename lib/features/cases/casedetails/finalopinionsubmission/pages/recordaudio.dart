@@ -122,7 +122,7 @@ class Recordaudio extends StatelessWidget {
             ),
             child: Row(
               children: [
-                SvgPicture.asset("assets/svg/pdf Icons.svg"),
+                SvgPicture.asset("assets/svg/pdfIcons.svg"),
                 SizedBox(width: 10),
                 Expanded(
                   child: Column(
@@ -178,7 +178,7 @@ class Recordaudio extends StatelessWidget {
             ),
             child: Row(
               children: [
-                SvgPicture.asset("assets/svg/pdf Icons.svg"),
+                SvgPicture.asset("assets/svg/pdfIcons.svg"),
               SizedBox(width: 10),
                 Expanded(
                   child: Column(
