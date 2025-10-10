@@ -6,14 +6,14 @@ class CustomScrollableTabs extends StatefulWidget {
   final List<String> tabs;
   final ValueChanged<int>? onTabSelected;
   final int initialIndex;
-  final bool useBoxStyle; // 👈 condition to switch UI styles
+  final bool useBoxStyle; 
 
   const CustomScrollableTabs({
     super.key,
     required this.tabs,
     this.onTabSelected,
     this.initialIndex = 0,
-    this.useBoxStyle = false, // 👈 default: original TabBar style
+    this.useBoxStyle = false, 
   });
 
   @override
