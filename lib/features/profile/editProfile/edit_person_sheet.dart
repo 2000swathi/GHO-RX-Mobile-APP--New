@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_drop_down_field.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_phone.dart';
 
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/country_response_model.dart';
 
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/personalinfo_model.dart';
 
 class EditProfileSheet {
-  static void showSheet(BuildContext context, PersonalInfoModel info) {
+  static void showSheet(
+    BuildContext context,
+    PersonalInfoModel info,
+    List<CountryResponseModel> countries,
+  ) {
     final TextEditingController firstNameController = TextEditingController(
       text: info.firstName,
     );
@@ -68,11 +72,10 @@ class EditProfileSheet {
         const SizedBox(height: 10),
         CustomDropdownField(isPhoneField: true, controller: phoneController),
         const SizedBox(height: 10),
-        CustomDropdownField(
-          controller: countryController,
-          label: "Country",
-          dropdownPosition: "right",
-          dropdownItems: ["India", "USA", "Australia"],
+        CustomDropdownFormField(
+          name: "Country",
+          hintText: "-select Country-",
+          items: countries.map((e) => e.data[0][0].countryName).toList(),
         ),
         SizedBox(height: 10),
         CustomTextFormField(
@@ -112,7 +115,7 @@ class EditProfileSheet {
         ),
         SizedBox(height: 10),
       ],
-      actionButton:CustomButton(text: "Submit Request", onPressed: () {})
+      actionButton: CustomButton(text: "Submit Request", onPressed: () {}),
     );
   }
 }

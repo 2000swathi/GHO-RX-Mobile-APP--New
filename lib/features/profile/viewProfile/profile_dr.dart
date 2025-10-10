@@ -6,14 +6,15 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart'
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/widgets/case_appbar.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_state.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/profile_repo.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/widget/edit_insurance_sheet.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/widget/edit_license_sheet.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/widget/edit_person_sheet.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/widget/edit_specialty_sheet.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_insurance_sheet.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_license_sheet.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_person_sheet.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_specialty_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/widget/profiledetails.dart';
 
 class ProfileDr extends StatefulWidget {
@@ -86,8 +87,42 @@ class _ProfileDrState extends State<ProfileDr> {
                           children: [
                             InkWell(
                               onTap: () {
-                                EditProfileSheet.showSheet(context, info);
+                                final listBloc = BlocProvider.of<ListBloc>(
+                                  context,
+                                );
+                                listBloc.add(FetchCountryList());
+
+                                // Listen once for the success state
+                                final listener = BlocListener<
+                                  ListBloc,
+                                  ListState
+                                >(
+                                  listener: (context, state) {
+                                    if (state is CountryState) {
+                                      EditProfileSheet.showSheet(
+                                        context,
+                                        info,
+                                        state.countryResponse,
+                                      );
+                                    } else if (state is ListFailure) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(content: Text(state.error)),
+                                      );
+                                    }
+                                  },
+                                  child:
+                                      SizedBox.shrink(),
+                                );
+
+                                showDialog(
+                                  context: context,
+                                  barrierColor: Colors.transparent,
+                                  builder: (_) => listener,
+                                );
                               },
+
                               child: SvgPicture.asset(
                                 "assets/svg/edit_svg.svg",
                               ),

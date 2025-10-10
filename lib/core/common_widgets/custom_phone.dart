@@ -8,7 +8,7 @@ class CustomDropdownField extends StatefulWidget {
   final bool isPhoneField;
   final String dropdownPosition; 
   final String? Function(String?)? validator;
-  final List<String>? dropdownItems; 
+  final List<String>? items; 
   final List<Map<String, dynamic>>? countryItems; 
   final bool isCountryDropdown; 
 
@@ -18,7 +18,7 @@ class CustomDropdownField extends StatefulWidget {
     this.label = "",
     this.isPhoneField = false,
     this.dropdownPosition = "left",
-    this.dropdownItems,
+    this.items,
     this.validator,
     this.countryItems,
     this.isCountryDropdown = false,
@@ -65,7 +65,7 @@ class _CustomDropdownFieldState extends State<CustomDropdownField> {
       },
     );
 
-    final rightDropdown = (widget.dropdownItems != null || widget.isCountryDropdown)
+    final rightDropdown = (widget.items != null || widget.isCountryDropdown)
         ? DropdownButton<String>(
             value: selectedItem,
             underline: const SizedBox(),
@@ -77,7 +77,7 @@ class _CustomDropdownFieldState extends State<CustomDropdownField> {
                       child: Text(c['CountryName'], style: AppFonts.textSecondary),
                     );
                   }).toList()
-                : widget.dropdownItems!.map((item) {
+                : widget.items!.map((item) {
                     return DropdownMenuItem(
                       value: item,
                       child: Text(item, style: AppFonts.textSecondary),

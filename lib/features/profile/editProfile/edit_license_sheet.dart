@@ -38,14 +38,14 @@ class EditLicenseSheet {
           controller: issueAuthController,
           label: "Issuing Authority",
           dropdownPosition: "right",
-          dropdownItems: [],
+          items: [],
         ),
         SizedBox(height: 10),
         CustomDropdownField(
           controller: lTypeController,
           label: "License Type",
           dropdownPosition: "right",
-          dropdownItems: [],
+          items: [],
         ),
         SizedBox(height: 10),
         CustomTextFormField(
@@ -61,7 +61,7 @@ class EditLicenseSheet {
         ),
         SizedBox(height: 10),
       ],
-      actionButton:CustomButton(text: "Submit Request", onPressed: () {})
+      actionButton: CustomButton(text: "Submit Request", onPressed: () {}),
     );
   }
 }
