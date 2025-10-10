@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/utilities/size_config.dart';
 
-class DocContainerontainer extends StatelessWidget {
-  final Icon iconDoc;
+class DocContainer extends StatelessWidget {
+  final Widget iconDoc;
   final String fileName;
-  const DocContainerontainer({
+
+  const DocContainer({
     super.key,
     required this.fileName,
     required this.iconDoc,
@@ -26,6 +28,7 @@ class DocContainerontainer extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(width: 10.h),
+
           iconDoc,
           SizedBox(width: 6.5.w),
           Text(

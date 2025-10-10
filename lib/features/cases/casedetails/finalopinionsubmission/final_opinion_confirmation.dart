@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/common_qa.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_container.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/doc_container.dart';
@@ -59,15 +60,7 @@ class FinalOpinionConfirmation extends StatelessWidget {
                       color: AppColors.red,
                     ),
                   ),
-                  Icon(Icons.circle, size: 6, color: AppColors.red),
-                  SizedBox(width: 4),
-                  // Text(
-                  //   "Created: Oct 13, 2025 ",
-                  //   style: AppFonts.textSecondary.copyWith(
-                  //     fontSize: 16,
-                  //     color: AppColors.red,
-                  //   ),
-                  // ),
+
                   SizedBox(width: 4),
                   Icon(Icons.circle, size: 6, color: AppColors.red),
                   SizedBox(width: 4),
@@ -80,6 +73,7 @@ class FinalOpinionConfirmation extends StatelessWidget {
                   ),
                 ],
               ),
+              SizedBox(height: 12),
               Container(
                 margin: EdgeInsets.only(bottom: 15),
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -134,211 +128,117 @@ class FinalOpinionConfirmation extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: AppColors.white,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 14, right: 14),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 20.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Written Report",
-                            style: AppFonts.hinttext2.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Icon(Icons.more_horiz_sharp),
-                        ],
-                      ),
-                      SizedBox(height: 16.h),
-                      Text(
-                        "Summary of Findings",
-                        style: AppFonts.textprimary.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      SizedBox(height: 8.h),
-                      Text(
-                        "The MRI scan shows mild cervical spondylosis with no significant spinal cord compression. The neurological exam is largely normal except for mild..",
-                        style: AppFonts.textprimary,
-                      ),
-                      Text(
-                        "Read more...",
-                        style: AppFonts.textappbar.copyWith(
-                          color: AppColors.textPrimary.withAlpha(50),
-                        ),
-                      ),
-                      SizedBox(height: 16.h),
-                    ],
-                  ),
-                ),
+              CustomContainer(
+                greyHeading: "Written Report",
+                icon: Icon(Icons.more_horiz_sharp),
+                subHeading: "Summary of Findings:",
+                datas:
+                    "The MRI scan shows mild cervical spondylosis with no significant spinal cord compression. The neurological exam is largely normal except for mild..",
+                hintText: "Read more...",
               ),
               SizedBox(height: 10),
-              Container(
-                // height: 175.h,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 14, right: 14),
-                  child: Column(
-                    children: [
-                      SizedBox(height: 16.h),
-                      Row(
-                        children: [
-                          Text(
-                            "Attached Documents",
-                            style: AppFonts.hinttext2.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          SizedBox(width: 10.w),
-                          Container(
-                            width: 41.w,
-                            height: 16.h,
-                            decoration: BoxDecoration(
-                              color: AppColors.successcolor.withAlpha(10),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "2 Files",
-                                style: AppFonts.labelItalic.copyWith(
-                                  color: AppColors.successcolor,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Spacer(),
-                          Icon(Icons.more_horiz_sharp),
-                        ],
+              //////////////////////////////////
+              CustomContainer(
+                greyHeading: "Attached Documents",
+                customWidgets: Container(
+                  width: 41.w,
+                  height: 16.h,
+                  decoration: BoxDecoration(
+                    color: AppColors.successcolor.withAlpha(10),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "2 Files",
+                      style: AppFonts.subtext.copyWith(
+                        fontSize: 10,
+                        color: AppColors.successcolor,
                       ),
-                      SizedBox(height: 16.h),
-                      DocContainerontainer(
-                        fileName: "Report name_T1.pdf",
-                        iconDoc: Icon(Icons.picture_as_pdf),
-                      ),
-                      SizedBox(height: 4.h),
-
-                      DocContainerontainer(
-                        fileName: "Report name_Agt_1234.pdf",
-                        iconDoc: Icon(Icons.picture_as_pdf),
-                      ),
-                      SizedBox(height: 20.h),
-                    ],
+                    ),
                   ),
                 ),
+
+                icon: Icon(Icons.more_horiz_sharp),
+
+                customWidgets1: [
+                  SizedBox(height: 16.h),
+                  DocContainer(
+                    iconDoc: SvgPicture.asset("assets/svg/pdfIcons.svg"),
+                    fileName: "Report name_T1.pdf",
+                  ),
+                  SizedBox(height: 4.h),
+                  DocContainer(
+                    iconDoc: SvgPicture.asset("assets/svg/pdfIcons.svg"),
+                    fileName: "Report name_Agt_1234.pdf",
+                  ),
+                ],
               ),
+
               SizedBox(height: 16.h),
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
+              CustomContainer(
+                greyHeading: "Audio Summary",
 
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 14, right: 14),
+                icon: Icon(Icons.more_horiz_sharp),
 
-                  child: Column(
-                    children: [
-                      SizedBox(height: 20.h),
-                      Row(
-                        children: [
-                          Text(
-                            "Audio Summary",
-                            style: AppFonts.hinttext2.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Spacer(),
-                          Icon(Icons.more_horiz_sharp),
-                        ],
-                      ),
-                      SizedBox(height: 16),
-                      DocContainerontainer(
-                        fileName: "Audio26378",
-                        iconDoc: Icon(Icons.music_off_outlined),
-                      ),
-                      SizedBox(height: 20),
-                    ],
+                customWidgets1: [
+                  SizedBox(height: 16.h),
+
+                  DocContainer(
+                    iconDoc: SvgPicture.asset("assets/svg/audioIcons.svg"),
+                    fileName: "Audio26378",
                   ),
-                ),
+                ],
               ),
+
               SizedBox(height: 16),
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 14, right: 14),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            "Q&A",
-                            style: AppFonts.hinttext2.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Spacer(),
-                          Icon(Icons.more_horiz_sharp),
-                        ],
-                      ),
-                      CommonQa(
-                        icon1: Icon(
-                          Icons.circle,
-                          color: AppColors.primarycolor,
-                          size: 13.33,
-                        ),
-                        qamsg1:
-                            "Do my symptoms definitely suggest \na stroke, or could it be something else?",
-                        icon2: Icon(
-                          Icons.check,
-                          color: AppColors.profilepink,
-                          size: 13.33,
-                        ),
-                        qamsg2: "Replied",
-                        qamsg3: "View answer",
-                      ),
-                      SizedBox(height: 16),
-                      CommonQa(
-                        icon1: Icon(
-                          Icons.circle,
-                          color: AppColors.primarycolor,
-                          size: 13.33,
-                        ),
-                        qamsg1:
-                            "What risks do I face if I delay admission or treatment?",
-                        icon2: Icon(
-                          Icons.check,
-                          color: AppColors.profilepink,
-                          size: 13.33,
-                        ),
-                        qamsg2: "Replied",
-                        qamsg3: "View answer",
-                      ),
-                      SizedBox(height: 16),
-                      Text("View 2 more Q&A"),
-                    ],
+
+              CustomContainer(
+                greyHeading: "Q&A",
+                icon: Icon(Icons.more_horiz_sharp),
+                customWidgets1: [
+                  CommonQa(
+                    icon1: Icon(
+                      Icons.circle,
+                      color: AppColors.primarycolor,
+                      size: 13.33,
+                    ),
+                    qamsg1:
+                        "Do my symptoms definitely suggest \na stroke, or could it be something else?",
+                    icon2: Icon(
+                      Icons.check,
+                      color: AppColors.profilepink,
+                      size: 13.33,
+                    ),
+                    qamsg2: "Support",
+                    qamsg3: "Answer",
                   ),
-                ),
+                  SizedBox(height: 16),
+                  CommonQa(
+                    icon1: Icon(
+                      Icons.circle,
+                      color: AppColors.primarycolor,
+                      size: 13.33,
+                    ),
+                    qamsg1:
+                        "What risks do I face if I delay admission or treatment?",
+                    icon2: Icon(
+                      Icons.check,
+                      color: AppColors.profilepink,
+                      size: 13.33,
+                    ),
+                    qamsg2: "Support",
+                    qamsg3: "Answer",
+                  ),
+                ],
+                hintText: "View 2 more Q&A",
               ),
+
+              SizedBox(height: 10),
               CustomButton(
                 text: "Confirm & Submit Final Review",
                 onPressed: () {},
               ),
+              SizedBox(height: 20),
             ],
           ),
         ),

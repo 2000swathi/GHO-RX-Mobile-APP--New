@@ -6,12 +6,12 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/widgets/case_appbar.dart';
+import 'package:ghorx_mobile_app_new/features/home/widget/performance_snapshot.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_state.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/profile_repo.dart';
 import 'package:ghorx_mobile_app_new/utilities/size_config.dart';
-
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -45,7 +45,12 @@ class HomePage extends StatelessWidget {
                       child: BlocBuilder<ProfileBloc, ProfileState>(
                         builder: (context, state) {
                           if (state is ProfileLoading) {
-                            return const Center(child: Text("loading...",style: AppFonts.labelItalic,));
+                            return const Center(
+                              child: Text(
+                                "loading...",
+                                style: AppFonts.labelItalic,
+                              ),
+                            );
                           } else if (state is PersonalInfoState) {
                             final info = state.personalInfomodel;
                             return Text(
@@ -126,6 +131,8 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
               ),
+              PerformanceSnapshotWidget(),
+              SizedBox(height: 15,),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -351,3 +358,5 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
+

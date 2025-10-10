@@ -43,7 +43,13 @@ class Recordaudio extends StatelessWidget {
                       const SizedBox(height: 10.0),
                       SizedBox(
                         width: 100,
-                        child: CustomButton(text: "Select", onPressed: () {}),
+                        child: CustomButton(
+                          text: "Select",
+                          onPressed: () {},
+                          color: AppColors.white,
+                          colortext: AppColors.textPrimary,
+                          borderColor: AppColors.hint1color,
+                        ),
                       ),
                     ],
                   ),
@@ -116,7 +122,7 @@ class Recordaudio extends StatelessWidget {
             ),
             child: Row(
               children: [
-                SvgPicture.asset("assets/svg/pdf Icons.svg"),
+                SvgPicture.asset("assets/svg/pdfIcons.svg"),
                 SizedBox(width: 10),
                 Expanded(
                   child: Column(
@@ -172,7 +178,7 @@ class Recordaudio extends StatelessWidget {
             ),
             child: Row(
               children: [
-                SvgPicture.asset("assets/svg/pdf Icons.svg"),
+                SvgPicture.asset("assets/svg/pdfIcons.svg"),
               SizedBox(width: 10),
                 Expanded(
                   child: Column(

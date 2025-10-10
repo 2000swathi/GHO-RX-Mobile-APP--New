@@ -30,7 +30,7 @@ class ProfileRepository {
       final response = await _dioHandler.post('', data: data);
       return PersonalInfoModel.fromJson(response['Data'][0][0]);
     } catch (e) {
-      throw ("Invalid Token or Drid");
+      throw Exception(e.toString());
     }
   }
 

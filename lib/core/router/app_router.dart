@@ -4,7 +4,8 @@ import 'package:ghorx_mobile_app_new/features/authentication/repository/model/lo
 import 'package:ghorx_mobile_app_new/features/authentication/add_page.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/reset_password.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/casedetails.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/cases_page.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/patient_queries/patient_queries.dart';
+import 'package:ghorx_mobile_app_new/features/cases/cases_page.dart';
 import 'package:ghorx_mobile_app_new/features/home/home_page.dart';
 import 'package:ghorx_mobile_app_new/main_page.dart';
 import '../../features/authentication/login_screen.dart';
@@ -28,6 +29,8 @@ class AppRouter {
   static const String casepage = '/case';
   static const String casedetails = '/casedetails';
   static const String homePage = '/homepage';
+  static const String qaPage = '/qaPage';
+
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -49,10 +52,12 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => MainPage());
       case casepage:
         return MaterialPageRoute(builder: (_) => CasesPage());
-      case casedetails:
+      case casedetails: 
         return MaterialPageRoute(builder: (_) => CaseDetailsPage());
       case homePage:
         return MaterialPageRoute(builder: (_) => HomePage());
+       case qaPage:
+        return MaterialPageRoute(builder: (_) => PatientQueriesScreen());
 
       default:
         return MaterialPageRoute(
