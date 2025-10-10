@@ -1,0 +1,48 @@
+import 'package:flutter/material.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/audiosummery.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/custom_scrollable_tabs.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/medicalreport.dart';
+
+
+class CasesTabView extends StatefulWidget {
+  const CasesTabView({super.key});
+
+  @override
+  State<CasesTabView> createState() => _CasesTabViewState();
+}
+
+class _CasesTabViewState extends State<CasesTabView> {
+  int selectedIndex = 0;
+
+  final List<String> tabNames = [
+    "Audio Summary",
+    "Medical Documents",
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        CustomScrollableTabs(
+          tabs: tabNames,
+          onTabSelected: (index) {
+            setState(() => selectedIndex = index);
+          },
+        ),
+
+        SizedBox(height: 9),
+        _buildTabContent(selectedIndex),
+      ],
+    );
+  }
+  Widget _buildTabContent(int index) {
+    switch (index) {
+      case 0:
+        return Audiosummery();
+      case 1:
+        return Medicalreport();
+      default:
+        return SizedBox(); 
+    }
+  }
+}

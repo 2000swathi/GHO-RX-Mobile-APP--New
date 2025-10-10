@@ -33,3 +33,6 @@ class SharedPreference {
     await prefs.clear();
   }
 }
+class drnamesharedprefercen{
+  
+}

@@ -6,11 +6,11 @@ class CustomDropdownField extends StatefulWidget {
   final TextEditingController controller;
   final String label;
   final bool isPhoneField;
-  final String dropdownPosition; // left or right
+  final String dropdownPosition; 
   final String? Function(String?)? validator;
-  final List<String>? dropdownItems; // generic list of items
-  final List<Map<String, dynamic>>? countryItems; // list of countries with CountryID, CountryName, CountryCode
-  final bool isCountryDropdown; // true if country list dropdown
+  final List<String>? dropdownItems; 
+  final List<Map<String, dynamic>>? countryItems; 
+  final bool isCountryDropdown; 
 
   const CustomDropdownField({
     super.key,
