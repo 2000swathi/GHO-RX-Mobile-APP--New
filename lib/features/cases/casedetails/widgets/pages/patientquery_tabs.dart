@@ -32,7 +32,6 @@ class _QueriesTabsState extends State<QueriesTabs> {
             },
             useBoxStyle: true,
           ),
-      
           const SizedBox(height: 10),
           _buildTabContent(selectedIndex),
         ],

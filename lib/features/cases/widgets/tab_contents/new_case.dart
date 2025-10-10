@@ -160,7 +160,9 @@ class CaseCard extends StatelessWidget {
                     text: "Deny",
                     colortext: AppColors.primarycolor,
                     color: AppColors.primarycolor.withAlpha(15),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/qaPage");
+                    },
                   ),
                 ),
               ],

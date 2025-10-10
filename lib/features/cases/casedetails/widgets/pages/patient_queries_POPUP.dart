@@ -31,7 +31,6 @@ class QuestionansSheet {
             ),
             const SizedBox(height: 10),
             QueriesTabs(),
-            SizedBox(height: 500, width: 100,),
           ],
         ),
       ],
