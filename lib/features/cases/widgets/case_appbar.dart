@@ -8,6 +8,8 @@ class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool istrue;
   final bool? isHome;
   final Widget? widgets;
+  final double height;
+  final PreferredSizeWidget? tabBar;
 
   const CaseAppBar({
     super.key,
@@ -15,39 +17,44 @@ class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.istrue = false,
     this.isHome = false,
     this.widgets,
+    this.height = 70,
+    this.tabBar,
   });
 
   @override
-  Size get preferredSize => const Size.fromHeight(80);
+  Size get preferredSize =>
+      Size.fromHeight(height + (tabBar?.preferredSize.height ?? 0));
 
   @override
   Widget build(BuildContext context) {
-    return PreferredSize(
-      preferredSize: const Size.fromHeight(100),
-      child: AppBar(
-        automaticallyImplyLeading: false,
-        title: isHome == true ? widgets : Column(
-          children: [
-            SizedBox(height: 15,),
-            Text(title!, style: AppFonts.heading),
-          ],
-        ),
-        actions:
-            istrue == true
-                ? []
-                : [
-                  CircleAvatar(
-                    backgroundColor: AppColors.primarycolor.withAlpha(8),
-                    child: SvgPicture.asset("assets/svg/email_svg.svg"),
-                  ),
-                  SizedBox(width: 15),
-                  CircleAvatar(
-                    backgroundColor: AppColors.primarycolor.withAlpha(8),
-                    child: SvgPicture.asset("assets/svg/notification_svg.svg"),
-                  ),
-                  SizedBox(width: 15),
-                ],
-      ),
+    return AppBar(
+      backgroundColor: AppColors.white,
+      automaticallyImplyLeading: false,
+      elevation: 0,
+      title: isHome == true
+          ? widgets
+          : Padding(
+              padding: const EdgeInsets.only(top: 15.0),
+              child: Text(
+                title ?? '',
+                style: AppFonts.heading,
+              ),
+            ),
+      bottom: tabBar,
+      actions: istrue
+          ? []
+          : [
+              CircleAvatar(
+                backgroundColor: AppColors.primarycolor.withAlpha(8),
+                child: SvgPicture.asset("assets/svg/email_svg.svg"),
+              ),
+              const SizedBox(width: 15),
+              CircleAvatar(
+                backgroundColor: AppColors.primarycolor.withAlpha(8),
+                child: SvgPicture.asset("assets/svg/notification_svg.svg"),
+              ),
+              const SizedBox(width: 15),
+            ],
     );
   }
 }
