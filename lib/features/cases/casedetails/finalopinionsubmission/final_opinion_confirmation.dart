@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/common_checkbox_declaration.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/common_qa.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_container.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/confirm_submission_dialog.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/doc_container.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/medicalreport.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/medications.dart';
@@ -190,7 +192,7 @@ class FinalOpinionConfirmation extends StatelessWidget {
                 ],
               ),
 
-              SizedBox(height: 16),
+              SizedBox(height: 16.h),
 
               CustomContainer(
                 greyHeading: "Q&A",
@@ -204,8 +206,22 @@ class FinalOpinionConfirmation extends StatelessWidget {
                     ),
                     qamsg1:
                         "Do my symptoms definitely suggest \na stroke, or could it be something else?",
+                    ans:
+                        "Ans: Lorem ipsum dolor sit amet consectetur. Laoreet proin risus ultricies volutpat eget sagittis. Nibh id amet sit nibh et purus.",
                   ),
                   SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Icon(Icons.link, color: AppColors.textSecondary),
+                      SizedBox(width: 6.5),
+                      Text(
+                        "https://app.yourcompany.com/feature/123",
+                        style: AppFonts.textappbar.copyWith(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16),
+
                   CommonQa(
                     icon1: Icon(
                       Icons.circle,
@@ -214,15 +230,50 @@ class FinalOpinionConfirmation extends StatelessWidget {
                     ),
                     qamsg1:
                         "What risks do I face if I delay admission or treatment?",
+                    ans:
+                        "Ans: Lorem ipsum dolor sit amet consectetur. Laoreet proin risus ultricies volutpat eget sagittis. Nibh id amet sit nibh et purus.",
                   ),
                 ],
                 hintText: "View 2 more Q&A",
+              ),
+              SizedBox(height: 16.h),
+              CustomContainer(
+                greyHeading: "Clinical and Compliance Declaration",
+                icon: Icon(Icons.more_horiz_sharp),
+                commonCheckbox: [
+                  CommonCheckboxDeclaration(
+                    declarationText:
+                        "I have reviewed all submitted patient information, including images, lab reports, and clinical history, and confirm the completeness of my review.",
+                  ),
+                  SizedBox(height: 16.h),
+                  CommonCheckboxDeclaration(
+                    declarationText:
+                        "I attest that this second opinion is based solely on the provided documentation and reflects my independent, professional clinical judgment.",
+                  ),
+                  SizedBox(height: 16.h),
+                  CommonCheckboxDeclaration(
+                    declarationText:
+                        "I confirm that I hold the necessary active license and specialized expertise required to provide this second opinion.",
+                  ),
+                  SizedBox(height: 16.h),
+                  CommonCheckboxDeclaration(
+                    declarationText:
+                        "I have adhered to all platform guidelines, confidentiality standards, and relevant professional codes of conduct in generating this report.",
+                  ),
+                ],
               ),
 
               SizedBox(height: 10),
               CustomButton(
                 text: "Confirm & Submit Final Review",
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    barrierColor: Colors.black.withAlpha(70), // dim background
+                    builder: (context) => const ConfirmSubmissionDialog(),
+                  );
+                },
               ),
               SizedBox(height: 20),
             ],
