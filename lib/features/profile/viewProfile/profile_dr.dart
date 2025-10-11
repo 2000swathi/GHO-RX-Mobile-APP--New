@@ -80,54 +80,62 @@ class _ProfileDrState extends State<ProfileDr> {
                           "${info.address1} ${info.address2} ${info.city} ${info.state}",
                         ),
                         _buildRow("Zip Code", info.zipCode),
-
                         const SizedBox(height: 15),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            InkWell(
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: BlocListener<ListBloc, ListState>(
+                            listener: (context, listState) async {
+                              // Dismiss loading dialog safely
+                              if (Navigator.canPop(context)) {
+                                Navigator.pop(context);
+                              }
+
+                              if (listState is CountryState) {
+                                // Flatten the nested list of countries
+                                final countries =
+                                    listState.countryResponse.data
+                                        .expand((inner) => inner)
+                                        .toList();
+
+                                // Debug print
+                                print(
+                                  countries.map((c) => c.countryName).toList(),
+                                );
+
+                                // Delay showing bottom sheet to avoid navigator conflicts
+                                Future.microtask(() {
+                                  EditProfileSheet.showSheet(
+                                    context,
+                                    info,
+                                    countries,
+                                  );
+                                });
+                              } else if (listState is ListFailure) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(listState.error)),
+                                );
+                              }
+                            },
+                            child: InkWell(
                               onTap: () {
-                                final listBloc = BlocProvider.of<ListBloc>(
-                                  context,
-                                );
-                                listBloc.add(FetchCountryList());
-
-                                // Listen once for the success state
-                                final listener = BlocListener<
-                                  ListBloc,
-                                  ListState
-                                >(
-                                  listener: (context, state) {
-                                    if (state is CountryState) {
-                                      EditProfileSheet.showSheet(
-                                        context,
-                                        info,
-                                        state.countryResponse,
-                                      );
-                                    } else if (state is ListFailure) {
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
-                                        SnackBar(content: Text(state.error)),
-                                      );
-                                    }
-                                  },
-                                  child:
-                                      SizedBox.shrink(),
-                                );
-
                                 showDialog(
                                   context: context,
-                                  barrierColor: Colors.transparent,
-                                  builder: (_) => listener,
+                                  barrierDismissible: false,
+                                  builder:
+                                      (_) => const Center(
+                                        child: LoadingAnimation(),
+                                      ),
+                                );
+
+                                context.read<ListBloc>().add(
+                                  FetchCountryList(),
                                 );
                               },
-
                               child: SvgPicture.asset(
                                 "assets/svg/edit_svg.svg",
                               ),
                             ),
-                          ],
+                          ),
                         ),
                       ],
                     );
@@ -139,7 +147,6 @@ class _ProfileDrState extends State<ProfileDr> {
               ),
             ),
           ),
-
           _buildSection(
             index: 2,
             heading: "Specialty",
@@ -158,50 +165,86 @@ class _ProfileDrState extends State<ProfileDr> {
                     if (specialtyList.isEmpty) {
                       return const Center(child: Text("No specialties found"));
                     }
+
+                    final info = state.specialtyModel;
+
                     return Column(
                       children:
-                          specialtyList
-                              .map(
-                                (specialty) => Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    _buildRow("Specialty", specialty.specialty),
-                                    _buildRow(
-                                      "Certified Board",
-                                      specialty.certifiedBoard,
-                                    ),
-                                    _buildRow(
-                                      "Specialty Type",
-                                      specialty.specialtyType,
-                                    ),
-
-                                    const SizedBox(height: 5),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        SvgPicture.asset(
-                                          "assets/svg/trash.svg",
-                                          color: AppColors.primarycolor,
-                                        ),
-                                        SizedBox(width: 10),
-                                        InkWell(
-                                          onTap: () {
-                                            EditSpecialtySheet.showSheet(
-                                              context,
-                                              state.specialtyModel,
-                                            );
-                                          },
-                                          child: SvgPicture.asset(
-                                            "assets/svg/edit_svg.svg",
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Divider(color: AppColors.hint2color),
-                                  ],
+                          specialtyList.map((specialty) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _buildRow("Specialty", specialty.specialty),
+                                _buildRow(
+                                  "Certified Board",
+                                  specialty.certifiedBoard,
                                 ),
-                              )
-                              .toList(),
+                                _buildRow(
+                                  "Specialty Type",
+                                  specialty.specialtyType,
+                                ),
+                                const SizedBox(height: 5),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: InkWell(
+                                    onTap: () async {
+                                      showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder:
+                                            (_) => const Center(
+                                              child: LoadingAnimation(),
+                                            ),
+                                      );
+
+                                      context.read<ListBloc>().add(
+                                        FetchSpecialtyList(),
+                                      );
+
+                                      final listState = await context
+                                          .read<ListBloc>()
+                                          .stream
+                                          .firstWhere(
+                                            (s) =>
+                                                s is SpecialtyListState ||
+                                                s is ListFailure,
+                                          );
+
+                                      Navigator.of(
+                                        context,
+                                        rootNavigator: true,
+                                      ).pop();
+
+                                      if (listState is SpecialtyListState) {
+                                        final specialties =
+                                            listState.specialtyResponse.data
+                                                .expand((inner) => inner)
+                                                .toList();
+
+                                        EditSpecialtySheet.showSheet(
+                                          context,
+                                          info,
+                                          specialties,
+                                        );
+                                      } else if (listState is ListFailure) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text(listState.error),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    child: SvgPicture.asset(
+                                      "assets/svg/edit_svg.svg",
+                                    ),
+                                  ),
+                                ),
+                                Divider(color: AppColors.hint2color),
+                              ],
+                            );
+                          }).toList(),
                     );
                   } else if (state is ProfileError) {
                     return Center(child: Text(state.message));
@@ -211,6 +254,7 @@ class _ProfileDrState extends State<ProfileDr> {
               ),
             ),
           ),
+
           _buildSection(
             index: 1,
             heading: "Accreditation",
@@ -251,26 +295,21 @@ class _ProfileDrState extends State<ProfileDr> {
                                       "ProviderName",
                                       insurance.providerName.toString(),
                                     ),
-
-                                    const SizedBox(height: 15),
-                                    CustomButton(
-                                      text: "Edit",
-                                      widget: SvgPicture.asset(
-                                        "assets/svg/edit_svg.svg",
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: InkWell(
+                                        onTap: () async {
+                                          EditInsuranceSheet.showSheet(
+                                            context,
+                                            state.insuranceModel,
+                                          );
+                                        },
+                                        child: SvgPicture.asset(
+                                          "assets/svg/edit_svg.svg",
+                                        ),
                                       ),
-                                      isiIon: true,
-                                      color: AppColors.primarycolor.withAlpha(
-                                        15,
-                                      ),
-                                      colortext: AppColors.primarycolor,
-                                      onPressed: () {
-                                        EditInsuranceSheet.showSheet(
-                                          context,
-                                          state.insuranceModel,
-                                        );
-                                      },
                                     ),
-                                    const SizedBox(height: 15),
+                                    Divider(color: AppColors.hint2color),
                                   ],
                                 ),
                               )
@@ -319,25 +358,21 @@ class _ProfileDrState extends State<ProfileDr> {
                                       "Issuing Authority",
                                       license.issuingAuthority,
                                     ),
-                                    const SizedBox(height: 15),
-                                    CustomButton(
-                                      text: "Edit",
-                                      widget: SvgPicture.asset(
-                                        "assets/svg/edit_svg.svg",
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: InkWell(
+                                        onTap: () async {
+                                          EditLicenseSheet.showSheet(
+                                            context,
+                                            state.licenseModel,
+                                          );
+                                        },
+                                        child: SvgPicture.asset(
+                                          "assets/svg/edit_svg.svg",
+                                        ),
                                       ),
-                                      isiIon: true,
-                                      color: AppColors.primarycolor.withAlpha(
-                                        15,
-                                      ),
-                                      colortext: AppColors.primarycolor,
-                                      onPressed: () {
-                                        EditLicenseSheet.showSheet(
-                                          context,
-                                          state.licenseModel,
-                                        );
-                                      },
                                     ),
-                                    const SizedBox(height: 15),
+                                    Divider(color: AppColors.hint2color),
                                   ],
                                 ),
                               )

@@ -13,12 +13,12 @@ class CountryResponseModel {
 
   factory CountryResponseModel.fromJson(Map<String, dynamic> json) {
     return CountryResponseModel(
-      status: json['Status'],
+      status: json['Status'] ?? 0,
       error: json['Error'] ?? '',
       info: json['Info'] ?? '',
-      data: (json['Data'] as List)
-          .map((innerList) => (innerList as List)
-              .map((country) => Country.fromJson(country))
+      data: (json['Data'] as List<dynamic>? ?? [])
+          .map((innerList) => (innerList as List<dynamic>)
+              .map((item) => Country.fromJson(item))
               .toList())
           .toList(),
     );
@@ -30,7 +30,7 @@ class CountryResponseModel {
       'Error': error,
       'Info': info,
       'Data': data
-          .map((innerList) => innerList.map((country) => country.toJson()).toList())
+          .map((innerList) => innerList.map((c) => c.toJson()).toList())
           .toList(),
     };
   }
@@ -49,9 +49,9 @@ class Country {
 
   factory Country.fromJson(Map<String, dynamic> json) {
     return Country(
-      countryID: json['CountryID'],
-      countryName: json['CountryName'],
-      countryCode: json['CountryCode'],
+      countryID: json['CountryID'] ?? 0,
+      countryName: json['CountryName'] ?? '',
+      countryCode: json['CountryCode'] ?? '',
     );
   }
 

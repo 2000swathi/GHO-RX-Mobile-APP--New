@@ -1,51 +1,82 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
-import 'package:ghorx_mobile_app_new/core/common_widgets/custom_phone.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_drop_down_field.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty_response_model.dart';
 
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/specialty_model.dart';
 
 class EditSpecialtySheet {
-  static void showSheet(BuildContext context, SpecialtyModel info) {
-    final TextEditingController specialtyController = TextEditingController(
-      text: info.data[0].specialty,
-    );
-    final TextEditingController cBoardController = TextEditingController(
-      text: info.data[0].certifiedBoard,
-    );
-    final TextEditingController splTypeController = TextEditingController(
-      text: info.data[0].specialtyType,
-    );
+  static void showSheet(
+    BuildContext context,
+    SpecialtyModel info,
+    List<SpecialtyList> splList,
+  ) {
+    // Initialize selected values
+    String? selectedSpecialtyID =
+        info.data.isNotEmpty ? info.data[0].specialtyId.toString() : null;
+    String? selectedCertifiedBoard =
+        info.data.isNotEmpty ? info.data[0].certifiedBoard : null;
+    String? selectedSpecialtyType =
+        info.data.isNotEmpty ? info.data[0].specialtyType : null;
 
     CustomBottomSheet.show(
       context: context,
       heading: "Edit Specialty",
       content: [
-        CustomDropdownField(
-          controller: specialtyController,
-          label: "Specialty",
-          dropdownPosition: "right",
-       items: [],
+        StatefulBuilder(
+          builder: (context, setState) {
+            return Column(
+              children: [
+                CustomDropdownFormField(
+                  name: "Specialty",
+                  hintText: "-Select Specialty-",
+                  items:
+                      splList
+                          .map(
+                            (e) => DropdownItem<String>(
+                              label: e.specialtyName,
+                              value: e.specialtyID.toString(),
+                            ),
+                          )
+                          .toList(),
+                  value: selectedSpecialtyID,
+                  onChanged: (id) {
+                    setState(() {
+                      selectedSpecialtyID = id;
+                    });
+                  },
+                ),
+                SizedBox(height: 10),
+                CustomDropdownFormField(
+                  name: "Certified Board",
+                  hintText: "-Select Certified Board-",
+                  items: [], // populate as needed
+                  value: selectedCertifiedBoard,
+                ),
+                SizedBox(height: 10),
+                CustomDropdownFormField(
+                  name: "Specialty Type",
+                  hintText: "-Select Specialty Type-",
+                  items: [], // populate as needed
+                  value: selectedSpecialtyType,
+                ),
+                SizedBox(height: 10),
+              ],
+            );
+          },
         ),
-        SizedBox(height: 10),
-        CustomDropdownField(
-          controller: cBoardController,
-          label: "certified Board",
-          dropdownPosition: "right",
-        items: [],
-        ),
-        SizedBox(height: 10),
-        CustomDropdownField(
-          controller: splTypeController,
-          label: "specialty Type",
-          dropdownPosition: "right",
-          items: [],
-        ),
-        SizedBox(height: 10),
       ],
-       actionButton:CustomButton(text: "Submit Request", onPressed: () {})
+      actionButton: CustomButton(
+        text: "Submit Request",
+        onPressed: () {
+          print('Specialty ID: $selectedSpecialtyID');
+          print('Certified Board: $selectedCertifiedBoard');
+          print('Specialty Type: $selectedSpecialtyType');
+
+        },
+      ),
     );
   }
 }

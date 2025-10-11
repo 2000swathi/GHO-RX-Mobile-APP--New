@@ -33,20 +33,18 @@ class EditLicenseSheet {
           name: "License Number",
           hintText: "Enter Lisence Number",
         ),
-        SizedBox(height: 10),
-        CustomDropdownField(
-          controller: issueAuthController,
-          label: "Issuing Authority",
-          dropdownPosition: "right",
-          items: [],
-        ),
-        SizedBox(height: 10),
-        CustomDropdownField(
-          controller: lTypeController,
-          label: "License Type",
-          dropdownPosition: "right",
-          items: [],
-        ),
+        // SizedBox(height: 10),
+        // CustomPhoneDropdownField(
+        //   controller: issueAuthController,
+        //   label: "Issuing Authority",
+          
+        // ),
+        // SizedBox(height: 10),
+        // CustomPhoneDropdownField(
+        //   controller: lTypeController,
+        //   label: "License Type",
+        
+        // ),
         SizedBox(height: 10),
         CustomTextFormField(
           controller: issueDateController,
