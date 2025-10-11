@@ -31,6 +31,7 @@ class ConfirmSubmissionDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text("Confirm Submission", style: AppFonts.heading),
+                SizedBox(height: 29),
                 Text(
                   "Are you sure you want to submit this review?",
                   style: AppFonts.textprimary,
