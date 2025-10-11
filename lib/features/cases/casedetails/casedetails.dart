@@ -42,7 +42,7 @@ class CaseDetailsPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15),
+          padding: EdgeInsets.symmetric(horizontal: 12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -50,8 +50,8 @@ class CaseDetailsPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Patient: John Doe",
-                    style: AppFonts.subheading16.copyWith(fontSize: 14),
+                    " John Doe",
+                    style: AppFonts.subheading16,
                   ),
                   InkWell(
                     onTap: () {

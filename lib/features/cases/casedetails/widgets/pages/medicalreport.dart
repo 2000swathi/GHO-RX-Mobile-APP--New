@@ -10,22 +10,22 @@ class Medicalreport extends StatelessWidget {
     {
       'icon': "assets/svg/Files Icons.svg",
       'title': 'MRI Lumbar Spine',
-      'subtitle': 'DICOM File',
+      
     },
     {
       'icon': "assets/svg/pdfIcons.svg",
       'title': 'Nerve Conduction Study Report',
-      'subtitle': 'PDF File',
+      
     },
     {
       'icon': "assets/svg/Files Icons.svg",
       'title': 'HBA1c Lab Results',
-      'subtitle': 'JPEG File',
+     
     },
     {
       'icon': "assets/svg/pdfIcons.svg",
       'title': 'Initial Consultation Notes',
-      'subtitle': 'PDF File',
+      
     },
   ];
 
@@ -70,7 +70,7 @@ class Medicalreport extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 15),
+          SizedBox(height: 10),
           if (reports.length <= 3)
             _buildReportList(reports.length)
           else
@@ -81,12 +81,12 @@ class Medicalreport extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildReportList(isExpandedValue ? reports.length : 3),
-                    SizedBox(height: 2),
+                 
                     GestureDetector(
                       onTap: () => isExpanded.value = !isExpanded.value,
                       child: Text(
                         isExpandedValue ? "Read less" : "Read more...",
-                        style:  AppFonts.hinttext,
+                        style:  AppFonts.hinttext2,
                       ),
                     ),
                   ],
@@ -130,10 +130,7 @@ class Medicalreport extends StatelessWidget {
               report['title'] as String,
               style: AppFonts.subheading16,
             ),
-            subtitle: Text(
-              report['subtitle'] as String,
-              style: AppFonts.hinttext2,
-            ),
+           
           ),
         );
       },
