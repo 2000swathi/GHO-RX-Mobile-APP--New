@@ -46,31 +46,31 @@ class _CustomScrollableTabsState extends State<CustomScrollableTabs>
   Widget build(BuildContext context) {
     return Container(
       height: widget.useBoxStyle ? 45 : 40,
-      color: Colors.white,
+      color: AppColors.white,
       child: widget.useBoxStyle
           ? _buildBoxStyledTabs() 
           : _buildDefaultTabs(), 
     );
   }
 
-
   Widget _buildBoxStyledTabs() {
     return TabBar(
       controller: _tabController,
-      isScrollable: true,
+      isScrollable: false,
       dividerColor: Colors.transparent,
       indicator: UnderlineTabIndicator(
         borderSide: BorderSide(
           color: AppColors.primarycolor,
           width: 2,
         ),
+        insets: const EdgeInsets.symmetric(horizontal: 2),
       ),
       
-      labelPadding: const EdgeInsets.symmetric(horizontal: 16),
+      labelPadding: const EdgeInsets.symmetric(horizontal: 20),
       tabs: List.generate(widget.tabs.length, (index) {
         final bool isSelected = index == selectedIndex;
         return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
           decoration: BoxDecoration(
             color: isSelected
                 ? AppColors.primarycolor.withOpacity(0.1)
@@ -91,6 +91,7 @@ class _CustomScrollableTabsState extends State<CustomScrollableTabs>
       }),
     );
   }
+
   Widget _buildDefaultTabs() {
     return TabBar(
       controller: _tabController,
