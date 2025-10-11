@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/common_checkbox_declaration.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/doc_container.dart';
@@ -12,6 +13,8 @@ class CustomContainer extends StatelessWidget {
   final String? hintText;
   final Widget? customWidgets;
   final List<Widget>? customWidgets1;
+  final List<Widget>? commonCheckbox;
+  final String? declarationText;
   const CustomContainer({
     super.key,
     required this.greyHeading,
@@ -21,6 +24,8 @@ class CustomContainer extends StatelessWidget {
     this.datas,
     this.customWidgets,
     this.customWidgets1,
+    this.commonCheckbox,
+    this.declarationText,
   });
 
   @override
@@ -72,6 +77,7 @@ class CustomContainer extends StatelessWidget {
                     color: const Color.fromARGB(255, 0, 0, 0).withAlpha(50),
                   ),
                 ),
+              Column(children: commonCheckbox ?? []),
             ],
           ),
         ),
