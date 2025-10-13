@@ -9,3 +9,4 @@ sealed class ListEvent extends Equatable {
 
 class FetchCountryList extends ListEvent {}
 class FetchSpecialtyList extends ListEvent {}
+class FetchLicenseList extends ListEvent {}

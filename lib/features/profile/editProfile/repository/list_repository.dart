@@ -1,5 +1,5 @@
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/country_response_model.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/license_authority_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/license_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty_response_model.dart';
 import 'package:ghorx_mobile_app_new/utilities/network/api_utils.dart';
 import 'package:ghorx_mobile_app_new/utilities/network/dio_handler.dart';
@@ -51,7 +51,7 @@ class ListRepository {
       final response = await _dioHandler.post('', data: data);
       return LicenseListResponseModel.fromJson(response);
     } catch (e) {
-      throw Exception("Failed to fetch specialties: $e");
+      throw Exception("Failed to fetch license: $e");
     }
   }
 }

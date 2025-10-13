@@ -10,20 +10,19 @@ import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/mod
 class EditSpecialtySheet {
   static void showSheet(
     BuildContext context,
-    SpecialtyModel info,
+    SpecialtyModel? info,
     List<SpecialtyList> splList,
   ) {
-    // Initialize selected values
-    String? selectedSpecialtyID =
-        info.data.isNotEmpty ? info.data[0].specialtyId.toString() : null;
-    String? selectedCertifiedBoard =
-        info.data.isNotEmpty ? info.data[0].certifiedBoard : null;
-    String? selectedSpecialtyType =
-        info.data.isNotEmpty ? info.data[0].specialtyType : null;
+    final bool isEdit = info!.data.isNotEmpty;
 
+    String? selectedSpecialtyID =
+        isEdit ? info.data[0].specialtyId.toString() : null;
+    String? selectedCertifiedBoard =
+        isEdit ? info.data[0].certifiedBoard : null;
+    String? selectedSpecialtyType = isEdit ? info.data[0].specialtyType : null;
     CustomBottomSheet.show(
       context: context,
-      heading: "Edit Specialty",
+      heading: isEdit ? "Edit Specialty" : "Add Specialty",
       content: [
         StatefulBuilder(
           builder: (context, setState) {
@@ -52,14 +51,14 @@ class EditSpecialtySheet {
                 CustomDropdownFormField(
                   name: "Certified Board",
                   hintText: "-Select Certified Board-",
-                  items: [], // populate as needed
+                  items: [],
                   value: selectedCertifiedBoard,
                 ),
                 SizedBox(height: 10),
                 CustomDropdownFormField(
                   name: "Specialty Type",
                   hintText: "-Select Specialty Type-",
-                  items: [], // populate as needed
+                  items: [],
                   value: selectedSpecialtyType,
                 ),
                 SizedBox(height: 10),
@@ -69,13 +68,8 @@ class EditSpecialtySheet {
         ),
       ],
       actionButton: CustomButton(
-        text: "Submit Request",
-        onPressed: () {
-          print('Specialty ID: $selectedSpecialtyID');
-          print('Certified Board: $selectedCertifiedBoard');
-          print('Specialty Type: $selectedSpecialtyType');
-
-        },
+        text: isEdit ? "Submit Request" : "Add Specialty",
+        onPressed: () {},
       ),
     );
   }

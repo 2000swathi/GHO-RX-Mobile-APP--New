@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
@@ -25,8 +24,7 @@ class ProfileDr extends StatefulWidget {
 }
 
 class _ProfileDrState extends State<ProfileDr> {
-  int _expandedIndex = -1; // Track which container is open
-
+  int _expandedIndex = -1;
   @override
   Widget build(BuildContext context) {
     final repository = ProfileRepository();
@@ -48,7 +46,6 @@ class _ProfileDrState extends State<ProfileDr> {
           const Divider(),
           const SizedBox(height: 15),
 
-          // --- Sections ---
           _buildSection(
             isadd: false,
             index: 0,
@@ -85,24 +82,16 @@ class _ProfileDrState extends State<ProfileDr> {
                           alignment: Alignment.centerRight,
                           child: BlocListener<ListBloc, ListState>(
                             listener: (context, listState) async {
-                              // Dismiss loading dialog safely
                               if (Navigator.canPop(context)) {
                                 Navigator.pop(context);
                               }
 
                               if (listState is CountryState) {
-                                // Flatten the nested list of countries
                                 final countries =
                                     listState.countryResponse.data
                                         .expand((inner) => inner)
                                         .toList();
 
-                                // Debug print
-                                print(
-                                  countries.map((c) => c.countryName).toList(),
-                                );
-
-                                // Delay showing bottom sheet to avoid navigator conflicts
                                 Future.microtask(() {
                                   EditProfileSheet.showSheet(
                                     context,
@@ -245,6 +234,7 @@ class _ProfileDrState extends State<ProfileDr> {
                               ],
                             );
                           }).toList(),
+                          
                     );
                   } else if (state is ProfileError) {
                     return Center(child: Text(state.message));
@@ -343,6 +333,7 @@ class _ProfileDrState extends State<ProfileDr> {
                     if (licenseList.isEmpty) {
                       return const Center(child: Text("No license added"));
                     }
+                    final info = state.licenseModel;
                     return Column(
                       children:
                           licenseList
@@ -362,10 +353,53 @@ class _ProfileDrState extends State<ProfileDr> {
                                       alignment: Alignment.centerRight,
                                       child: InkWell(
                                         onTap: () async {
-                                          EditLicenseSheet.showSheet(
-                                            context,
-                                            state.licenseModel,
+                                          showDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            builder:
+                                                (_) => const Center(
+                                                  child: LoadingAnimation(),
+                                                ),
                                           );
+
+                                          context.read<ListBloc>().add(
+                                            FetchLicenseList(),
+                                          );
+
+                                          final listState = await context
+                                              .read<ListBloc>()
+                                              .stream
+                                              .firstWhere(
+                                                (s) =>
+                                                    s is LicenseListState ||
+                                                    s is ListFailure,
+                                              );
+
+                                          Navigator.of(
+                                            context,
+                                            rootNavigator: true,
+                                          ).pop();
+
+                                          if (listState is LicenseListState) {
+                                            final licenses =
+                                                listState.licenseResponse.data
+                                                    .expand((inner) => inner)
+                                                    .toList();
+
+                                            EditLicenseSheet.showSheet(
+                                              context,
+                                              info,
+                                              licenses,
+                                            );
+                                          } else if (listState is ListFailure) {
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(listState.error),
+                                              ),
+                                            );
+                                          }
                                         },
                                         child: SvgPicture.asset(
                                           "assets/svg/edit_svg.svg",
@@ -404,7 +438,6 @@ class _ProfileDrState extends State<ProfileDr> {
     );
   }
 
-  // Helper method to build a section with accordion behavior
   Widget _buildSection({
     required int index,
     required String heading,
@@ -427,7 +460,6 @@ class _ProfileDrState extends State<ProfileDr> {
     );
   }
 
-  // Helper method to build a row
   Widget _buildRow(String label, String value) {
     final displayValue = (value.isEmpty) ? "-" : value;
     return Padding(
