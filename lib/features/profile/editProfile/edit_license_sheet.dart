@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_drop_down_field.dart';
-import 'package:ghorx_mobile_app_new/core/common_widgets/custom_phone.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/license_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/license_model.dart';
