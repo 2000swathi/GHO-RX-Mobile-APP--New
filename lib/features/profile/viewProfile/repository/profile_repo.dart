@@ -59,8 +59,8 @@ class ProfileRepository {
       throw (e.toString());
     }
   }
-  // insurance
 
+  // insurance
   Future<InsuranceModel> fetchInsuranceInfo() async {
     final token = await SharedPreference.getToken();
     final reviewerId = await SharedPreference.getUserId();
@@ -85,8 +85,8 @@ class ProfileRepository {
     }
   }
 
+  
   // license
-
   Future<LicenseModel> fetchLicenseInfo() async {
     final token = await SharedPreference.getToken();
     final reviewerId = await SharedPreference.getUserId();

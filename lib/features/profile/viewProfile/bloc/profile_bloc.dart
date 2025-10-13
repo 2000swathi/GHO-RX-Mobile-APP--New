@@ -12,8 +12,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<FetchInsurance>(_onFetchInsurance);
     on<FetchLicence>(_onFetchLicense);
   }
+  
   //personal info
-
   Future<void> _onFetchProfile(
     FetchPersonalInfo event,
     Emitter<ProfileState> emit,
@@ -29,7 +29,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   //specialty
-
   Future<void> _onFetchSpecialty(
     FetchSpecialty event,
     Emitter<ProfileState> emit,
