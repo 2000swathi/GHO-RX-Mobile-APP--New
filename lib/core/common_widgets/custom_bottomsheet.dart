@@ -8,7 +8,7 @@ class CustomBottomSheet {
     required BuildContext context,
     required String heading,
     required List<Widget> content,
-    required Widget actionButton,
+    Widget? actionButton,
   }) {
     final ScrollController scrollController = ScrollController();
 
@@ -36,7 +36,6 @@ class CustomBottomSheet {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Header
                     Row(
                       children: [
                         InkWell(
@@ -55,13 +54,12 @@ class CustomBottomSheet {
                             "assets/svg/close_svg_button.svg",
                           ),
                         ),
-                        SizedBox(width: 15),
+                        const SizedBox(width: 15),
                       ],
                     ),
                     const SizedBox(height: 10),
                     Divider(color: AppColors.hint2color, thickness: 1),
                     const SizedBox(height: 10),
-
                     Flexible(
                       child: Scrollbar(
                         controller: scrollController,
@@ -76,8 +74,10 @@ class CustomBottomSheet {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 ...content,
-                                const SizedBox(height: 20),
-                                actionButton,
+                                if (actionButton != null) ...[
+                                  const SizedBox(height: 20),
+                                  actionButton,
+                                ],
                               ],
                             ),
                           ),

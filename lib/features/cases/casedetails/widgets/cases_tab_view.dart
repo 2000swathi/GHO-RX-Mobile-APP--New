@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/audiosummery.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/claiment.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/questions.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/custom_scrollable_tabs.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/medicalreport.dart';
-
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/reviewpage.dart';
 
 class CasesTabView extends StatefulWidget {
   const CasesTabView({super.key});
@@ -15,22 +15,31 @@ class _CasesTabViewState extends State<CasesTabView> {
   int selectedIndex = 0;
 
   final List<String> tabNames = [
-    "Audio Summary",
-    "Medical Documents",
+    "Claimant",
+    "Questions",
+    'Review'
   ];
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CustomScrollableTabs(
-          tabs: tabNames,
-          onTabSelected: (index) {
-            setState(() => selectedIndex = index);
-          },
-        ),
+      //  CustomScrollableTabs(
+      //     tabs: tabNames,
+      //     onTabSelected: (index) {
+      //       setState(() => selectedIndex = index);
+      //     },
+      //     useBoxStyle: true,
+      //   ),
+      CustomScrollableTabs(
+        tabs: tabNames,
+        onTabSelected: (index) {
+          setState(() => selectedIndex = index);
+        },
+        useBoxStyle: true,
+      ),
 
-        SizedBox(height: 9),
+        SizedBox(height: 8),
         _buildTabContent(selectedIndex),
       ],
     );
@@ -38,11 +47,11 @@ class _CasesTabViewState extends State<CasesTabView> {
   Widget _buildTabContent(int index) {
     switch (index) {
       case 0:
-        return Audiosummery();
+        return Clainment();
       case 1:
-        return Medicalreport();
+        return QuestionTab();
       default:
-        return SizedBox(); 
+        return Reviewpage(); 
     }
   }
 }

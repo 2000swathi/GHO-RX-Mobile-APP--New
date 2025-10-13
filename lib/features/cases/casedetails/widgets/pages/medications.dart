@@ -6,9 +6,9 @@ class Medications extends StatelessWidget {
   Medications({super.key});
 
   final List<Map<String, dynamic>> medication = [
-    {'title': 'Metformin', 'subtitle': 'Jun 2024'},
-    {'title': 'Gabapentin', 'subtitle': 'Jun 2024'},
-    {'title': 'Lisinopril', 'subtitle': 'Jun 2024'},
+    {'title': 'Metformin', 'subtitle': '(Jun 2024)'},
+    {'title': 'Gabapentin', 'subtitle': '(Jun 2024)'},
+    {'title': 'Lisinopril', 'subtitle': '(Jun 2024)'},
   ];
 
   @override
@@ -42,7 +42,7 @@ class Medications extends StatelessWidget {
             itemCount: medication.length,
             itemBuilder: (context, index) {
               return Padding(
-                padding:  EdgeInsets.symmetric(vertical: 8.0),
+                padding:  EdgeInsets.symmetric(vertical: 10.0),
                 child: Column(
                   children: [
                     Row(
@@ -52,18 +52,11 @@ class Medications extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.baseline,
-                                textBaseline: TextBaseline.alphabetic,
-                                children: [
-                                  Text(
-                                    medication[index]['title'] as String,
-                                    style: AppFonts.subheading16.copyWith(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  SizedBox(width: 5),
-                                ],
+                              Text(
+                                medication[index]['title'] as String,
+                                style: AppFonts.subheading16.copyWith(
+                                  fontSize: 16,
+                                ),
                               ),
                               SizedBox(height: 4),
                               Text(

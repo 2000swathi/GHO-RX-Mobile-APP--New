@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 
 class CustomScrollableTabs extends StatefulWidget {
   final List<String> tabs;
   final ValueChanged<int>? onTabSelected;
   final int initialIndex;
-  final bool useBoxStyle; // 👈 condition to switch UI styles
+  final bool useBoxStyle;
 
   const CustomScrollableTabs({
     super.key,
     required this.tabs,
     this.onTabSelected,
     this.initialIndex = 0,
-    this.useBoxStyle = false, // 👈 default: original TabBar style
+    this.useBoxStyle = false,
   });
 
   @override
@@ -46,65 +47,59 @@ class _CustomScrollableTabsState extends State<CustomScrollableTabs>
   Widget build(BuildContext context) {
     return Container(
       height: widget.useBoxStyle ? 45 : 40,
-      color: Colors.white,
-      child: widget.useBoxStyle
-          ? _buildBoxStyledTabs() 
-          : _buildDefaultTabs(), 
+      color: AppColors.hint2color.withAlpha(2),
+      child: widget.useBoxStyle ? _buildBoxStyledTabs() : _buildDefaultTabs(),
     );
   }
-
 
   Widget _buildBoxStyledTabs() {
-    return TabBar(
-      controller: _tabController,
-      isScrollable: true,
-      dividerColor: Colors.transparent,
-      indicator: UnderlineTabIndicator(
-        borderSide: BorderSide(
-          color: AppColors.primarycolor,
-          width: 2,
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: AppColors.hint2color, width: 1.0),
         ),
       ),
-      
-      labelPadding: const EdgeInsets.symmetric(horizontal: 16),
-      tabs: List.generate(widget.tabs.length, (index) {
-        final bool isSelected = index == selectedIndex;
-        return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          decoration: BoxDecoration(
-            color: isSelected
-                ? AppColors.primarycolor.withOpacity(0.1)
-                : Colors.transparent,
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Text(
-            widget.tabs[index],
-            style: TextStyle(
-              color: isSelected
-                  ? AppColors.primarycolor
-                  : AppColors.textPrimary.withOpacity(0.7),
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-              fontSize: 14,
+      child: TabBar(
+        controller: _tabController,
+        isScrollable: false,
+        dividerColor: Colors.transparent,
+        indicator: _DualIndicator(
+          backgroundColor: AppColors.lightBlueColor,
+          underlineColor: AppColors.primarycolor,
+          borderRadius: BorderRadius.circular(8),
+          underlineHeight: 2,
+        ),
+        indicatorSize: TabBarIndicatorSize.tab,
+        labelPadding: const EdgeInsets.symmetric(horizontal: 8),
+        tabs: List.generate(widget.tabs.length, (index) {
+          return Tab(
+            child: Text(
+              widget.tabs[index],
+              style: AppFonts.subtext.copyWith(
+                fontWeight:
+                    index == selectedIndex
+                        ? FontWeight.bold
+                        : FontWeight.normal,
+                color:
+                    index == selectedIndex
+                        ? AppColors.primarycolor
+                        : AppColors.textSecondary,
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
+
   Widget _buildDefaultTabs() {
     return TabBar(
       controller: _tabController,
       isScrollable: true,
       labelColor: AppColors.primarycolor,
       unselectedLabelColor: AppColors.textPrimary,
-      labelStyle: const TextStyle(
-        fontWeight: FontWeight.w600,
-        fontSize: 14,
-      ),
-      unselectedLabelStyle: const TextStyle(
-        fontWeight: FontWeight.w400,
-        fontSize: 14,
-      ),
+      labelStyle: AppFonts.subheading16.copyWith(fontSize: 14),
+      unselectedLabelStyle: AppFonts.subtext,
       indicatorColor: AppColors.primarycolor,
       indicatorWeight: 2.2,
       indicatorSize: TabBarIndicatorSize.label,
@@ -117,5 +112,61 @@ class _CustomScrollableTabsState extends State<CustomScrollableTabs>
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+}
+
+class _DualIndicator extends Decoration {
+  final Color backgroundColor;
+  final Color underlineColor;
+  final double underlineHeight;
+  final BorderRadius borderRadius;
+
+  const _DualIndicator({
+    required this.backgroundColor,
+    required this.underlineColor,
+    required this.underlineHeight,
+    required this.borderRadius,
+  });
+
+  @override
+  BoxPainter createBoxPainter([VoidCallback? onChanged]) {
+    return _DualPainter(
+      backgroundColor: backgroundColor,
+      underlineColor: underlineColor,
+      underlineHeight: underlineHeight,
+      borderRadius: borderRadius,
+    );
+  }
+}
+
+class _DualPainter extends BoxPainter {
+  final Color backgroundColor;
+  final Color underlineColor;
+  final double underlineHeight;
+  final BorderRadius borderRadius;
+
+  _DualPainter({
+    required this.backgroundColor,
+    required this.underlineColor,
+    required this.underlineHeight,
+    required this.borderRadius,
+  });
+
+  @override
+  void paint(Canvas canvas, Offset offset, ImageConfiguration cfg) {
+    final Rect rect = offset & cfg.size!;
+    final Paint bgPaint = Paint()..color = backgroundColor;
+
+    final RRect rRect = RRect.fromRectAndRadius(rect, borderRadius.topLeft);
+    canvas.drawRRect(rRect, bgPaint);
+
+    final Paint linePaint =
+        Paint()
+          ..color = underlineColor
+          ..strokeWidth = underlineHeight
+          ..style = PaintingStyle.fill;
+
+    final double y = rect.bottom - underlineHeight / 2;
+    canvas.drawLine(Offset(rect.left, y), Offset(rect.right, y), linePaint);
   }
 }

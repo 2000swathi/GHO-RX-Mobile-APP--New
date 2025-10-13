@@ -14,7 +14,7 @@ class Writtenreport extends StatelessWidget {
         decoration: InputDecoration(
           hintText:
               'Start typing your structured report here (e.g., Summary of Findings, Recommendations, Next Steps...)',
-          hintStyle: AppFonts.hinttext,
+          hintStyle: AppFonts.hinttext2,
           border: InputBorder.none,
         ),
       ),

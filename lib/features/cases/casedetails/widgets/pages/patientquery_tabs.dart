@@ -43,7 +43,7 @@ class _QueriesTabsState extends State<QueriesTabs> {
       case 0:
         return AnswerTab();
       case 1:
-        return SupportTabUI();
+        return SupportTab();
       default:
         return const SizedBox();
     }

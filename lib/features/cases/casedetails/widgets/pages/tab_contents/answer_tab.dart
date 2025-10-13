@@ -8,19 +8,21 @@ class AnswerTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.6,
-      width: double.infinity,
-      padding: const EdgeInsets.all(12),
+      height: 500,
       decoration: BoxDecoration(
         color: const Color(0xffF3F5F8),
         borderRadius: BorderRadius.circular(10),
       ),
+      clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
           Expanded(
-            child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
               child: TextFormField(
                 maxLines: null,
+                expands: true,
+                textAlignVertical: TextAlignVertical.top,
                 decoration: InputDecoration(
                   hintText:
                       "Type your answer here (e.g., explanation, advice, next steps)…",
@@ -31,9 +33,11 @@ class AnswerTab extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+          ),         
         ],
       ),
     );
   }
+
+
 }

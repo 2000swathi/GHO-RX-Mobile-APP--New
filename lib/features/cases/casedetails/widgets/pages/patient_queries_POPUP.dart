@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-
-import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/patientquery_tabs.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/queries_bottom_sheet.dart';
 
 class QuestionansSheet {
   static void showSheet(BuildContext context, String quires) {
-    CustomBottomSheet.show(
+    CustomQuerySheet.showsheet(
       context: context,
       heading: "Patient Queries",
       content: [
@@ -34,7 +33,9 @@ class QuestionansSheet {
           ],
         ),
       ],
-      actionButton: CustomButton(text: "Submit", onPressed: () {}),
+      actionButton: CustomButton(
+        text: "Save", 
+        onPressed: () {}),
     );
   }
 }

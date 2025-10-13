@@ -3,10 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/finalsubmission.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/final_opinion_confirmation.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/cases_tab_view.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/medications.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/summary.dart';
 
 class CaseDetailsPage extends StatelessWidget {
   const CaseDetailsPage({super.key});
@@ -27,7 +25,7 @@ class CaseDetailsPage extends StatelessWidget {
             ),
           ),
         ),
-        title: Text("Case Details", style: AppFonts.heading),
+        title: Text("Case ID: GHO-2024-9481", style: AppFonts.subheading),
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 16.0),
@@ -45,14 +43,17 @@ class CaseDetailsPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15),
+          padding: EdgeInsets.symmetric(horizontal: 12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Case ID: GHO-2024-9481", style: AppFonts.subheading),
+                  Text(
+                    " John Doe",
+                    style: AppFonts.subheading16,
+                  ),
                   InkWell(
                     onTap: () {
                       Navigator.pushNamed(context, "/qaPage");
@@ -74,10 +75,7 @@ class CaseDetailsPage extends StatelessWidget {
                   ),
                 ],
               ),
-              Text(
-                "Patient: John Doe",
-                style: AppFonts.subheading16.copyWith(fontSize: 14),
-              ),
+
               SizedBox(height: 10),
               Row(
                 children: [
@@ -118,16 +116,6 @@ class CaseDetailsPage extends StatelessWidget {
                   Icon(Icons.circle, size: 6, color: AppColors.red),
                   SizedBox(width: 3),
                   Text(
-                    "Oct 13, 2025",
-                    style: AppFonts.textSecondary.copyWith(
-                      fontSize: 14,
-                      color: AppColors.red,
-                    ),
-                  ),
-                  SizedBox(width: 3),
-                  Icon(Icons.circle, size: 6, color: AppColors.red),
-                  SizedBox(width: 3),
-                  Text(
                     "Due Date: Oct 14, 2025",
                     style: AppFonts.textSecondary.copyWith(
                       fontSize: 14,
@@ -136,13 +124,21 @@ class CaseDetailsPage extends StatelessWidget {
                   ),
                 ],
               ),
-              //pages
               SizedBox(height: 14),
-              Summerypage(),
-              SizedBox(height: 14),
-              Medications(),
+              CustomButton(
+                text: "Submit Review",
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FinalOpinionConfirmation(),
+                    ),
+                  );
+                },
+              ),
               SizedBox(height: 14),
               CasesTabView(),
+
               SizedBox(height: 14),
             ],
           ),
