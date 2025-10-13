@@ -67,9 +67,9 @@ class ProfileDtlContainer extends StatelessWidget {
                 children: [
                   Divider(color: AppColors.hint2color),
                   info,
-                  isadd == true
-                      ? Text("Add", style: AppFonts.textprogressbar)
-                      : SizedBox.shrink(),
+                  // isadd == true
+                  //     ? Text("Add", style: AppFonts.textprogressbar)
+                  //     : SizedBox.shrink(),
                 ],
               ),
           ],
