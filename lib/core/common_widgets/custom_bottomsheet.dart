@@ -36,7 +36,6 @@ class CustomBottomSheet {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Header
                     Row(
                       children: [
                         InkWell(
@@ -61,7 +60,6 @@ class CustomBottomSheet {
                     const SizedBox(height: 10),
                     Divider(color: AppColors.hint2color, thickness: 1),
                     const SizedBox(height: 10),
-
                     Flexible(
                       child: Scrollbar(
                         controller: scrollController,
