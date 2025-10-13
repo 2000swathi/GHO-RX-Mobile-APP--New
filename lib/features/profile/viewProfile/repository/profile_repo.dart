@@ -85,7 +85,6 @@ class ProfileRepository {
     }
   }
 
-  
   // license
   Future<LicenseModel> fetchLicenseInfo() async {
     final token = await SharedPreference.getToken();
