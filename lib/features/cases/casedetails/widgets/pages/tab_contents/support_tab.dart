@@ -7,68 +7,69 @@ class SupportTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 400, 
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: const Color(0xffF3F5F8),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: TextFormField(
-              maxLines: null,
-              expands: true,
-              textAlignVertical: TextAlignVertical.top,
-              decoration: InputDecoration(
-                hintText:
-                    "Type your answer here (e.g., explanation, advice, next steps)…",
-                hintStyle: AppFonts.textprimary.copyWith(
-                  color: AppColors.textPrimary.withAlpha(70),
-                ),
-                border: InputBorder.none,
-              ),
-            ),
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: const Color(0xffF3F5F8),
+            borderRadius: BorderRadius.circular(12),
           ),
-
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Row(
             children: [
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.format_bold),
+              Expanded(
+                child: Text(
+                  "Attach supporting files (reports, images, prescription)...",
+                  style: AppFonts.textprimary.copyWith(
+                    fontSize: 13,
+                    color: AppColors.textPrimary.withAlpha(70),
                   ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.format_italic),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.format_underline),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.format_list_bulleted),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.format_list_bulleted),
-                  ),
-                ],
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-              TextButton(
+              IconButton(
                 onPressed: () {},
-                child: const Text("Save"),
+                icon: const Icon(Icons.link_outlined, size: 30),
+                splashRadius: 22,
               ),
             ],
           ),
-        ],
-      ),
+        ),
+
+        const SizedBox(height: 20),
+        Container(
+          height: 400,
+          decoration: BoxDecoration(
+            color: const Color(0xffF3F5F8),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: Column(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: TextFormField(
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    expands: true,
+                    textAlignVertical: TextAlignVertical.top,
+                    decoration: InputDecoration(
+                      hintText:
+                          "Add supporting details or clarification (e.g., extra notes, guidance)…",
+                      hintStyle: AppFonts.textprimary.copyWith(
+                        color: AppColors.textPrimary.withAlpha(70),
+                      ),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

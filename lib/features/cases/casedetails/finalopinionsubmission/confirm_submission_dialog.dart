@@ -10,6 +10,7 @@ class ConfirmSubmissionDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      backgroundColor: AppColors.white,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -31,6 +32,7 @@ class ConfirmSubmissionDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text("Confirm Submission", style: AppFonts.heading),
+                SizedBox(height: 29),
                 Text(
                   "Are you sure you want to submit this review?",
                   style: AppFonts.textprimary,
@@ -53,8 +55,10 @@ class ConfirmSubmissionDialog extends StatelessWidget {
               children: [
                 Expanded(
                   child: CustomButton(
-                    text: "Cancel/Back to Edit",
+                    text: "Cancel / Edit",
                     onPressed: () {},
+                    colortext: AppColors.primarycolor,
+                    color: AppColors.primarycolor.withAlpha(15),
                   ),
                 ),
                 SizedBox(width: 6),

@@ -38,7 +38,7 @@ class FinalOpinionConfirmation extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("Case ID: GHO-2024-9481", style: AppFonts.subheading),
-              SizedBox(height: 4.h),
+              SizedBox(height: 6.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -49,7 +49,7 @@ class FinalOpinionConfirmation extends StatelessWidget {
                   Text("12 Dec 1987 (38 years)", style: AppFonts.subtext),
                 ],
               ),
-              SizedBox(height: 4.h),
+              SizedBox(height: 6.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/patientquery_tabs.dart';
@@ -32,6 +33,9 @@ class QuestionansSheet {
           ],
         ),
       ],
+      actionButton: CustomButton(
+        text: "Save", 
+        onPressed: () {}),
     );
   }
 }
