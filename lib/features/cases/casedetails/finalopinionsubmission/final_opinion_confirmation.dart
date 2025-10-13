@@ -29,7 +29,13 @@ class FinalOpinionConfirmation extends StatelessWidget {
             ),
           ),
         ),
-        title: Text("Final opinion Submission", style: AppFonts.heading),
+        title: Row(
+          children: [
+            Text("Case ID: GHO-2024-9481", style: AppFonts.heading),
+            Spacer(),
+            SvgPicture.asset("assets/svg/roundedMsg.svg"),
+          ],
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 14, right: 14),
@@ -37,15 +43,37 @@ class FinalOpinionConfirmation extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Case ID: GHO-2024-9481", style: AppFonts.subheading),
+              Row(
+                children: [
+                  Text("Aswathy K Pradeep", style: AppFonts.subheading),
+                  Spacer(),
+                  Container(
+                    width: 68.w,
+                    height: 24.h,
+                    decoration: BoxDecoration(
+                      color: AppColors.successcolor.withAlpha(10),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "In Review",
+                        style: AppFonts.subtext.copyWith(
+                          fontSize: 10,
+                          color: AppColors.successcolor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               SizedBox(height: 6.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Icon(Icons.person),
-                  Text("Male", style: AppFonts.subtext),
+                  Text("Female", style: AppFonts.subtext),
                   SizedBox(width: 14.w),
-                  Icon(Icons.calendar_month_sharp, size: 16),
+                  SvgPicture.asset("assets/svg/calender.svg"),
                   Text("12 Dec 1987 (38 years)", style: AppFonts.subtext),
                 ],
               ),
@@ -73,7 +101,7 @@ class FinalOpinionConfirmation extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 12),
+              SizedBox(height: 24),
               Container(
                 margin: EdgeInsets.only(bottom: 15),
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -128,6 +156,7 @@ class FinalOpinionConfirmation extends StatelessWidget {
                   ],
                 ),
               ),
+              SizedBox(height: 20.h),
               CustomContainer(
                 greyHeading: "Written Report",
                 icon: Icon(Icons.more_horiz_sharp),
@@ -136,7 +165,7 @@ class FinalOpinionConfirmation extends StatelessWidget {
                     "The MRI scan shows mild cervical spondylosis with no significant spinal cord compression. The neurological exam is largely normal except for mild..",
                 hintText: "Read more...",
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 16),
 
               CustomContainer(
                 greyHeading: "Attached Documents",
@@ -197,10 +226,10 @@ class FinalOpinionConfirmation extends StatelessWidget {
                 icon: Icon(Icons.more_horiz_sharp),
                 customWidgets1: [
                   CommonQa(
-                    icon1: Icon(
-                      Icons.circle,
-                      color: AppColors.primarycolor,
-                      size: 13.33,
+                    bullet: SvgPicture.asset(
+                      "assets/svg/blueBullet.svg",
+                      width: 13.33,
+                      height: 13.333,
                     ),
                     qamsg1:
                         "Do my symptoms definitely suggest \na stroke, or could it be something else?",
@@ -221,11 +250,7 @@ class FinalOpinionConfirmation extends StatelessWidget {
                   SizedBox(height: 16),
 
                   CommonQa(
-                    icon1: Icon(
-                      Icons.circle,
-                      color: AppColors.primarycolor,
-                      size: 13.33,
-                    ),
+                    bullet: SvgPicture.asset("assets/svg/blueBullet.svg"),
                     qamsg1:
                         "What risks do I face if I delay admission or treatment?",
                     ans:
@@ -261,7 +286,7 @@ class FinalOpinionConfirmation extends StatelessWidget {
                 ],
               ),
 
-              SizedBox(height: 10),
+              SizedBox(height: 36),
               CustomButton(
                 text: "Confirm & Submit Final Review",
                 onPressed: () {
@@ -273,7 +298,7 @@ class FinalOpinionConfirmation extends StatelessWidget {
                   );
                 },
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 53),
             ],
           ),
         ),
