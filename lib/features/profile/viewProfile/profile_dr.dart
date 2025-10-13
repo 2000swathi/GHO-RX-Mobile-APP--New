@@ -312,11 +312,119 @@ class _ProfileDrState extends State<ProfileDr> {
             ),
           ),
 
-          _buildSection(
+           _buildSection(
             index: 1,
             heading: "Accreditation",
-            subheading: "",
-            content: Text("no data"),
+            subheading: "Verify your qualifications and area of expertise.",
+            content: BlocProvider(
+              create:
+                  (_) =>
+                      ProfileBloc(repository: repository)
+                        ..add(FetchAccreditation()),
+              child: BlocBuilder<ProfileBloc, ProfileState>(
+                builder: (context, state) {
+                  if (state is ProfileLoading) {
+                    return const Center(child: LoadingAnimation());
+                  } else if (state is AccreditationState) {
+                    final accreditationList =
+ state.accreditationModel.data;
+                    if (accreditationList.isEmpty) {
+                      return const Center(child: Text("No accreditations found"));
+                    }
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // 🩺 List of existing accreditations
+                        ...accreditationList.map((accreditation) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                               _buildRow(
+                                "Accreditation number",
+                                accreditation.accreditationNumber,
+                              ),
+                              _buildRow(
+                                "Accreditation Type",
+                                accreditation.accreditationType,
+                              ),
+                              _buildRow(
+                                "Accreditation Body",
+                                accreditation.accreditationBody,
+                              ),
+                              const SizedBox(height: 5),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: InkWell(
+                                  onTap: () async {
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder:
+                                          (_) => const Center(
+                                            child: LoadingAnimation(),
+                                          ),
+                                    );
+                                    // TODO: Implement Edit Accreditation
+                                    Navigator.pop(context);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text("Edit accreditation not implemented yet.")),
+                                    );
+                                  },
+                                  child: SvgPicture.asset(
+                                    "assets/svg/edit_svg.svg",
+                                  ),
+                                ),
+                              ),
+                              Divider(color: AppColors.hint2color),
+                            ],
+                          );
+                        }),
+
+                        // 🩵 Add Accreditation button at the bottom
+                        const SizedBox(height: 10),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: InkWell(
+                            onTap: () async {
+                              // Fetch the specialty list for adding
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder:
+                                    (_) =>
+                                        const Center(child: LoadingAnimation()),
+                              );
+
+                              // TODO: Implement Add Accreditation
+                              Navigator.pop(context);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text("Add accreditation not implemented yet.")),
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Add Accreditation",
+                                  style: AppFonts.textprogressbar.copyWith(
+                                    color: AppColors.primarycolor,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  } else if (state is ProfileError) {
+                    return Center(child: Text(state.message));
+                  }
+                  return Container();
+                },
+              ),
+            ),
           ),
           _buildSection(
             index: 3,

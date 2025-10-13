@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/accreditation_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/insurance_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/license_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/personalinfo_model.dart';
@@ -56,6 +57,17 @@ class LicenseState extends ProfileState {
   List<Object?> get props => [LicenseModel];
 }
 
+//Acreditation
+class AccreditationState extends ProfileState {
+  final AccreditationModel accreditationModel;
+
+  const AccreditationState({required this.accreditationModel});
+
+  @override
+  List<Object?> get props => [AccreditationModel];
+}
+
+
 // Error state
 class ProfileError extends ProfileState {
   final String message;
@@ -65,3 +77,4 @@ class ProfileError extends ProfileState {
   @override
   List<Object?> get props => [message];
 }
+

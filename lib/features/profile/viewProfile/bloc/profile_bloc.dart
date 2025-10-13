@@ -11,6 +11,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<FetchSpecialty>(_onFetchSpecialty);
     on<FetchInsurance>(_onFetchInsurance);
     on<FetchLicence>(_onFetchLicense);
+    on<FetchAccreditation>(_onFetchAccreditation);
   }
   
   //personal info
@@ -72,4 +73,19 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(ProfileError(message: e.toString()));
     }
   }
+//accreditation
+ Future<void>  _onFetchAccreditation(
+    FetchAccreditation event,
+    Emitter<ProfileState> emit,
+  ) async {
+    emit(ProfileLoading());
+
+    try {
+      final accreditation = await repository.fetchAccreditationInfo();
+      emit(AccreditationState(accreditationModel: accreditation));
+    } catch (e) {
+      emit(ProfileError(message: e.toString()));
+    }
+  }
+
 }
