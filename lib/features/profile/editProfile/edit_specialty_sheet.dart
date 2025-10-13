@@ -7,21 +7,22 @@ import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/mod
 
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/specialty_model.dart';
 
-class EditSpecialtySheet {
+class AddEditSpecialtySheet {
   static void showSheet(
     BuildContext context,
     SpecialtyModel info,
     List<SpecialtyList> splList,
+    bool? isEdit
   ) {
-   final bool isEdit = info != null && info.data.isNotEmpty;
+  
     String? selectedSpecialtyID =
-        isEdit ? info.data[0].specialtyId.toString() : null;
+        isEdit ==true ? info.data[0].specialtyId.toString() : null;
     String? selectedCertifiedBoard =
-        isEdit ? info.data[0].certifiedBoard : null;
-    String? selectedSpecialtyType = isEdit ? info.data[0].specialtyType : null;
+       isEdit ==true  ? info.data[0].certifiedBoard : null;
+    String? selectedSpecialtyType =isEdit ==true ? info.data[0].specialtyType : null;
     CustomBottomSheet.show(
       context: context,
-      heading: isEdit ? "Edit Specialty" : "Add Specialty",
+      heading: isEdit ==true  ? "Edit Specialty" : "Add Specialty",
       content: [
         StatefulBuilder(
           builder: (context, setState) {
@@ -67,7 +68,7 @@ class EditSpecialtySheet {
         ),
       ],
       actionButton: CustomButton(
-        text: isEdit ? "Submit Request" : "Add Specialty",
+        text: isEdit ==true  ? "Submit Request" : "Add Specialty",
         onPressed: () {},
       ),
     );
