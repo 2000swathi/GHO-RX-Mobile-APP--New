@@ -212,10 +212,11 @@ class _ProfileDrState extends State<ProfileDr> {
                                               .expand((inner) => inner)
                                               .toList();
 
-                                      EditSpecialtySheet.showSheet(
+                                      AddEditSpecialtySheet.showSheet(
                                         context,
                                         info,
                                         specialties,
+                                        true,
                                       );
                                     } else if (listState is ListFailure) {
                                       ScaffoldMessenger.of(
@@ -274,10 +275,11 @@ class _ProfileDrState extends State<ProfileDr> {
                                         .toList();
 
                                 // Pass empty info for "Add" mode
-                                EditSpecialtySheet.showSheet(
+                                AddEditSpecialtySheet.showSheet(
                                   context,
                                   info,
                                   specialties,
+                                  false,
                                 );
                               } else if (listState is ListFailure) {
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -288,11 +290,6 @@ class _ProfileDrState extends State<ProfileDr> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(
-                                  Icons.add_circle_outline,
-                                  color: AppColors.primarycolor,
-                                ),
-                                const SizedBox(width: 6),
                                 Text(
                                   "Add Specialty",
                                   style: AppFonts.textprogressbar.copyWith(
@@ -516,7 +513,6 @@ class _ProfileDrState extends State<ProfileDr> {
     bool? isadd = true,
   }) {
     return ProfileDtlContainer(
-      isadd: isadd!,
       key: ValueKey(heading),
       heading: heading,
       subheading: subheading,
