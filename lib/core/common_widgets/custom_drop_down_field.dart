@@ -1,11 +1,12 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 
-class CustomDropdownFormField<T> extends StatelessWidget {
+class CustomDropdownFormField<T> extends StatefulWidget {
   final String name;
   final String hintText;
-  final List<T> items;
+  final List<DropdownItem<T>> items;
   final T? value;
   final String? Function(T?)? validator;
   final void Function(T?)? onChanged;
@@ -21,20 +22,30 @@ class CustomDropdownFormField<T> extends StatelessWidget {
   });
 
   @override
+  State<CustomDropdownFormField<T>> createState() => _CustomDropdownFormFieldState<T>();
+}
+
+class _CustomDropdownFormFieldState<T> extends State<CustomDropdownFormField<T>> {
+  @override
   Widget build(BuildContext context) {
     Color borderColor = AppColors.offgreycolor;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(name, style: AppFonts.textSecondary),
+        Text(widget.name, style: AppFonts.textSecondary),
         const SizedBox(height: 8),
-        DropdownButtonFormField<T>(
-          value: value,
-          validator: validator,
-          onChanged: onChanged,
-          hint: Text(hintText, style: AppFonts.hinttext),
+        DropdownButtonFormField2<T>(
+          isExpanded: true,
+          value: widget.items.any((e) => e.value == widget.value) ? widget.value : null,
+          validator: widget.validator,
+          onChanged: widget.onChanged,
+          hint: Text(widget.hintText, style: AppFonts.hinttext),
           decoration: InputDecoration(
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 10,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: borderColor),
@@ -45,18 +56,43 @@ class CustomDropdownFormField<T> extends StatelessWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: borderColor),
+              borderSide: BorderSide(color: AppColors.primarycolor),
             ),
           ),
+
+          dropdownStyleData: DropdownStyleData(
+            isOverButton: true,
+            useSafeArea: true,
+            maxHeight: 400,
+            width: MediaQuery.of(context).size.width * 0.6,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.white,
+            ),
+            elevation: 4,
+            offset: const Offset(0, 0),
+          ),
           items:
-              items.map((item) {
+              widget.items.map((item) {
                 return DropdownMenuItem<T>(
-                  value: item,
-                  child: Text(item.toString(), style: AppFonts.textprimary),
+                  value: item.value,
+                  child: Text(
+                    item.label,
+                    style: AppFonts.textprimary,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 );
               }).toList(),
         ),
       ],
     );
   }
+}
+
+/// Helper model for dropdown items
+class DropdownItem<T> {
+  final T value;
+  final String label;
+
+  DropdownItem({required this.value, required this.label});
 }

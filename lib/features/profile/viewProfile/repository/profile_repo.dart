@@ -30,7 +30,7 @@ class ProfileRepository {
       final response = await _dioHandler.post('', data: data);
       return PersonalInfoModel.fromJson(response['Data'][0][0]);
     } catch (e) {
-      throw Exception(e.toString());
+      throw (e.toString());
     }
   }
 
@@ -56,7 +56,7 @@ class ProfileRepository {
       final response = await _dioHandler.post('', data: data);
       return SpecialtyModel.fromJson(response);
     } catch (e) {
-      throw Exception(e.toString());
+      throw (e.toString());
     }
   }
   // insurance
@@ -81,7 +81,7 @@ class ProfileRepository {
       final response = await _dioHandler.post('', data: data);
       return InsuranceModel.fromJson(response);
     } catch (e) {
-      throw Exception(e.toString());
+      throw (e.toString());
     }
   }
 
@@ -107,7 +107,7 @@ class ProfileRepository {
       final response = await _dioHandler.post('', data: data);
       return LicenseModel.fromJson(response);
     } catch (e) {
-      throw Exception(e.toString());
+      throw (e.toString());
     }
   }
 }

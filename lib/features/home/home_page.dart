@@ -58,7 +58,7 @@ class HomePage extends StatelessWidget {
                               style: AppFonts.subtext,
                             );
                           } else if (state is ProfileError) {
-                            return Center(child: Text(state.message));
+                            return SizedBox();
                           }
                           return Container();
                         },

@@ -4,6 +4,8 @@ import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_bloc.dart
 import 'package:ghorx_mobile_app_new/features/authentication/repository/auth_repository.dart';
 import 'package:ghorx_mobile_app_new/features/home/bloc/home_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/home/repository/home_repository.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/bloc/list_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/list_repository.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/profile_repo.dart';
 import 'package:ghorx_mobile_app_new/features/splash/bloc/spalsh_event.dart';
@@ -29,6 +31,9 @@ class AppBlocProvider extends StatelessWidget {
         ),
         BlocProvider<HomeBloc>(
           create: (_) => HomeBloc(repository: HomeRepository()),
+        ),
+        BlocProvider<ListBloc>(
+          create: (_) => ListBloc(repository: ListRepository()),
         ),
       ],
       child: child,

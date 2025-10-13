@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class AppColors {
@@ -12,6 +13,7 @@ class AppColors {
   static const Color warningred = Color(0xffF36C6C);
   static const Color successcolor = Color(0xff199922); 
   static const Color white = Color(0xffFFFFFF); 
+  static const Color black = Colors.black; 
   static const Color cards = Color(0xffE3E7FF); 
   static const Color red = Color(0xff983C3C);
   static const Color glasscontainer = Color(0xFFF58CFF);
