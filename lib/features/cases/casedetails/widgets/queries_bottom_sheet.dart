@@ -8,7 +8,7 @@ class CustomQuerySheet {
     required BuildContext context,
     required String heading,
     required List<Widget> content,
-    Widget? actionButton,
+    required Widget? actionButton,
   }) {
     showModalBottomSheet(
       context: context,

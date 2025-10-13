@@ -44,7 +44,6 @@ dependencies:
   shared_preferences: ^2.5.3
   flutter_glass_morphism: ^1.0.1
   dotted_border: ^2.1.0
-  flutter_quill: ^11.4.2
 
 
 dev_dependencies:
