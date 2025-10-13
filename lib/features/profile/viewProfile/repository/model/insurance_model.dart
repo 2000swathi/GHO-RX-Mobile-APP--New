@@ -2,7 +2,7 @@ class InsuranceModel {
   final int status;
   final String? error;
   final String? info;
-  final List<InsuranceData> data; // flattened list
+  final List<InsuranceData> data; 
 
   InsuranceModel({
     required this.status,
