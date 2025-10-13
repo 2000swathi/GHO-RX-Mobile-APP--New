@@ -37,12 +37,14 @@ class FinalOpinionConfirmation extends StatelessWidget {
           ],
         ),
       ),
+
       body: Padding(
         padding: const EdgeInsets.only(left: 14, right: 14),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 24.h),
               Row(
                 children: [
                   Text("Aswathy K Pradeep", style: AppFonts.subheading),
