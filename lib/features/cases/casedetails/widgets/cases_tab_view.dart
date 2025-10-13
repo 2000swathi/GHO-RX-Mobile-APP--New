@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/claiment.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/questions.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/custom_scrollable_tabs.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/widgets/pages/reviewpage.dart';
 
 class CasesTabView extends StatefulWidget {
   const CasesTabView({super.key});
@@ -22,14 +24,22 @@ class _CasesTabViewState extends State<CasesTabView> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CustomScrollableTabs(
-          tabs: tabNames,
-          onTabSelected: (index) {
-            setState(() => selectedIndex = index);
-          },
-        ),
+      //  CustomScrollableTabs(
+      //     tabs: tabNames,
+      //     onTabSelected: (index) {
+      //       setState(() => selectedIndex = index);
+      //     },
+      //     useBoxStyle: true,
+      //   ),
+      CustomScrollableTabs(
+        tabs: tabNames,
+        onTabSelected: (index) {
+          setState(() => selectedIndex = index);
+        },
+        useBoxStyle: true,
+      ),
 
-        SizedBox(height: 9),
+        SizedBox(height: 8),
         _buildTabContent(selectedIndex),
       ],
     );
@@ -39,9 +49,9 @@ class _CasesTabViewState extends State<CasesTabView> {
       case 0:
         return Clainment();
       case 1:
-        return SizedBox();
+        return QuestionTab();
       default:
-        return SizedBox(); 
+        return Reviewpage(); 
     }
   }
 }

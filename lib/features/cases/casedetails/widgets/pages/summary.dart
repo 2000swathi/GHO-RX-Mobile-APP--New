@@ -50,7 +50,7 @@ class Summerypage extends StatelessWidget {
                     onTap: () => isExpanded.value = !isExpanded.value,
                     child: Text(
                       isExpandedValue ? "Read less" : "Read more...",
-                      style: AppFonts.hinttext,
+                      style: AppFonts.hinttext2,
                     ),
                   ),
                 ],
