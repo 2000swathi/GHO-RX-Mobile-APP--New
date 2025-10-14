@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/bankinfo_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/insurance_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/license_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/personalinfo_model.dart';
@@ -54,6 +55,16 @@ class LicenseState extends ProfileState {
 
   @override
   List<Object?> get props => [LicenseModel];
+}
+
+// bankinfo list
+class BankInfo extends ProfileState {
+  final List<BankInfoModel> bankList;
+
+  const BankInfo({required this.bankList});
+
+  @override
+  List<Object?> get props => [bankList];
 }
 
 // Error state
