@@ -1,3 +1,44 @@
+class BankInfoResponseModel {
+  final int status;
+  final String? error;
+  final String? info;
+  final List<BankInfoModel> data; 
+
+  BankInfoResponseModel({
+    required this.status,
+    this.error,
+    this.info,
+    required this.data,
+  });
+
+  factory BankInfoResponseModel.fromJson(Map<String, dynamic> json) {
+    final nestedList = json['Data'] as List<dynamic>;
+    final flatList =
+        nestedList
+            .expand(
+              (inner) => (inner as List<dynamic>).map(
+                (item) => BankInfoModel.fromJson(item),
+              ),
+            )
+            .toList();
+
+    return BankInfoResponseModel(
+      status: json['Status'],
+      error: json['Error'],
+      info: json['Info'],
+      data: flatList,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'Status': status,
+    'Error': error,
+    'Info': info,
+    'Data': data.map((item) => item.toJson()).toList(),
+  };
+}
+
+
 class BankInfoModel {
   final int id;
   final int reviewerId;

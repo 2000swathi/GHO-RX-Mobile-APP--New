@@ -161,7 +161,8 @@ class ProfileRepository {
     }
   }
 
-  Future<List<BankInfoModel>> fetchBankInfo() async {
+  // Bank Info
+  Future <BankInfoResponseModel> fetchBankInfo() async {
     final token = await SharedPreference.getToken();
     final reviewerId = await SharedPreference.getUserId();
     if (token!.isEmpty || reviewerId!.isEmpty) {
@@ -179,11 +180,9 @@ class ProfileRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
-      return BankInfoModel.listFromResponse(response);
+      return BankInfoResponseModel.fromJson(response);
     } catch (e) {
       throw Exception(e.toString());
     }
   }
-
-
 }

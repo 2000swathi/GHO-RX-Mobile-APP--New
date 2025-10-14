@@ -5,7 +5,9 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart'
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/widgets/case_appbar.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_language.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/bloc/list_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/widget/addedit_bankinfo.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_state.dart';
@@ -447,39 +449,60 @@ class _ProfileDrState extends State<ProfileDr> {
                       return const Center(child: Text("No Insurance added"));
                     }
                     return Column(
-                      children:
-                          insuranceList
-                              .map(
-                                (insurance) => Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    _buildRow(
-                                      "ProviderID",
-                                      insurance.providerID.toString(),
-                                    ),
-                                    _buildRow(
-                                      "ProviderName",
-                                      insurance.providerName.toString(),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: InkWell(
-                                        onTap: () async {
-                                          EditInsuranceSheet.showSheet(
-                                            context,
-                                            state.insuranceModel,
-                                          );
-                                        },
-                                        child: SvgPicture.asset(
-                                          "assets/svg/edit_svg.svg",
-                                        ),
-                                      ),
-                                    ),
-                                    Divider(color: AppColors.hint2color),
-                                  ],
+                      children: [
+                        ...insuranceList.map(
+                          (insurance) => Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildRow(
+                                "ProviderID",
+                                insurance.providerID.toString(),
+                              ),
+                              _buildRow(
+                                "ProviderName",
+                                insurance.providerName.toString(),
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: InkWell(
+                                  onTap: () async {
+                                    EditInsuranceSheet.showSheet(
+                                      context,
+                                      state.insuranceModel,
+                                    );
+                                  },
+                                  child: SvgPicture.asset(
+                                    "assets/svg/edit_svg.svg",
+                                  ),
                                 ),
-                              )
-                              .toList(),
+                              ),
+                              Divider(color: AppColors.hint2color),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 12),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: InkWell(
+                            onTap: () {
+                              AddEditBankInfo.showSheet(context, null, false);
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Add Bank Info",
+                                  style: AppFonts.textprogressbar.copyWith(
+                                    color: AppColors.primarycolor,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     );
                   }
                   if (state is ProfileError) {
@@ -506,89 +529,147 @@ class _ProfileDrState extends State<ProfileDr> {
                   }
                   if (state is LicenseState) {
                     final licenseList = state.licenseModel.data;
+                    final info = state.licenseModel;
+
                     if (licenseList.isEmpty) {
                       return const Center(child: Text("No license added"));
                     }
-                    final info = state.licenseModel;
+
                     return Column(
-                      children:
-                          licenseList
-                              .map(
-                                (license) => Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    _buildRow(
-                                      "License Number",
-                                      license.licenseNumber,
-                                    ),
-                                    _buildRow(
-                                      "Issuing Authority",
-                                      license.issuingAuthority,
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: InkWell(
-                                        onTap: () async {
-                                          showDialog(
-                                            context: context,
-                                            barrierDismissible: false,
-                                            builder:
-                                                (_) => const Center(
-                                                  child: LoadingAnimation(),
-                                                ),
-                                          );
+                      children: [
+                        ...licenseList.map(
+                          (license) => Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildRow(
+                                "License Number",
+                                license.licenseNumber,
+                              ),
+                              _buildRow(
+                                "Issuing Authority",
+                                license.issuingAuthority,
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: InkWell(
+                                  onTap: () async {
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder:
+                                          (_) => const Center(
+                                            child: LoadingAnimation(),
+                                          ),
+                                    );
+                                    context.read<ListBloc>().add(
+                                      FetchLicenseList(),
+                                    );
+                                    final listState = await context
+                                        .read<ListBloc>()
+                                        .stream
+                                        .firstWhere(
+                                          (s) =>
+                                              s is LicenseListState ||
+                                              s is ListFailure,
+                                        );
+                                    Navigator.of(
+                                      context,
+                                      rootNavigator: true,
+                                    ).pop();
 
-                                          context.read<ListBloc>().add(
-                                            FetchLicenseList(),
-                                          );
+                                    if (listState is LicenseListState) {
+                                      final licenses =
+                                          listState.licenseResponse.data
+                                              .expand((inner) => inner)
+                                              .toList();
 
-                                          final listState = await context
-                                              .read<ListBloc>()
-                                              .stream
-                                              .firstWhere(
-                                                (s) =>
-                                                    s is LicenseListState ||
-                                                    s is ListFailure,
-                                              );
-
-                                          Navigator.of(
-                                            context,
-                                            rootNavigator: true,
-                                          ).pop();
-
-                                          if (listState is LicenseListState) {
-                                            final licenses =
-                                                listState.licenseResponse.data
-                                                    .expand((inner) => inner)
-                                                    .toList();
-
-                                            EditLicenseSheet.showSheet(
-                                              context,
-                                              info,
-                                              licenses,
-                                            );
-                                          } else if (listState is ListFailure) {
-                                            ScaffoldMessenger.of(
-                                              context,
-                                            ).showSnackBar(
-                                              SnackBar(
-                                                content: Text(listState.error),
-                                              ),
-                                            );
-                                          }
-                                        },
-                                        child: SvgPicture.asset(
-                                          "assets/svg/edit_svg.svg",
+                                      AddEditLicenseSheet.showSheet(
+                                        context,
+                                        info,
+                                        licenses,
+                                        true,
+                                      );
+                                    } else if (listState is ListFailure) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(listState.error),
                                         ),
-                                      ),
-                                    ),
-                                    Divider(color: AppColors.hint2color),
-                                  ],
+                                      );
+                                    }
+                                  },
+                                  child: SvgPicture.asset(
+                                    "assets/svg/edit_svg.svg",
+                                  ),
                                 ),
-                              )
-                              .toList(),
+                              ),
+                              Divider(color: AppColors.hint2color),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: InkWell(
+                            onTap: () async {
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder:
+                                    (_) =>
+                                        const Center(child: LoadingAnimation()),
+                              );
+
+                              context.read<ListBloc>().add(FetchLicenseList());
+
+                              final licenseState = await context
+                                  .read<ListBloc>()
+                                  .stream
+                                  .firstWhere(
+                                    (s) =>
+                                        s is LicenseListState ||
+                                        s is ListFailure,
+                                  );
+
+                              Navigator.of(context, rootNavigator: true).pop();
+
+                              if (licenseState is LicenseListState) {
+                                final specialties =
+                                    licenseState.licenseResponse.data
+                                        .expand((inner) => inner)
+                                        .toList();
+
+                                AddEditLicenseSheet.showSheet(
+                                  context,
+                                  info,
+                                  specialties,
+                                  false,
+                                );
+                              } else if (licenseState is ListFailure) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(licenseState.error)),
+                                );
+                              }
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Add License",
+                                  style: AppFonts.textprogressbar.copyWith(
+                                    color: AppColors.primarycolor,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     );
                   }
+
                   if (state is ProfileError) {
                     return Center(child: Text(state.message));
                   }
@@ -597,6 +678,7 @@ class _ProfileDrState extends State<ProfileDr> {
               ),
             ),
           ),
+
           _buildSection(
             index: 5,
             heading: "Language",
@@ -612,37 +694,64 @@ class _ProfileDrState extends State<ProfileDr> {
                     return const Center(child: LoadingAnimation());
                   }
                   if (state is LanguageState) {
-                    final licenseList = state.languageModel.data;
-                    if (licenseList.isEmpty) {
+                    final languageList = state.languageModel.data;
+                    if (languageList.isEmpty) {
                       return const Center(child: Text("No license added"));
                     }
                     final info = state.languageModel;
                     return Column(
-                      children:
-                          licenseList
-                              .map(
-                                (language) => Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    _buildRow("Language", language.language),
-                                    _buildRow(
-                                      "Proficiency",
-                                      language.proficiency,
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: InkWell(
-                                        onTap: () async {},
-                                        child: SvgPicture.asset(
-                                          "assets/svg/edit_svg.svg",
-                                        ),
-                                      ),
-                                    ),
-                                    Divider(color: AppColors.hint2color),
-                                  ],
+                      children: [
+                        ...languageList.map(
+                          (language) => Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildRow("Language", language.language),
+                              _buildRow("Proficiency", language.proficiency),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: InkWell(
+                                  onTap: () async {
+                                    AddeditLanguageSheet.showSheet(
+                                      context,
+                                      info,
+                                      true,
+                                    );
+                                  },
+                                  child: SvgPicture.asset(
+                                    "assets/svg/edit_svg.svg",
+                                  ),
                                 ),
-                              )
-                              .toList(),
+                              ),
+                              Divider(color: AppColors.hint2color),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 12),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: InkWell(
+                            onTap: () {
+                              AddeditLanguageSheet.showSheet(
+                                context,
+                                info,
+                                false,
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Add Language",
+                                  style: AppFonts.textprogressbar.copyWith(
+                                    color: AppColors.primarycolor,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     );
                   }
                   if (state is ProfileError) {
@@ -673,31 +782,60 @@ class _ProfileDrState extends State<ProfileDr> {
                     }
 
                     return Column(
-                      children:
-                          bankList
-                              .map(
-                                (bank) => Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    _buildRow("Bank Type", bank.accountType),
-                                    _buildRow(
-                                      "Routing Number",
-                                      bank.routingNumber,
-                                    ),
-                                    _buildRow(
-                                      "Account Number",
-                                      bank.accountNumber,
-                                    ),
-                                    _buildRow(
-                                      "Account Name",
-                                      bank.accountHolderName,
-                                    ),
-
-                                    Divider(color: AppColors.hint2color),
-                                  ],
+                      children: [
+                        ...bankList.map(
+                          (bank) => Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildRow("Bank Type", bank.accountType),
+                              _buildRow("Routing Number", bank.routingNumber),
+                              _buildRow("Account Number", bank.accountNumber),
+                              _buildRow("Account Name", bank.accountHolderName),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: InkWell(
+                                  onTap: () async {
+                                    AddEditBankInfo.showSheet(
+                                      context,
+                                      bank,
+                                      true,
+                                    );
+                                  },
+                                  child: SvgPicture.asset(
+                                    "assets/svg/edit_svg.svg",
+                                  ),
                                 ),
-                              )
-                              .toList(),
+                              ),
+
+                              Divider(color: AppColors.hint2color),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: InkWell(
+                            onTap: () {
+                              AddEditBankInfo.showSheet(
+                                context, 
+                                null, 
+                                false);
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Add Bank Info",
+                                  style: AppFonts.textprogressbar.copyWith(
+                                    color: AppColors.primarycolor,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     );
                   }
                   if (state is ProfileError) {
@@ -720,7 +858,6 @@ class _ProfileDrState extends State<ProfileDr> {
     required Widget content,
     bool? isadd = true,
   }) {
-    
     return ProfileDtlContainer(
       key: ValueKey(heading),
       heading: heading,
