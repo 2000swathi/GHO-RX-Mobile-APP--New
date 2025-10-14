@@ -34,7 +34,6 @@ class LicenseListState extends ListState {
   @override
   List<Object> get props => [licenseResponse];
 }
-// Language
 
 class ListFailure extends ListState {
   final String error;

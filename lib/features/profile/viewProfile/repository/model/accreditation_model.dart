@@ -15,11 +15,12 @@ class AccreditationModel {
     List<AccreditationData> dataList = [];
     if (json['Data'] is List) {
       final nestedList = json['Data'] as List;
-      dataList = nestedList
-          .expand((inner) => (inner is List) ? inner : <dynamic>[])
-          .whereType<Map<String, dynamic>>()
-          .map((item) => AccreditationData.fromJson(item))
-          .toList();
+      dataList =
+          nestedList
+              .expand((inner) => (inner is List) ? inner : <dynamic>[])
+              .whereType<Map<String, dynamic>>()
+              .map((item) => AccreditationData.fromJson(item))
+              .toList();
     }
 
     return AccreditationModel(

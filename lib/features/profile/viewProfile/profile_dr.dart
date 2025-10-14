@@ -6,6 +6,7 @@ import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/widgets/case_appbar.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/bloc/list_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_accreditation_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_state.dart';
@@ -329,6 +330,7 @@ class _ProfileDrState extends State<ProfileDr> {
                         child: Text("No accreditations found"),
                       );
                     }
+                    final info = state.accreditationModel;
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -353,22 +355,11 @@ class _ProfileDrState extends State<ProfileDr> {
                               Align(
                                 alignment: Alignment.centerRight,
                                 child: InkWell(
-                                  onTap: () async {
-                                    showDialog(
-                                      context: context,
-                                      barrierDismissible: false,
-                                      builder:
-                                          (_) => const Center(
-                                            child: LoadingAnimation(),
-                                          ),
-                                    );
-                                    Navigator.pop(context);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          "Edit accreditation not implemented yet.",
-                                        ),
-                                      ),
+                                  onTap: () {
+                                    AddEditAccrediationBottomSheet.showSheet(
+                                      context,
+                                      info,
+                                      true,
                                     );
                                   },
                                   child: SvgPicture.asset(
@@ -386,6 +377,11 @@ class _ProfileDrState extends State<ProfileDr> {
                           alignment: Alignment.centerRight,
                           child: InkWell(
                             onTap: () async {
+                              AddEditAccrediationBottomSheet.showSheet(
+                                context,
+                                info,
+                                false,
+                              );
                               showDialog(
                                 context: context,
                                 barrierDismissible: false,
@@ -446,6 +442,7 @@ class _ProfileDrState extends State<ProfileDr> {
                     if (insuranceList.isEmpty) {
                       return const Center(child: Text("No Insurance added"));
                     }
+                    final info = state.insuranceModel;
                     return Column(
                       children:
                           insuranceList
@@ -468,6 +465,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                           EditInsuranceSheet.showSheet(
                                             context,
                                             state.insuranceModel,
+                                            true,
                                           );
                                         },
                                         child: SvgPicture.asset(
@@ -476,12 +474,54 @@ class _ProfileDrState extends State<ProfileDr> {
                                       ),
                                     ),
                                     Divider(color: AppColors.hint2color),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            EditInsuranceSheet.showSheet(
+                                              context,
+                                              info,
+                                              false,
+                                            );
+                                            showDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              builder:
+                                                  (_) => const Center(
+                                                    child: LoadingAnimation(),
+                                                  ),
+                                            );
+                                            Navigator.pop(context);
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  "Add insurance not implemented yet.",
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          child: Text(
+                                            "Add Insurance",
+                                            style: AppFonts.textprogressbar
+                                                .copyWith(
+                                                  color: AppColors.primarycolor,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               )
                               .toList(),
                     );
                   }
+
                   if (state is ProfileError) {
                     return Center(child: Text(state.message));
                   }
@@ -720,7 +760,6 @@ class _ProfileDrState extends State<ProfileDr> {
     required Widget content,
     bool? isadd = true,
   }) {
-    
     return ProfileDtlContainer(
       key: ValueKey(heading),
       heading: heading,

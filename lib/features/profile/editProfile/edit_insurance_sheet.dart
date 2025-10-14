@@ -6,18 +6,34 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.da
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/insurance_model.dart';
 
 class EditInsuranceSheet {
-  static void showSheet(BuildContext context, InsuranceModel info) {
+  static void showSheet(
+    BuildContext context,
+    InsuranceModel info,
+    bool isEdit,
+  ) {
     final TextEditingController prIDController = TextEditingController(
-      text: info.data[0].providerID,
+      text:
+          isEdit && info != null && info.data.isNotEmpty
+              ? info.data[0].providerID
+              : "",
     );
     final TextEditingController pNameController = TextEditingController(
-      text: info.data[0].providerName,
+      text:
+          isEdit && info != null && info.data.isNotEmpty
+              ? info.data[0].providerName
+              : "",
     );
     final TextEditingController issueDateController = TextEditingController(
-      text: info.data[0].issueDate,
+      text:
+          isEdit && info != null && info.data.isNotEmpty
+              ? info.data[0].issueDate
+              : "",
     );
     final TextEditingController expDateController = TextEditingController(
-      text: info.data[0].expiryDate,
+      text:
+          isEdit && info != null && info.data.isNotEmpty
+              ? info.data[0].expiryDate
+              : "",
     );
 
     CustomBottomSheet.show(
