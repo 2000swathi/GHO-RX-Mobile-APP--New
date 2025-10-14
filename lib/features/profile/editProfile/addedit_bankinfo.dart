@@ -4,22 +4,26 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/bankinfo_model.dart';
 
-class AddEditBankInfo {
+class AddEditBankInfoBottonSheet {
   static void showSheet(
     BuildContext context,
-    BankInfoModel? info,
+    BankInfoResponseModel? info,
     bool? isEdit,
   ) {
     final bool editing = isEdit == true && info != null;
 
-    final TextEditingController bankTypeController =
-        TextEditingController(text: editing ? info.accountType : "");
-    final TextEditingController routingNumberController =
-        TextEditingController(text: editing ? info.routingNumber : "");
-    final TextEditingController accountNumberController =
-        TextEditingController(text: editing ? info.accountNumber : "");
-    final TextEditingController accountNameController =
-        TextEditingController(text: editing ? info.accountHolderName : "");
+    final TextEditingController bankTypeController = TextEditingController(
+      text: editing ? info.data[0].accountType : "",
+    );
+    final TextEditingController routingNumberController = TextEditingController(
+      text: editing ? info.data[0].routingNumber : "",
+    );
+    final TextEditingController accountNumberController = TextEditingController(
+      text: editing ? info.data[0].accountNumber : "",
+    );
+    final TextEditingController accountNameController = TextEditingController(
+      text: editing ? info.data[0].accountHolderName : "",
+    );
 
     CustomBottomSheet.show(
       context: context,
@@ -51,13 +55,12 @@ class AddEditBankInfo {
               hintText: "Enter Account Name",
             ),
           ],
-        )
+        ),
       ],
       actionButton: CustomButton(
-        text: editing ? "Update Bank Information" : "Add Bank Information", 
-        onPressed: () {}
-      )
+        text: editing ? "Update Bank Information" : "Add Bank Information",
+        onPressed: () {},
+      ),
     );
-  
   }
 }

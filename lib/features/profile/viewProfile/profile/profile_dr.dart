@@ -8,7 +8,7 @@ import 'package:ghorx_mobile_app_new/features/cases/widgets/case_appbar.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_language.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_accreditation_sheet.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/widget/addedit_bankinfo.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_bankinfo.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_state.dart';
@@ -466,7 +466,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                     EditInsuranceSheet.showSheet(
                                       context,
                                       state.insuranceModel,
-                                      true
+                                      true,
                                     );
                                   },
                                   child: SvgPicture.asset(
@@ -484,13 +484,13 @@ class _ProfileDrState extends State<ProfileDr> {
                           alignment: Alignment.centerRight,
                           child: InkWell(
                             onTap: () {
-                              AddEditBankInfo.showSheet(context, null, false);
+                              AddEditBankInfoBottonSheet.showSheet(context, null, false);
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Add Bank Info",
+                                  "Add Insurance",
                                   style: AppFonts.textprogressbar.copyWith(
                                     color: AppColors.primarycolor,
                                     fontWeight: FontWeight.w600,
@@ -774,16 +774,17 @@ class _ProfileDrState extends State<ProfileDr> {
                   if (state is ProfileLoading) {
                     return const Center(child: LoadingAnimation());
                   }
-                  if (state is BankInfo) {
-                    final bankList = state.bankList;
+                  if (state is BankInfoState) {
+                    final bankList = state.bankListModel.data;
                     if (bankList.isEmpty) {
                       return const Center(child: Text("No bank added"));
                     }
+                    final info = state.bankListModel;
 
                     return Column(
                       children: [
-                        ...bankList.map(
-                          (bank) => Column(
+                        ...bankList.map((bank) {
+                          return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               _buildRow("Bank Type", bank.accountType),
@@ -794,9 +795,9 @@ class _ProfileDrState extends State<ProfileDr> {
                                 alignment: Alignment.centerRight,
                                 child: InkWell(
                                   onTap: () async {
-                                    AddEditBankInfo.showSheet(
+                                    AddEditBankInfoBottonSheet.showSheet(
                                       context,
-                                      bank,
+                                      info,
                                       true,
                                     );
                                   },
@@ -808,17 +809,14 @@ class _ProfileDrState extends State<ProfileDr> {
 
                               Divider(color: AppColors.hint2color),
                             ],
-                          ),
-                        ),
+                          );
+                        }),
                         const SizedBox(height: 12),
                         Align(
                           alignment: Alignment.centerRight,
                           child: InkWell(
                             onTap: () {
-                              AddEditBankInfo.showSheet(
-                                context, 
-                                null, 
-                                false);
+                              AddEditBankInfoBottonSheet.showSheet(context, info, false);
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,

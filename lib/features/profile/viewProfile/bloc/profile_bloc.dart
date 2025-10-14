@@ -117,7 +117,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(ProfileLoading());
     try {
       final bankList = await repository.fetchBankInfo();
-      emit(BankInfo(bankList: bankList.data));
+      emit(BankInfoState(bankListModel:bankList ));
     } catch (e) {
       emit(ProfileError(message: e.toString()));
     }
