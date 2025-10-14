@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/insurance_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/language_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/license_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/personalinfo_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/specialty_model.dart';
@@ -46,11 +47,22 @@ class InsuranceState extends ProfileState {
   @override
   List<Object?> get props => [InsuranceModel];
 }
+
 //   license list
 class LicenseState extends ProfileState {
   final LicenseModel licenseModel;
 
   const LicenseState({required this.licenseModel});
+
+  @override
+  List<Object?> get props => [LicenseModel];
+}
+
+//     language list
+class LanguageState extends ProfileState {
+  final LanguageModel languageModel;
+
+  const LanguageState({required this.languageModel});
 
   @override
   List<Object?> get props => [LicenseModel];

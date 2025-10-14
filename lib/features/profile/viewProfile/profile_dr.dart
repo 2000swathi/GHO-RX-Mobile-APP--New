@@ -488,18 +488,114 @@ class _ProfileDrState extends State<ProfileDr> {
               ),
             ),
           ),
+          //////////////////////////////////////////////////////////////////////////
+          /////////////////////////////////////////////////////////////////////////
           _buildSection(
             index: 5,
             heading: "Language",
-            subheading: "",
-            content: Text("no data"),
+            subheading: "Choose your Language and proficiency",
+
+            content: BlocProvider(
+              create:
+                  (_) =>
+                      ProfileBloc(repository: repository)..add(FetchLanguage()),
+              child: BlocBuilder<ProfileBloc, ProfileState>(
+                builder: (context, state) {
+                  if (state is ProfileLoading) {
+                    return const Center(child: LoadingAnimation());
+                  }
+                  if (state is LanguageState) {
+                    final licenseList = state.languageModel.data;
+                    if (licenseList.isEmpty) {
+                      return const Center(child: Text("No license added"));
+                    }
+                    final info = state.languageModel;
+                    return Column(
+                      children:
+                          licenseList
+                              .map(
+                                (language) => Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _buildRow("Language", language.language),
+                                    _buildRow(
+                                      "Proficiency",
+                                      language.proficiency,
+                                    ),
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: InkWell(
+                                        onTap: () async {
+                                          // showDialog(
+                                          //   context: context,
+                                          //   barrierDismissible: false,
+                                          //   builder:
+                                          //       (_) => const Center(
+                                          //         child: LoadingAnimation(),
+                                          //       ),
+                                          // );
+
+                                          // context.read<ListBloc>().add(
+                                          //   FetchLanguageList(),
+                                          // );
+
+                                          // final listState = await context
+                                          //     .read<ListBloc>()
+                                          //     .stream
+                                          //     .firstWhere(
+                                          //       (s) =>
+                                          //           s is LicenseListState ||
+                                          //           s is ListFailure,
+                                          //     );
+
+                                          // Navigator.of(
+                                          //   context,
+                                          //   rootNavigator: true,
+                                          // ).pop();
+
+                                          // if (listState is LicenseListState) {
+                                          //   final licenses =
+                                          //       listState.licenseResponse.data
+                                          //           .expand((inner) => inner)
+                                          //           .toList();
+
+                                          //   // EditLicenseSheet.showSheet(
+                                          //   //   context,
+                                          //   //   info,
+                                          //   //   licenses,
+                                          //   // );
+                                          // } else if (listState is ListFailure) {
+                                          //   ScaffoldMessenger.of(
+                                          //     context,
+                                          //   ).showSnackBar(
+                                          //     SnackBar(
+                                          //       content: Text(listState.error),
+                                          //     ),
+                                          //   );
+                                          // }
+                                        },
+                                        child: SvgPicture.asset(
+                                          "assets/svg/edit_svg.svg",
+                                        ),
+                                      ),
+                                    ),
+                                    Divider(color: AppColors.hint2color),
+                                  ],
+                                ),
+                              )
+                              .toList(),
+                    );
+                  }
+                  if (state is ProfileError) {
+                    return Center(child: Text(state.message));
+                  }
+                  return Container();
+                },
+              ),
+            ),
           ),
-          _buildSection(
-            index: 6,
-            heading: "Bank Information",
-            subheading: "Check your registered bank or payment details.",
-            content: const Text("No bank information added"),
-          ),
+          ////////////////////////////////////////////////////////////////////////
+          ////////////////////////////////////////////////////////////////////////
         ],
       ),
     );
