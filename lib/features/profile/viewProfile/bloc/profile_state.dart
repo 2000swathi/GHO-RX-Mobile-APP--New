@@ -83,7 +83,7 @@ class AccreditationState extends ProfileState {
 
 // bankinfo list
 class BankInfo extends ProfileState {
-  final List<BankInfoModel> bankList;
+  final List<BankInfoModel> bankList; 
 
   const BankInfo({required this.bankList});
 

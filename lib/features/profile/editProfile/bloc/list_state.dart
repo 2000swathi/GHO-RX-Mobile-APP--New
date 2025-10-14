@@ -35,6 +35,7 @@ class LicenseListState extends ListState {
   List<Object> get props => [licenseResponse];
 }
 
+
 class ListFailure extends ListState {
   final String error;
 
