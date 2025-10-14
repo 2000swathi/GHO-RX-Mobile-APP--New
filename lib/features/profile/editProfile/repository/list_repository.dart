@@ -22,7 +22,9 @@ class ListRepository {
       throw Exception("Failed to fetch countries: $e");
     }
   }
-  //specialty
+
+
+  // specialty
   Future<SpecialtyResponseModel> fetchSpecialtyList() async {
     final data = {
       ...ApiUtils.getCommonParams(action: "lists", token: ""),
@@ -38,6 +40,8 @@ class ListRepository {
       throw Exception("Failed to fetch specialties: $e");
     }
   }
+
+  
   // license
   Future<LicenseListResponseModel> fetchLicenseList() async {
     final data = {
