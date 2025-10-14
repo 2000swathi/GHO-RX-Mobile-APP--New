@@ -8,8 +8,14 @@ abstract class ProfileEvent extends Equatable {
 }
 
 class FetchPersonalInfo extends ProfileEvent {}
+
 class FetchSpecialty extends ProfileEvent {}
+
 class FetchInsurance extends ProfileEvent {}
+
 class FetchLicence extends ProfileEvent {}
+class FetchBankInfo extends ProfileEvent {}
 
+class FetchAccreditation extends ProfileEvent {}
 
+class FetchLanguage extends ProfileEvent {}

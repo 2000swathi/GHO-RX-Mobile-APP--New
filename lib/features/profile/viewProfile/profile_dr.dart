@@ -160,7 +160,6 @@ class _ProfileDrState extends State<ProfileDr> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // 🩺 List of existing specialties
                         ...specialtyList.map((specialty) {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -238,13 +237,12 @@ class _ProfileDrState extends State<ProfileDr> {
                           );
                         }),
 
-                        // 🩵 Add Specialty button at the bottom
+                        // Add Specialty button at the bottom
                         const SizedBox(height: 10),
                         Align(
                           alignment: Alignment.centerRight,
                           child: InkWell(
                             onTap: () async {
-                              // Fetch the specialty list for adding
                               showDialog(
                                 context: context,
                                 barrierDismissible: false,
@@ -274,7 +272,6 @@ class _ProfileDrState extends State<ProfileDr> {
                                         .expand((inner) => inner)
                                         .toList();
 
-                                // Pass empty info for "Add" mode
                                 AddEditSpecialtySheet.showSheet(
                                   context,
                                   info,
@@ -315,8 +312,120 @@ class _ProfileDrState extends State<ProfileDr> {
           _buildSection(
             index: 1,
             heading: "Accreditation",
-            subheading: "",
-            content: Text("no data"),
+            subheading: "Verify your qualifications and area of expertise.",
+            content: BlocProvider(
+              create:
+                  (_) =>
+                      ProfileBloc(repository: repository)
+                        ..add(FetchAccreditation()),
+              child: BlocBuilder<ProfileBloc, ProfileState>(
+                builder: (context, state) {
+                  if (state is ProfileLoading) {
+                    return const Center(child: LoadingAnimation());
+                  } else if (state is AccreditationState) {
+                    final accreditationList = state.accreditationModel.data;
+                    if (accreditationList.isEmpty) {
+                      return const Center(
+                        child: Text("No accreditations found"),
+                      );
+                    }
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ...accreditationList.map((accreditation) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildRow(
+                                "Accreditation number",
+                                accreditation.accreditationNumber,
+                              ),
+                              _buildRow(
+                                "Accreditation Type",
+                                accreditation.accreditationType,
+                              ),
+                              _buildRow(
+                                "Accreditation Body",
+                                accreditation.accreditationBody,
+                              ),
+                              const SizedBox(height: 5),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: InkWell(
+                                  onTap: () async {
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder:
+                                          (_) => const Center(
+                                            child: LoadingAnimation(),
+                                          ),
+                                    );
+                                    Navigator.pop(context);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          "Edit accreditation not implemented yet.",
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: SvgPicture.asset(
+                                    "assets/svg/edit_svg.svg",
+                                  ),
+                                ),
+                              ),
+                              Divider(color: AppColors.hint2color),
+                            ],
+                          );
+                        }),
+
+                        const SizedBox(height: 10),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: InkWell(
+                            onTap: () async {
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder:
+                                    (_) =>
+                                        const Center(child: LoadingAnimation()),
+                              );
+
+                              Navigator.pop(context);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    "Add accreditation not implemented yet.",
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Add Accreditation",
+                                  style: AppFonts.textprogressbar.copyWith(
+                                    color: AppColors.primarycolor,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  } else if (state is ProfileError) {
+                    return Center(child: Text(state.message));
+                  }
+                  return Container();
+                },
+              ),
+            ),
           ),
           _buildSection(
             index: 3,
@@ -491,14 +600,113 @@ class _ProfileDrState extends State<ProfileDr> {
           _buildSection(
             index: 5,
             heading: "Language",
-            subheading: "",
-            content: Text("no data"),
+            subheading: "Choose your Language and proficiency",
+
+            content: BlocProvider(
+              create:
+                  (_) =>
+                      ProfileBloc(repository: repository)..add(FetchLanguage()),
+              child: BlocBuilder<ProfileBloc, ProfileState>(
+                builder: (context, state) {
+                  if (state is ProfileLoading) {
+                    return const Center(child: LoadingAnimation());
+                  }
+                  if (state is LanguageState) {
+                    final licenseList = state.languageModel.data;
+                    if (licenseList.isEmpty) {
+                      return const Center(child: Text("No license added"));
+                    }
+                    final info = state.languageModel;
+                    return Column(
+                      children:
+                          licenseList
+                              .map(
+                                (language) => Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _buildRow("Language", language.language),
+                                    _buildRow(
+                                      "Proficiency",
+                                      language.proficiency,
+                                    ),
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: InkWell(
+                                        onTap: () async {},
+                                        child: SvgPicture.asset(
+                                          "assets/svg/edit_svg.svg",
+                                        ),
+                                      ),
+                                    ),
+                                    Divider(color: AppColors.hint2color),
+                                  ],
+                                ),
+                              )
+                              .toList(),
+                    );
+                  }
+                  if (state is ProfileError) {
+                    return Center(child: Text(state.message));
+                  }
+                  return Container();
+                },
+              ),
+            ),
           ),
           _buildSection(
             index: 6,
             heading: "Bank Information",
             subheading: "Check your registered bank or payment details.",
-            content: const Text("No bank information added"),
+            content: BlocProvider(
+              create:
+                  (_) =>
+                      ProfileBloc(repository: repository)..add(FetchBankInfo()),
+              child: BlocBuilder<ProfileBloc, ProfileState>(
+                builder: (context, state) {
+                  if (state is ProfileLoading) {
+                    return const Center(child: LoadingAnimation());
+                  }
+                  if (state is BankInfo) {
+                    final bankList = state.bankList;
+                    if (bankList.isEmpty) {
+                      return const Center(child: Text("No bank added"));
+                    }
+
+                    return Column(
+                      children:
+                          bankList
+                              .map(
+                                (bank) => Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _buildRow("Bank Type", bank.accountType),
+                                    _buildRow(
+                                      "Routing Number",
+                                      bank.routingNumber,
+                                    ),
+                                    _buildRow(
+                                      "Account Number",
+                                      bank.accountNumber,
+                                    ),
+                                    _buildRow(
+                                      "Account Name",
+                                      bank.accountHolderName,
+                                    ),
+
+                                    Divider(color: AppColors.hint2color),
+                                  ],
+                                ),
+                              )
+                              .toList(),
+                    );
+                  }
+                  if (state is ProfileError) {
+                    return Center(child: Text(state.message));
+                  }
+                  return Container();
+                },
+              ),
+            ),
           ),
         ],
       ),
@@ -512,6 +720,7 @@ class _ProfileDrState extends State<ProfileDr> {
     required Widget content,
     bool? isadd = true,
   }) {
+    
     return ProfileDtlContainer(
       key: ValueKey(heading),
       heading: heading,
