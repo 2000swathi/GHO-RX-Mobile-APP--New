@@ -237,6 +237,7 @@ class _ProfileDrState extends State<ProfileDr> {
                           );
                         }),
 
+                        // Add Specialty button at the bottom
                         const SizedBox(height: 10),
                         Align(
                           alignment: Alignment.centerRight,
@@ -637,6 +638,65 @@ class _ProfileDrState extends State<ProfileDr> {
                                         ),
                                       ),
                                     ),
+                                    Divider(color: AppColors.hint2color),
+                                  ],
+                                ),
+                              )
+                              .toList(),
+                    );
+                  }
+                  if (state is ProfileError) {
+                    return Center(child: Text(state.message));
+                  }
+                  return Container();
+                },
+              ),
+            ),
+            subheading: "",
+            content: Text("no data"),
+          ),
+          _buildSection(
+            index: 6,
+            heading: "Bank Information",
+            subheading: "Check your registered bank or payment details.",
+            content: BlocProvider(
+              create:
+                  (_) =>
+                      ProfileBloc(repository: repository)..add(FetchBankInfo()),
+              child: BlocBuilder<ProfileBloc, ProfileState>(
+                builder: (context, state) {
+                  if (state is ProfileLoading) {
+                    return const Center(child: LoadingAnimation());
+                  }
+                  if (state is BankInfo) {
+                    final bankList = state.bankList;
+                    if (bankList.isEmpty) {
+                      return const Center(child: Text("No bank added"));
+                    }
+
+                    return Column(
+                      children:
+                          bankList
+                              .map(
+                                (bank) => Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _buildRow(
+                                      "Bank Type", 
+                                      bank.accountType),
+                                    _buildRow(
+                                      "Routing Number",
+                                      bank.routingNumber,
+                                    ),
+                                    _buildRow(
+                                      "Account Number",
+                                      bank.accountNumber,
+                                    ),
+                                    _buildRow(
+                                      "Account Name", 
+                                      bank.accountHolderName
+                                    ),
+                                    
                                     Divider(color: AppColors.hint2color),
                                   ],
                                 ),

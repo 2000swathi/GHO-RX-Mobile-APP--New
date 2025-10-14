@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/accreditation_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/bankinfo_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/insurance_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/language_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/license_model.dart';
@@ -79,6 +80,16 @@ class AccreditationState extends ProfileState {
   List<Object?> get props => [AccreditationModel];
 }
 
+
+// bankinfo list
+class BankInfo extends ProfileState {
+  final List<BankInfoModel> bankList;
+
+  const BankInfo({required this.bankList});
+
+  @override
+  List<Object?> get props => [bankList];
+}
 
 // Error state
 class ProfileError extends ProfileState {
