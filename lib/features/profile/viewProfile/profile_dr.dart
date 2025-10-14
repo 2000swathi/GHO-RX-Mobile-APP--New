@@ -160,7 +160,6 @@ class _ProfileDrState extends State<ProfileDr> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // 🩺 List of existing specialties
                         ...specialtyList.map((specialty) {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -238,13 +237,11 @@ class _ProfileDrState extends State<ProfileDr> {
                           );
                         }),
 
-                        // 🩵 Add Specialty button at the bottom
                         const SizedBox(height: 10),
                         Align(
                           alignment: Alignment.centerRight,
                           child: InkWell(
                             onTap: () async {
-                              // Fetch the specialty list for adding
                               showDialog(
                                 context: context,
                                 barrierDismissible: false,
@@ -274,7 +271,6 @@ class _ProfileDrState extends State<ProfileDr> {
                                         .expand((inner) => inner)
                                         .toList();
 
-                                // Pass empty info for "Add" mode
                                 AddEditSpecialtySheet.showSheet(
                                   context,
                                   info,
@@ -312,7 +308,7 @@ class _ProfileDrState extends State<ProfileDr> {
             ),
           ),
 
-           _buildSection(
+          _buildSection(
             index: 1,
             heading: "Accreditation",
             subheading: "Verify your qualifications and area of expertise.",
@@ -326,21 +322,21 @@ class _ProfileDrState extends State<ProfileDr> {
                   if (state is ProfileLoading) {
                     return const Center(child: LoadingAnimation());
                   } else if (state is AccreditationState) {
-                    final accreditationList =
- state.accreditationModel.data;
+                    final accreditationList = state.accreditationModel.data;
                     if (accreditationList.isEmpty) {
-                      return const Center(child: Text("No accreditations found"));
+                      return const Center(
+                        child: Text("No accreditations found"),
+                      );
                     }
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // 🩺 List of existing accreditations
                         ...accreditationList.map((accreditation) {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                               _buildRow(
+                              _buildRow(
                                 "Accreditation number",
                                 accreditation.accreditationNumber,
                               ),
@@ -365,10 +361,13 @@ class _ProfileDrState extends State<ProfileDr> {
                                             child: LoadingAnimation(),
                                           ),
                                     );
-                                    // TODO: Implement Edit Accreditation
                                     Navigator.pop(context);
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text("Edit accreditation not implemented yet.")),
+                                      SnackBar(
+                                        content: Text(
+                                          "Edit accreditation not implemented yet.",
+                                        ),
+                                      ),
                                     );
                                   },
                                   child: SvgPicture.asset(
@@ -381,13 +380,11 @@ class _ProfileDrState extends State<ProfileDr> {
                           );
                         }),
 
-                        // 🩵 Add Accreditation button at the bottom
                         const SizedBox(height: 10),
                         Align(
                           alignment: Alignment.centerRight,
                           child: InkWell(
                             onTap: () async {
-                              // Fetch the specialty list for adding
                               showDialog(
                                 context: context,
                                 barrierDismissible: false,
@@ -396,10 +393,13 @@ class _ProfileDrState extends State<ProfileDr> {
                                         const Center(child: LoadingAnimation()),
                               );
 
-                              // TODO: Implement Add Accreditation
                               Navigator.pop(context);
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text("Add accreditation not implemented yet.")),
+                                SnackBar(
+                                  content: Text(
+                                    "Add accreditation not implemented yet.",
+                                  ),
+                                ),
                               );
                             },
                             child: Row(
@@ -596,8 +596,6 @@ class _ProfileDrState extends State<ProfileDr> {
               ),
             ),
           ),
-          //////////////////////////////////////////////////////////////////////////
-          /////////////////////////////////////////////////////////////////////////
           _buildSection(
             index: 5,
             heading: "Language",
@@ -633,55 +631,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                     Align(
                                       alignment: Alignment.centerRight,
                                       child: InkWell(
-                                        onTap: () async {
-                                          // showDialog(
-                                          //   context: context,
-                                          //   barrierDismissible: false,
-                                          //   builder:
-                                          //       (_) => const Center(
-                                          //         child: LoadingAnimation(),
-                                          //       ),
-                                          // );
-
-                                          // context.read<ListBloc>().add(
-                                          //   FetchLanguageList(),
-                                          // );
-
-                                          // final listState = await context
-                                          //     .read<ListBloc>()
-                                          //     .stream
-                                          //     .firstWhere(
-                                          //       (s) =>
-                                          //           s is LicenseListState ||
-                                          //           s is ListFailure,
-                                          //     );
-
-                                          // Navigator.of(
-                                          //   context,
-                                          //   rootNavigator: true,
-                                          // ).pop();
-
-                                          // if (listState is LicenseListState) {
-                                          //   final licenses =
-                                          //       listState.licenseResponse.data
-                                          //           .expand((inner) => inner)
-                                          //           .toList();
-
-                                          //   // EditLicenseSheet.showSheet(
-                                          //   //   context,
-                                          //   //   info,
-                                          //   //   licenses,
-                                          //   // );
-                                          // } else if (listState is ListFailure) {
-                                          //   ScaffoldMessenger.of(
-                                          //     context,
-                                          //   ).showSnackBar(
-                                          //     SnackBar(
-                                          //       content: Text(listState.error),
-                                          //     ),
-                                          //   );
-                                          // }
-                                        },
+                                        onTap: () async {},
                                         child: SvgPicture.asset(
                                           "assets/svg/edit_svg.svg",
                                         ),
@@ -702,8 +652,6 @@ class _ProfileDrState extends State<ProfileDr> {
               ),
             ),
           ),
-          ////////////////////////////////////////////////////////////////////////
-          ////////////////////////////////////////////////////////////////////////
         ],
       ),
     );

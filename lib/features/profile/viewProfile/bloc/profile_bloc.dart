@@ -89,6 +89,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(ProfileError(message: e.toString()));
     }
   }
+  
 //accreditation
  Future<void>  _onFetchAccreditation(
     FetchAccreditation event,
