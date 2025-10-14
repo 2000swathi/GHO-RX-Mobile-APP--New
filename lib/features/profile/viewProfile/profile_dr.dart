@@ -446,81 +446,6 @@ class _ProfileDrState extends State<ProfileDr> {
                     }
                     final info = state.insuranceModel;
                     return Column(
-                      children:
-                          insuranceList
-                              .map(
-                                (insurance) => Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    _buildRow(
-                                      "ProviderID",
-                                      insurance.providerID.toString(),
-                                    ),
-                                    _buildRow(
-                                      "ProviderName",
-                                      insurance.providerName.toString(),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: InkWell(
-                                        onTap: () async {
-                                          EditInsuranceSheet.showSheet(
-                                            context,
-                                            state.insuranceModel,
-                                            true,
-                                          );
-                                        },
-                                        child: SvgPicture.asset(
-                                          "assets/svg/edit_svg.svg",
-                                        ),
-                                      ),
-                                    ),
-                                    Divider(color: AppColors.hint2color),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            EditInsuranceSheet.showSheet(
-                                              context,
-                                              info,
-                                              false,
-                                            );
-                                            showDialog(
-                                              context: context,
-                                              barrierDismissible: false,
-                                              builder:
-                                                  (_) => const Center(
-                                                    child: LoadingAnimation(),
-                                                  ),
-                                            );
-                                            Navigator.pop(context);
-                                            ScaffoldMessenger.of(
-                                              context,
-                                            ).showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                  "Add insurance not implemented yet.",
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                          child: Text(
-                                            "Add Insurance",
-                                            style: AppFonts.textprogressbar
-                                                .copyWith(
-                                                  color: AppColors.primarycolor,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              )
-                              .toList(),
                       children: [
                         ...insuranceList.map(
                           (insurance) => Column(
@@ -541,6 +466,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                     EditInsuranceSheet.showSheet(
                                       context,
                                       state.insuranceModel,
+                                      true
                                     );
                                   },
                                   child: SvgPicture.asset(
