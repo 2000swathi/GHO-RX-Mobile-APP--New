@@ -13,7 +13,7 @@ class ListLoading extends ListState {}
 
 // counryList
 class CountryState extends ListState {
-  final CountryResponseModel countryResponse; 
+  final CountryResponseModel countryResponse;
   const CountryState({required this.countryResponse});
   @override
   List<Object> get props => [countryResponse];
@@ -21,19 +21,20 @@ class CountryState extends ListState {
 
 // specialtylist
 class SpecialtyListState extends ListState {
-  final SpecialtyResponseModel specialtyResponse; 
+  final SpecialtyResponseModel specialtyResponse;
   const SpecialtyListState({required this.specialtyResponse});
   @override
   List<Object> get props => [specialtyResponse];
 }
-//specialtylist
+
+//License
 class LicenseListState extends ListState {
-  final LicenseListResponseModel licenseResponse; 
+  final LicenseListResponseModel licenseResponse;
   const LicenseListState({required this.licenseResponse});
   @override
   List<Object> get props => [licenseResponse];
 }
-
+// Language
 
 class ListFailure extends ListState {
   final String error;
