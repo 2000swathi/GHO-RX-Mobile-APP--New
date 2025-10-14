@@ -652,8 +652,6 @@ class _ProfileDrState extends State<ProfileDr> {
                 },
               ),
             ),
-            subheading: "",
-            content: Text("no data"),
           ),
           _buildSection(
             index: 6,
@@ -681,9 +679,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                 (bank) => Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    _buildRow(
-                                      "Bank Type", 
-                                      bank.accountType),
+                                    _buildRow("Bank Type", bank.accountType),
                                     _buildRow(
                                       "Routing Number",
                                       bank.routingNumber,
@@ -693,10 +689,10 @@ class _ProfileDrState extends State<ProfileDr> {
                                       bank.accountNumber,
                                     ),
                                     _buildRow(
-                                      "Account Name", 
-                                      bank.accountHolderName
+                                      "Account Name",
+                                      bank.accountHolderName,
                                     ),
-                                    
+
                                     Divider(color: AppColors.hint2color),
                                   ],
                                 ),
@@ -724,6 +720,7 @@ class _ProfileDrState extends State<ProfileDr> {
     required Widget content,
     bool? isadd = true,
   }) {
+    
     return ProfileDtlContainer(
       key: ValueKey(heading),
       heading: heading,
