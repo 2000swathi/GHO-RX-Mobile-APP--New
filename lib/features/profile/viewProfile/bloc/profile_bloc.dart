@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/bankinfo_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/profile_repo.dart';
 import 'profile_event.dart';
 import 'profile_state.dart';
@@ -111,11 +110,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
 
   //bankinfo
-  Future<void> _onFetchBankInfo(event, emit) async {
+  Future<void> _onFetchBankInfo(
+    FetchBankInfo event, 
+    Emitter<ProfileState> emit,
+    ) async {
     emit(ProfileLoading());
     try {
       final bankList = await repository.fetchBankInfo();
-      emit(BankInfo(bankList: bankList));
+      emit(BankInfoState(bankListModel:bankList ));
     } catch (e) {
       emit(ProfileError(message: e.toString()));
     }

@@ -6,28 +6,34 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.da
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/license_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/license_model.dart';
 
-class EditLicenseSheet {
+class AddEditLicenseSheet {
   static void showSheet(
     BuildContext context,
     LicenseModel info,
     List<LicenseList> licList,
+    bool? isEdit,
   ) {
+    final bool editing = isEdit == true && info.data.isNotEmpty;
+
+    // Prefill only when editing
     final TextEditingController lNumController = TextEditingController(
-      text: info.data[0].licenseNumber,
+      text: editing ? info.data[0].licenseNumber : "",
     );
 
     final TextEditingController issueDateController = TextEditingController(
-      text: info.data[0].issueDate,
+      text: editing ? info.data[0].issueDate : "",
     );
+
     final TextEditingController expDateController = TextEditingController(
-      text: info.data[0].expiryDate,
+      text: editing ? info.data[0].expiryDate : "",
     );
+
     String? selectedLicenseTypeID =
-        info.data.isNotEmpty ? info.data[0].toString() : null;
+        editing ? info.data[0].licenseTypeID.toString() : null;
 
     CustomBottomSheet.show(
       context: context,
-      heading: "Edit License",
+      heading: editing ? "Edit License" : "Add License",
       content: [
         StatefulBuilder(
           builder: (context, setState) {
@@ -36,53 +42,72 @@ class EditLicenseSheet {
                 CustomTextFormField(
                   controller: lNumController,
                   name: "License Number",
-                  hintText: "Enter Lisence Number",
+                  hintText: "Enter License Number",
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 CustomDropdownFormField<String>(
-                  name: "Licence Type",
-                  hintText: "-select Licence-",
+                  name: "License Type",
+                  hintText: "-Select License-",
                   value: selectedLicenseTypeID,
                   items:
-                      licList.map((c) {
-                        return DropdownItem<String>(
-                          value: c.licenseTypeID.toString(),
-                          label: c.licenseTypeName,
-                        );
-                      }).toList(),
+                      licList
+                          .map(
+                            (c) => DropdownItem<String>(
+                              value: c.licenseTypeID.toString(),
+                              label: c.licenseTypeName,
+                            ),
+                          )
+                          .toList(),
                   onChanged: (id) {
                     setState(() {
                       selectedLicenseTypeID = id;
                     });
                   },
                 ),
-
-                // ),
-                // SizedBox(height: 10),
-                // CustomPhoneDropdownField(
-                //   controller: lTypeController,
-                //   label: "License Type",
-
-                // ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 CustomTextFormField(
                   controller: issueDateController,
                   name: "Issue Date",
                   hintText: "dd/mm/yyyy",
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 CustomTextFormField(
                   controller: expDateController,
-                  name: "Exp Date",
+                  name: "Expiry Date",
                   hintText: "dd/mm/yyyy",
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
               ],
             );
           },
         ),
       ],
-      actionButton: CustomButton(text: "Submit Request", onPressed: () {}),
+      actionButton: CustomButton(
+        text: editing ? "Update License" : "Add License",
+        onPressed: () {
+          final licenseNumber = lNumController.text.trim();
+          final issueDate = issueDateController.text.trim();
+          final expiryDate = expDateController.text.trim();
+
+          if (licenseNumber.isEmpty ||
+              selectedLicenseTypeID == null ||
+              issueDate.isEmpty ||
+              expiryDate.isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Please fill all fields.")),
+            );
+            return;
+          }
+
+          if (editing) {
+            debugPrint("Updating License: $licenseNumber");
+          } else {
+            debugPrint("Adding new License: $licenseNumber");
+          }
+
+          Navigator.of(context).pop(); // Close bottom sheet
+        },
+      ),
     );
   }
 }

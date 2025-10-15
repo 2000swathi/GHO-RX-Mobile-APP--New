@@ -82,13 +82,13 @@ class AccreditationState extends ProfileState {
 
 
 // bankinfo list
-class BankInfo extends ProfileState {
-  final List<BankInfoModel> bankList;
+class BankInfoState extends ProfileState {
+  final BankInfoResponseModel bankListModel; 
 
-  const BankInfo({required this.bankList});
+  const BankInfoState({required this.bankListModel});
 
   @override
-  List<Object?> get props => [bankList];
+  List<Object?> get props => [bankListModel];
 }
 
 // Error state
