@@ -201,10 +201,7 @@ class Validation {
     return null;
   }
 
-  static String? validateCVfield(
-    String? value, {
-    String fieldName = 'This field',
-  }) {
+  static String? field(String? value, {String fieldName = 'This field'}) {
     if (value == null || value.trim().isEmpty) {
       return '$fieldName is required';
     }
@@ -251,5 +248,62 @@ class Validation {
     } catch (_) {
       return 'Invalid date';
     }
+  }
+
+  static String? validateCVfield(
+    String? value, {
+    String fieldName = 'This field',
+  }) {
+    if (value == null || value.trim().isEmpty) {
+      return '$fieldName is required';
+    }
+    return null;
+  }
+
+  static String? validateAccountNumber(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Account number is required';
+    }
+
+    final trimmedValue = value.trim();
+
+    // Check for any non-digit characters
+    if (!RegExp(r'^\d+$').hasMatch(trimmedValue)) {
+      return 'Account number must contain only digits';
+    }
+
+    if (!RegExp(r'^.{8,80}$').hasMatch(trimmedValue)) {
+      return 'Account number have atleat 8 digits';
+    }
+
+    return null;
+  }
+
+  static String? validateRoutigNumber(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Routing number is required';
+    }
+
+    final trimmedValue = value.trim();
+
+    // Check for any non-digit characters
+    if (!RegExp(r'^\d{8,}$').hasMatch(trimmedValue)) {
+      // return 'Routing number must contain only digits';
+    }
+    return null;
+  }
+
+  static String? validateDate(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'date is required';
+    }
+
+    try {
+      final date = DateFormat('dd/MM/yyyy').parseStrict(value);
+    } catch (e) {
+      return 'Enter date in dd/MM/yyyy format';
+    }
+
+    return null;
   }
 }
