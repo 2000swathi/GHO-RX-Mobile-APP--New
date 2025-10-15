@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
+import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/accreditation_model.dart';
 
 class AddEditAccrediationBottomSheet {
@@ -34,39 +35,57 @@ class AddEditAccrediationBottomSheet {
               ? info.data[0].accreditationNumber
               : "",
     );
+    final _formKey = GlobalKey<FormState>();
+
 
     CustomBottomSheet.show(
       context: context,
       heading: isEdit == true ? "Edit Accrediation" : "Add Accrediation",
       content: [
-        CustomTextFormField(
-          controller: revIDController,
-          name: "Reviewer ID",
-          hintText: "Enter Reviwer ID",
+        Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              CustomTextFormField(
+                controller: revIDController,
+                name: "Reviewer ID",
+                hintText: "Enter Reviwer ID",
+                validator: Validation.validateID,
+              ),
+          
+              SizedBox(height: 10),
+              CustomTextFormField(
+                controller: accTypeController,
+                name: "Accrediation Type",
+                hintText: "Enter Accrediation Type",
+                validator: Validation.validateProviderName,
+              ),
+              SizedBox(height: 10),
+              CustomTextFormField(
+                controller: accBodyController,
+                name: "Accrediation body",
+                hintText: "----",
+                validator: Validation.validateProviderName,
+              ),
+              SizedBox(height: 10),
+              CustomTextFormField(
+                controller: accNumController,
+                name: "Accrediation Number",
+                hintText: "Accrediation Number",
+                validator: Validation.validateAccreditationNumber,
+              ),
+              SizedBox(height: 10),
+            ],
+          ),
         ),
-        SizedBox(height: 10),
-        CustomTextFormField(
-          controller: accTypeController,
-          name: "Accrediation Type",
-          hintText: "Enter Accrediation Type",
-        ),
-        SizedBox(height: 10),
-        CustomTextFormField(
-          controller: accBodyController,
-          name: "Accrediation body",
-          hintText: "----",
-        ),
-        SizedBox(height: 10),
-        CustomTextFormField(
-          controller: accNumController,
-          name: "Accrediation Number",
-          hintText: "Accrediation Number",
-        ),
-        SizedBox(height: 10),
       ],
       actionButton: CustomButton(
         text: isEdit == true ? "Submit Request" : "Add Accrediation",
-        onPressed: () {},
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            Navigator.pop(context);
+          }
+        },
       ),
     );
   }
