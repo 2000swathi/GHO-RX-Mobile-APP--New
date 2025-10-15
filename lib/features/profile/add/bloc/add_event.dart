@@ -1,10 +1,17 @@
-part of 'add_bloc.dart';
+abstract class AddEvent {}
 
-sealed class AddEvent extends Equatable {
-  const AddEvent();
-
-  @override
-  List<Object> get props => [];
+//license
+class AddLicense extends AddEvent {
+  String licenseNumber;
+  String issuingAuthority;
+  String licenseType;
+  String issueDate;
+  String expiryDate;
+  AddLicense(
+    this.licenseNumber,
+    this.licenseType,
+    this.issueDate,
+    this.issuingAuthority,
+    this.expiryDate,
+  );
 }
-
-class AddInfoEvent extends AddEvent {}

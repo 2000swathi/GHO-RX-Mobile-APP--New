@@ -19,6 +19,14 @@ class AddSpecialtyInfoState extends AddState {
   List<Object> get props => [];
 }
 
+//add license
+class AddLicenseInfoState extends AddState {
+  final Map<String, dynamic> response;
+  const AddLicenseInfoState({required this.response});
+  @override
+  List<Object> get props => [response];
+}
+
 //error
 class AddError extends AddState {
   final String message;

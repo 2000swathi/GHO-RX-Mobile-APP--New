@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_drop_down_field.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
+import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/license_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/license_model.dart';
 
@@ -104,10 +107,21 @@ class AddEditLicenseSheet {
         text: editing ? "Update License" : "Add License",
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            final licenseNumber = lNumController.text.trim();
-            final issueDate = issueDateController.text.trim();
-            final expiryDate = expDateController.text.trim();
-            final licenseType = licenseTypeController.text.trim();
+            if (isEdit == true) {
+              //edit function
+            } else {
+              context.read<AddBloc>().add(
+                AddLicense(
+                  licenseTypeController.text,
+                  licenseTypeController.text,
+                  issueDateController.text,
+                  issueDateController.text,
+                  expDateController.text,
+                ),
+              );
+            }
+          } else {
+            print("failed");
           }
         },
       ),
