@@ -4,6 +4,11 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
+import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
+import 'package:ghorx_mobile_app_new/features/profile/edit/bloc/edit_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/bankinfo_model.dart';
 
 class AddEditBankInfoBottonSheet {
@@ -72,15 +77,45 @@ class AddEditBankInfoBottonSheet {
           ),
         ),
       ],
-      actionButton: CustomButton(
-        text: editing ? "Update Bank Information" : "Add Bank Information",
-        onPressed: () {
-          if (_formKey.currentState!.validate()) {
-            final String accountType = bankTypeController.text.trim();
-            final String accountNumber = accountNumberController.text.trim();
-            final String routingNumber = routingNumberController.text.trim();
+      actionButton: BlocListener<AddBloc, AddState>(
+        listener: (context, state) {
+          if (state is AddLicenseInfoState) {
+            context.read<ProfileBloc>().add(FetchLicence());
+
+            Navigator.of(context).pop();
+          } else if (state is AddError) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
+        child: BlocBuilder<AddBloc, AddState>(
+          builder: (context, state) {
+            return CustomButton(
+              text:
+                  state is AddLoading
+                      ? "Saving..."
+                      : (isEdit == true ? "Edit Bank Info" : "Add Bank Info"),
+              onPressed: () {
+                // 1️⃣ Prevent click during loading
+                if (state is AddLoading) return;
+
+                // 2️⃣ Validate form safely
+                if (_formKey.currentState != null &&
+                    _formKey.currentState!.validate()) {
+                  context.read<AddBloc>().add(
+                    AddBankInfo(
+                      accountNumber: accountNameController.text,
+                      accountType: bankTypeController.text,
+                      holderName: accountNameController.text,
+                      routingNumber: routingNumberController.text,
+                    ),
+                  );
+                }
+              },
+            );
+          },
+        ),
       ),
     );
   }

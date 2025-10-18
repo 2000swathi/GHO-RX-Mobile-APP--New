@@ -8,6 +8,8 @@ import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/license_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/license_model.dart';
 
 class AddEditLicenseSheet {
@@ -18,6 +20,7 @@ class AddEditLicenseSheet {
     bool? isEdit,
   ) {
     final bool editing = isEdit == true && info.data.isNotEmpty;
+
     final _formKey = GlobalKey<FormState>();
     // Prefill only when editing
     final TextEditingController lNumController = TextEditingController(
@@ -103,27 +106,42 @@ class AddEditLicenseSheet {
           },
         ),
       ],
-      actionButton: CustomButton(
-        text: editing ? "Update License" : "Add License",
-        onPressed: () {
-          if (_formKey.currentState!.validate()) {
-            if (isEdit == true) {
-              //edit function
-            } else {
-              context.read<AddBloc>().add(
-                AddLicense(
-                  licenseTypeController.text,
-                  licenseTypeController.text,
-                  issueDateController.text,
-                  issueDateController.text,
-                  expDateController.text,
-                ),
-              );
-            }
-          } else {
-            print("failed");
+      actionButton: BlocListener<AddBloc, AddState>(
+        listener: (context, state) {
+          if (state is AddLicenseInfoState) {
+            context.read<ProfileBloc>().add(FetchLicence());
+            Navigator.of(context).pop();
+          } else if (state is AddError) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
+        child: BlocBuilder<AddBloc, AddState>(
+          builder: (context, state) {
+            return CustomButton(
+              text:
+                  state is AddLoading
+                      ? "Saving..."
+                      : (isEdit == true ? "Edit License" : "Add License"),
+              onPressed: () {
+                if (state is AddLoading) return;
+
+                if (_formKey.currentState != null &&
+                    _formKey.currentState!.validate()) {
+                  context.read<AddBloc>().add(
+                    AddLicense(
+                      licenseNumber: lNumController.text,
+                      licenseType: licenseTypeController.text,
+                      issueDate: issueDateController.text,
+                      expiryDate: expDateController.text,
+                    ),
+                  );
+                }
+              },
+            );
+          },
+        ),
       ),
     );
   }

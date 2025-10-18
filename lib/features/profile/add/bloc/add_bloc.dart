@@ -9,21 +9,51 @@ class AddBloc extends Bloc<AddEvent, AddState> {
 
   AddBloc({required this.repository}) : super(AddInitial()) {
     on<AddLicense>(_onAddLicense);
+    on<AddLanguage>(_onAddLanguage);
+    on<AddBankInfo>(_onAddBankInfo);
   }
-
+  // License
   Future<void> _onAddLicense(AddLicense event, Emitter<AddState> emit) async {
     emit(AddLoading());
 
     try {
       final licenseResponse = await repository.addLicense(
         licenseNumber: event.licenseNumber,
-        issuingAuthority: event.issuingAuthority,
         licenseType: event.licenseType,
         issueDate: event.issueDate,
         expiryDate: event.expiryDate,
       );
 
       emit(AddLicenseInfoState(response: licenseResponse));
+    } catch (e) {
+      emit(AddError(message: e.toString()));
+    }
+  }
+
+  Future<void> _onAddLanguage(AddLanguage event, Emitter<AddState> emit) async {
+    emit(AddLoading());
+    try {
+      final languageResponse = await repository.addLanguage(
+        language: event.language,
+        proficiency: event.proficiency,
+      );
+      emit(AddLanguageInfoState(response: languageResponse));
+    } catch (e) {
+      emit(AddError(message: e.toString()));
+    }
+  }
+
+  // Bank Info
+  Future<void> _onAddBankInfo(AddBankInfo event, Emitter<AddState> emit) async {
+    emit(AddLoading());
+    try {
+      final bankInfoResponse = await repository.addBankInfo(
+        accountType: event.accountType,
+        routingNumber: event.routingNumber,
+        accountNumber: event.accountNumber,
+        holderName: event.holderName,
+      );
+      emit(AddBankInfoState(response: bankInfoResponse));
     } catch (e) {
       emit(AddError(message: e.toString()));
     }

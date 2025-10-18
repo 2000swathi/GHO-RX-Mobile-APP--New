@@ -484,7 +484,11 @@ class _ProfileDrState extends State<ProfileDr> {
                           alignment: Alignment.centerRight,
                           child: InkWell(
                             onTap: () {
-                              AddEditBankInfoBottonSheet.showSheet(context, null, false);
+                              AddEditBankInfoBottonSheet.showSheet(
+                                context,
+                                null,
+                                false,
+                              );
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -634,7 +638,7 @@ class _ProfileDrState extends State<ProfileDr> {
                               Navigator.of(context, rootNavigator: true).pop();
 
                               if (licenseState is LicenseListState) {
-                                final specialties =
+                                final languages =
                                     licenseState.licenseResponse.data
                                         .expand((inner) => inner)
                                         .toList();
@@ -642,7 +646,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                 AddEditLicenseSheet.showSheet(
                                   context,
                                   info,
-                                  specialties,
+                                  languages,
                                   false,
                                 );
                               } else if (licenseState is ListFailure) {
@@ -816,7 +820,11 @@ class _ProfileDrState extends State<ProfileDr> {
                           alignment: Alignment.centerRight,
                           child: InkWell(
                             onTap: () {
-                              AddEditBankInfoBottonSheet.showSheet(context, info, false);
+                              AddEditBankInfoBottonSheet.showSheet(
+                                context,
+                                info,
+                                false,
+                              );
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,

@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/license_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/profile_repo.dart';
 import 'profile_event.dart';
 import 'profile_state.dart';
@@ -15,7 +16,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<FetchAccreditation>(_onFetchAccreditation);
     on<FetchBankInfo>(_onFetchBankInfo);
   }
-
 
   //personal info
   Future<void> _onFetchProfile(
@@ -62,7 +62,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
   }
 
-
   //license
   Future<void> _onFetchLicense(
     FetchLicence event,
@@ -71,8 +70,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(ProfileLoading());
 
     try {
-      final insurance = await repository.fetchLicenseInfo();
-      emit(LicenseState(licenseModel: insurance));
+      final license = await repository.fetchLicenseInfo();
+      emit(LicenseState(licenseModel: license));
     } catch (e) {
       emit(ProfileError(message: e.toString()));
     }
@@ -92,9 +91,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(ProfileError(message: e.toString()));
     }
   }
-  
-//accreditation
- Future<void>  _onFetchAccreditation(
+
+  //accreditation
+  Future<void> _onFetchAccreditation(
     FetchAccreditation event,
     Emitter<ProfileState> emit,
   ) async {
@@ -108,16 +107,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
   }
 
-
   //bankinfo
   Future<void> _onFetchBankInfo(
-    FetchBankInfo event, 
+    FetchBankInfo event,
     Emitter<ProfileState> emit,
-    ) async {
+  ) async {
     emit(ProfileLoading());
     try {
       final bankList = await repository.fetchBankInfo();
-      emit(BankInfoState(bankListModel:bankList ));
+      emit(BankInfoState(bankListModel: bankList));
     } catch (e) {
       emit(ProfileError(message: e.toString()));
     }

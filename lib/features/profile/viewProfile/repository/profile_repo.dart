@@ -107,6 +107,7 @@ class ProfileRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
+      print(response);
       return LicenseModel.fromJson(response);
     } catch (e) {
       throw (e.toString());
@@ -136,8 +137,9 @@ class ProfileRepository {
       throw (e.toString());
     }
   }
+
   // Accreditation
-    Future<AccreditationModel> fetchAccreditationInfo() async {
+  Future<AccreditationModel> fetchAccreditationInfo() async {
     final token = await SharedPreference.getToken();
     final reviewerId = await SharedPreference.getUserId();
     if (token!.isEmpty || reviewerId!.isEmpty) {
@@ -162,7 +164,7 @@ class ProfileRepository {
   }
 
   // Bank Info
-  Future <BankInfoResponseModel> fetchBankInfo() async {
+  Future<BankInfoResponseModel> fetchBankInfo() async {
     final token = await SharedPreference.getToken();
     final reviewerId = await SharedPreference.getUserId();
     if (token!.isEmpty || reviewerId!.isEmpty) {
