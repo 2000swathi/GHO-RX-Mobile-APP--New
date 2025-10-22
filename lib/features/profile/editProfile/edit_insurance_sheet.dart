@@ -57,38 +57,18 @@ class EditInsuranceSheet {
                 controller: issueDateController,
                 name: "Issue Date",
                 hintText: "mm/dd/yyyy",
-                validator:
-                    (value) => Validation.validateUSDate(
-                      value,
-                      fieldName: "Issue Date",
-                    ),
               ),
               SizedBox(height: 10),
               CustomTextFormField(
                 controller: expDateController,
                 name: "Expiry Date",
                 hintText: "mm/dd/yyyy",
-                validator:
-                    (value) => Validation.validateUSDate(
-                      value,
-                      fieldName: "Expiry Date",
-                    ),
               ),
               SizedBox(height: 10),
             ],
           ),
         ),
       ],
-      actionButton: CustomButton(
-        text: "Submit Request",
-        onPressed: () {
-          print("clicked");
-          if (_formKey.currentState!.validate()) {
-            Navigator.pop(context);
-            print("clicked");
-          }
-        },
-      ),
 
       actionButton: MultiBlocListener(
         listeners: [

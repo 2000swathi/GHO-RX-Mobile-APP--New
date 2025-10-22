@@ -497,7 +497,7 @@ class _ProfileDrState extends State<ProfileDr> {
                             onTap: () {
                               EditInsuranceSheet.showSheet(
                                 context,
-                                state.insuranceModel,
+                                null,
                                 false,
                               );
                             },
