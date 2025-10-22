@@ -39,14 +39,21 @@ class AddBloc extends Bloc<AddEvent, AddState> {
     emit(AddLoading());
 
     try {
-      final addspecialty = await repository.addSpecialty(
+      final response = await repository.addSpecialty(
         specialty: event.specialty,
         certifiedBoard: event.certifiedBoard,
         specialtyType: event.specialtyType,
       );
-      emit(AddSpecialtyInfoState());
+      if (response["Status"] == 1) {
+        final message =
+            response["Data"]?[0]?[0]?["msg"] ?? "Specialty added successfully";
+        emit(AddSuccess(message: message));
+      } else {
+        final error = response["Info"] ?? "Failed to add specialty";
+        emit(AddError(message: error));
+      }
     } catch (e) {
-      emit(AddError(message: e.toString()));
+      emit(AddError(message: "An error occurred: ${e.toString()}"));
     }
   }
 
@@ -87,14 +94,21 @@ class AddBloc extends Bloc<AddEvent, AddState> {
     emit(AddLoading());
 
     try {
-      final addaccrediation = await repository.addaccrediation(
+      final response = await repository.addaccrediation(
         accreditationtype: event.accreditationtype,
         accreditationbody: event.accreditationbody,
         accreditationnumber: event.accreditationnumber,
       );
-      emit(AddAccrediationInfoState());
+      if (response["Status"] == 1) {
+        final message = response["Data"]?[0]?[0]?["msg"] ??
+            "Accreditation added successfully";
+        emit(AddSuccess(message: message));
+      } else {
+        final error = response["Info"] ?? "Failed to add accreditation";
+        emit(AddError(message: error));
+      }
     } catch (e) {
-      emit(AddError(message: e.toString()));
+      emit(AddError(message: "An error occurred: ${e.toString()}"));
     }
   }
 
@@ -104,15 +118,22 @@ class AddBloc extends Bloc<AddEvent, AddState> {
     emit(AddLoading());
 
     try {
-      final addInsurance = await repository.addInsurance(
+      final response = await repository.addInsurance(
         providerID: event.providerID,
         providerName: event.providerName,
         issueDate: event.issueDate,
         expiryDate: event.expiryDate,
       );
-      emit(AddInsuranceInfoState());
+      if (response["Status"] == 1) {
+        final message =
+            response["Data"]?[0]?[0]?["msg"] ?? "Insurance added successfully";
+        emit(AddSuccess(message: message));
+      } else {
+        final error = response["Info"] ?? "Failed to add insurance";
+        emit(AddError(message: error));
+      }
     } catch (e) {
-      emit(AddError(message: e.toString()));
+      emit(AddError(message: "An error occurred: ${e.toString()}"));
     }
   }
 }

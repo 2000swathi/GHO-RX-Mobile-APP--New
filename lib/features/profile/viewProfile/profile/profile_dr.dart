@@ -54,7 +54,7 @@ class _ProfileDrState extends State<ProfileDr> {
           _buildSection(
             isadd: false,
             index: 0,
-            heading: "Personal informations",
+            heading: "Personal information",
             subheading: "View your basic and contact details.",
             content: BlocProvider(
               create:
@@ -163,7 +163,6 @@ class _ProfileDrState extends State<ProfileDr> {
                       return const Center(child: Text("No specialties found"));
                     }
 
-                    final info = state.specialtyModel;
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,7 +171,9 @@ class _ProfileDrState extends State<ProfileDr> {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildRow("Specialty", specialty.specialty),
+                              _buildRow(
+                                "Specialty", specialty.specialty,
+                                ),
                               _buildRow(
                                 "Certified Board",
                                 specialty.certifiedBoard,
@@ -182,63 +183,84 @@ class _ProfileDrState extends State<ProfileDr> {
                                 specialty.specialtyType,
                               ),
                               const SizedBox(height: 5),
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: InkWell(
-                                  onTap: () async {
-                                    showDialog(
-                                      context: context,
-                                      barrierDismissible: false,
-                                      builder:
-                                          (_) => const Center(
-                                            child: LoadingAnimation(),
-                                          ),
-                                    );
-
-                                    context.read<ListBloc>().add(
-                                      FetchSpecialtyList(),
-                                    );
-
-                                    final listState = await context
-                                        .read<ListBloc>()
-                                        .stream
-                                        .firstWhere(
-                                          (s) =>
-                                              s is SpecialtyListState ||
-                                              s is ListFailure,
-                                        );
-
-                                    Navigator.of(
-                                      context,
-                                      rootNavigator: true,
-                                    ).pop();
-
-                                    if (listState is SpecialtyListState) {
-                                      final specialties =
-                                          listState.specialtyResponse.data
-                                              .expand((inner) => inner)
-                                              .toList();
-
-                                      AddEditSpecialtySheet.showSheet(
-                                        context,
-                                        info,
-                                        specialties,
-                                        true,
-                                      );
-                                    } else if (listState is ListFailure) {
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
-                                        SnackBar(
-                                          content: Text(listState.error),
-                                        ),
-                                      );
-                                    }
-                                  },
-                                  child: SvgPicture.asset(
-                                    "assets/svg/edit_svg.svg",
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  // delete
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: InkWell(
+                                      onTap: () {
+                                        
+                                      },
+                                      child: SvgPicture.asset(
+                                        "assets/svg/trash.svg",color: Colors.red,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  //edit 
+                                    const SizedBox(width: 15),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: InkWell(
+                                      onTap: () async {
+                                        showDialog(
+                                          context: context,
+                                          barrierDismissible: false,
+                                          builder:
+                                              (_) => const Center(
+                                                child: LoadingAnimation(),
+                                              ),
+                                        );
+                                  
+                                        context.read<ListBloc>().add(
+                                          FetchSpecialtyList(),
+                                        );
+                                  
+                                        final listState = await context
+                                            .read<ListBloc>()
+                                            .stream
+                                            .firstWhere(
+                                              (s) =>
+                                                  s is SpecialtyListState ||
+                                                  s is ListFailure,
+                                            );
+                                  
+                                        Navigator.of(
+                                          context,
+                                          rootNavigator: true,
+                                        ).pop();
+                                  
+                                        if (listState is SpecialtyListState) {
+                                          final specialties =
+                                              listState.specialtyResponse.data
+                                                  .expand((inner) => inner)
+                                                  .toList();
+                                  
+                                          AddEditSpecialtySheet.showSheet(
+                                            context,
+                                            specialty,
+                                            specialties,
+                                            true,
+                                          );
+                                        } else if (listState is ListFailure) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(listState.error),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      child: SvgPicture.asset(
+                                        "assets/svg/edit_svg.svg",
+                                      ),
+                                    ),
+                                  ),
+                                 
+
+                                ],
                               ),
                               Divider(color: AppColors.hint2color),
                             ],
@@ -282,7 +304,7 @@ class _ProfileDrState extends State<ProfileDr> {
 
                                 AddEditSpecialtySheet.showSheet(
                                   context,
-                                  info,
+                                  null,
                                   specialties,
                                   false,
                                 );

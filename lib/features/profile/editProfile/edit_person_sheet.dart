@@ -1,12 +1,14 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_drop_down_field.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_phone.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
+import 'package:ghorx_mobile_app_new/core/constants/date_input_formatter.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
 import 'package:ghorx_mobile_app_new/features/profile/edit/repository/edit_repository.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/country_response_model.dart';
@@ -97,8 +99,13 @@ class EditProfileSheet {
                   CustomTextFormField(
                     controller: dobController,
                     name: "Birth Date",
-                    hintText: "Enter your date of birth",
+                    hintText: "DD/MM/YYYY",
+                    keyboardType: TextInputType.number,
                     validator: Validation.validateDOB,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly, // Ensure only digits are typed
+                      DobInputFormatter(), // Apply the auto-formatting
+                    ],
                   ),
                   const SizedBox(height: 10),
                   CustomDropdownFormField<String>(
