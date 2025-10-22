@@ -16,7 +16,7 @@ import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/pro
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_insurance_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_license_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_person_sheet.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_specialty_sheet.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_specialty_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/widget/profiledetails.dart';
 
 class ProfileDr extends StatefulWidget {
@@ -478,15 +478,14 @@ class _ProfileDrState extends State<ProfileDr> {
                             ],
                           ),
                         ),
-
                         const SizedBox(height: 12),
                         Align(
                           alignment: Alignment.centerRight,
                           child: InkWell(
                             onTap: () {
-                              AddEditBankInfoBottonSheet.showSheet(
+                              EditInsuranceSheet.showSheet(
                                 context,
-                                null,
+                                state.insuranceModel,
                                 false,
                               );
                             },

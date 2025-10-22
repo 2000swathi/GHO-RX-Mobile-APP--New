@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
+import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/insurance_model.dart';
 
 class EditInsuranceSheet {
@@ -34,37 +35,53 @@ class EditInsuranceSheet {
               ? info.data[0].expiryDate
               : "",
     );
+    final _formKey = GlobalKey<FormState>();
 
     CustomBottomSheet.show(
       context: context,
       heading: "Edit Insurance",
       content: [
-        CustomTextFormField(
-          controller: prIDController,
-          name: "Provider ID",
-          hintText: "Enter Provider ID",
+        Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              CustomTextFormField(
+                controller: prIDController,
+                name: "Provider ID",
+                hintText: "Enter Provider ID",
+                validator: Validation.validateID,
+              ),
+              SizedBox(height: 10),
+              CustomTextFormField(
+                controller: pNameController,
+                name: "Provider Name",
+                hintText: "Enter Provider name",
+                validator: Validation.validateProviderName,
+              ),
+              SizedBox(height: 10),
+              CustomTextFormField(
+                controller: issueDateController,
+                name: "Issue Date",
+                hintText: "dd/mm/yyyy",
+                validator: Validation.validateDate,
+              ),
+              SizedBox(height: 10),
+              CustomTextFormField(
+                controller: expDateController,
+                name: "Exp Date",
+                hintText: "dd/mm/yyyy",
+                validator: Validation.validateDate,
+              ),
+              SizedBox(height: 10),
+            ],
+          ),
         ),
-        SizedBox(height: 10),
-        CustomTextFormField(
-          controller: pNameController,
-          name: "Provider Name",
-          hintText: "Enter Provider name",
-        ),
-        SizedBox(height: 10),
-        CustomTextFormField(
-          controller: issueDateController,
-          name: "Issue Date",
-          hintText: "dd/mm/yyyy",
-        ),
-        SizedBox(height: 10),
-        CustomTextFormField(
-          controller: expDateController,
-          name: "Exp Date",
-          hintText: "dd/mm/yyyy",
-        ),
-        SizedBox(height: 10),
       ],
-      actionButton: CustomButton(text: "Submit Request", onPressed: () {}),
+      actionButton: CustomButton(text: "Submit Request", onPressed: () {
+        if (_formKey.currentState!.validate()) {
+          Navigator.pop(context);
+        }
+      }),
     );
   }
 }
