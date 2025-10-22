@@ -290,8 +290,6 @@ class Validation {
   static String? validateProviderName(String? value) {
     if (value == null || value.trim().isEmpty) {
       return 'Field is required';
-    } else if (value.trim().length > 30) {
-      return 'Maximum 30 characters allowed';
     }
     return null;
   }
@@ -303,11 +301,23 @@ class Validation {
     if (value == null || value.trim().isEmpty) {
       return 'Field is required';
     }
+  static String? validateAccreditationNumber(
+    String? value, {
+    String fieldName = 'Accreditation Number',
+  }) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Field is required';
+    }
 
     if (!RegExp(r'^[0-9]+$').hasMatch(value.trim())) {
       return '$fieldName must contain only digits';
     }
+    if (!RegExp(r'^[0-9]+$').hasMatch(value.trim())) {
+      return '$fieldName must contain only digits';
+    }
 
+    return null;
+  }
     return null;
   }
 }

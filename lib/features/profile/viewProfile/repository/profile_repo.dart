@@ -157,6 +157,7 @@ class ProfileRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
+      print(response);
       return AccreditationModel.fromJson(response);
     } catch (e) {
       throw (e.toString());

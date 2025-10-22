@@ -44,6 +44,30 @@ class EditBankInfoState extends EditState {
   List<Object> get props => [];
 }
 
+//specialty
+class EditSpecialtyInfoState extends EditState {
+  const EditSpecialtyInfoState();
+
+  @override
+  List<Object> get props => [];
+}
+
+//accrediation
+class EditAccrediationInfoState extends EditState {
+  const EditAccrediationInfoState();
+
+  @override
+  List<Object> get props => [];
+}
+
+//insurance
+class EditInsuranceInfoState extends EditState {
+  const EditInsuranceInfoState();
+
+  @override
+  List<Object> get props => [];
+}
+
 //ERROR
 final class EditFailure extends EditState {
   final String error;

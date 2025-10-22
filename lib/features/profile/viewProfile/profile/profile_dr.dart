@@ -332,16 +332,19 @@ class _ProfileDrState extends State<ProfileDr> {
                     return const Center(child: LoadingAnimation());
                   } else if (state is AccreditationState) {
                     final accreditationList = state.accreditationModel.data;
-                    if (accreditationList.isEmpty) {
-                      return const Center(
-                        child: Text("No accreditations found"),
-                      );
-                    }
                     final info = state.accreditationModel;
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        if (accreditationList.isEmpty)
+                          const Center(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Text("No accreditations found"),
+                            ),
+                          ),
+
                         ...accreditationList.map((accreditation) {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -365,7 +368,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                   onTap: () {
                                     AddEditAccrediationBottomSheet.showSheet(
                                       context,
-                                      info,
+                                      accreditation,
                                       true,
                                     );
                                   },
@@ -386,7 +389,7 @@ class _ProfileDrState extends State<ProfileDr> {
                             onTap: () async {
                               AddEditAccrediationBottomSheet.showSheet(
                                 context,
-                                info,
+                                null,
                                 false,
                               );
                               showDialog(
@@ -446,12 +449,16 @@ class _ProfileDrState extends State<ProfileDr> {
                   }
                   if (state is InsuranceState) {
                     final insuranceList = state.insuranceModel.data;
-                    if (insuranceList.isEmpty) {
-                      return const Center(child: Text("No Insurance added"));
-                    }
                     final info = state.insuranceModel;
                     return Column(
                       children: [
+                        if (insuranceList.isEmpty)
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text("No Insurance found"),
+                            ),
+                          ),
                         ...insuranceList.map(
                           (insurance) => Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -470,7 +477,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                   onTap: () async {
                                     EditInsuranceSheet.showSheet(
                                       context,
-                                      state.insuranceModel,
+                                      insurance,
                                       true,
                                     );
                                   },
@@ -824,6 +831,11 @@ class _ProfileDrState extends State<ProfileDr> {
                           alignment: Alignment.centerRight,
                           child: InkWell(
                             onTap: () {
+                              AddEditBankInfoBottonSheet.showSheet(
+                                context,
+                                info,
+                                false,
+                              );
                               AddEditBankInfoBottonSheet.showSheet(
                                 context,
                                 info,
