@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,7 +18,7 @@ import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/pro
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_insurance_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_license_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_person_sheet.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_specialty_sheet.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_specialty_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/widget/profiledetails.dart';
 
 class ProfileDr extends StatefulWidget {
@@ -101,6 +103,9 @@ class _ProfileDrState extends State<ProfileDr> {
                                     info,
                                     countries,
                                   );
+                                });
+                                setState(() {
+                                  _expandedIndex = -1;
                                 });
                               } else if (listState is ListFailure) {
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -327,16 +332,19 @@ class _ProfileDrState extends State<ProfileDr> {
                     return const Center(child: LoadingAnimation());
                   } else if (state is AccreditationState) {
                     final accreditationList = state.accreditationModel.data;
-                    if (accreditationList.isEmpty) {
-                      return const Center(
-                        child: Text("No accreditations found"),
-                      );
-                    }
                     final info = state.accreditationModel;
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        if (accreditationList.isEmpty)
+                          const Center(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Text("No accreditations found"),
+                            ),
+                          ),
+
                         ...accreditationList.map((accreditation) {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -360,7 +368,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                   onTap: () {
                                     AddEditAccrediationBottomSheet.showSheet(
                                       context,
-                                      info,
+                                      accreditation,
                                       true,
                                     );
                                   },
@@ -381,7 +389,7 @@ class _ProfileDrState extends State<ProfileDr> {
                             onTap: () async {
                               AddEditAccrediationBottomSheet.showSheet(
                                 context,
-                                info,
+                                null,
                                 false,
                               );
                               showDialog(
@@ -441,12 +449,16 @@ class _ProfileDrState extends State<ProfileDr> {
                   }
                   if (state is InsuranceState) {
                     final insuranceList = state.insuranceModel.data;
-                    if (insuranceList.isEmpty) {
-                      return const Center(child: Text("No Insurance added"));
-                    }
                     final info = state.insuranceModel;
                     return Column(
                       children: [
+                        if (insuranceList.isEmpty)
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text("No Insurance found"),
+                            ),
+                          ),
                         ...insuranceList.map(
                           (insurance) => Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -465,7 +477,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                   onTap: () async {
                                     EditInsuranceSheet.showSheet(
                                       context,
-                                      state.insuranceModel,
+                                      insurance,
                                       true,
                                     );
                                   },
@@ -478,13 +490,16 @@ class _ProfileDrState extends State<ProfileDr> {
                             ],
                           ),
                         ),
-
                         const SizedBox(height: 12),
                         Align(
                           alignment: Alignment.centerRight,
                           child: InkWell(
                             onTap: () {
-                              AddEditBankInfoBottonSheet.showSheet(context, null, false);
+                              EditInsuranceSheet.showSheet(
+                                context,
+                                null,
+                                false,
+                              );
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -634,7 +649,7 @@ class _ProfileDrState extends State<ProfileDr> {
                               Navigator.of(context, rootNavigator: true).pop();
 
                               if (licenseState is LicenseListState) {
-                                final specialties =
+                                final languages =
                                     licenseState.licenseResponse.data
                                         .expand((inner) => inner)
                                         .toList();
@@ -642,7 +657,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                 AddEditLicenseSheet.showSheet(
                                   context,
                                   info,
-                                  specialties,
+                                  languages,
                                   false,
                                 );
                               } else if (licenseState is ListFailure) {
@@ -816,7 +831,16 @@ class _ProfileDrState extends State<ProfileDr> {
                           alignment: Alignment.centerRight,
                           child: InkWell(
                             onTap: () {
-                              AddEditBankInfoBottonSheet.showSheet(context, info, false);
+                              AddEditBankInfoBottonSheet.showSheet(
+                                context,
+                                info,
+                                false,
+                              );
+                              AddEditBankInfoBottonSheet.showSheet(
+                                context,
+                                info,
+                                false,
+                              );
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,

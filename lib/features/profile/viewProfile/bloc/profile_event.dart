@@ -14,6 +14,7 @@ class FetchSpecialty extends ProfileEvent {}
 class FetchInsurance extends ProfileEvent {}
 
 class FetchLicence extends ProfileEvent {}
+
 class FetchBankInfo extends ProfileEvent {}
 
 class FetchAccreditation extends ProfileEvent {}

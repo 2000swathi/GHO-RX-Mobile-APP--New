@@ -6,12 +6,15 @@ class CustomPhoneField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
   final String? countryCode; 
+  final String? Function(String?)? validator;
+
 
   const CustomPhoneField({
     super.key,
     required this.controller,
     this.label = "",
     this.countryCode,
+    this.validator,
   });
 
   @override
@@ -28,6 +31,7 @@ class CustomPhoneField extends StatelessWidget {
         TextFormField(
           controller: controller,
           keyboardType: TextInputType.phone,
+          validator: validator,
           decoration: InputDecoration(
             prefixText: countryCode != null && countryCode!.isNotEmpty
                 ? "+$countryCode "

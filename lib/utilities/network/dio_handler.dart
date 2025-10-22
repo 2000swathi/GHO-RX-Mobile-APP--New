@@ -22,6 +22,7 @@ class DioHandler {
     Map<String, dynamic>? data,
   }) async {
     try {
+      print(data);
       final response = await _dio.post(path, data: data);
       return response.data;
     } on DioException catch (e) {
