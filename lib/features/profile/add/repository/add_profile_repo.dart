@@ -34,7 +34,6 @@ class AddProfileRepository {
   //add License
   Future addLicense({
     required String licenseNumber,
-    // required String issuingAuthority,
     required String licenseType,
     required String issueDate,
     required String expiryDate,
@@ -46,7 +45,6 @@ class AddProfileRepository {
     }
     final c1data = jsonEncode({
       "LicenseNumber": licenseNumber,
-      // "IssuingAuthority": issuingAuthority,
       "LicenseType": licenseType,
       "IssueDate": issueDate,
       "ExpiryDate": expiryDate,
@@ -62,8 +60,6 @@ class AddProfileRepository {
     try {
       final response = await _dioHandler.post('', data: data);
       print(response);
-      // return LicenseModel.fromJson(response['Data'][0][0]);
-      return LicenseModel.fromJson(response);
     } catch (e) {
       throw Exception("Failed to add License: $e");
     }

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -101,6 +103,9 @@ class _ProfileDrState extends State<ProfileDr> {
                                     info,
                                     countries,
                                   );
+                                });
+                                setState(() {
+                                  _expandedIndex = -1;
                                 });
                               } else if (listState is ListFailure) {
                                 ScaffoldMessenger.of(context).showSnackBar(

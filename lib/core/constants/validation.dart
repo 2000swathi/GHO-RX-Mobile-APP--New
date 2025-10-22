@@ -205,115 +205,57 @@ class Validation {
     return null;
   }
 
- static String? validateDate(String? value, {String fieldName = 'Date'}) {
-  if (value == null || value.trim().isEmpty) {
-    return '$fieldName is required';
-  }
-
-  final trimmedValue = value.trim();
-
-  // Accepts formats like "06 June, 2025" or "6 June, 2025"
-  final RegExp dateRegex = RegExp(r'^\d{1,2}\s+[A-Za-z]+,\s+\d{4}$');
-
-  if (!dateRegex.hasMatch(trimmedValue)) {
-    return 'Enter $fieldName in DD Month, YYYY format (e.g. 06 June, 2025)';
-  }
-
-  try {
-    final parts = trimmedValue.replaceAll(',', '').split(RegExp(r'\s+'));
-    final day = int.parse(parts[0]);
-    final monthName = parts[1].toLowerCase();
-    final year = int.parse(parts[2]);
-
-    // Map month names to numbers
-    final months = {
-      'january': 1,
-      'february': 2,
-      'march': 3,
-      'april': 4,
-      'may': 5,
-      'june': 6,
-      'july': 7,
-      'august': 8,
-      'september': 9,
-      'october': 10,
-      'november': 11,
-      'december': 12,
-    };
-
-    final month = months[monthName];
-    if (month == null) return 'Enter a valid month name';
-
-    final date = DateTime(year, month, day);
-
-    // Ensure the parsed date matches the input
-    if (date.year != year || date.month != month || date.day != day) {
-      return 'Enter a valid $fieldName';
-    }
-
-    return null; // ✅ Valid date
-  } catch (_) {
-    return 'Invalid $fieldName';
-  }
-
-  static String? validateCVfield(
-    String? value, {
-    String fieldName = 'This field',
-  }) {
+  static String? validateDate(String? value, {String fieldName = 'Date'}) {
     if (value == null || value.trim().isEmpty) {
       return '$fieldName is required';
     }
-    return null;
-  }
-
-  static String? validateAccountNumber(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return 'Account number is required';
-    }
 
     final trimmedValue = value.trim();
 
-    // Check for any non-digit characters
-    if (!RegExp(r'^\d+$').hasMatch(trimmedValue)) {
-      return 'Account number must contain only digits';
-    }
+    // Accepts formats like "06 June, 2025" or "6 June, 2025"
+    final RegExp dateRegex = RegExp(r'^\d{1,2}\s+[A-Za-z]+,\s+\d{4}$');
 
-    if (!RegExp(r'^.{8,80}$').hasMatch(trimmedValue)) {
-      return 'Account number have atleat 8 digits';
-    }
-
-    return null;
-  }
-
-  static String? validateRoutigNumber(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return 'Routing number is required';
-    }
-
-    final trimmedValue = value.trim();
-
-    // Check for any non-digit characters
-    if (!RegExp(r'^\d{8,}$').hasMatch(trimmedValue)) {
-      // return 'Routing number must contain only digits';
-    }
-    return null;
-  }
-
-  static String? validateDate(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return 'date is required';
+    if (!dateRegex.hasMatch(trimmedValue)) {
+      return 'Enter $fieldName in DD Month, YYYY format (e.g. 06 June, 2025)';
     }
 
     try {
-      final date = DateFormat('dd/MM/yyyy').parseStrict(value);
-    } catch (e) {
-      return 'Enter date in dd/MM/yyyy format';
+      final parts = trimmedValue.replaceAll(',', '').split(RegExp(r'\s+'));
+      final day = int.parse(parts[0]);
+      final monthName = parts[1].toLowerCase();
+      final year = int.parse(parts[2]);
+
+      // Map month names to numbers
+      final months = {
+        'january': 1,
+        'february': 2,
+        'march': 3,
+        'april': 4,
+        'may': 5,
+        'june': 6,
+        'july': 7,
+        'august': 8,
+        'september': 9,
+        'october': 10,
+        'november': 11,
+        'december': 12,
+      };
+
+      final month = months[monthName];
+      if (month == null) return 'Enter a valid month name';
+
+      final date = DateTime(year, month, day);
+
+      // Ensure the parsed date matches the input
+      if (date.year != year || date.month != month || date.day != day) {
+        return 'Enter a valid $fieldName';
+      }
+
+      return null; // ✅ Valid date
+    } catch (_) {
+      return 'Invalid $fieldName';
     }
-
-    return null;
   }
-}
-
 
   static String? validateSpecialty(String? value) {
     if (value == null || value.isEmpty) {
@@ -354,16 +296,18 @@ class Validation {
     return null;
   }
 
-  static String? validateAccreditationNumber(String? value, {String fieldName = 'Accreditation Number'}) {
-  if (value == null || value.trim().isEmpty) {
-    return 'Field is required';
+  static String? validateAccreditationNumber(
+    String? value, {
+    String fieldName = 'Accreditation Number',
+  }) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Field is required';
+    }
+
+    if (!RegExp(r'^[0-9]+$').hasMatch(value.trim())) {
+      return '$fieldName must contain only digits';
+    }
+
+    return null;
   }
-
-  if (!RegExp(r'^[0-9]+$').hasMatch(value.trim())) {
-    return '$fieldName must contain only digits';
-  }
-
-  return null;
-}
-
 }

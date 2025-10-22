@@ -55,14 +55,12 @@ class AddEditBankInfoBottonSheet {
                 controller: routingNumberController,
                 name: "Routing Number",
                 hintText: "Enter Routing Number",
-                validator: Validation.validateRoutigNumber,
               ),
               SizedBox(height: 10),
               CustomTextFormField(
                 controller: accountNumberController,
                 name: "Account Number",
                 hintText: "Enter Account Number",
-                validator: Validation.validateAccountNumber,
               ),
               SizedBox(height: 10),
               CustomTextFormField(

@@ -23,7 +23,7 @@ class AddEditLicenseSheet {
 
     final _formKey = GlobalKey<FormState>();
     // Prefill only when editing
-    final TextEditingController lNumController = TextEditingController(
+    final TextEditingController NumController = TextEditingController(
       text: editing ? info.data[0].licenseNumber : "",
     );
 
@@ -53,7 +53,7 @@ class AddEditLicenseSheet {
               child: Column(
                 children: [
                   CustomTextFormField(
-                    controller: lNumController,
+                    controller: NumController,
                     name: "License Number",
                     hintText: "Enter License Number",
                     validator:
@@ -89,14 +89,14 @@ class AddEditLicenseSheet {
                   CustomTextFormField(
                     controller: issueDateController,
                     name: "Issue Date",
-                    hintText: "dd/mm/yyyy",
+                    hintText: "DD Month, YYYY",
                     validator: Validation.validateDate,
                   ),
                   const SizedBox(height: 10),
                   CustomTextFormField(
                     controller: expDateController,
                     name: "Expiry Date",
-                    hintText: "dd/mm/yyyy",
+                    hintText: "DD Month, YYYY",
                     validator: Validation.validateDate,
                   ),
                   const SizedBox(height: 10),
@@ -131,7 +131,7 @@ class AddEditLicenseSheet {
                     _formKey.currentState!.validate()) {
                   context.read<AddBloc>().add(
                     AddLicense(
-                      licenseNumber: lNumController.text,
+                      licenseNumber: NumController.text,
                       licenseType: licenseTypeController.text,
                       issueDate: issueDateController.text,
                       expiryDate: expDateController.text,

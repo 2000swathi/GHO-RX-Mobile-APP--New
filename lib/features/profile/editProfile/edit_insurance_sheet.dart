@@ -77,11 +77,16 @@ class EditInsuranceSheet {
           ),
         ),
       ],
-      actionButton: CustomButton(text: "Submit Request", onPressed: () {
-        if (_formKey.currentState!.validate()) {
-          Navigator.pop(context);
-        }
-      }),
+      actionButton: CustomButton(
+        text: "Submit Request",
+        onPressed: () {
+          print("clicked");
+          if (_formKey.currentState!.validate()) {
+            Navigator.pop(context);
+            print("clicked");
+          }
+        },
+      ),
     );
   }
 }
