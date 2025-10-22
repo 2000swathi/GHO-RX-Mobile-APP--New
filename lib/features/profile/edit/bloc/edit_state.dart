@@ -9,6 +9,7 @@ sealed class EditState extends Equatable {
 
 final class EditInitial extends EditState {}
 final class EditLoading extends EditState {}
+
 // success
 final class EditSuccess extends EditState {
   final String message;
@@ -18,6 +19,32 @@ final class EditSuccess extends EditState {
   @override
   List<Object> get props => [message];
 }
+
+//specialty
+class EditSpecialtyInfoState extends EditState {
+  const EditSpecialtyInfoState();
+
+  @override
+  List<Object> get props => [];
+}
+
+
+//accrediation
+class EditAccrediationInfoState extends EditState {
+  const EditAccrediationInfoState();
+
+  @override
+  List<Object> get props => [];
+}
+
+//insurance
+class EditInsuranceInfoState extends EditState {
+  const EditInsuranceInfoState();
+
+  @override
+  List<Object> get props => [];
+}
+
 
 //ERROR
 final class EditFailure extends EditState {

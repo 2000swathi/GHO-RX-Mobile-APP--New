@@ -208,58 +208,18 @@ class Validation {
     return null;
   }
 
- static String? validateDate(String? value, {String fieldName = 'Date'}) {
-  if (value == null || value.trim().isEmpty) {
+  static String? validateUSDate(String? value, {String fieldName = 'Date'}) {
+  if (value == null || value.isEmpty) {
     return '$fieldName is required';
   }
 
-  final trimmedValue = value.trim();
-
-  // Accepts formats like "06 June, 2025" or "6 June, 2025"
-  final RegExp dateRegex = RegExp(r'^\d{1,2}\s+[A-Za-z]+,\s+\d{4}$');
-
-  if (!dateRegex.hasMatch(trimmedValue)) {
-    return 'Enter $fieldName in DD Month, YYYY format (e.g. 06 June, 2025)';
+  final RegExp dateRegex = RegExp(r'^(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/\d{4}$');
+  if (!dateRegex.hasMatch(value)) {
+    return 'Enter $fieldName in MM/dd/yyyy format';
   }
 
-  try {
-    final parts = trimmedValue.replaceAll(',', '').split(RegExp(r'\s+'));
-    final day = int.parse(parts[0]);
-    final monthName = parts[1].toLowerCase();
-    final year = int.parse(parts[2]);
-
-    // Map month names to numbers
-    final months = {
-      'january': 1,
-      'february': 2,
-      'march': 3,
-      'april': 4,
-      'may': 5,
-      'june': 6,
-      'july': 7,
-      'august': 8,
-      'september': 9,
-      'october': 10,
-      'november': 11,
-      'december': 12,
-    };
-
-    final month = months[monthName];
-    if (month == null) return 'Enter a valid month name';
-
-    final date = DateTime(year, month, day);
-
-    // Ensure the parsed date matches the input
-    if (date.year != year || date.month != month || date.day != day) {
-      return 'Enter a valid $fieldName';
-    }
-
-    return null; // ✅ Valid date
-  } catch (_) {
-    return 'Invalid $fieldName';
-  }
+  return null;
 }
-
 
   static String? validateSpecialty(String? value) {
     if (value == null || value.isEmpty) {
@@ -294,22 +254,22 @@ class Validation {
   static String? validateProviderName(String? value) {
     if (value == null || value.trim().isEmpty) {
       return 'Field is required';
-    } else if (value.trim().length > 30) {
-      return 'Maximum 30 characters allowed';
     }
     return null;
   }
 
-  static String? validateAccreditationNumber(String? value, {String fieldName = 'Accreditation Number'}) {
-  if (value == null || value.trim().isEmpty) {
-    return 'Field is required';
+  static String? validateAccreditationNumber(
+    String? value, {
+    String fieldName = 'Accreditation Number',
+  }) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Field is required';
+    }
+
+    if (!RegExp(r'^[0-9]+$').hasMatch(value.trim())) {
+      return '$fieldName must contain only digits';
+    }
+
+    return null;
   }
-
-  if (!RegExp(r'^[0-9]+$').hasMatch(value.trim())) {
-    return '$fieldName must contain only digits';
-  }
-
-  return null;
-}
-
 }
