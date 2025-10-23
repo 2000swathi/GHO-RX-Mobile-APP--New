@@ -44,7 +44,7 @@ class AddBloc extends Bloc<AddEvent, AddState> {
         certifiedBoard: event.certifiedBoard,
         specialtyType: event.specialtyType,
       );
-      emit(AddSuccess(response: addspecialty));
+      emit(AddSuccess(response: response));
     } catch (e) {
       emit(AddError(message: "An error occurred: ${e.toString()}"));
     }
@@ -92,7 +92,7 @@ class AddBloc extends Bloc<AddEvent, AddState> {
         accreditationbody: event.accreditationbody,
         accreditationnumber: event.accreditationnumber,
       );
-      emit(AddSuccess(response: addaccrediation));
+      emit(AddSuccess(response:response ));
     } catch (e) {
       emit(AddError(message: "An error occurred: ${e.toString()}"));
     }
