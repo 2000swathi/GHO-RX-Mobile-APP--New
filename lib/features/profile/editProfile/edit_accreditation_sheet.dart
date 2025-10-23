@@ -71,11 +71,11 @@ class AddEditAccrediationBottomSheet {
                 Navigator.pop(context);
                 context.read<ProfileBloc>().add(FetchAccreditation());
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.message ?? "Added Successfully")),
+                  SnackBar(content: Text(state.message)),
                 );
               } else if (state is AddError) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.message ?? "Failed to add")),
+                  SnackBar(content: Text(state.message)),
                 );
               }
             },

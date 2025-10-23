@@ -54,7 +54,7 @@ class AddeditLanguageSheet {
         text: editing ? "Update Language" : "Add Language",
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            final String language = languageController.text.trim();
+            languageController.text.trim();
           }
         },
       ),

@@ -79,12 +79,12 @@ class EditInsuranceSheet {
                 context.read<ProfileBloc>().add(FetchInsurance());
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(state.message ?? "Added Successfully"),
+                    content: Text(state.message),
                   ),
                 );
               } else if (state is AddError) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.message ?? "Failed to add")),
+                  SnackBar(content: Text(state.message)),
                 );
               }
             },
@@ -96,12 +96,12 @@ class EditInsuranceSheet {
                 context.read<ProfileBloc>().add(FetchInsurance());
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(state.message ?? "Edited Successfully"),
+                    content: Text(state.message),
                   ),
                 );
               } else if (state is EditFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.error ?? "Failed to edit")),
+                  SnackBar(content: Text(state.error)),
                 );
               }
             },

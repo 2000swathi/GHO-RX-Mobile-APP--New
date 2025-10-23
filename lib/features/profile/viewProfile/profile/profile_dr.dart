@@ -8,6 +8,7 @@ import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/widgets/case_appbar.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_language.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_specialty_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_accreditation_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_bankinfo.dart';
@@ -18,7 +19,6 @@ import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/pro
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_insurance_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_license_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_person_sheet.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_specialty_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/widget/profiledetails.dart';
 
 class ProfileDr extends StatefulWidget {
@@ -162,8 +162,6 @@ class _ProfileDrState extends State<ProfileDr> {
                     if (specialtyList.isEmpty) {
                       return const Center(child: Text("No specialties found"));
                     }
-
-
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -171,9 +169,7 @@ class _ProfileDrState extends State<ProfileDr> {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildRow(
-                                "Specialty", specialty.specialty,
-                                ),
+                              _buildRow("Specialty", specialty.specialty),
                               _buildRow(
                                 "Certified Board",
                                 specialty.certifiedBoard,
@@ -190,16 +186,15 @@ class _ProfileDrState extends State<ProfileDr> {
                                   Align(
                                     alignment: Alignment.centerRight,
                                     child: InkWell(
-                                      onTap: () {
-                                        
-                                      },
+                                      onTap: () {},
                                       child: SvgPicture.asset(
-                                        "assets/svg/trash.svg",color: Colors.red,
+                                        "assets/svg/trash.svg",
+                                        color: Colors.red,
                                       ),
                                     ),
                                   ),
-                                  //edit 
-                                    const SizedBox(width: 15),
+                                  //edit
+                                  const SizedBox(width: 15),
                                   Align(
                                     alignment: Alignment.centerRight,
                                     child: InkWell(
@@ -237,12 +232,12 @@ class _ProfileDrState extends State<ProfileDr> {
                                                   .expand((inner) => inner)
                                                   .toList();
                                   
-                                          AddEditSpecialtySheet.showSheet(
-                                            context,
-                                            specialty,
-                                            specialties,
-                                            true,
-                                          );
+                                         AddEditSpecialtySheet.showSheet(
+                                          context,
+                                          specialty,
+                                          specialties,
+                                          true,
+                                        );
                                         } else if (listState is ListFailure) {
                                           ScaffoldMessenger.of(
                                             context,
@@ -258,8 +253,6 @@ class _ProfileDrState extends State<ProfileDr> {
                                       ),
                                     ),
                                   ),
-                                 
-
                                 ],
                               ),
                               Divider(color: AppColors.hint2color),
@@ -354,7 +347,6 @@ class _ProfileDrState extends State<ProfileDr> {
                     return const Center(child: LoadingAnimation());
                   } else if (state is AccreditationState) {
                     final accreditationList = state.accreditationModel.data;
-                    final info = state.accreditationModel;
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -471,7 +463,6 @@ class _ProfileDrState extends State<ProfileDr> {
                   }
                   if (state is InsuranceState) {
                     final insuranceList = state.insuranceModel.data;
-                    final info = state.insuranceModel;
                     return Column(
                       children: [
                         if (insuranceList.isEmpty)
