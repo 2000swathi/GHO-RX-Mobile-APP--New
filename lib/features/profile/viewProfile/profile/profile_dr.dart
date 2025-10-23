@@ -13,14 +13,14 @@ import 'package:ghorx_mobile_app_new/features/profile/delete/bloc/delete_bloc.da
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_language.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_specialty_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/bloc/list_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_accreditation_sheet.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_accreditation_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_bankinfo.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_state.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/profile_repo.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_insurance_sheet.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_license_sheet.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_insurance_sheet.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_license_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_person_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/widget/profiledetails.dart';
 
@@ -442,6 +442,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                             context,
                                             accreditation,
                                             true,
+                                            profileBloc: context.read<ProfileBloc>(),
                                           );
                                         },
                                         child: SvgPicture.asset(
@@ -465,6 +466,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                   context,
                                   null,
                                   false,
+                                  profileBloc: context.read<ProfileBloc>(),
                                 );
                                 showDialog(
                                   context: context,
@@ -605,10 +607,11 @@ class _ProfileDrState extends State<ProfileDr> {
                                       alignment: Alignment.centerRight,
                                       child: InkWell(
                                         onTap: () async {
-                                          EditInsuranceSheet.showSheet(
+                                          AddEditInsuranceSheet.showSheet(
                                             context,
                                             insurance,
                                             true,
+                                            profileBloc: context.read<ProfileBloc>(),
                                           );
                                         },
                                         child: SvgPicture.asset(
@@ -627,10 +630,11 @@ class _ProfileDrState extends State<ProfileDr> {
                             alignment: Alignment.centerRight,
                             child: InkWell(
                               onTap: () {
-                                EditInsuranceSheet.showSheet(
+                                AddEditInsuranceSheet.showSheet(
                                   context,
                                   null,
                                   false,
+                                  profileBloc: context.read<ProfileBloc>(),
                                 );
                               },
                               child: Row(
