@@ -11,16 +11,6 @@ final class AddInitial extends AddState {}
 
 final class AddLoading extends AddState {}
 
-//add success
-final class AddSuccess extends AddState {
-  final String message;
-
-  const AddSuccess({required this.message});
-
-  @override
-  List<Object> get props => [message];
-}
-
 // add specialty
 class AddSpecialtyInfoState extends AddState {
   const AddSpecialtyInfoState();
@@ -31,7 +21,8 @@ class AddSpecialtyInfoState extends AddState {
 
 //add accreditation
 class AddAccrediationInfoState extends AddState {
-  const AddAccrediationInfoState();
+  final Map<String, dynamic> response;
+  const AddAccrediationInfoState({required this.response});
 
   @override
   List<Object> get props => [];
@@ -39,10 +30,11 @@ class AddAccrediationInfoState extends AddState {
 
 //add insurance
 class AddInsuranceInfoState extends AddState {
-  const AddInsuranceInfoState();
+  final Map<String, dynamic> response;
+  const AddInsuranceInfoState({required this.response});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [response];
 }
 
 //add license

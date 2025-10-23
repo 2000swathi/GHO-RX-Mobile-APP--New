@@ -25,7 +25,7 @@ class CustomButton extends StatelessWidget {
     this.borderColor = Colors.transparent,
     this.isLoading = false,
   });
-
+                                                          
   @override
   Widget build(BuildContext context) {
     return InkWell(

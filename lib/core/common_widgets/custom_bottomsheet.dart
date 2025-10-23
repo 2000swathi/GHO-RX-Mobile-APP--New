@@ -19,8 +19,8 @@ class CustomBottomSheet {
       ),
       context: context,
       isScrollControlled: true,
-      builder: (context) {
-        final screenHeight = MediaQuery.of(context).size.height;
+      builder: (sheetContext) {
+        final screenHeight = MediaQuery.of(sheetContext).size.height;
 
         return LayoutBuilder(
           builder: (context, constraints) {
@@ -76,7 +76,11 @@ class CustomBottomSheet {
                                 ...content,
                                 if (actionButton != null) ...[
                                   const SizedBox(height: 20),
-                                  actionButton,
+                                  Builder(
+                                    builder: (innerContext) {
+                                    return actionButton;
+                                    },
+                                    ),
                                 ],
                               ],
                             ),

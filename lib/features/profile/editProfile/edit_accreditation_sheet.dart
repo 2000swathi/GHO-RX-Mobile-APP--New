@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
@@ -14,11 +15,10 @@ import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/mod
 class AddEditAccrediationBottomSheet {
   static void showSheet(
     BuildContext context,
-    AccreditationData? info, 
+    AccreditationData? info,
     bool isEdit,
   ) {
     final _formKey = GlobalKey<FormState>();
-
     final accTypeController = TextEditingController(
       text: isEdit ? info?.accreditationType ?? '' : '',
     );
@@ -62,20 +62,21 @@ class AddEditAccrediationBottomSheet {
         ),
       ],
 
-   
       actionButton: MultiBlocListener(
         listeners: [
           BlocListener<AddBloc, AddState>(
             listener: (context, state) {
-              if (state is AddSuccess) {
+              if (state is AddAccrediationInfoState) {
                 Navigator.pop(context);
                 context.read<ProfileBloc>().add(FetchAccreditation());
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.message ?? "Added Successfully")),
+                CustomScaffoldMessenger.showSuccessMessage(
+                  context,
+                  state.response["Data"][0][0]['msg'] ,
                 );
               } else if (state is AddError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.message ?? "Failed to add")),
+                CustomScaffoldMessenger.showErrorMessage(
+                  context,
+                  state.message,
                 );
               }
             },
@@ -85,18 +86,19 @@ class AddEditAccrediationBottomSheet {
               if (state is EditSuccess) {
                 Navigator.pop(context);
                 context.read<ProfileBloc>().add(FetchAccreditation());
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.message)),
+                CustomScaffoldMessenger.showSuccessMessage(
+                  context,
+                  state.message ?? "Edited Successfully",
                 );
               } else if (state is EditFailure) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.error)),
+                CustomScaffoldMessenger.showErrorMessage(
+                  context,
+                  state.error ?? "Failed to edit",
                 );
               }
             },
           ),
         ],
-
         child: BlocBuilder<AddBloc, AddState>(
           builder: (context, addState) {
             return CustomButton(
@@ -104,18 +106,22 @@ class AddEditAccrediationBottomSheet {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   if (isEdit) {
-                    context.read<EditBloc>().add(EditAcreditationEvent(
-                          accreditationId: info!.id.toString(),
-                          accreditationtype: accTypeController.text,
-                          accreditationbody: accBodyController.text,
-                          accreditationnumber: accNumController.text,
-                        ));
+                    context.read<EditBloc>().add(
+                      EditAcreditationEvent(
+                        accreditationId: info!.id.toString(),
+                        accreditationtype: accTypeController.text,
+                        accreditationbody: accBodyController.text,
+                        accreditationnumber: accNumController.text,
+                      ),
+                    );
                   } else {
-                    context.read<AddBloc>().add(AddAccrediation(
-                          accreditationtype: accTypeController.text,
-                          accreditationbody: accBodyController.text,
-                          accreditationnumber: accNumController.text,
-                        ));
+                    context.read<AddBloc>().add(
+                      AddAccrediation(
+                        accreditationtype: accTypeController.text,
+                        accreditationbody: accBodyController.text,
+                        accreditationnumber: accNumController.text,
+                      ),
+                    );
                   }
                 }
               },
