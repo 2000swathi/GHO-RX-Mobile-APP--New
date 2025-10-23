@@ -111,7 +111,7 @@ class AddProfileRepository {
   //add License
   Future addLicense({
     required String licenseNumber,
-    required String licenseType,
+    required int licenseType,
     required String issueDate,
     required String expiryDate,
   }) async {

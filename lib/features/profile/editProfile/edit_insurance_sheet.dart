@@ -70,74 +70,36 @@ class EditInsuranceSheet {
         ),
       ],
 
-      actionButton: MultiBlocListener(
-        listeners: [
-          BlocListener<AddBloc, AddState>(
-            listener: (context, state) {
-              if (state is AddSuccess) {
-                Navigator.pop(context);
-                context.read<ProfileBloc>().add(FetchInsurance());
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.message ?? "Added Successfully"),
-                  ),
-                );
-              } else if (state is AddError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.message ?? "Failed to add")),
-                );
-              }
-            },
-          ),
-          BlocListener<EditBloc, EditState>(
-            listener: (context, state) {
-              if (state is EditSuccess) {
-                Navigator.pop(context);
-                context.read<ProfileBloc>().add(FetchInsurance());
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.message ?? "Edited Successfully"),
-                  ),
-                );
-              } else if (state is EditFailure) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.error ?? "Failed to edit")),
-                );
-              }
-            },
-          ),
-        ],
-        child: BlocBuilder<AddBloc, AddState>(
-          builder: (context, state) {
-            return CustomButton(
-              text: isEdit ? "Edit Insurance" : "Submit Insurance",
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  if (isEdit) {
-                    context.read<EditBloc>().add(
-                      EditInsuranceEvent(
-                        insuranceId: info!.id.toString(),
-                        providerID: prIDController.text,
-                        providerName: pNameController.text,
-                        issueDate: issueDateController.text,
-                        expiryDate: expDateController.text,
-                      ),
-                    );
-                  } else {
-                    context.read<AddBloc>().add(
-                      AddInsurance(
-                        providerID: prIDController.text,
-                        providerName: pNameController.text,
-                        issueDate: issueDateController.text,
-                        expiryDate: expDateController.text,
-                      ),
-                    );
-                  }
+      actionButton: BlocBuilder<AddBloc, AddState>(
+        builder: (context, state) {
+          return CustomButton(
+            text: isEdit ? "Edit Insurance" : "Submit Insurance",
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                if (isEdit) {
+                  context.read<EditBloc>().add(
+                    EditInsuranceEvent(
+                      insuranceId: info!.id.toString(),
+                      providerID: prIDController.text,
+                      providerName: pNameController.text,
+                      issueDate: issueDateController.text,
+                      expiryDate: expDateController.text,
+                    ),
+                  );
+                } else {
+                  context.read<AddBloc>().add(
+                    AddInsurance(
+                      providerID: prIDController.text,
+                      providerName: pNameController.text,
+                      issueDate: issueDateController.text,
+                      expiryDate: expDateController.text,
+                    ),
+                  );
                 }
-              },
-            );
-          },
-        ),
+              }
+            },
+          );
+        },
       ),
     );
   }
