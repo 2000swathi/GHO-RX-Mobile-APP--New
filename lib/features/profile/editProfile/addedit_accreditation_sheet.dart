@@ -10,63 +10,54 @@ import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/edit/bloc/edit_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/insurance_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/accreditation_model.dart';
 
-class EditInsuranceSheet {
+class AddEditAccrediationBottomSheet {
   static void showSheet(
     BuildContext context,
-    InsuranceData? info,
-    bool isEdit,
-  ) {
-    final TextEditingController prIDController = TextEditingController(
-      text: isEdit ? info?.providerID ?? '' : '',
-    );
-    final TextEditingController pNameController = TextEditingController(
-      text: isEdit ? info?.providerName ?? '' : '',
-    );
-    final TextEditingController issueDateController = TextEditingController(
-      text: isEdit ? info?.issueDate ?? '' : '',
-    );
-    final TextEditingController expDateController = TextEditingController(
-      text: isEdit ? info?.expiryDate ?? '' : '',
-    );
-
+    AccreditationData? info,
+    bool isEdit, {
+    required ProfileBloc profileBloc,
+  }) {
     final _formKey = GlobalKey<FormState>();
+    final accTypeController = TextEditingController(
+      text: isEdit ? info?.accreditationType ?? '' : '',
+    );
+    final accBodyController = TextEditingController(
+      text: isEdit ? info?.accreditationBody ?? '' : '',
+    );
+    final accNumController = TextEditingController(
+      text: isEdit ? info?.accreditationNumber ?? '' : '',
+    );
 
     CustomBottomSheet.show(
       context: context,
-      heading: isEdit ? "Edit Insurance" : "Add Insurance",
+      heading: isEdit ? "Edit Accreditation" : "Add Accreditation",
       content: [
         Form(
           key: _formKey,
           child: Column(
             children: [
               CustomTextFormField(
-                controller: prIDController,
-                name: "Provider ID",
-                hintText: "Enter Provider ID",
-                validator: Validation.validateID,
+                controller: accNumController,
+                name: "Accreditation Number",
+                hintText: "Enter Accreditation Number",
+                validator: Validation.validateAccreditationNumber,
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               CustomTextFormField(
-                controller: pNameController,
-                name: "Provider Name",
-                hintText: "Enter Provider name",
+                controller: accTypeController,
+                name: "Accreditation Type",
+                hintText: "Enter Accreditation Type",
                 validator: Validation.validateProviderName,
               ),
               const SizedBox(height: 10),
               CustomTextFormField(
-                controller: issueDateController,
-                name: "Issue Date",
-                hintText: "mm/dd/yyyy",
+                controller: accBodyController,
+                name: "Accreditation Body",
+                hintText: "Enter Accreditation Body",
+                validator: Validation.validateProviderName,
               ),
-              const SizedBox(height: 10),
-              CustomTextFormField(
-                controller: expDateController,
-                name: "Expiry Date",
-                hintText: "mm/dd/yyyy",
-              ),
-              const SizedBox(height: 10),
             ],
           ),
         ),
@@ -78,7 +69,7 @@ class EditInsuranceSheet {
             listener: (context, state) {
               if (state is AddSuccess) {
                 Navigator.pop(context);
-                context.read<ProfileBloc>().add(FetchInsurance());
+                profileBloc.add(FetchAccreditation());
                 CustomScaffoldMessenger.showSuccessMessage(
                   context,
                   state.response["Data"][0][0]['msg'],
@@ -91,56 +82,52 @@ class EditInsuranceSheet {
               }
             },
           ),
-
           BlocListener<EditBloc, EditState>(
             listener: (context, state) {
               if (state is EditSuccess) {
                 Navigator.pop(context);
-                context.read<ProfileBloc>().add(FetchInsurance());
+                profileBloc.add(FetchAccreditation());
                 CustomScaffoldMessenger.showSuccessMessage(
                   context,
-                  state.message,
+                  state.message ?? "Edited Successfully",
                 );
               } else if (state is EditFailure) {
                 CustomScaffoldMessenger.showErrorMessage(
                   context,
-                  state.error,
+                  state.error ?? "Failed to edit",
                 );
               }
             },
           ),
         ],
-
         child: BlocBuilder<AddBloc, AddState>(
           builder: (context, addState) {
-             final bool isAddLoading = addState is AddLoading;
+            final bool isAddLoading = addState is AddLoading;
             return BlocBuilder<EditBloc, EditState>(
               builder: (context, editState) {
                 final bool isEditLoading = editState is EditLoading;
                 final bool isLoading = isAddLoading || isEditLoading;
 
                 return CustomButton(
-                  text: isEdit ? "Edit Insurance" : "Submit Insurance",
+                  text: isEdit ? "Update Accreditation" : "Add Accreditation",
                   isLoading: isLoading,
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       if (isEdit) {
                         context.read<EditBloc>().add(
-                          EditInsuranceEvent(
-                            insuranceId: info!.id.toString(),
-                            providerID: prIDController.text,
-                            providerName: pNameController.text,
-                            issueDate: issueDateController.text,
-                            expiryDate: expDateController.text,
+                          EditAcreditationEvent(
+                            accreditationId: info!.id.toString(),
+                            accreditationtype: accTypeController.text,
+                            accreditationbody: accBodyController.text,
+                            accreditationnumber: accNumController.text,
                           ),
                         );
                       } else {
                         context.read<AddBloc>().add(
-                          AddInsurance(
-                            providerID: prIDController.text,
-                            providerName: pNameController.text,
-                            issueDate: issueDateController.text,
-                            expiryDate: expDateController.text,
+                          AddAccrediation(
+                            accreditationtype: accTypeController.text,
+                            accreditationbody: accBodyController.text,
+                            accreditationnumber: accNumController.text,
                           ),
                         );
                       }
