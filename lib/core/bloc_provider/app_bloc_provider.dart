@@ -5,6 +5,8 @@ import 'package:ghorx_mobile_app_new/features/authentication/repository/auth_rep
 import 'package:ghorx_mobile_app_new/features/home/bloc/home_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/home/repository/home_repository.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/delete/bloc/delete_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/delete/repository/delete_repository.dart';
 import 'package:ghorx_mobile_app_new/features/profile/edit/bloc/edit_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/edit/repository/edit_repository.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/repository/add_profile_repo.dart';
@@ -44,6 +46,9 @@ class AppBlocProvider extends StatelessWidget {
         ),
         BlocProvider<EditBloc>(
           create: (_) => EditBloc(repository: EditprofileRepository()),
+        ),
+        BlocProvider<DeleteBloc>(
+          create: (_) => DeleteBloc(repository: DeleteProfileRepository()),
         ),
       ],
       child: child,
