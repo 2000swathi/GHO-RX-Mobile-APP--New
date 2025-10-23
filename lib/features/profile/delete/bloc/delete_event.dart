@@ -6,3 +6,19 @@ sealed class DeleteEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+final class DeleteProfileItem extends DeleteEvent {
+  final String id;
+  final String action;
+  final bool isLang;
+
+  const DeleteProfileItem({
+    required this.id,
+    required this.action,
+    this.isLang = false,
+  });
+
+  @override
+  List<Object> get props => [id, action, isLang];
+}
+
