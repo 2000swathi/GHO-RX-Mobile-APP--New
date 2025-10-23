@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 
@@ -12,6 +13,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
+  final List<TextInputFormatter>? inputFormatters;
 
   const CustomTextFormField({
     super.key,
@@ -24,6 +26,7 @@ class CustomTextFormField extends StatelessWidget {
     this.validator,
     this.onChanged,
     this.keyboardType,
+    this.inputFormatters,
   });
 
   @override
@@ -41,6 +44,7 @@ class CustomTextFormField extends StatelessWidget {
           obscureText: obscureText,
           validator: validator,
           onChanged: onChanged,
+          inputFormatters: inputFormatters,
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: AppFonts.hinttext,

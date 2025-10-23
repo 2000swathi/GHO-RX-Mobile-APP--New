@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
@@ -29,11 +30,12 @@ class EditInsuranceSheet {
     final TextEditingController expDateController = TextEditingController(
       text: isEdit ? info?.expiryDate ?? '' : '',
     );
+
     final _formKey = GlobalKey<FormState>();
 
     CustomBottomSheet.show(
       context: context,
-      heading: "Edit Insurance",
+      heading: isEdit ? "Edit Insurance" : "Add Insurance",
       content: [
         Form(
           key: _formKey,
@@ -45,26 +47,26 @@ class EditInsuranceSheet {
                 hintText: "Enter Provider ID",
                 validator: Validation.validateID,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               CustomTextFormField(
                 controller: pNameController,
                 name: "Provider Name",
                 hintText: "Enter Provider name",
                 validator: Validation.validateProviderName,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               CustomTextFormField(
                 controller: issueDateController,
                 name: "Issue Date",
                 hintText: "mm/dd/yyyy",
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               CustomTextFormField(
                 controller: expDateController,
                 name: "Expiry Date",
                 hintText: "mm/dd/yyyy",
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
             ],
           ),
         ),
@@ -77,63 +79,74 @@ class EditInsuranceSheet {
               if (state is AddSuccess) {
                 Navigator.pop(context);
                 context.read<ProfileBloc>().add(FetchInsurance());
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.message ?? "Added Successfully"),
-                  ),
+                CustomScaffoldMessenger.showSuccessMessage(
+                  context,
+                  state.response["Data"][0][0]['msg'],
                 );
               } else if (state is AddError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.message ?? "Failed to add")),
+                CustomScaffoldMessenger.showErrorMessage(
+                  context,
+                  state.message,
                 );
               }
             },
           ),
+
           BlocListener<EditBloc, EditState>(
             listener: (context, state) {
               if (state is EditSuccess) {
                 Navigator.pop(context);
                 context.read<ProfileBloc>().add(FetchInsurance());
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.message ?? "Edited Successfully"),
-                  ),
+                CustomScaffoldMessenger.showSuccessMessage(
+                  context,
+                  state.message,
                 );
               } else if (state is EditFailure) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.error ?? "Failed to edit")),
+                CustomScaffoldMessenger.showErrorMessage(
+                  context,
+                  state.error,
                 );
               }
             },
           ),
         ],
+
         child: BlocBuilder<AddBloc, AddState>(
-          builder: (context, state) {
-            return CustomButton(
-              text: isEdit ? "Edit Insurance" : "Submit Insurance",
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  if (isEdit) {
-                    context.read<EditBloc>().add(
-                      EditInsuranceEvent(
-                        insuranceId: info!.id.toString(),
-                        providerID: prIDController.text,
-                        providerName: pNameController.text,
-                        issueDate: issueDateController.text,
-                        expiryDate: expDateController.text,
-                      ),
-                    );
-                  } else {
-                    context.read<AddBloc>().add(
-                      AddInsurance(
-                        providerID: prIDController.text,
-                        providerName: pNameController.text,
-                        issueDate: issueDateController.text,
-                        expiryDate: expDateController.text,
-                      ),
-                    );
-                  }
-                }
+          builder: (context, addState) {
+             final bool isAddLoading = addState is AddLoading;
+            return BlocBuilder<EditBloc, EditState>(
+              builder: (context, editState) {
+                final bool isEditLoading = editState is EditLoading;
+                final bool isLoading = isAddLoading || isEditLoading;
+
+                return CustomButton(
+                  text: isEdit ? "Edit Insurance" : "Submit Insurance",
+                  isLoading: isLoading,
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      if (isEdit) {
+                        context.read<EditBloc>().add(
+                          EditInsuranceEvent(
+                            insuranceId: info!.id.toString(),
+                            providerID: prIDController.text,
+                            providerName: pNameController.text,
+                            issueDate: issueDateController.text,
+                            expiryDate: expDateController.text,
+                          ),
+                        );
+                      } else {
+                        context.read<AddBloc>().add(
+                          AddInsurance(
+                            providerID: prIDController.text,
+                            providerName: pNameController.text,
+                            issueDate: issueDateController.text,
+                            expiryDate: expDateController.text,
+                          ),
+                        );
+                      }
+                    }
+                  },
+                );
               },
             );
           },

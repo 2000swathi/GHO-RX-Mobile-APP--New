@@ -109,7 +109,9 @@ class Validation {
     }
 
     try {
-      final dob = DateFormat('dd/MM/yyyy').parseStrict(value);
+      // Handle both "dd/MM/yyyy" and "dd / MM / yyyy"
+      final dateString = value.replaceAll(' ', '');
+      final dob = DateFormat('dd/MM/yyyy').parseStrict(dateString);
       final now = DateTime.now();
 
       if (dob.isAfter(now)) {
@@ -287,6 +289,7 @@ class Validation {
     return null;
   }
 
+
   static String? validateProviderName(String? value) {
     if (value == null || value.trim().isEmpty) {
       return 'Field is required';
@@ -317,4 +320,5 @@ class Validation {
       return null;
     }
   }
+
 }
