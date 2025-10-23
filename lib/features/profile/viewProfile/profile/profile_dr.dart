@@ -554,13 +554,12 @@ class _ProfileDrState extends State<ProfileDr> {
                   if (state is ProfileLoading) {
                     return const Center(child: LoadingAnimation());
                   }
+                  // if (licenseList.isEmpty) {
+                  //   return const Center(child: Text("No license added"));
+                  // }
                   if (state is LicenseState) {
                     final licenseList = state.licenseModel.data;
                     final info = state.licenseModel;
-
-                    if (licenseList.isEmpty) {
-                      return const Center(child: Text("No license added"));
-                    }
 
                     return Column(
                       children: [
@@ -626,8 +625,18 @@ class _ProfileDrState extends State<ProfileDr> {
                                       );
                                     }
                                   },
-                                  child: SvgPicture.asset(
-                                    "assets/svg/edit_svg.svg",
+                                  child: Row(
+                                    children: [
+                                      Spacer(),
+                                      SvgPicture.asset(
+                                        "assets/svg/edit_svg.svg",
+                                      ),
+                                      SizedBox(width: 15),
+                                      SvgPicture.asset(
+                                        "assets/svg/trash.svg",
+                                        color: AppColors.red,
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),

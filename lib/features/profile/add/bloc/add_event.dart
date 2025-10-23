@@ -44,7 +44,7 @@ class AddInsurance extends AddEvent {
 //license
 class AddLicense extends AddEvent {
   final String licenseNumber;
-  final String licenseType;
+  final int licenseType;
   final String issueDate;
   final String expiryDate;
   AddLicense({
@@ -57,9 +57,9 @@ class AddLicense extends AddEvent {
 
 //language
 class AddLanguage extends AddEvent {
-  String language;
-  String proficiency;
-  AddLanguage(this.language, this.proficiency);
+  final String language;
+  final String proficiency;
+  AddLanguage({required this.language, required this.proficiency});
 }
 
 //Bank info

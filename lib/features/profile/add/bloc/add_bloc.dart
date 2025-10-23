@@ -11,7 +11,7 @@ class AddBloc extends Bloc<AddEvent, AddState> {
     on<AddLicense>(_onAddLicense);
     on<AddLanguage>(_onAddLanguage);
     on<AddBankInfo>(_onAddBankInfo);
-    on<AddSpecialty>(_onFetchSpecialty);
+    on<AddSpecialty>(_onAddSpecialty);
     on<AddAccrediation>(addaccrediation);
     on<AddInsurance>(addInsurance);
   }
@@ -25,14 +25,14 @@ class AddBloc extends Bloc<AddEvent, AddState> {
         expiryDate: event.expiryDate,
       );
 
-      emit(AddLicenseInfoState(response: licenseResponse));
+      emit(AddSuccess(response: licenseResponse));
     } catch (e) {
       emit(AddError(message: e.toString()));
     }
   }
 
   //specialty
-  Future<void> _onFetchSpecialty(
+  Future<void> _onAddSpecialty(
     AddSpecialty event,
     Emitter<AddState> emit,
   ) async {
@@ -44,14 +44,7 @@ class AddBloc extends Bloc<AddEvent, AddState> {
         certifiedBoard: event.certifiedBoard,
         specialtyType: event.specialtyType,
       );
-      if (response["Status"] == 1) {
-        final message =
-            response["Data"]?[0]?[0]?["msg"] ?? "Specialty added successfully";
-        emit(AddSuccess(message: message));
-      } else {
-        final error = response["Info"] ?? "Failed to add specialty";
-        emit(AddError(message: error));
-      }
+      emit(AddSuccess(response: response));
     } catch (e) {
       emit(AddError(message: "An error occurred: ${e.toString()}"));
     }
@@ -64,7 +57,7 @@ class AddBloc extends Bloc<AddEvent, AddState> {
         language: event.language,
         proficiency: event.proficiency,
       );
-      emit(AddLanguageInfoState(response: languageResponse));
+      emit(AddSuccess(response: languageResponse));
     } catch (e) {
       emit(AddError(message: e.toString()));
     }
@@ -80,7 +73,7 @@ class AddBloc extends Bloc<AddEvent, AddState> {
         accountNumber: event.accountNumber,
         holderName: event.holderName,
       );
-      emit(AddBankInfoState(response: bankInfoResponse));
+      emit(AddSuccess(response: bankInfoResponse));
     } catch (e) {
       emit(AddError(message: e.toString()));
     }
@@ -99,14 +92,7 @@ class AddBloc extends Bloc<AddEvent, AddState> {
         accreditationbody: event.accreditationbody,
         accreditationnumber: event.accreditationnumber,
       );
-      if (response["Status"] == 1) {
-        final message = response["Data"]?[0]?[0]?["msg"] ??
-            "Accreditation added successfully";
-        emit(AddSuccess(message: message));
-      } else {
-        final error = response["Info"] ?? "Failed to add accreditation";
-        emit(AddError(message: error));
-      }
+      emit(AddSuccess(response:response ));
     } catch (e) {
       emit(AddError(message: "An error occurred: ${e.toString()}"));
     }
@@ -118,19 +104,16 @@ class AddBloc extends Bloc<AddEvent, AddState> {
     emit(AddLoading());
 
     try {
-      final response = await repository.addInsurance(
+      final result = await repository.addInsurance(
         providerID: event.providerID,
         providerName: event.providerName,
         issueDate: event.issueDate,
         expiryDate: event.expiryDate,
       );
-      if (response["Status"] == 1) {
-        final message =
-            response["Data"]?[0]?[0]?["msg"] ?? "Insurance added successfully";
-        emit(AddSuccess(message: message));
+      if (result['Status'] == 1) {
+        emit(AddSuccess(response: result));
       } else {
-        final error = response["Info"] ?? "Failed to add insurance";
-        emit(AddError(message: error));
+        emit(AddError(message: result['message'] ?? "Failed to add"));
       }
     } catch (e) {
       emit(AddError(message: "An error occurred: ${e.toString()}"));

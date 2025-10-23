@@ -63,7 +63,6 @@ class AddProfileRepository {
     };
     try {
       final response = await _dioHandler.post('', data: data);
-
       print(response);
       return response;
     } catch (e) {
@@ -104,14 +103,14 @@ class AddProfileRepository {
       print(response);
       return response;
     } catch (e) {
-      throw Exception("Failed to add insurance: $e");
+      throw Exception("$e");
     }
   }
 
   //add License
   Future addLicense({
     required String licenseNumber,
-    required String licenseType,
+    required int licenseType,
     required String issueDate,
     required String expiryDate,
   }) async {
