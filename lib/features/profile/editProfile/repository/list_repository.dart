@@ -35,7 +35,9 @@ class ListRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
+      print(response);
       return SpecialtyResponseModel.fromJson(response);
+     
     } catch (e) {
       throw Exception("Failed to fetch specialties: $e");
     }
