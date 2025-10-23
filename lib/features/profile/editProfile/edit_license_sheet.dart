@@ -7,6 +7,8 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.da
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
+import 'package:ghorx_mobile_app_new/features/profile/edit/bloc/edit_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/license_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
@@ -23,8 +25,12 @@ class AddEditLicenseSheet {
 
     final _formKey = GlobalKey<FormState>();
     // Prefill only when editing
-    final TextEditingController NumController = TextEditingController(
+    final TextEditingController numController = TextEditingController(
       text: editing ? info.data[0].licenseNumber : "",
+    );
+
+    final TextEditingController idController = TextEditingController(
+      text: editing ? info.data[0].id.toString() : "",
     );
 
     final TextEditingController issueDateController = TextEditingController(
@@ -35,12 +41,8 @@ class AddEditLicenseSheet {
       text: editing ? info.data[0].expiryDate : "",
     );
 
-    final TextEditingController licenseTypeController = TextEditingController(
-      text: editing ? info.data[0].licenseType : "",
-    );
-
     String? selectedLicenseTypeID =
-        editing ? info.data[0].licenseTypeID.toString() : null;
+        editing ? info.data[0].licenseTypeID.toString() : "0";
 
     CustomBottomSheet.show(
       context: context,
@@ -53,7 +55,7 @@ class AddEditLicenseSheet {
               child: Column(
                 children: [
                   CustomTextFormField(
-                    controller: NumController,
+                    controller: numController,
                     name: "License Number",
                     hintText: "Enter License Number",
                     validator:
@@ -106,42 +108,130 @@ class AddEditLicenseSheet {
           },
         ),
       ],
-      actionButton: BlocListener<AddBloc, AddState>(
-        listener: (context, state) {
-          if (state is AddLicenseInfoState) {
-            context.read<ProfileBloc>().add(FetchLicence());
-            Navigator.of(context).pop();
-          } else if (state is AddError) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
-          }
-        },
-        child: BlocBuilder<AddBloc, AddState>(
-          builder: (context, state) {
-            return CustomButton(
-              text:
-                  state is AddLoading
-                      ? "Saving..."
-                      : (isEdit == true ? "Edit License" : "Add License"),
-              onPressed: () {
-                if (state is AddLoading) return;
 
-                if (_formKey.currentState != null &&
-                    _formKey.currentState!.validate()) {
+      // actionButton: BlocBuilder<AddBloc, AddState>(
+      //   builder: (context, state) {
+      //     return MultiBlocListener(
+      //       listeners: [
+      // BlocListener<AddBloc, AddState>(
+      //   listener: (context, state) {
+      //     if (state is AddSuccess) {
+      //       Navigator.pop(context);
+      //       context.read<ListBloc>().add(FetchLicenseList());
+      //       ScaffoldMessenger.of(context).showSnackBar(
+      //         SnackBar(
+      //           content: Text(
+      //             state.message ?? "License added successfully",
+      //           ),
+      //         ),
+      //       );
+      //             } else if (state is AddError) {
+      //               ScaffoldMessenger.of(context).showSnackBar(
+      //                 SnackBar(
+      //                   content: Text(state.message ?? "Failed to add license"),
+      //                 ),
+      //               );
+      //             }
+      //           },
+      //         ),
+      //         BlocListener(
+      //           listener: (context, state) {
+      //             if (state is AddSuccess) {
+      //               Navigator.pop(context);
+      //               context.read<EditBloc>().add(
+      //                 EditLicenseEvent(
+      //                   licenseNumber: numController.text,
+      //                   licenseType: licenseTypeController.text,
+      //                   issueDate: issueDateController.text,
+      //                   expiryDate: expDateController.text,
+      //                   id: idController.text,
+      //                 ),
+      //               );
+      //             }
+      //           },
+      //         ),
+      //         BlocListener<EditBloc, EditState>(
+      //           listener: (context, state) {
+      //             if (state is EditSuccess) {
+      //               Navigator.pop(context);
+      //               context.read<ListBloc>().add(FetchLicenseList());
+      //               ScaffoldMessenger.of(context).showSnackBar(
+      //                 SnackBar(
+      //                   content: Text(
+      //                     state.message ?? "License edited successfully",
+      //                   ),
+      //                 ),
+      //               );
+      //             } else if (state is EditFailure) {
+      //               ScaffoldMessenger.of(context).showSnackBar(
+      //                 SnackBar(
+      //                   content: Text(state.error ?? "Failed to edit license"),
+      //                 ),
+      //               );
+      //             }
+      //           },
+      //         ),
+      //       ],
+      //       child: CustomButton(
+      //         text:
+      //             state is AddLoading
+      //                 ? "Saving..."
+      //                 : ((isEdit ?? false) ? "Edit License" : "Add License"),
+      //         onPressed: () {
+      //           if (state is AddLoading) return;
+
+      //           if (_formKey.currentState?.validate() ?? false) {
+      //             context.read<AddBloc>().add(
+      //               AddLicense(
+      //                 licenseNumber: numController.text,
+      //                 licenseType: licenseTypeController.text,
+      //                 issueDate: issueDateController.text,
+      //                 expiryDate: expDateController.text,
+      //               ),
+      //             );
+      //           }
+      //           if (_formKey.currentState?.validate() ?? false) {
+      //             context.read<EditBloc>().add(
+      //               EditLicenseEvent(
+      //                 licenseNumber: numController.text,
+      //                 licenseType: licenseTypeController.text,
+      //                 issueDate: issueDateController.text,
+      //                 expiryDate: expDateController.text,
+      //                 id: idController.text,
+      //               ),
+      //             );
+      //           }
+      //         },
+      //       ),
+      //     );
+      //   },
+      // ),
+      actionButton: BlocBuilder<AddBloc, AddState>(
+        builder: (context, state) {
+          return BlocListener<AddBloc, AddState>(
+            listener: (context, state) {
+              if (state is AddSuccess) {
+                Navigator.pop(context);
+                context.read<ListBloc>().add(FetchLicenseList());
+              }
+            },
+            child: CustomButton(
+              text: editing ? "Edit License" : "Add License",
+              onPressed: () {
+                if (_formKey.currentState?.validate() ?? false) {
                   context.read<AddBloc>().add(
                     AddLicense(
-                      licenseNumber: NumController.text,
-                      licenseType: licenseTypeController.text,
+                      licenseNumber: numController.text,
+                      licenseType: int.parse(selectedLicenseTypeID.toString()),
                       issueDate: issueDateController.text,
                       expiryDate: expDateController.text,
                     ),
                   );
                 }
               },
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
