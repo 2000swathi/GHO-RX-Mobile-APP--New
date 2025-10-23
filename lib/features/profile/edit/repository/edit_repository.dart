@@ -138,7 +138,6 @@ class EditprofileRepository {
   //Specialty
   Future<Map<String, dynamic>> editSpecialty({
     required String specialtyId,
-    required String specialty,
     required String certifiedBoard,
     required String specialtyType,
   }) async {
@@ -150,7 +149,7 @@ class EditprofileRepository {
     }
 
     final c1data = jsonEncode({
-      "SpecialtyID": specialty,
+      "SpecialtyID": specialtyId,
       "CertifiedBoard": certifiedBoard,
       "SpecialtyType": specialtyType,
     });

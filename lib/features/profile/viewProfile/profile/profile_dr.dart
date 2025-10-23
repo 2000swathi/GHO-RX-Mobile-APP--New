@@ -157,16 +157,19 @@ class _ProfileDrState extends State<ProfileDr> {
                 builder: (context, state) {
                   if (state is ProfileLoading) {
                     return const Center(child: LoadingAnimation());
-                  } else if (state is SpecialtyState) {
+                  } 
+                  else if (state is SpecialtyState) {
                     final specialtyList = state.specialtyModel.data;
-                    if (specialtyList.isEmpty) {
-                      return const Center(child: Text("No specialties found"));
-                    }
+                      final info = state.specialtyModel;
+                    // if (specialtyList.isEmpty) {
+                    //   return const Center(child: Text("No specialties found"));
+                    // }
+                  
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ...specialtyList.map((specialty) {
-                          return Column(
+                        ...specialtyList.map((specialty) 
+                          =>Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               _buildRow("Specialty", specialty.specialty),
@@ -189,6 +192,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                       onTap: () {},
                                       child: SvgPicture.asset(
                                         "assets/svg/trash.svg",
+                                        // ignore: deprecated_member_use
                                         color: Colors.red,
                                       ),
                                     ),
@@ -207,11 +211,11 @@ class _ProfileDrState extends State<ProfileDr> {
                                                 child: LoadingAnimation(),
                                               ),
                                         );
-                                  
+
                                         context.read<ListBloc>().add(
                                           FetchSpecialtyList(),
                                         );
-                                  
+
                                         final listState = await context
                                             .read<ListBloc>()
                                             .stream
@@ -220,24 +224,24 @@ class _ProfileDrState extends State<ProfileDr> {
                                                   s is SpecialtyListState ||
                                                   s is ListFailure,
                                             );
-                                  
+
                                         Navigator.of(
                                           context,
                                           rootNavigator: true,
                                         ).pop();
-                                  
+
                                         if (listState is SpecialtyListState) {
                                           final specialties =
                                               listState.specialtyResponse.data
                                                   .expand((inner) => inner)
                                                   .toList();
-                                  
-                                         AddEditSpecialtySheet.showSheet(
-                                          context,
-                                          specialty,
-                                          specialties,
-                                          true,
-                                        );
+
+                                          AddEditSpecialtySheet.showSheet(
+                                            context,
+                                            info,
+                                            specialties,
+                                            true,
+                                          );
                                         } else if (listState is ListFailure) {
                                           ScaffoldMessenger.of(
                                             context,
@@ -257,8 +261,9 @@ class _ProfileDrState extends State<ProfileDr> {
                               ),
                               Divider(color: AppColors.hint2color),
                             ],
-                          );
-                        }),
+                          )
+                        
+                        ),
 
                         // Add Specialty button at the bottom
                         const SizedBox(height: 10),
@@ -297,7 +302,7 @@ class _ProfileDrState extends State<ProfileDr> {
 
                                 AddEditSpecialtySheet.showSheet(
                                   context,
-                                  null,
+                                 info,
                                   specialties,
                                   false,
                                 );
