@@ -104,7 +104,7 @@ class AddEditSpecialtySheet {
                 Navigator.pop(context);
                 context.read<ProfileBloc>().add(FetchSpecialty());
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.message)),
+                  SnackBar(content: Text(state.response["Data"][0][0]['msg'])),
                 );
               } else if (state is AddError) {
                 ScaffoldMessenger.of(context).showSnackBar(
