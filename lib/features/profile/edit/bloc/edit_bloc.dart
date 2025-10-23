@@ -23,7 +23,7 @@ class EditBloc extends Bloc<EditEvent, EditState> {
     try {
       final response = await repository.editPersonalInfo(event.data);
 
-      final message = response['Info'] ?? "License updated successfully";
+      final message = response["Data"][0][0]["msg"] ?? "profile updated successfully";
       emit(EditSuccess(message: message));
     } catch (e) {
       emit(EditFailure(error: e.toString()));

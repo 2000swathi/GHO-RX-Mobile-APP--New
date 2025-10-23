@@ -25,7 +25,7 @@ class AddBloc extends Bloc<AddEvent, AddState> {
         expiryDate: event.expiryDate,
       );
 
-      emit(AddLicenseInfoState(response: licenseResponse));
+      emit(AddSuccess(response: licenseResponse));
     } catch (e) {
       emit(AddError(message: e.toString()));
     }
@@ -44,7 +44,7 @@ class AddBloc extends Bloc<AddEvent, AddState> {
         certifiedBoard: event.certifiedBoard,
         specialtyType: event.specialtyType,
       );
-      emit(AddSpecialtyInfoState());
+      emit(AddSuccess(response: addspecialty));
     } catch (e) {
       emit(AddError(message: e.toString()));
     }
@@ -57,7 +57,7 @@ class AddBloc extends Bloc<AddEvent, AddState> {
         language: event.language,
         proficiency: event.proficiency,
       );
-      emit(AddLanguageInfoState(response: languageResponse));
+      emit(AddSuccess(response: languageResponse));
     } catch (e) {
       emit(AddError(message: e.toString()));
     }
@@ -73,7 +73,7 @@ class AddBloc extends Bloc<AddEvent, AddState> {
         accountNumber: event.accountNumber,
         holderName: event.holderName,
       );
-      emit(AddBankInfoState(response: bankInfoResponse));
+      emit(AddSuccess(response: bankInfoResponse));
     } catch (e) {
       emit(AddError(message: e.toString()));
     }
@@ -92,7 +92,7 @@ class AddBloc extends Bloc<AddEvent, AddState> {
         accreditationbody: event.accreditationbody,
         accreditationnumber: event.accreditationnumber,
       );
-      emit(AddAccrediationInfoState(response: addaccrediation));
+      emit(AddSuccess(response: addaccrediation));
     } catch (e) {
       emit(AddError(message: e.toString()));
     }
@@ -111,7 +111,7 @@ class AddBloc extends Bloc<AddEvent, AddState> {
         expiryDate: event.expiryDate,
       );
       if (result['Status'] == 1) {
-        emit(AddInsuranceInfoState(response: result));
+        emit(AddSuccess(response: result));
       } else {
         emit(AddError(message: result['message'] ?? "Failed to add"));
       }

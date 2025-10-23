@@ -76,7 +76,7 @@ class EditInsuranceSheet {
         listeners: [
           BlocListener<AddBloc, AddState>(
             listener: (context, state) {
-              if (state is AddInsuranceInfoState) {
+              if (state is AddSuccess) {
                 Navigator.pop(context);
                 context.read<ProfileBloc>().add(FetchInsurance());
                 CustomScaffoldMessenger.showSuccessMessage(

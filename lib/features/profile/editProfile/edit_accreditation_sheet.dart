@@ -66,7 +66,7 @@ class AddEditAccrediationBottomSheet {
         listeners: [
           BlocListener<AddBloc, AddState>(
             listener: (context, state) {
-              if (state is AddAccrediationInfoState) {
+              if (state is AddSuccess) {
                 Navigator.pop(context);
                 context.read<ProfileBloc>().add(FetchAccreditation());
                 CustomScaffoldMessenger.showSuccessMessage(

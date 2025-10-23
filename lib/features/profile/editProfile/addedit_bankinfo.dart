@@ -77,7 +77,7 @@ class AddEditBankInfoBottonSheet {
       ],
       actionButton: BlocListener<AddBloc, AddState>(
         listener: (context, state) {
-          if (state is AddLicenseInfoState) {
+          if (state is AddSuccess) {
             context.read<ProfileBloc>().add(FetchLicence());
 
             Navigator.of(context).pop();
