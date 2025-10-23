@@ -111,6 +111,7 @@ class AddProfileRepository {
   Future addLicense({
     required String licenseNumber,
     required int licenseType,
+    required int issuingAuthority,
     required String issueDate,
     required String expiryDate,
   }) async {
@@ -121,6 +122,7 @@ class AddProfileRepository {
     }
     final c1data = jsonEncode({
       "LicenseNumber": licenseNumber,
+      "IssuingAuthority": issuingAuthority,
       "LicenseType": licenseType,
       "IssueDate": issueDate,
       "ExpiryDate": expiryDate,

@@ -20,6 +20,7 @@ class AddBloc extends Bloc<AddEvent, AddState> {
     try {
       final licenseResponse = await repository.addLicense(
         licenseNumber: event.licenseNumber,
+        issuingAuthority: event.issuingAuthority,
         licenseType: event.licenseType,
         issueDate: event.issueDate,
         expiryDate: event.expiryDate,
@@ -92,7 +93,7 @@ class AddBloc extends Bloc<AddEvent, AddState> {
         accreditationbody: event.accreditationbody,
         accreditationnumber: event.accreditationnumber,
       );
-      emit(AddSuccess(response:response ));
+      emit(AddSuccess(response: response));
     } catch (e) {
       emit(AddError(message: "An error occurred: ${e.toString()}"));
     }

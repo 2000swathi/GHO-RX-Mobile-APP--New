@@ -2,7 +2,7 @@ class LicenseModel {
   final int status;
   final String? error;
   final String? info;
-  final List<LicenseData> data; 
+  final List<LicenseData> data;
 
   LicenseModel({
     required this.status,
@@ -13,7 +13,8 @@ class LicenseModel {
 
   factory LicenseModel.fromJson(Map<String, dynamic> json) {
     final nestedList = json['Data'] as List<dynamic>;
-    final flatList = nestedList.expand((inner) => inner as List<dynamic>).toList();
+    final flatList =
+        nestedList.expand((inner) => inner as List<dynamic>).toList();
 
     return LicenseModel(
       status: json['Status'] ?? 0,
@@ -24,16 +25,17 @@ class LicenseModel {
   }
 
   Map<String, dynamic> toJson() => {
-        'Status': status,
-        'Error': error,
-        'Info': info,
-        'Data': [data.map((item) => item.toJson()).toList()],
-      };
+    'Status': status,
+    'Error': error,
+    'Info': info,
+    'Data': [data.map((item) => item.toJson()).toList()],
+  };
 }
 
 class LicenseData {
   final int id;
   final String licenseNumber;
+  final String issuingAuthorityID;
   final String issuingAuthority;
   final String specialtyID;
   final String licenseExpertiseType;
@@ -46,6 +48,7 @@ class LicenseData {
   LicenseData({
     required this.id,
     required this.licenseNumber,
+    required this.issuingAuthorityID,
     required this.issuingAuthority,
     required this.specialtyID,
     required this.licenseExpertiseType,
@@ -57,28 +60,30 @@ class LicenseData {
   });
 
   factory LicenseData.fromJson(Map<String, dynamic> json) => LicenseData(
-        id: json['id'] ?? 0,
-        licenseNumber: json['LicenseNumber'] ?? '',
-        issuingAuthority: json['IssuingAuthority'] ?? '',
-        specialtyID: json['SpecialtyID'] ?? '',
-        licenseExpertiseType: json['LicenseExpertiseType'] ?? '',
-        licenseTypeID: json['LicenseTypeID'] ?? 0,
-        licenseType: json['LicenseType'] ?? '',
-        duration: json['Duration'] ?? '',
-        issueDate: json['IssueDate'] ?? '',
-        expiryDate: json['ExpiryDate'] ?? '',
-      );
+    id: json['id'] ?? 0,
+    licenseNumber: json['LicenseNumber'] ?? '',
+    issuingAuthorityID: json['IssuingAuthorityID'] ?? '',
+    issuingAuthority: json['IssuingAuthority'] ?? '',
+    specialtyID: json['SpecialtyID'] ?? '',
+    licenseExpertiseType: json['LicenseExpertiseType'] ?? '',
+    licenseTypeID: json['LicenseTypeID'] ?? '',
+    licenseType: json['LicenseType'] ?? '',
+    duration: json['Duration'] ?? '',
+    issueDate: json['IssueDate'] ?? '',
+    expiryDate: json['ExpiryDate'] ?? '',
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'LicenseNumber': licenseNumber,
-        'IssuingAuthority': issuingAuthority,
-        'SpecialtyID': specialtyID,
-        'LicenseExpertiseType': licenseExpertiseType,
-        'LicenseTypeID': licenseTypeID,
-        'LicenseType': licenseType,
-        'Duration': duration,
-        'IssueDate': issueDate,
-        'ExpiryDate': expiryDate,
-      };
+    'id': id,
+    'LicenseNumber': licenseNumber,
+    'IssuingAuthorityID': issuingAuthorityID,
+    'IssuingAuthority': issuingAuthority,
+    'SpecialtyID': specialtyID,
+    'LicenseExpertiseType': licenseExpertiseType,
+    'LicenseTypeID': licenseTypeID,
+    'LicenseType': licenseType,
+    'Duration': duration,
+    'IssueDate': issueDate,
+    'ExpiryDate': expiryDate,
+  };
 }
