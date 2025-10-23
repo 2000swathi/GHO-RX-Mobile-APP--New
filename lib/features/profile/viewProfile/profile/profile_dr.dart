@@ -3,10 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/commondelete_dialogbox.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/widgets/case_appbar.dart';
+import 'package:ghorx_mobile_app_new/features/profile/delete/bloc/delete_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_language.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_specialty_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/bloc/list_bloc.dart';
@@ -207,11 +210,11 @@ class _ProfileDrState extends State<ProfileDr> {
                                                 child: LoadingAnimation(),
                                               ),
                                         );
-                                  
+
                                         context.read<ListBloc>().add(
                                           FetchSpecialtyList(),
                                         );
-                                  
+
                                         final listState = await context
                                             .read<ListBloc>()
                                             .stream
@@ -220,24 +223,24 @@ class _ProfileDrState extends State<ProfileDr> {
                                                   s is SpecialtyListState ||
                                                   s is ListFailure,
                                             );
-                                  
+
                                         Navigator.of(
                                           context,
                                           rootNavigator: true,
                                         ).pop();
-                                  
+
                                         if (listState is SpecialtyListState) {
                                           final specialties =
                                               listState.specialtyResponse.data
                                                   .expand((inner) => inner)
                                                   .toList();
-                                  
-                                         AddEditSpecialtySheet.showSheet(
-                                          context,
-                                          specialty,
-                                          specialties,
-                                          true,
-                                        );
+
+                                          AddEditSpecialtySheet.showSheet(
+                                            context,
+                                            specialty,
+                                            specialties,
+                                            true,
+                                          );
                                         } else if (listState is ListFailure) {
                                           ScaffoldMessenger.of(
                                             context,
@@ -341,109 +344,168 @@ class _ProfileDrState extends State<ProfileDr> {
                   (_) =>
                       ProfileBloc(repository: repository)
                         ..add(FetchAccreditation()),
-              child: BlocBuilder<ProfileBloc, ProfileState>(
-                builder: (context, state) {
-                  if (state is ProfileLoading) {
-                    return const Center(child: LoadingAnimation());
-                  } else if (state is AccreditationState) {
-                    final accreditationList = state.accreditationModel.data;
-
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (accreditationList.isEmpty)
-                          const Center(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 10),
-                              child: Text("No accreditations found"),
-                            ),
-                          ),
-
-                        ...accreditationList.map((accreditation) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _buildRow(
-                                "Accreditation number",
-                                accreditation.accreditationNumber,
-                              ),
-                              _buildRow(
-                                "Accreditation Type",
-                                accreditation.accreditationType,
-                              ),
-                              _buildRow(
-                                "Accreditation Body",
-                                accreditation.accreditationBody,
-                              ),
-                              const SizedBox(height: 5),
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: InkWell(
-                                  onTap: () {
-                                    AddEditAccrediationBottomSheet.showSheet(
-                                      context,
-                                      accreditation,
-                                      true,
-                                    );
-                                  },
-                                  child: SvgPicture.asset(
-                                    "assets/svg/edit_svg.svg",
-                                  ),
-                                ),
-                              ),
-                              Divider(color: AppColors.hint2color),
-                            ],
-                          );
-                        }),
-
-                        const SizedBox(height: 10),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: InkWell(
-                            onTap: () async {
-                              AddEditAccrediationBottomSheet.showSheet(
-                                context,
-                                null,
-                                false,
-                              );
-                              showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder:
-                                    (_) =>
-                                        const Center(child: LoadingAnimation()),
-                              );
-
-                              Navigator.pop(context);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    "Add accreditation not implemented yet.",
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Add Accreditation",
-                                  style: AppFonts.textprogressbar.copyWith(
-                                    color: AppColors.primarycolor,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
+              child: BlocListener<DeleteBloc, DeleteState>(
+                listener: (context, state) {
+                  if (state is DeleteLoading) {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (_) => const Center(child: LoadingAnimation()),
                     );
-                  } else if (state is ProfileError) {
-                    return Center(child: Text(state.message));
+                  } else if (state is DeleteSuccess) {
+                    Navigator.pop(context);
+                    CustomScaffoldMessenger.showSuccessMessage(
+                      context,
+                      "Accreditation deleted successfully",
+                    );
+                    context.read<ProfileBloc>().add(FetchAccreditation());
+                  } else if (state is DeleteFailure) {
+                    Navigator.pop(context);
+                    CustomScaffoldMessenger.showSuccessMessage(
+                      context,
+                      "Failed to delete accreditation",
+                    );
                   }
-                  return Container();
                 },
+                child: BlocBuilder<ProfileBloc, ProfileState>(
+                  builder: (context, state) {
+                    if (state is ProfileLoading) {
+                      return const Center(child: LoadingAnimation());
+                    } else if (state is AccreditationState) {
+                      final accreditationList = state.accreditationModel.data;
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (accreditationList.isEmpty)
+                            const Center(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                child: Text("No accreditations found"),
+                              ),
+                            ),
+
+                          ...accreditationList.map((accreditation) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _buildRow(
+                                  "Accreditation number",
+                                  accreditation.accreditationNumber,
+                                ),
+                                _buildRow(
+                                  "Accreditation Type",
+                                  accreditation.accreditationType,
+                                ),
+                                _buildRow(
+                                  "Accreditation Body",
+                                  accreditation.accreditationBody,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: InkWell(
+                                        onTap: () async {
+                                          final confirmed =
+                                              await showDeleteConfirmationDialog(
+                                                context: context,
+                                                title: "Delete Accreditation",
+                                                content:
+                                                    "Are you sure want to delete",
+                                              );
+                                          if (confirmed == true &&
+                                              context.mounted) {
+                                            context.read<DeleteBloc>().add(
+                                              DeleteProfileItem(
+                                                id: accreditation.id.toString(),
+                                                action: "revieweraccred",
+                                                isLang: false,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                        child: SvgPicture.asset(
+                                          "assets/svg/trash.svg",
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+
+                                    const SizedBox(width: 15),
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: InkWell(
+                                        onTap: () {
+                                          AddEditAccrediationBottomSheet.showSheet(
+                                            context,
+                                            accreditation,
+                                            true,
+                                          );
+                                        },
+                                        child: SvgPicture.asset(
+                                          "assets/svg/edit_svg.svg",
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Divider(color: AppColors.hint2color),
+                              ],
+                            );
+                          }),
+
+                          const SizedBox(height: 10),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: InkWell(
+                              onTap: () async {
+                                AddEditAccrediationBottomSheet.showSheet(
+                                  context,
+                                  null,
+                                  false,
+                                );
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder:
+                                      (_) => const Center(
+                                        child: LoadingAnimation(),
+                                      ),
+                                );
+
+                                Navigator.pop(context);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      "Add accreditation not implemented yet.",
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Add Accreditation",
+                                    style: AppFonts.textprogressbar.copyWith(
+                                      color: AppColors.primarycolor,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    } else if (state is ProfileError) {
+                      return Center(child: Text(state.message));
+                    }
+                    return Container();
+                  },
+                ),
               ),
             ),
           ),
@@ -456,87 +518,145 @@ class _ProfileDrState extends State<ProfileDr> {
                   (_) =>
                       ProfileBloc(repository: repository)
                         ..add(FetchInsurance()),
-              child: BlocBuilder<ProfileBloc, ProfileState>(
-                builder: (context, state) {
-                  if (state is ProfileLoading) {
-                    return const Center(child: LoadingAnimation());
+              child: BlocListener<DeleteBloc, DeleteState>(
+                listener: (context, state) {
+                  if (state is DeleteLoading) {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (_) => const Center(child: LoadingAnimation()),
+                    );
+                  } else if (state is DeleteSuccess) {
+                    Navigator.pop(context);
+                    CustomScaffoldMessenger.showSuccessMessage(
+                      context,
+                      "Insurance deleted successfully",
+                    );
+                    context.read<ProfileBloc>().add(FetchInsurance());
+                  } else if (state is DeleteFailure) {
+                    Navigator.pop(context);
+                    CustomScaffoldMessenger.showSuccessMessage(
+                      context,
+                      "Failed to delete insurance",
+                    );
                   }
-                  if (state is InsuranceState) {
-                    final insuranceList = state.insuranceModel.data;
-                    return Column(
-                      children: [
-                        if (insuranceList.isEmpty)
-                          Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("No Insurance found"),
+                },
+                child: BlocBuilder<ProfileBloc, ProfileState>(
+                  builder: (context, state) {
+                    if (state is ProfileLoading) {
+                      return const Center(child: LoadingAnimation());
+                    }
+                    if (state is InsuranceState) {
+                      final insuranceList = state.insuranceModel.data;
+                      return Column(
+                        children: [
+                          if (insuranceList.isEmpty)
+                            Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("No Insurance found"),
+                              ),
                             ),
-                          ),
-                        ...insuranceList.map(
-                          (insurance) => Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _buildRow(
-                                "ProviderID",
-                                insurance.providerID.toString(),
-                              ),
-                              _buildRow(
-                                "ProviderName",
-                                insurance.providerName.toString(),
-                              ),
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: InkWell(
-                                  onTap: () async {
-                                    EditInsuranceSheet.showSheet(
-                                      context,
-                                      insurance,
-                                      true,
-                                    );
-                                  },
-                                  child: SvgPicture.asset(
-                                    "assets/svg/edit_svg.svg",
-                                  ),
-                                ),
-                              ),
-                              Divider(color: AppColors.hint2color),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: InkWell(
-                            onTap: () {
-                              EditInsuranceSheet.showSheet(
-                                context,
-                                null,
-                                false,
-                              );
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                          ...insuranceList.map(
+                            (insurance) => Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  "Add Insurance",
-                                  style: AppFonts.textprogressbar.copyWith(
-                                    color: AppColors.primarycolor,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                _buildRow(
+                                  "ProviderID",
+                                  insurance.providerID.toString(),
                                 ),
+                                _buildRow(
+                                  "ProviderName",
+                                  insurance.providerName.toString(),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: InkWell(
+                                        onTap: () async {
+                                          final confirmed =
+                                              await showDeleteConfirmationDialog(
+                                                context: context,
+                                                title: "Delete Insurance",
+                                                content:
+                                                    "Are you sure want to delete",
+                                              );
+                                          if (confirmed == true &&
+                                              context.mounted) {
+                                            context.read<DeleteBloc>().add(
+                                              DeleteProfileItem(
+                                                id: insurance.id.toString(),
+                                                action: "reviewerins",
+                                                isLang: false,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                        child: SvgPicture.asset(
+                                          "assets/svg/trash.svg",
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 15),
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: InkWell(
+                                        onTap: () async {
+                                          EditInsuranceSheet.showSheet(
+                                            context,
+                                            insurance,
+                                            true,
+                                          );
+                                        },
+                                        child: SvgPicture.asset(
+                                          "assets/svg/edit_svg.svg",
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Divider(color: AppColors.hint2color),
                               ],
                             ),
                           ),
-                        ),
-                      ],
-                    );
-                  }
+                          const SizedBox(height: 12),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: InkWell(
+                              onTap: () {
+                                EditInsuranceSheet.showSheet(
+                                  context,
+                                  null,
+                                  false,
+                                );
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Add Insurance",
+                                    style: AppFonts.textprogressbar.copyWith(
+                                      color: AppColors.primarycolor,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
 
-                  if (state is ProfileError) {
-                    return Center(child: Text(state.message));
-                  }
-                  return Container();
-                },
+                    if (state is ProfileError) {
+                      return Center(child: Text(state.message));
+                    }
+                    return Container();
+                  },
+                ),
               ),
             ),
           ),
