@@ -158,7 +158,8 @@ class AddEditSpecialtySheet {
                             if (isEdit) {
                               context.read<EditBloc>().add(
                                     EditSpecialtyEvent(
-                                      specialtyId: info!.id.toString(),
+                                      id: info!.id.toString(),
+                                      specialtyId: selectedSpecialtyID ?? '',
                                       certifiedBoard:
                                           selectedCertifiedBoard ?? '',
                                       specialtyType:

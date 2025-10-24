@@ -40,6 +40,7 @@ class EditBloc extends Bloc<EditEvent, EditState> {
     try {
       final response = await repository.editSpecialty(
         specialtyId: event.specialtyId,
+        id: event.id,
         certifiedBoard: event.certifiedBoard,
         specialtyType: event.specialtyType,
       );

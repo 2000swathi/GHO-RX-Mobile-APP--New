@@ -18,10 +18,12 @@ class EditInfoEvent extends EditEvent {
 
 //specialty
 class EditSpecialtyEvent extends EditEvent {
+  final String id;
   final String specialtyId;
   final String certifiedBoard;
   final String specialtyType;
   const EditSpecialtyEvent({
+    required this.id,
     required this.specialtyId,
     required this.certifiedBoard,
     required this.specialtyType,
@@ -29,10 +31,11 @@ class EditSpecialtyEvent extends EditEvent {
 
   @override
   List<Object> get props => [
-    specialtyId,
-    certifiedBoard,
-    specialtyType,
-  ];
+        id,
+        specialtyId,
+        certifiedBoard,
+        specialtyType,
+      ];
 }
 
 // accreditation

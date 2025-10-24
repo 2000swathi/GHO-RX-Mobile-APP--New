@@ -138,6 +138,7 @@ class EditprofileRepository {
   //Specialty
   Future<Map<String, dynamic>> editSpecialty({
     required String specialtyId,
+    required String id,
     required String certifiedBoard,
     required String specialtyType,
   }) async {
@@ -158,13 +159,15 @@ class EditprofileRepository {
       ...ApiUtils.getCommonParams(action: "reviewerspl", token: token),
       "Tags": [
         {"T": "dk1", "V": reviewerId},
-        {"T": "dk2", "V": specialtyId},
+        {"T": "dk2", "V": id},
         {"T": "c1", "V": c1data},
+        {"T": "c2", "V": certifiedBoard},
         {"T": "c10", "V": "2"},
       ],
     };
     try {
       final response = await _dioHandler.post('', data: requestData);
+      print(response);
       return response;
     } catch (e) {
       throw (e.toString());
