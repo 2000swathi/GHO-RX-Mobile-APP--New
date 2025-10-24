@@ -262,8 +262,6 @@ class _ProfileDrState extends State<ProfileDr> {
                             ],
                           );
                         }),
-
-                        // Add Specialty button at the bottom
                         const SizedBox(height: 10),
                         Align(
                           alignment: Alignment.centerRight,

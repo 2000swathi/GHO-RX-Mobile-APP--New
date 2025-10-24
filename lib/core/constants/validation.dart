@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Validation {
+   static final DateFormat _format = DateFormat('dd MMM yyyy');
   static String? validateEmail(String? value) {
     final email = value?.trim();
     if (email == null || email.isEmpty) {
@@ -319,6 +320,57 @@ class Validation {
 
       return null;
     }
+  }
+
+  //issue date
+   static String? validateIssueDate(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please select issue date";
+    }
+
+    try {
+      final date = _format.parse(value);
+      final now = DateTime.now();
+      
+      final today = DateTime(now.year, now.month, now.day);
+      final issue = DateTime(date.year, date.month, date.day);
+
+      if (issue.isAfter(today)) {
+        return "Enter a valid issue date";
+      }
+    } catch (e) {
+      return "Invalid date format";
+    }
+
+    return null;
+  }
+
+  //expiry date
+  static String? validateExpiryDate(String? issueDate, String? expiryDate) {
+    if (expiryDate == null || expiryDate.isEmpty) {
+      return "Please select expiry date";
+    }
+
+    try {
+      final expiry = _format.parse(expiryDate);
+      final now = DateTime.now();
+      final today = DateTime(now.year, now.month, now.day);
+
+      if (!expiry.isAfter(today)) {
+        return "Enter a valid expiry date";
+      }
+
+      if (issueDate != null && issueDate.isNotEmpty) {
+        final issue = _format.parse(issueDate);
+        if (!expiry.isAfter(issue)) {
+          return "Expiry date must be after issue date";
+        }
+      }
+    } catch (e) {
+      return "Invalid date format";
+    }
+
+    return null;
   }
 
 }
