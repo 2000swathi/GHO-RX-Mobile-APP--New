@@ -1,9 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/list_repository.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/accreditationtype_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/certified_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/country_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/license_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty%20type_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty_response_model.dart';
 
 part 'list_event.dart';
@@ -17,6 +20,8 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     on<FetchSpecialtyList>(_onFetchSpecialty);
     on<FetchLicenseList>(_onFetchLicense);
     on<FetchAccrediationList>(_onFetchAccreditation);
+    on<FetchCertifiedList>(_onFetchCertified);
+    on<FetchSpecialtyTypeList>(_onFetchSpecialtyType);
   }
 
   //country list
@@ -74,6 +79,38 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     try {
       final licenseListResponse = await repository.fetchLicenseList();
       emit(LicenseListState(licenseResponse: licenseListResponse));
+    } catch (e) {
+      emit(ListFailure(error: e.toString()));
+    }
+  }
+
+  //Certified
+   Future<void> _onFetchCertified(
+    FetchCertifiedList event,
+    Emitter<ListState> emit,
+  ) async {
+    emit(ListLoading());
+
+    try {
+      final certifiedListResponse = await repository.fetchCertifiedList();
+      print(certifiedListResponse);
+      emit(CertifiedListState(certifiedResponse: certifiedListResponse));
+    } catch (e) {
+      emit(ListFailure(error: e.toString()));
+    }
+  }
+
+  //Specialty type
+  Future<void> _onFetchSpecialtyType(
+    FetchSpecialtyTypeList event,
+    Emitter<ListState> emit,
+  ) async {
+    emit(ListLoading());
+
+    try { 
+      final specialtyTypeResponse = await repository.fetchSpecialtyTypeList();
+      print(Response);
+      emit(SpecialtyTypeListState(specialtyTypeResponse: specialtyTypeResponse)); 
     } catch (e) {
       emit(ListFailure(error: e.toString()));
     }
