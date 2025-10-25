@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
-import 'package:ghorx_mobile_app_new/core/common_widgets/custom_drop_down_field.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/edit/bloc/edit_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/accreditationtype_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/accreditation_model.dart';
@@ -20,18 +18,11 @@ class AddEditAccrediationBottomSheet {
     AccreditationData? info,
     bool isEdit, {
     required ProfileBloc profileBloc,
-    required List<AccreditationTypeData> accreList,
   }) {
     final _formKey = GlobalKey<FormState>();
-   String? accreTypeID = isEdit
-    ? accreList
-        .firstWhere(
-          (e) => e.name == info?.accreditationType, 
-          orElse: () => accreList.first,
-        )
-        .accreditationTypeID
-        .toString()
-    : null;
+    final accTypeController = TextEditingController(
+      text: isEdit ? info?.accreditationType ?? '' : '',
+    );
     final accBodyController = TextEditingController(
       text: isEdit ? info?.accreditationBody ?? '' : '',
     );
@@ -43,46 +34,32 @@ class AddEditAccrediationBottomSheet {
       context: context,
       heading: isEdit ? "Edit Accreditation" : "Add Accreditation",
       content: [
-        StatefulBuilder(
-          builder: (context, setState) {
-          return Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                CustomTextFormField(
-                  controller: accNumController,
-                  name: "Accreditation Number",
-                  hintText: "Enter Accreditation Number",
-                  validator: Validation.validateAccreditationNumber,
-                ),
-                const SizedBox(height: 20),
-                CustomDropdownFormField<String>(
-                  name: "Accrediation Type", 
-                  hintText: " -Select Accreditation Type- ", 
-                  items: accreList
-                    .map(
-                      (e) => DropdownItem<String> (
-                        label: e.name,
-                        value: e.accreditationTypeID.toString(),
-                      )
-                    )
-                    .toList(),
-                    value: accreTypeID,
-                    onChanged: (id) => setState(() {
-                      accreTypeID = id;
-                    }),
-                  ),
-                const SizedBox(height: 10),
-                CustomTextFormField(
-                  controller: accBodyController,
-                  name: "Accreditation Body",
-                  hintText: "Enter Accreditation Body",
-                  validator: Validation.validateProviderName,
-                ),
-              ],
-            ),
-          );
-          }
+        Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              CustomTextFormField(
+                controller: accNumController,
+                name: "Accreditation Number",
+                hintText: "Enter Accreditation Number",
+                validator: Validation.validateAccreditationNumber,
+              ),
+              const SizedBox(height: 20),
+              CustomTextFormField(
+                controller: accTypeController,
+                name: "Accreditation Type",
+                hintText: "Enter Accreditation Type",
+                validator: Validation.validateProviderName,
+              ),
+              const SizedBox(height: 10),
+              CustomTextFormField(
+                controller: accBodyController,
+                name: "Accreditation Body",
+                hintText: "Enter Accreditation Body",
+                validator: Validation.validateProviderName,
+              ),
+            ],
+          ),
         ),
       ],
 
@@ -140,7 +117,7 @@ class AddEditAccrediationBottomSheet {
                         context.read<EditBloc>().add(
                           EditAcreditationEvent(
                             accreditationId: info!.id.toString(),
-                            accreditationtype: accreTypeID ?? '',
+                            accreditationtype: accTypeController.text,
                             accreditationbody: accBodyController.text,
                             accreditationnumber: accNumController.text,
                           ),
@@ -148,7 +125,7 @@ class AddEditAccrediationBottomSheet {
                       } else {
                         context.read<AddBloc>().add(
                           AddAccrediation(
-                            accreditationtype: accreTypeID ?? '',
+                            accreditationtype: accTypeController.text,
                             accreditationbody: accBodyController.text,
                             accreditationnumber: accNumController.text,
                           ),
