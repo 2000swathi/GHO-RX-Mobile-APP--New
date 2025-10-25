@@ -1,24 +1,24 @@
-class SpecialtyResponseModel {
+class CertifiedResponseModel {
   final int status;
   final String error;
   final String info;
-  final List<List<SpecialtyList>> data;
+  final List<List<CertifiedList>> data;
 
-  SpecialtyResponseModel({
+  CertifiedResponseModel({
     required this.status,
     required this.error,
     required this.info,
     required this.data,
   });
 
-  factory SpecialtyResponseModel.fromJson(Map<String, dynamic> json) {
-    return SpecialtyResponseModel(
+  factory CertifiedResponseModel.fromJson(Map<String, dynamic> json) {
+    return CertifiedResponseModel(
       status: json['Status'],
       error: json['Error'],
       info: json['Info'],
       data:(json['Data'] as List<dynamic>? ?? [])
         .map((innerList) => (innerList as List<dynamic>)
-            .map((item) => SpecialtyList.fromJson(item))
+            .map((item) => CertifiedList.fromJson(item))
             .toList())
         .toList()
     );
@@ -36,27 +36,26 @@ class SpecialtyResponseModel {
   }
 }
 
-class SpecialtyList {
-  final int specialtyID;
-  final String specialtyName;
+class CertifiedList {
+  final int certifiedID;
+  final String certifiedName;
 
-  SpecialtyList({
-    required this.specialtyID,
-    required this.specialtyName,
+  CertifiedList({
+    required this.certifiedID,
+    required this.certifiedName,
   });
 
-  factory SpecialtyList.fromJson(Map<String, dynamic> json) {
-    return SpecialtyList(
-      specialtyID: json['SpecialtyID'] ?? 0,
-      specialtyName: json['SpecialtyName'] ?? '',
+  factory CertifiedList.fromJson(Map<String, dynamic> json) {
+    return CertifiedList(
+      certifiedID: json['certificationbodyid'] ?? 0,
+      certifiedName: json['CertifiedBoard'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'SpecialtyID': specialtyID,
-      'SpecialtyName': specialtyName,
+      'certificationbodyid': certifiedID,
+      'CertifiedBoard': certifiedName,
     };
   }
 }
-  
