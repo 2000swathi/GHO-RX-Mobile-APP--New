@@ -10,6 +10,7 @@ class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? widgets;
   final double height;
   final PreferredSizeWidget? tabBar;
+  final bool? isLogout;
 
   const CaseAppBar({
     super.key,
@@ -19,6 +20,7 @@ class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.widgets,
     this.height = 70,
     this.tabBar,
+    this.isLogout,
   });
 
   @override
@@ -31,30 +33,37 @@ class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: AppColors.white,
       automaticallyImplyLeading: false,
       elevation: 0,
-      title: isHome == true
-          ? widgets
-          : Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: Text(
-                title ?? '',
-                style: AppFonts.heading,
+      title:
+          isHome == true
+              ? widgets
+              : Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: Text(title ?? '', style: AppFonts.heading),
               ),
-            ),
       bottom: tabBar,
-      actions: istrue
-          ? []
-          : [
-              CircleAvatar(
-                backgroundColor: AppColors.primarycolor.withAlpha(8),
-                child: SvgPicture.asset("assets/svg/email_svg.svg"),
-              ),
-              const SizedBox(width: 15),
-              CircleAvatar(
-                backgroundColor: AppColors.primarycolor.withAlpha(8),
-                child: SvgPicture.asset("assets/svg/notification_svg.svg"),
-              ),
-              const SizedBox(width: 15),
-            ],
+      actions:
+          istrue
+              ? isLogout == true
+                  ? [
+                    CircleAvatar(
+                      backgroundColor: AppColors.primarycolor.withAlpha(8),
+                      child: Icon(Icons.login_outlined,color: AppColors.primarycolor,),
+                    ),
+                    const SizedBox(width: 15),
+                  ]
+                  : []
+              : [
+                CircleAvatar(
+                  backgroundColor: AppColors.primarycolor.withAlpha(8),
+                  child: SvgPicture.asset("assets/svg/email_svg.svg"),
+                ),
+                const SizedBox(width: 15),
+                CircleAvatar(
+                  backgroundColor: AppColors.primarycolor.withAlpha(8),
+                  child: SvgPicture.asset("assets/svg/notification_svg.svg"),
+                ),
+                const SizedBox(width: 15),
+              ],
     );
   }
 }
