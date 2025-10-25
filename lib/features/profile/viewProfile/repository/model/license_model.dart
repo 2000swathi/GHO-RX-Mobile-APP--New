@@ -60,7 +60,7 @@ class LicenseData {
   });
 
   factory LicenseData.fromJson(Map<String, dynamic> json) => LicenseData(
-    id: json['id'] ?? 0,
+    id: json['id'] ?? '',
     licenseNumber: json['LicenseNumber'] ?? '',
     issuingAuthorityID: json['IssuingAuthorityID'] ?? '',
     issuingAuthority: json['IssuingAuthority'] ?? '',

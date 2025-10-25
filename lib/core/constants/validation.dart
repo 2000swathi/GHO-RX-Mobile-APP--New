@@ -266,6 +266,13 @@ class Validation {
     return null;
   }
 
+  static String? validateAuthority(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please choose a issuing authority';
+    }
+    return null;
+  }
+
   static String? validateCertifiedBoard(Object? value) {
     if (value == null || value.toString().trim().isEmpty) {
       return 'Please choose a certfified board';
@@ -288,7 +295,6 @@ class Validation {
     }
     return null;
   }
-
 
   static String? validateProviderName(String? value) {
     if (value == null || value.trim().isEmpty) {
@@ -320,5 +326,4 @@ class Validation {
       return null;
     }
   }
-
 }

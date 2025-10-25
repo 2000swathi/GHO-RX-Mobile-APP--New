@@ -20,5 +20,3 @@ class FetchBankInfo extends ProfileEvent {}
 class FetchAccreditation extends ProfileEvent {}
 
 class FetchLanguage extends ProfileEvent {}
-
-class FetchIssuingAuthority extends ProfileEvent {}

@@ -22,10 +22,12 @@ class CustomDropdownFormField<T> extends StatefulWidget {
   });
 
   @override
-  State<CustomDropdownFormField<T>> createState() => _CustomDropdownFormFieldState<T>();
+  State<CustomDropdownFormField<T>> createState() =>
+      _CustomDropdownFormFieldState<T>();
 }
 
-class _CustomDropdownFormFieldState<T> extends State<CustomDropdownFormField<T>> {
+class _CustomDropdownFormFieldState<T>
+    extends State<CustomDropdownFormField<T>> {
   @override
   Widget build(BuildContext context) {
     Color borderColor = AppColors.offgreycolor;
@@ -37,7 +39,10 @@ class _CustomDropdownFormFieldState<T> extends State<CustomDropdownFormField<T>>
         const SizedBox(height: 8),
         DropdownButtonFormField2<T>(
           isExpanded: true,
-          value: widget.items.any((e) => e.value == widget.value) ? widget.value : null,
+          value:
+              widget.items.any((e) => e.value == widget.value)
+                  ? widget.value
+                  : null,
           validator: widget.validator,
           onChanged: widget.onChanged,
           hint: Text(widget.hintText, style: AppFonts.hinttext),

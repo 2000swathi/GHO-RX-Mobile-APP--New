@@ -372,6 +372,7 @@ class _ProfileDrState extends State<ProfileDr> {
                     if (state is ProfileLoading) {
                       return const Center(child: LoadingAnimation());
                     } else if (state is AccreditationState) {
+                      final info = state.accreditationModel;
                       final accreditationList = state.accreditationModel.data;
 
                       return Column(
@@ -440,9 +441,10 @@ class _ProfileDrState extends State<ProfileDr> {
                                         onTap: () {
                                           AddEditAccrediationBottomSheet.showSheet(
                                             context,
-                                            accreditation,
+                                            info,
                                             true,
-                                            profileBloc: context.read<ProfileBloc>(),
+                                            profileBloc:
+                                                context.read<ProfileBloc>(),
                                           );
                                         },
                                         child: SvgPicture.asset(
@@ -464,7 +466,7 @@ class _ProfileDrState extends State<ProfileDr> {
                               onTap: () async {
                                 AddEditAccrediationBottomSheet.showSheet(
                                   context,
-                                  null,
+                                  info,
                                   false,
                                   profileBloc: context.read<ProfileBloc>(),
                                 );
@@ -611,7 +613,8 @@ class _ProfileDrState extends State<ProfileDr> {
                                             context,
                                             insurance,
                                             true,
-                                            profileBloc: context.read<ProfileBloc>(),
+                                            profileBloc:
+                                                context.read<ProfileBloc>(),
                                           );
                                         },
                                         child: SvgPicture.asset(
@@ -699,10 +702,12 @@ class _ProfileDrState extends State<ProfileDr> {
                                 "Issuing Authority",
                                 license.issuingAuthority,
                               ),
+
                               Align(
                                 alignment: Alignment.centerRight,
                                 child: InkWell(
                                   onTap: () async {
+                                    // Show loading dialog
                                     showDialog(
                                       context: context,
                                       barrierDismissible: false,
@@ -711,9 +716,16 @@ class _ProfileDrState extends State<ProfileDr> {
                                             child: LoadingAnimation(),
                                           ),
                                     );
+
+                                    // Trigger both fetch events
                                     context.read<ListBloc>().add(
                                       FetchLicenseList(),
                                     );
+                                    context.read<ListBloc>().add(
+                                      FetchIssuingAuthority(),
+                                    );
+
+                                    // Wait for LicenseListState
                                     final listState = await context
                                         .read<ListBloc>()
                                         .stream
@@ -722,21 +734,71 @@ class _ProfileDrState extends State<ProfileDr> {
                                               s is LicenseListState ||
                                               s is ListFailure,
                                         );
+
+                                    // Wait for LicenseAuthorityListState
+                                    final authorityListState = await context
+                                        .read<ListBloc>()
+                                        .stream
+                                        .firstWhere(
+                                          (s) =>
+                                              s is IssuingAuthorityState ||
+                                              s is ListFailure,
+                                        );
+
+                                    // Close loading dialog
                                     Navigator.of(
                                       context,
                                       rootNavigator: true,
                                     ).pop();
 
-                                    if (listState is LicenseListState) {
-                                      final licenses =
-                                          listState.licenseResponse.data
+                                    // Handle errors first
+
+                                    if (listState is ListFailure) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(listState.error),
+                                        ),
+                                      );
+                                      return;
+                                    }
+
+                                    if (authorityListState is ListFailure) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            authorityListState.error,
+                                          ),
+                                        ),
+                                      );
+                                      return;
+                                    }
+
+                                    // Extract and combine lists
+                                    // Extract licenses safely
+                                    if (listState is LicenseListState &&
+                                        authorityListState
+                                            is IssuingAuthorityState) {
+                                      final licenceTypes =
+                                          listState.licenseResponse.toList();
+
+                                      // Extract authorities safely
+                                      final authorities =
+                                          authorityListState
+                                              .licenseAuthorityModel
+                                              .data
                                               .expand((inner) => inner)
                                               .toList();
 
+                                      // Pass both lists separately to your sheet
                                       AddEditLicenseSheet.showSheet(
                                         context,
                                         info,
-                                        licenses,
+                                        licenceTypes,
+                                        authorities,
                                         true,
                                       );
                                     } else if (listState is ListFailure) {
@@ -764,6 +826,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                   ),
                                 ),
                               ),
+
                               Divider(color: AppColors.hint2color),
                             ],
                           ),
@@ -773,6 +836,7 @@ class _ProfileDrState extends State<ProfileDr> {
                           alignment: Alignment.centerRight,
                           child: InkWell(
                             onTap: () async {
+                              // Show loading indicator
                               showDialog(
                                 context: context,
                                 barrierDismissible: false,
@@ -781,36 +845,67 @@ class _ProfileDrState extends State<ProfileDr> {
                                         const Center(child: LoadingAnimation()),
                               );
 
-                              context.read<ListBloc>().add(FetchLicenseList());
+                              final bloc = context.read<ListBloc>();
 
-                              final licenseState = await context
-                                  .read<ListBloc>()
-                                  .stream
-                                  .firstWhere(
-                                    (s) =>
-                                        s is LicenseListState ||
-                                        s is ListFailure,
+                              // Trigger both fetches simultaneously
+                              bloc.add(FetchLicenseList());
+                              bloc.add(FetchIssuingAuthority());
+
+                              // Wait for both states
+                              LicenseListState? listState;
+                              IssuingAuthorityState? authorityState;
+
+                              await for (final state in bloc.stream) {
+                                if (state is LicenseListState) {
+                                  listState = state;
+                                } else if (state is IssuingAuthorityState) {
+                                  authorityState = state;
+                                } else if (state is ListFailure) {
+                                  Navigator.of(
+                                    context,
+                                    rootNavigator: true,
+                                  ).pop();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(state.error)),
                                   );
+                                  return;
+                                }
 
+                                // When both are ready, break
+                                if (listState != null && authorityState != null)
+                                  break;
+                              }
+
+                              // Close the loading dialog
                               Navigator.of(context, rootNavigator: true).pop();
 
-                              if (licenseState is LicenseListState) {
-                                final languages =
-                                    licenseState.licenseResponse.data
-                                        .expand((inner) => inner)
-                                        .toList();
-
-                                AddEditLicenseSheet.showSheet(
-                                  context,
-                                  info,
-                                  languages,
-                                  false,
-                                );
-                              } else if (licenseState is ListFailure) {
+                              // Validate both responses
+                              if (listState == null || authorityState == null) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(licenseState.error)),
+                                  const SnackBar(
+                                    content: Text("Failed to load data"),
+                                  ),
                                 );
+                                return;
                               }
+
+                              // Flatten the lists (since API returns nested arrays)
+                              final licenceTypes =
+                                  listState.licenseResponse.toList();
+
+                              final authorities =
+                                  authorityState.licenseAuthorityModel.data
+                                      .expand((inner) => inner)
+                                      .toList();
+
+                              // Open bottom sheet
+                              AddEditLicenseSheet.showSheet(
+                                context,
+                                info,
+                                licenceTypes,
+                                authorities,
+                                false,
+                              );
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,

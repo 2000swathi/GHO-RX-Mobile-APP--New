@@ -15,19 +15,19 @@ import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/mod
 class AddEditAccrediationBottomSheet {
   static void showSheet(
     BuildContext context,
-    AccreditationData? info,
+    AccreditationModel info,
     bool isEdit, {
     required ProfileBloc profileBloc,
   }) {
     final _formKey = GlobalKey<FormState>();
     final accTypeController = TextEditingController(
-      text: isEdit ? info?.accreditationType ?? '' : '',
+      text: isEdit ? info.data[0].accreditationType : "",
     );
     final accBodyController = TextEditingController(
-      text: isEdit ? info?.accreditationBody ?? '' : '',
+      text: isEdit ? info.data[0].accreditationBody : "",
     );
     final accNumController = TextEditingController(
-      text: isEdit ? info?.accreditationNumber ?? '' : '',
+      text: isEdit ? info.data[0].accreditationNumber : "",
     );
 
     CustomBottomSheet.show(
@@ -116,7 +116,7 @@ class AddEditAccrediationBottomSheet {
                       if (isEdit) {
                         context.read<EditBloc>().add(
                           EditAcreditationEvent(
-                            accreditationId: info!.id.toString(),
+                            accreditationId: info.data[0].id.toString(),
                             accreditationtype: accTypeController.text,
                             accreditationbody: accBodyController.text,
                             accreditationnumber: accNumController.text,

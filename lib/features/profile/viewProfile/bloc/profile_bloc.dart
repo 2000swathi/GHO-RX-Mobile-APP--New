@@ -14,7 +14,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<FetchLanguage>(_onFetchLanguage);
     on<FetchAccreditation>(_onFetchAccreditation);
     on<FetchBankInfo>(_onFetchBankInfo);
-    on<FetchIssuingAuthority>(_onFetchIssuingAuthority);
   }
 
   //personal info
@@ -116,20 +115,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     try {
       final bankList = await repository.fetchBankInfo();
       emit(BankInfoState(bankListModel: bankList));
-    } catch (e) {
-      emit(ProfileError(message: e.toString()));
-    }
-  }
-
-  //issuing authority
-  Future<void> _onFetchIssuingAuthority(
-    FetchIssuingAuthority event,
-    Emitter<ProfileState> emit,
-  ) async {
-    emit(ProfileLoading());
-    try {
-      final issuingAuthorityList = await repository.fetchLicenseInfo();
-      emit(IssuingAuthorityState(licenseListModel: issuingAuthorityList));
     } catch (e) {
       emit(ProfileError(message: e.toString()));
     }

@@ -90,29 +90,29 @@ class EditInsuranceEvent extends EditEvent {
 //Edit License Event
 class EditLicenseEvent extends EditEvent {
   final String licenseNumber;
-  // final String issuingAuthority;
+  final int issuingAuthority;
   final int licenseType;
   final String issueDate;
   final String expiryDate;
-  // final String id;
+  final String id;
 
   const EditLicenseEvent({
     required this.licenseNumber,
-    // required this.issuingAuthority,
+    required this.issuingAuthority,
     required this.licenseType,
     required this.issueDate,
     required this.expiryDate,
-    // required this.id,
+    required this.id,
   });
 
   @override
   List<Object> get props => [
     licenseNumber,
-    // issuingAuthority,
+    issuingAuthority,
     licenseType,
     issueDate,
     expiryDate,
-    // id,
+    id,
   ];
 }
 // Edit language event

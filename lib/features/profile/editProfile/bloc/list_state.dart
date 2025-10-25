@@ -27,14 +27,21 @@ class SpecialtyListState extends ListState {
   List<Object> get props => [specialtyResponse];
 }
 
-//License
+//License list
 class LicenseListState extends ListState {
-  final LicenseListResponseModel licenseResponse;
+  final List<LicenseListModel> licenseResponse;
   const LicenseListState({required this.licenseResponse});
   @override
   List<Object> get props => [licenseResponse];
 }
 
+//issuing authority list
+class IssuingAuthorityState extends ListState {
+  final LicenseAuthorityModel licenseAuthorityModel;
+  const IssuingAuthorityState({required this.licenseAuthorityModel});
+  @override
+  List<Object> get props => [licenseAuthorityModel];
+}
 
 class ListFailure extends ListState {
   final String error;

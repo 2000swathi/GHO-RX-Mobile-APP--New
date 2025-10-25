@@ -1,10 +1,9 @@
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/country_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/licence_authority_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/license_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty_response_model.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/license_model.dart';
 import 'package:ghorx_mobile_app_new/utilities/network/api_utils.dart';
 import 'package:ghorx_mobile_app_new/utilities/network/dio_handler.dart';
-import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
 
 class ListRepository {
   final DioHandler _dioHandler = DioHandler();
@@ -42,8 +41,8 @@ class ListRepository {
     }
   }
 
-  // license
-  Future<LicenseListResponseModel> fetchLicenseList() async {
+  // license list model
+  Future<List<LicenseListModel>> fetchLicenseList() async {
     final data = {
       ...ApiUtils.getCommonParams(action: "lists", token: ""),
       "Tags": [
@@ -53,21 +52,19 @@ class ListRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
-      return LicenseListResponseModel.fromJson(response);
+      final List licensesJson = response['Data'][0];
+      return licensesJson
+          .map((json) => LicenseListModel.fromJson(json))
+          .toList();
     } catch (e) {
-      throw Exception("Failed to fetch license: $e");
+      throw Exception("$e");
     }
   }
 
   //issuing authority list
-  Future<LicenseModel> fetchIssuingAuthority() async {
-    final token = await SharedPreference.getToken();
-
-    if (token == null || token.isEmpty) {
-      throw Exception("Token not found. Please log in again.");
-    }
+  Future<LicenseAuthorityModel> fetchIssuingAuthority() async {
     final data = {
-      ...ApiUtils.getCommonParams(action: "lists", token: token),
+      ...ApiUtils.getCommonParams(action: "lists", token: ""),
       "Tags": [
         {"T": "c10", "V": "91"},
       ],
@@ -75,7 +72,7 @@ class ListRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
-      return LicenseModel.fromJson(response);
+      return LicenseAuthorityModel.fromJson(response);
     } catch (e) {
       throw Exception("Failed to fetch issuing authority: $e");
     }
