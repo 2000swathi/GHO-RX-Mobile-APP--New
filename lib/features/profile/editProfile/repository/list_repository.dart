@@ -1,3 +1,4 @@
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/accreditationtype_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/country_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/license_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty_response_model.dart';
@@ -40,7 +41,23 @@ class ListRepository {
       throw Exception("Failed to fetch specialties: $e");
     }
   }
+  
+  // accreditation_type
+  Future<AccreditationTypeModel> fetchAccreditationTypeList() async {
+    final data = {
+      ...ApiUtils.getCommonParams(action: "lists", token: ""),
+      "Tags": [
+        {"T": "c10", "V": "90"}
+      ]
+    };
 
+    try {
+      final response = await _dioHandler.post('', data: data);
+      return AccreditationTypeModel.fromJson(response);
+    } catch (e) {
+      throw Exception("Failed to fetch accreditation types: $e");
+    }
+  }
   
   // license
   Future<LicenseListResponseModel> fetchLicenseList() async {

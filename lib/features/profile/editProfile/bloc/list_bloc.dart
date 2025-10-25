@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/list_repository.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/accreditationtype_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/country_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/license_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty_response_model.dart';
@@ -15,6 +16,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     on<FetchCountryList>(_onFetchCountry);
     on<FetchSpecialtyList>(_onFetchSpecialty);
     on<FetchLicenseList>(_onFetchLicense);
+    on<FetchAccrediationList>(_onFetchAccreditation);
   }
 
   //country list
@@ -42,6 +44,21 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     try {
       final specialtyListResponse = await repository.fetchSpecialtyList();
       emit(SpecialtyListState(specialtyResponse: specialtyListResponse));
+    } catch (e) {
+      emit(ListFailure(error: e.toString()));
+    }
+  }
+
+  //accrediation list
+  Future<void> _onFetchAccreditation(
+    FetchAccrediationList event,
+    Emitter<ListState> emit,
+  ) async {
+    emit(ListLoading());
+
+    try {
+      final accreditationTypeResponse = await repository.fetchAccreditationTypeList();
+      emit(AccreditationTypeListState(accreditationTypeResponse: accreditationTypeResponse));
     } catch (e) {
       emit(ListFailure(error: e.toString()));
     }
