@@ -368,7 +368,6 @@ class _ProfileDrState extends State<ProfileDr> {
                     if (state is ProfileLoading) {
                       return const Center(child: LoadingAnimation());
                     } else if (state is AccreditationState) {
-                      final info = state.accreditationModel;
                       final accreditationList = state.accreditationModel.data;
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -481,14 +480,6 @@ class _ProfileDrState extends State<ProfileDr> {
                                               ),
                                             );
                                           }
-                                        onTap: () {
-                                          AddEditAccrediationBottomSheet.showSheet(
-                                            context,
-                                            info,
-                                            true,
-                                            profileBloc:
-                                                context.read<ProfileBloc>(),
-                                          );
                                         },
                                         child: SvgPicture.asset(
                                           "assets/svg/edit_svg.svg",
@@ -510,12 +501,6 @@ class _ProfileDrState extends State<ProfileDr> {
                                 final listBloc = context.read<ListBloc>();
                                 listBloc.add(FetchAccrediationList());
 
-                                AddEditAccrediationBottomSheet.showSheet(
-                                  context,
-                                  info,
-                                  false,
-                                  profileBloc: context.read<ProfileBloc>(),
-                                );
                                 showDialog(
                                   context: context,
                                   barrierDismissible: false,
@@ -676,8 +661,6 @@ class _ProfileDrState extends State<ProfileDr> {
                                             context,
                                             insurance,
                                             true,
-                                            profileBloc:
-                                                context.read<ProfileBloc>(),
                                             profileBloc:
                                                 context.read<ProfileBloc>(),
                                           );

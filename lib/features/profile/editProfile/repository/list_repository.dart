@@ -41,14 +41,14 @@ class ListRepository {
       throw Exception("Failed to fetch specialties: $e");
     }
   }
-  
+
   // accreditation_type
   Future<AccreditationTypeModel> fetchAccreditationTypeList() async {
     final data = {
       ...ApiUtils.getCommonParams(action: "lists", token: ""),
       "Tags": [
-        {"T": "c10", "V": "90"}
-      ]
+        {"T": "c10", "V": "90"},
+      ],
     };
 
     try {
@@ -58,9 +58,6 @@ class ListRepository {
       throw Exception("Failed to fetch accreditation types: $e");
     }
   }
-  
-  // license
-  Future<LicenseListResponseModel> fetchLicenseList() async {
 
   // license list model
   Future<List<LicenseListModel>> fetchLicenseList() async {
