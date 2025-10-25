@@ -47,15 +47,15 @@ class SpecialtytypeList {
 
   factory SpecialtytypeList.fromJson(Map<String, dynamic> json) {
     return SpecialtytypeList(
-      specialtytypeID: json['specialtytypeid'] ?? 0,
-      specialtytypeName: json['Name'] ?? '',
+      specialtytypeID: json['SpecialtyTypeid'] ?? 0,
+      specialtytypeName: json['SpecialtyType'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'specialtytypeid': specialtytypeID,
-      'Name': specialtytypeName,
+      'SpecialtyTypeid': specialtytypeID,
+      'SpecialtyType': specialtytypeName,
     };
   }
 }

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/list_repository.dart';
@@ -90,6 +91,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
 
     try { 
       final specialtyTypeResponse = await repository.fetchSpecialtyTypeList();
+      print(Response);
       emit(SpecialtyTypeListState(specialtyTypeResponse: specialtyTypeResponse)); 
     } catch (e) {
       emit(ListFailure(error: e.toString()));

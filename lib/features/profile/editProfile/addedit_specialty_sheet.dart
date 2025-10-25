@@ -25,8 +25,8 @@ class AddEditSpecialtySheet {
   ) {
     final formKey = GlobalKey<FormState>();
     String? selectedSpecialtyID = isEdit ? info?.specialtyId.toString() : null;
-   String? selectedCertifiedBoard = isEdit ? info?.certifiedBoard : null;
-    String? selectedSpecialtyType = isEdit ? info?.specialtyType : null;
+   String? selectedCertifiedBoard = isEdit ? info?.certifiedBoard.toString() : null;
+    String? selectedSpecialtyType = isEdit ? info?.specialtyType.toString() : null;
 
     CustomBottomSheet.show(
       context: context,
