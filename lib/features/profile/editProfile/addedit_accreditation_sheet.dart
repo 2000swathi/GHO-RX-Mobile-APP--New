@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
@@ -23,15 +24,16 @@ class AddEditAccrediationBottomSheet {
     required List<AccreditationTypeData> accreList,
   }) {
     final _formKey = GlobalKey<FormState>();
-   String? accreTypeID = isEdit
-    ? accreList
-        .firstWhere(
-          (e) => e.name == info?.accreditationType, 
-          orElse: () => accreList.first,
-        )
-        .accreditationTypeID
-        .toString()
-    : null;
+    String? accreTypeID =
+        isEdit
+            ? accreList
+                .firstWhere(
+                  (e) => e.name == info?.accreditationType,
+                  orElse: () => accreList.first,
+                )
+                .accreditationTypeID
+                .toString()
+            : null;
     final accBodyController = TextEditingController(
       text: isEdit ? info?.accreditationBody ?? '' : '',
     );
@@ -39,50 +41,64 @@ class AddEditAccrediationBottomSheet {
       text: isEdit ? info?.accreditationNumber ?? '' : '',
     );
 
+    accBodyController.addListener(() {
+      final text = accBodyController.text;
+      if (text != text.toUpperCase()) {
+        accBodyController.value = accBodyController.value.copyWith(
+          text: text.toUpperCase(),
+          selection: TextSelection.collapsed(offset: text.length),
+        );
+      }
+    });
+
     CustomBottomSheet.show(
       context: context,
       heading: isEdit ? "Edit Accreditation" : "Add Accreditation",
       content: [
         StatefulBuilder(
           builder: (context, setState) {
-          return Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                CustomTextFormField(
-                  controller: accNumController,
-                  name: "Accreditation Number",
-                  hintText: "Enter Accreditation Number",
-                  validator: Validation.validateAccreditationNumber,
-                ),
-                const SizedBox(height: 20),
-                CustomDropdownFormField<String>(
-                  name: "Accrediation Type", 
-                  hintText: " -Select Accreditation Type- ", 
-                  items: accreList
-                    .map(
-                      (e) => DropdownItem<String> (
-                        label: e.name,
-                        value: e.accreditationTypeID.toString(),
-                      )
-                    )
-                    .toList(),
-                    value: accreTypeID,
-                    onChanged: (id) => setState(() {
-                      accreTypeID = id;
-                    }),
+            return Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  CustomTextFormField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    controller: accNumController,
+                    name: "Accreditation Number",
+                    hintText: "Enter Accreditation Number",
+                    validator: Validation.validateAccreditationNumber,
                   ),
-                const SizedBox(height: 10),
-                CustomTextFormField(
-                  controller: accBodyController,
-                  name: "Accreditation Body",
-                  hintText: "Enter Accreditation Body",
-                  validator: Validation.validateProviderName,
-                ),
-              ],
-            ),
-          );
-          }
+                  const SizedBox(height: 20),
+                  CustomDropdownFormField<String>(
+                    name: "Accrediation Type",
+                    hintText: " -Select Accreditation Type- ",
+                    items:
+                        accreList
+                            .map(
+                              (e) => DropdownItem<String>(
+                                label: e.name,
+                                value: e.accreditationTypeID.toString(),
+                              ),
+                            )
+                            .toList(),
+                    value: accreTypeID,
+                    onChanged:
+                        (id) => setState(() {
+                          accreTypeID = id;
+                        }),
+                  ),
+                  const SizedBox(height: 10),
+                  CustomTextFormField(
+                    controller: accBodyController,
+                    name: "Accreditation Body",
+                    hintText: "Enter Accreditation Body",
+                    validator: Validation.validateProviderName,
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       ],
 

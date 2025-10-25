@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
@@ -45,6 +46,10 @@ class AddEditInsuranceSheet {
           child: Column(
             children: [
               CustomTextFormField(
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
                 controller: prIDController,
                 name: "Provider ID",
                 hintText: "Enter Provider ID",
@@ -144,7 +149,7 @@ class AddEditInsuranceSheet {
                 final bool isLoading = isAddLoading || isEditLoading;
 
                 return CustomButton(
-                  text: isEdit ? "Edit Insurance" : "Submit Insurance",
+                  text: isEdit ? "Update Insurance" : "Submit Insurance",
                   isLoading: isLoading,
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
