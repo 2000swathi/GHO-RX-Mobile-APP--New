@@ -16,6 +16,7 @@ class CustomTextFormField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final VoidCallback? onTap;
   final bool readOnly;
+  final TextCapitalization? textCapitalization;
 
 
   const CustomTextFormField({
@@ -32,6 +33,7 @@ class CustomTextFormField extends StatelessWidget {
     this.inputFormatters,
     this.onTap,
     this.readOnly = false,
+    this.textCapitalization,
   });
 
   @override

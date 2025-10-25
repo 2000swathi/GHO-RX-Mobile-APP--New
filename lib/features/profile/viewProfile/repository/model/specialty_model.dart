@@ -28,6 +28,10 @@ class SpecialtyModel {
       data: specialties,
     );
   }
+
+  get specialtyId => null;
+
+  get id => null;
 }
 
 class Specialty {

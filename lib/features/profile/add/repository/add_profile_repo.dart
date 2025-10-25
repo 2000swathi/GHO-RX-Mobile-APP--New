@@ -24,7 +24,7 @@ class AddProfileRepository {
       throw Exception('Token or ReviewerId not found in SharedPreferences');
     }
     final data = {
-      ...ApiUtils.getCommonParams(action: "lists", token: token),
+      ...ApiUtils.getCommonParams(action: "reviewerspl", token: token),
       "Tags": [
         {"T": "dk1", "V": reviewerId},
         {"T": "c1", "V": c1data},
@@ -33,6 +33,7 @@ class AddProfileRepository {
     };
     try {
       final response = await _dioHandler.post('', data: data);
+      print(response);
       return response;
     } catch (e) {
       throw Exception("Failed to add specialty: $e");
