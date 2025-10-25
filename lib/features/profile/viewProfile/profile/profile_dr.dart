@@ -256,17 +256,30 @@ class _ProfileDrState extends State<ProfileDr> {
                                                   ),
                                             );
 
-                                            final listBloc = context.read<ListBloc>();
+                                            final listBloc =
+                                                context.read<ListBloc>();
                                             listBloc.add(FetchSpecialtyList());
                                             listBloc.add(FetchCertifiedList());
-                                            listBloc.add(FetchSpecialtyTypeList());
-
-
+                                            listBloc.add(
+                                              FetchSpecialtyTypeList(),
+                                            );
 
                                             final results = await Future.wait([
-                                              listBloc.stream.firstWhere((s) => s is SpecialtyListState || s is ListFailure),
-                                              listBloc.stream.firstWhere((s) => s is CertifiedListState || s is ListFailure),
-                                              listBloc.stream.firstWhere((s) => s is SpecialtyTypeListState || s is ListFailure),
+                                              listBloc.stream.firstWhere(
+                                                (s) =>
+                                                    s is SpecialtyListState ||
+                                                    s is ListFailure,
+                                              ),
+                                              listBloc.stream.firstWhere(
+                                                (s) =>
+                                                    s is CertifiedListState ||
+                                                    s is ListFailure,
+                                              ),
+                                              listBloc.stream.firstWhere(
+                                                (s) =>
+                                                    s is SpecialtyTypeListState ||
+                                                    s is ListFailure,
+                                              ),
                                             ]);
 
                                             Navigator.of(
@@ -278,16 +291,19 @@ class _ProfileDrState extends State<ProfileDr> {
                                             final certifiedState = results[1];
                                             final typeState = results[2];
 
-
-                                            if (listState is SpecialtyListState &&
+                                            if (listState
+                                                    is SpecialtyListState &&
                                                 certifiedState
                                                     is CertifiedListState &&
-                                                typeState is SpecialtyTypeListState) {
+                                                typeState
+                                                    is SpecialtyTypeListState) {
                                               final specialties =
-                                                  listState.specialtyResponse.data
+                                                  listState
+                                                      .specialtyResponse
+                                                      .data
                                                       .expand((inner) => inner)
                                                       .toList();
- 
+
                                               final certifiedBoards =
                                                   certifiedState
                                                       .certifiedResponse
@@ -296,10 +312,11 @@ class _ProfileDrState extends State<ProfileDr> {
                                                       .toList();
 
                                               final specialtyTypes =
-                                                  typeState.specialtyTypeResponse.data
+                                                  typeState
+                                                      .specialtyTypeResponse
+                                                      .data
                                                       .expand((inner) => inner)
                                                       .toList();
-                                              
 
                                               AddEditSpecialtySheet.showSheet(
                                                 context,
@@ -310,11 +327,14 @@ class _ProfileDrState extends State<ProfileDr> {
                                                 true,
                                               );
                                             } else {
-                                              String errorMessage = "Failed to load data.";
+                                              String errorMessage =
+                                                  "Failed to load data.";
                                               if (listState is ListFailure) {
                                                 errorMessage = listState.error;
-                                              } else if (certifiedState is ListFailure) {
-                                                errorMessage = certifiedState.error;
+                                              } else if (certifiedState
+                                                  is ListFailure) {
+                                                errorMessage =
+                                                    certifiedState.error;
                                               }
                                               ScaffoldMessenger.of(
                                                 context,
@@ -355,11 +375,22 @@ class _ProfileDrState extends State<ProfileDr> {
                                 listBloc.add(FetchCertifiedList());
                                 listBloc.add(FetchSpecialtyTypeList());
 
-
                                 final results = await Future.wait([
-                                  listBloc.stream.firstWhere((s) => s is SpecialtyListState || s is ListFailure),
-                                  listBloc.stream.firstWhere((s) => s is CertifiedListState || s is ListFailure),
-                                  listBloc.stream.firstWhere((s)=> s is SpecialtyTypeListState || s is ListFailure),
+                                  listBloc.stream.firstWhere(
+                                    (s) =>
+                                        s is SpecialtyListState ||
+                                        s is ListFailure,
+                                  ),
+                                  listBloc.stream.firstWhere(
+                                    (s) =>
+                                        s is CertifiedListState ||
+                                        s is ListFailure,
+                                  ),
+                                  listBloc.stream.firstWhere(
+                                    (s) =>
+                                        s is SpecialtyTypeListState ||
+                                        s is ListFailure,
+                                  ),
                                 ]);
 
                                 Navigator.of(
@@ -370,7 +401,6 @@ class _ProfileDrState extends State<ProfileDr> {
                                 final listState = results[0];
                                 final certifiedState = results[1];
                                 final typeState = results[2];
-
 
                                 if (listState is SpecialtyListState &&
                                     certifiedState is CertifiedListState &&
@@ -383,19 +413,17 @@ class _ProfileDrState extends State<ProfileDr> {
                                       certifiedState.certifiedResponse.data
                                           .expand((inner) => inner)
                                           .toList();
-                                   final specialtyTypes =
-                                                typeState.specialtyTypeResponse.data
-                                                    .expand((inner) => inner)
-                                                    .toList();      
-
-                                  
+                                  final specialtyTypes =
+                                      typeState.specialtyTypeResponse.data
+                                          .expand((inner) => inner)
+                                          .toList();
 
                                   AddEditSpecialtySheet.showSheet(
                                     context,
                                     null,
                                     specialties,
-                                   certifiedBoards,
-                                   specialtyTypes,
+                                    certifiedBoards,
+                                    specialtyTypes,
                                     false,
                                   );
                                 } else {
@@ -405,7 +433,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                   } else if (certifiedState is ListFailure) {
                                     errorMessage = certifiedState.error;
                                   }
-                                  
+
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(content: Text(errorMessage)),
                                   );
@@ -586,14 +614,6 @@ class _ProfileDrState extends State<ProfileDr> {
                                               ),
                                             );
                                           }
-                                        onTap: () {
-                                          AddEditAccrediationBottomSheet.showSheet(
-                                            context,
-                                            accreditation,
-                                            true,
-                                            profileBloc:
-                                                context.read<ProfileBloc>(),
-                                          );
                                         },
                                         child: SvgPicture.asset(
                                           "assets/svg/edit_svg.svg",
@@ -775,8 +795,6 @@ class _ProfileDrState extends State<ProfileDr> {
                                             context,
                                             insurance,
                                             true,
-                                            profileBloc:
-                                                context.read<ProfileBloc>(),
                                             profileBloc:
                                                 context.read<ProfileBloc>(),
                                           );
