@@ -4,6 +4,7 @@ import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/lis
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/certified_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/country_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/license_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty%20type_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty_response_model.dart';
 
 part 'list_event.dart';
@@ -17,6 +18,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     on<FetchSpecialtyList>(_onFetchSpecialty);
     on<FetchLicenseList>(_onFetchLicense);
     on<FetchCertifiedList>(_onFetchCertified);
+    on<FetchSpecialtyTypeList>(_onFetchSpecialtyType);
   }
 
   //country list
@@ -74,6 +76,21 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     try {
       final certifiedListResponse = await repository.fetchCertifiedList();
       emit(CertifiedListState(certifiedResponse: certifiedListResponse));
+    } catch (e) {
+      emit(ListFailure(error: e.toString()));
+    }
+  }
+
+  //Specialty type
+  Future<void> _onFetchSpecialtyType(
+    FetchSpecialtyTypeList event,
+    Emitter<ListState> emit,
+  ) async {
+    emit(ListLoading());
+
+    try { 
+      final specialtyTypeResponse = await repository.fetchSpecialtyTypeList();
+      emit(SpecialtyTypeListState(specialtyTypeResponse: specialtyTypeResponse)); 
     } catch (e) {
       emit(ListFailure(error: e.toString()));
     }

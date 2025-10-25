@@ -1,6 +1,7 @@
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/certified_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/country_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/license_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty%20type_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty_response_model.dart';
 import 'package:ghorx_mobile_app_new/utilities/network/api_utils.dart';
 import 'package:ghorx_mobile_app_new/utilities/network/dio_handler.dart';
@@ -76,8 +77,26 @@ class ListRepository {
       return CertifiedResponseModel.fromJson(response);
      
     } catch (e) {
-      throw Exception("Failed to fetch specialties: $e");
+      throw Exception("Failed to fetch certified: $e");
     }
   }
 
+//Specility Type
+
+Future<SpecialtyTypeResponseModel> fetchSpecialtyTypeList() async {
+  final data = {
+    ...ApiUtils.getCommonParams(action: "lists", token: ""),
+    "Tags": [
+      {"T": "c10", "V": "88"}
+      ]
+  };
+
+  try { 
+    final response = await _dioHandler.post('', data: data);
+    return SpecialtyTypeResponseModel.fromJson(response);
+  }catch (e){
+    throw Exception("Failed to fetch specialtiestype: $e");
+  }
 }
+
+  }

@@ -259,10 +259,14 @@ class _ProfileDrState extends State<ProfileDr> {
                                           final listBloc = context.read<ListBloc>();
                                           listBloc.add(FetchSpecialtyList());
                                           listBloc.add(FetchCertifiedList());
+                                          listBloc.add(FetchSpecialtyTypeList());
+
+
 
                                           final results = await Future.wait([
                                             listBloc.stream.firstWhere((s) => s is SpecialtyListState || s is ListFailure),
                                             listBloc.stream.firstWhere((s) => s is CertifiedListState || s is ListFailure),
+                                            listBloc.stream.firstWhere((s) => s is SpecialtyTypeListState || s is ListFailure),
                                           ]);
 
                                           Navigator.of(
@@ -272,10 +276,13 @@ class _ProfileDrState extends State<ProfileDr> {
 
                                           final listState = results[0];
                                           final certifiedState = results[1];
+                                          final typeState = results[2];
+
 
                                           if (listState is SpecialtyListState &&
                                               certifiedState
-                                                  is CertifiedListState) {
+                                                  is CertifiedListState &&
+                                              typeState is SpecialtyTypeListState) {
                                             final specialties =
                                                 listState.specialtyResponse.data
                                                     .expand((inner) => inner)
@@ -288,11 +295,18 @@ class _ProfileDrState extends State<ProfileDr> {
                                                     .expand((inner) => inner)
                                                     .toList();
 
+                                            final specialtyTypes =
+                                                typeState.specialtyTypeResponse.data
+                                                    .expand((inner) => inner)
+                                                    .toList();
+                                            
+
                                             AddEditSpecialtySheet.showSheet(
                                               context,
                                               specialty,
                                               specialties,
                                               certifiedBoards,
+                                              specialtyTypes,
                                               true,
                                             );
                                           } else {
@@ -341,10 +355,13 @@ class _ProfileDrState extends State<ProfileDr> {
                                 final listBloc = context.read<ListBloc>();
                                 listBloc.add(FetchSpecialtyList());
                                 listBloc.add(FetchCertifiedList());
+                                listBloc.add(FetchSpecialtyTypeList());
+
 
                                 final results = await Future.wait([
                                   listBloc.stream.firstWhere((s) => s is SpecialtyListState || s is ListFailure),
                                   listBloc.stream.firstWhere((s) => s is CertifiedListState || s is ListFailure),
+                                  listBloc.stream.firstWhere((s)=> s is SpecialtyTypeListState || s is ListFailure),
                                 ]);
 
                                 Navigator.of(
@@ -354,9 +371,12 @@ class _ProfileDrState extends State<ProfileDr> {
 
                                 final listState = results[0];
                                 final certifiedState = results[1];
+                                final typeState = results[2];
+
 
                                 if (listState is SpecialtyListState &&
-                                    certifiedState is CertifiedListState) {
+                                    certifiedState is CertifiedListState &&
+                                    typeState is SpecialtyTypeListState) {
                                   final specialties =
                                       listState.specialtyResponse.data
                                           .expand((inner) => inner)
@@ -365,6 +385,11 @@ class _ProfileDrState extends State<ProfileDr> {
                                       certifiedState.certifiedResponse.data
                                           .expand((inner) => inner)
                                           .toList();
+                                   final specialtyTypes =
+                                                typeState.specialtyTypeResponse.data
+                                                    .expand((inner) => inner)
+                                                    .toList();      
+
                                   
 
                                   AddEditSpecialtySheet.showSheet(
@@ -372,6 +397,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                     null,
                                     specialties,
                                    certifiedBoards,
+                                   specialtyTypes,
                                     false,
                                   );
                                 } else {
@@ -381,6 +407,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                   } else if (certifiedState is ListFailure) {
                                     errorMessage = certifiedState.error;
                                   }
+                                  
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(content: Text(errorMessage)),
                                   );

@@ -53,3 +53,12 @@ class CertifiedListState extends ListState {
   @override
   List<Object> get props => [certifiedResponse];
 }
+
+//Specialty Type
+
+class SpecialtyTypeListState extends ListState {
+  final SpecialtyTypeResponseModel specialtyTypeResponse;
+  const SpecialtyTypeListState({required this.specialtyTypeResponse});
+  @override
+  List<Object> get props => [specialtyTypeResponse];
+}

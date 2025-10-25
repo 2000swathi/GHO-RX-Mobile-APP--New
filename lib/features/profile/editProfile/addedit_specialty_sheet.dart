@@ -8,6 +8,7 @@ import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/edit/bloc/edit_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/certified_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty%20type_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/specialty_model.dart';
@@ -19,11 +20,12 @@ class AddEditSpecialtySheet {
     Specialty? info,
     List<SpecialtyList> splList,
     List<CertifiedList> certList,
+    List<SpecialtytypeList> specList,
     bool isEdit,
   ) {
     final formKey = GlobalKey<FormState>();
     String? selectedSpecialtyID = isEdit ? info?.specialtyId.toString() : null;
-   String? selectedCertifiedBoard = isEdit ? info?.certifiedBoard.toString() : null;
+   String? selectedCertifiedBoard = isEdit ? info?.certifiedBoard : null;
     String? selectedSpecialtyType = isEdit ? info?.specialtyType : null;
 
     CustomBottomSheet.show(
@@ -85,16 +87,21 @@ class AddEditSpecialtySheet {
                   CustomDropdownFormField<String>(
                     name: "Specialty Type",
                     hintText: "-Select Specialty Type-",
-                    items: [
-                      DropdownItem(value: "S", label: "S"),
-                      DropdownItem(value: "M", label: "M"),
-                      DropdownItem(value: "P", label: "P"),
-                      DropdownItem(value: "D", label: "D"),
-                    ],
-                    value: selectedSpecialtyType,
-                    onChanged:
-                        (value) =>
-                            setState(() => selectedSpecialtyType = value),
+                   items:
+                        specList
+                            .map(
+                              (e) => DropdownItem<String>(
+                                label: e.specialtytypeName,
+                                value: e.specialtytypeID.toString(),
+                              ),
+                            )
+                            .toList(),
+                    value:selectedSpecialtyType,
+                    onChanged: (id) {
+                      setState(() {
+                       selectedSpecialtyType = id;
+                      });
+                    },
                     validator: Validation.validateSpecialtyType,
                   ),
                   const SizedBox(height: 20),
