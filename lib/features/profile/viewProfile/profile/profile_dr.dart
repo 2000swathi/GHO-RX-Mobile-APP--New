@@ -38,9 +38,10 @@ class _ProfileDrState extends State<ProfileDr> {
     final repository = ProfileRepository();
 
     return Scaffold(
-      appBar: CaseAppBar(title: 'Welcome, Doctor', istrue: true),
+      appBar: CaseAppBar(title: 'Welcome, Doctor',istrue: true, isLogout: true,),
       body: ListView(
         children: [
+          const SizedBox(height: 15),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Text(
@@ -440,7 +441,8 @@ class _ProfileDrState extends State<ProfileDr> {
                                             context,
                                             accreditation,
                                             true,
-                                            profileBloc: context.read<ProfileBloc>(),
+                                            profileBloc:
+                                                context.read<ProfileBloc>(),
                                           );
                                         },
                                         child: SvgPicture.asset(
@@ -609,7 +611,8 @@ class _ProfileDrState extends State<ProfileDr> {
                                             context,
                                             insurance,
                                             true,
-                                            profileBloc: context.read<ProfileBloc>(),
+                                            profileBloc:
+                                                context.read<ProfileBloc>(),
                                           );
                                         },
                                         child: SvgPicture.asset(

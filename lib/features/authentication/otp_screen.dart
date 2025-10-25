@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_snackbar.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/logo_widget.dart';
@@ -82,20 +83,26 @@ class _OtpScreenState extends State<OtpScreen> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthOTPSuccess) {
-          CustomSnackbar.show(
+          CustomScaffoldMessenger.showSuccessMessage(
             context,
             state.otpVerifyResponse.data[0][0].msg,
-            true,
           );
+
           Navigator.pushNamed(context, '/mainpage');
         } else if (state is ResendOTPSuccess) {
-          CustomSnackbar.show(context, "OTP resent successfully", true);
+          CustomScaffoldMessenger.showSuccessMessage(
+            context,
+            "OTP resent successfully",
+          );
           setState(() {
             widget.otpResponse = state.otpResponse;
             _restartTimer();
           });
         } else if (state is AuthFailure) {
-          CustomSnackbar.show(context, state.error, false);
+          CustomScaffoldMessenger.showErrorMessage(
+            context,
+            state.error,
+          );
         }
       },
       child: Scaffold(
@@ -170,10 +177,9 @@ class _OtpScreenState extends State<OtpScreen> {
                               onPressed: () {
                                 final otp = otpController.text.trim();
                                 if (otp.isEmpty) {
-                                  CustomSnackbar.show(
+                                  CustomScaffoldMessenger.showErrorMessage(
                                     context,
                                     "Please enter the OTP",
-                                    false,
                                   );
                                   return;
                                 }
