@@ -125,14 +125,18 @@ class AddEditLicenseSheet {
                     controller: issueDateController,
                     name: "Issue Date",
                     hintText: "DD Month, YYYY",
-                    validator: Validation.validateDate,
+                    validator: Validation.validateIssueDate,
                   ),
                   const SizedBox(height: 10),
                   CustomTextFormField(
                     controller: expDateController,
                     name: "Expiry Date",
                     hintText: "DD Month, YYYY",
-                    validator: Validation.validateDate,
+                    validator:
+                        (value) => Validation.validateExpiryDate(
+                          issueDateController.text,
+                          value,
+                        ),
                   ),
                   const SizedBox(height: 10),
                 ],
