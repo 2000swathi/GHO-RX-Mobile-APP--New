@@ -50,14 +50,14 @@ class AccreditationTypeData {
   factory AccreditationTypeData.fromJson(Map<String, dynamic> json) {
     return AccreditationTypeData(
       accreditationTypeID: json['AccreditationTypeID'] ?? 0,
-      name: json['Name'] ?? '',
+      name: json['AccreditationType'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'AccreditationTypeID': accreditationTypeID,
-      'Name': name,
+      'AccreditationType': name,
     };
   }
 }
