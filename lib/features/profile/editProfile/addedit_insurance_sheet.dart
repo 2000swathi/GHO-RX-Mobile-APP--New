@@ -4,6 +4,8 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
+import 'package:ghorx_mobile_app_new/core/constants/custom_datepicker.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
@@ -16,11 +18,9 @@ class AddEditInsuranceSheet {
   static void showSheet(
     BuildContext context,
     InsuranceData? info,
-    bool isEdit,
-    {
-      required ProfileBloc profileBloc,
-    }
-  ) {
+    bool isEdit, {
+    required ProfileBloc profileBloc,
+  }) {
     final TextEditingController prIDController = TextEditingController(
       text: isEdit ? info?.providerID ?? '' : '',
     );
@@ -61,13 +61,37 @@ class AddEditInsuranceSheet {
               CustomTextFormField(
                 controller: issueDateController,
                 name: "Issue Date",
-                hintText: "mm/dd/yyyy",
+                hintText: "Issue Date",
+                readOnly: true,
+                suffixIcon: Icon(
+                  Icons.calendar_today_outlined,
+                  color: AppColors.primarycolor,
+                  size: 20,
+                ),
+                onTap: () =>
+                  showCommonDatePicker(
+                    context: context, 
+                    controller: issueDateController
+                  ),
+                validator: (value) => Validation.validateIssueDate(value),
               ),
               const SizedBox(height: 10),
               CustomTextFormField(
                 controller: expDateController,
                 name: "Expiry Date",
-                hintText: "mm/dd/yyyy",
+                hintText: "Expiry Date",
+                readOnly: true,
+                suffixIcon: Icon(
+                  Icons.calendar_today_outlined,
+                  color: AppColors.primarycolor,
+                  size: 20,
+                ),
+                onTap: () => 
+                  showCommonDatePicker(
+                    context: context, 
+                    controller: expDateController
+                  ),
+                  validator: (value) => Validation.validateExpiryDate(issueDateController.text, value),
               ),
               const SizedBox(height: 10),
             ],
@@ -105,10 +129,7 @@ class AddEditInsuranceSheet {
                   state.message,
                 );
               } else if (state is EditFailure) {
-                CustomScaffoldMessenger.showErrorMessage(
-                  context,
-                  state.error,
-                );
+                CustomScaffoldMessenger.showErrorMessage(context, state.error);
               }
             },
           ),
@@ -116,7 +137,7 @@ class AddEditInsuranceSheet {
 
         child: BlocBuilder<AddBloc, AddState>(
           builder: (context, addState) {
-             final bool isAddLoading = addState is AddLoading;
+            final bool isAddLoading = addState is AddLoading;
             return BlocBuilder<EditBloc, EditState>(
               builder: (context, editState) {
                 final bool isEditLoading = editState is EditLoading;
