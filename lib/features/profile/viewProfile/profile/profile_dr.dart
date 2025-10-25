@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -477,7 +475,6 @@ class _ProfileDrState extends State<ProfileDr> {
                       return const Center(child: LoadingAnimation());
                     } else if (state is AccreditationState) {
                       final accreditationList = state.accreditationModel.data;
-
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -541,6 +538,54 @@ class _ProfileDrState extends State<ProfileDr> {
                                     Align(
                                       alignment: Alignment.centerRight,
                                       child: InkWell(
+                                        onTap: () async {
+                                          final listBloc =
+                                              context.read<ListBloc>();
+                                          listBloc.add(FetchAccrediationList());
+
+                                          showDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            builder:
+                                                (_) => const Center(
+                                                  child: LoadingAnimation(),
+                                                ),
+                                          );
+
+                                          final listState = await listBloc
+                                              .stream
+                                              .firstWhere(
+                                                (s) =>
+                                                    s is AccreditationTypeListState ||
+                                                    s is ListFailure,
+                                              );
+
+                                          Navigator.pop(context);
+
+                                          if (listState
+                                              is AccreditationTypeListState) {
+                                            final accreditationTypeList =
+                                                listState
+                                                    .accreditationTypeResponse
+                                                    .data;
+
+                                            AddEditAccrediationBottomSheet.showSheet(
+                                              context,
+                                              accreditation,
+                                              true,
+                                              profileBloc:
+                                                  context.read<ProfileBloc>(),
+                                              accreList: accreditationTypeList,
+                                            );
+                                          } else if (listState is ListFailure) {
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(listState.error),
+                                              ),
+                                            );
+                                          }
                                         onTap: () {
                                           AddEditAccrediationBottomSheet.showSheet(
                                             context,
@@ -567,12 +612,9 @@ class _ProfileDrState extends State<ProfileDr> {
                             alignment: Alignment.centerRight,
                             child: InkWell(
                               onTap: () async {
-                                AddEditAccrediationBottomSheet.showSheet(
-                                  context,
-                                  null,
-                                  false,
-                                  profileBloc: context.read<ProfileBloc>(),
-                                );
+                                final listBloc = context.read<ListBloc>();
+                                listBloc.add(FetchAccrediationList());
+
                                 showDialog(
                                   context: context,
                                   barrierDismissible: false,
@@ -582,14 +624,31 @@ class _ProfileDrState extends State<ProfileDr> {
                                       ),
                                 );
 
+                                final listState = await listBloc.stream
+                                    .firstWhere(
+                                      (s) =>
+                                          s is AccreditationTypeListState ||
+                                          s is ListFailure,
+                                    );
+
                                 Navigator.pop(context);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      "Add accreditation not implemented yet.",
-                                    ),
-                                  ),
-                                );
+
+                                if (listState is AccreditationTypeListState) {
+                                  final accreditationTypeList =
+                                      listState.accreditationTypeResponse.data;
+
+                                  AddEditAccrediationBottomSheet.showSheet(
+                                    context,
+                                    null,
+                                    false,
+                                    profileBloc: context.read<ProfileBloc>(),
+                                    accreList: accreditationTypeList,
+                                  );
+                                } else if (listState is ListFailure) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(listState.error)),
+                                  );
+                                }
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -716,6 +775,8 @@ class _ProfileDrState extends State<ProfileDr> {
                                             context,
                                             insurance,
                                             true,
+                                            profileBloc:
+                                                context.read<ProfileBloc>(),
                                             profileBloc:
                                                 context.read<ProfileBloc>(),
                                           );
