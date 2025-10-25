@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_drop_down_field.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
@@ -21,12 +22,33 @@ class AddEditSpecialtySheet {
     List<SpecialtyList> splList,
     List<CertifiedList> certList,
     List<SpecialtytypeList> specList,
-    bool isEdit,
-  ) {
+    bool isEdit, {
+    required ProfileBloc profileBloc,
+  }) {
     final formKey = GlobalKey<FormState>();
     String? selectedSpecialtyID = isEdit ? info?.specialtyId.toString() : null;
-   String? selectedCertifiedBoard = isEdit ? info?.certifiedBoard.toString() : null;
-    String? selectedSpecialtyType = isEdit ? info?.specialtyType.toString() : null;
+    String? selectedCertifiedBoard;
+    if (isEdit && info?.certifiedBoard != null) {
+      try {
+        selectedCertifiedBoard = certList
+            .firstWhere((e) => e.certifiedName == info!.certifiedBoard)
+            .certifiedID
+            .toString();
+      } catch (e) {
+        selectedCertifiedBoard = null;
+      }
+    }
+    String? selectedSpecialtyType;
+    if (isEdit && info?.specialtyType != null) {
+      try {
+        selectedSpecialtyType = specList
+            .firstWhere((e) => e.specialtytypeName == info!.specialtyType)
+            .specialtytypeID
+            .toString();
+      } catch (e) {
+        selectedSpecialtyType = null;
+      }
+    }
 
     CustomBottomSheet.show(
       context: context,
@@ -113,40 +135,37 @@ class AddEditSpecialtySheet {
       ],
       actionButton: MultiBlocListener(
         listeners: [
-          // ADD listener
           BlocListener<AddBloc, AddState>(
             listener: (context, state) {
               if (state is AddSuccess) {
-                Navigator.pop(context); // Close bottomsheet
-                context.read<ProfileBloc>().add(FetchSpecialty());
-
-                final msg =
-                    state.response["Data"]?[0]?[0]?["msg"] ??
-                    "Specialty added successfully";
-
-                ScaffoldMessenger.of(
+                Navigator.pop(context);
+                profileBloc.add(FetchSpecialty());
+                CustomScaffoldMessenger.showSuccessMessage(
                   context,
-                ).showSnackBar(SnackBar(content: Text(msg)));
+                  state.response["Data"][0][0]['msg'],
+                );
               } else if (state is AddError) {
-                ScaffoldMessenger.of(
+                CustomScaffoldMessenger.showErrorMessage(
                   context,
-                ).showSnackBar(SnackBar(content: Text(state.message)));
+                  state.message,
+                );
               }
             },
           ),
-
           BlocListener<EditBloc, EditState>(
             listener: (context, state) {
               if (state is EditSuccess) {
                 Navigator.pop(context);
-                context.read<ProfileBloc>().add(FetchSpecialty());
-                ScaffoldMessenger.of(
+                profileBloc.add(FetchSpecialty());
+                CustomScaffoldMessenger.showSuccessMessage(
                   context,
-                ).showSnackBar(SnackBar(content: Text(state.message)));
+                  state.message ?? "Edited Successfully",
+                );
               } else if (state is EditFailure) {
-                ScaffoldMessenger.of(
+                CustomScaffoldMessenger.showErrorMessage(
                   context,
-                ).showSnackBar(SnackBar(content: Text(state.error)));
+                  state.error ?? "Failed to edit",
+                );
               }
             },
           ),
