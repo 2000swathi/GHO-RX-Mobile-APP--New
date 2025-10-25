@@ -7,6 +7,7 @@ import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/edit/bloc/edit_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/certified_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/specialty_model.dart';
@@ -17,11 +18,12 @@ class AddEditSpecialtySheet {
     BuildContext context,
     Specialty? info,
     List<SpecialtyList> splList,
+    List<CertifiedList> certList,
     bool isEdit,
   ) {
     final formKey = GlobalKey<FormState>();
     String? selectedSpecialtyID = isEdit ? info?.specialtyId.toString() : null;
-    String? selectedCertifiedBoard = isEdit ? info?.certifiedBoard : null;
+   String? selectedCertifiedBoard = isEdit ? info?.certifiedBoard.toString() : null;
     String? selectedSpecialtyType = isEdit ? info?.specialtyType : null;
 
     CustomBottomSheet.show(
@@ -39,18 +41,20 @@ class AddEditSpecialtySheet {
                     name: "Specialty",
                     hintText: "-Select Specialty-",
                     validator: Validation.validateSpecialty,
-                    items: splList
-                        .map(
-                          (e) => DropdownItem<String>(
-                            label: e.specialtyName,
-                            value: e.specialtyID.toString(),
-                          ),
-                        )
-                        .toList(),
+                    items:
+                        splList
+                            .map(
+                              (e) => DropdownItem<String>(
+                                label: e.specialtyName,
+                                value: e.specialtyID.toString(),
+                              ),
+                            )
+                            .toList(),
                     value: selectedSpecialtyID,
-                    onChanged: (id) => setState(() {
-                      selectedSpecialtyID = id;
-                    }),
+                    onChanged:
+                        (id) => setState(() {
+                          selectedSpecialtyID = id;
+                        }),
                   ),
                   const SizedBox(height: 10),
 
@@ -58,37 +62,39 @@ class AddEditSpecialtySheet {
                   CustomDropdownFormField<String>(
                     name: "Certified Board",
                     hintText: "-Select Certified Board-",
-                    items:  [
-                      DropdownItem(
-                          value: "Medical Council of I",
-                          label: "Medical Council of I"),
-                      DropdownItem(
-                          value: "Medical Council of II",
-                          label: "Medical Council of II"),
-                      DropdownItem(
-                          value: "Medical Council of III",
-                          label: "Medical Council of III"),
-                    ],
+                    items:
+                        certList
+                            .map(
+                              (e) => DropdownItem<String>(
+                                label: e.certifiedName,
+                                value: e.certifiedID.toString(),
+                              ),
+                            )
+                            .toList(),
                     value: selectedCertifiedBoard,
-                    onChanged: (value) =>
-                        setState(() => selectedCertifiedBoard = value),
+                    onChanged: (id) {
+                      setState(() {
+                        selectedCertifiedBoard = id;
+                      });
+                    },
                     validator: Validation.validateCertifiedBoard,
                   ),
+
                   const SizedBox(height: 10),
 
-         
                   CustomDropdownFormField<String>(
                     name: "Specialty Type",
                     hintText: "-Select Specialty Type-",
-                    items:  [
+                    items: [
                       DropdownItem(value: "S", label: "S"),
                       DropdownItem(value: "M", label: "M"),
                       DropdownItem(value: "P", label: "P"),
                       DropdownItem(value: "D", label: "D"),
                     ],
                     value: selectedSpecialtyType,
-                    onChanged: (value) =>
-                        setState(() => selectedSpecialtyType = value),
+                    onChanged:
+                        (value) =>
+                            setState(() => selectedSpecialtyType = value),
                     validator: Validation.validateSpecialtyType,
                   ),
                   const SizedBox(height: 20),
@@ -107,33 +113,33 @@ class AddEditSpecialtySheet {
                 Navigator.pop(context); // Close bottomsheet
                 context.read<ProfileBloc>().add(FetchSpecialty());
 
-                final msg = state.response["Data"]?[0]?[0]?["msg"] ??
+                final msg =
+                    state.response["Data"]?[0]?[0]?["msg"] ??
                     "Specialty added successfully";
 
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(msg)),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(msg)));
               } else if (state is AddError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.message)),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(state.message)));
               }
             },
           ),
 
-         
           BlocListener<EditBloc, EditState>(
             listener: (context, state) {
               if (state is EditSuccess) {
                 Navigator.pop(context);
                 context.read<ProfileBloc>().add(FetchSpecialty());
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.message)),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(state.message)));
               } else if (state is EditFailure) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.error)),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(state.error)));
               }
             },
           ),
@@ -149,36 +155,43 @@ class AddEditSpecialtySheet {
                 final isLoading = isAddLoading || isEditLoading;
 
                 return CustomButton(
-                  text: isEdit
-                      ? (isLoading ? "Updating..." : "Update Specialty")
-                      : (isLoading ? "Adding..." : "Add Specialty"),
-                  isLoading: isLoading, 
-                  onPressed :() {
-                          if (formKey.currentState!.validate()) {
-                            if (isEdit) {
-                              context.read<EditBloc>().add(
-                                    EditSpecialtyEvent(
-                                      id: info!.id.toString(),
-                                      specialtyId: selectedSpecialtyID ?? '',
-                                      certifiedBoard:
-                                          selectedCertifiedBoard ?? '',
-                                      specialtyType:
-                                          selectedSpecialtyType ?? '',
-                                    ),
-                                  );
-                            } else {
-                              context.read<AddBloc>().add(
-                                    AddSpecialty(
-                                      specialty: selectedSpecialtyID ?? '',
-                                      certifiedBoard:
-                                          selectedCertifiedBoard ?? '',
-                                      specialtyType:
-                                          selectedSpecialtyType ?? '',
-                                    ),
-                                  );
-                            }
+                  text:
+                      isEdit
+                          ? (isLoading ? "Updating..." : "Update Specialty")
+                          : (isLoading ? "Adding..." : "Add Specialty"),
+                  isLoading: isLoading,
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      if (isEdit) {
+                        String certifiedBoardName = '';
+                        if (selectedCertifiedBoard != null) {
+                          try {
+                            certifiedBoardName = certList.firstWhere(
+                              (b) => b.certifiedID.toString() == selectedCertifiedBoard
+                            ).certifiedName;
+                          } catch (e) {
+                            // Handle case where ID is not found, though unlikely if dropdown is populated correctly
                           }
-                        },
+                        }
+                        context.read<EditBloc>().add(
+                          EditSpecialtyEvent(
+                            id: info!.id.toString(),
+                            specialtyId: selectedSpecialtyID ?? '',
+                            certifiedBoard: selectedCertifiedBoard ?? '',
+                            specialtyType: selectedSpecialtyType ?? '',
+                          ),
+                        );
+                      } else {
+                        context.read<AddBloc>().add(
+                          AddSpecialty(
+                            specialty: selectedSpecialtyID ?? '',
+                            certifiedBoard: selectedCertifiedBoard ?? '',
+                            specialtyType: selectedSpecialtyType ?? '',
+                          ),
+                        );
+                      }
+                    }
+                  },
                 );
               },
             );

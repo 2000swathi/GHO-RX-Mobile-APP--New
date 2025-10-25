@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/list_repository.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/certified_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/country_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/license_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty_response_model.dart';
@@ -15,6 +16,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     on<FetchCountryList>(_onFetchCountry);
     on<FetchSpecialtyList>(_onFetchSpecialty);
     on<FetchLicenseList>(_onFetchLicense);
+    on<FetchCertifiedList>(_onFetchCertified);
   }
 
   //country list
@@ -57,6 +59,21 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     try {
       final licenseListResponse = await repository.fetchLicenseList();
       emit(LicenseListState(licenseResponse: licenseListResponse));
+    } catch (e) {
+      emit(ListFailure(error: e.toString()));
+    }
+  }
+
+  //Certified
+   Future<void> _onFetchCertified(
+    FetchCertifiedList event,
+    Emitter<ListState> emit,
+  ) async {
+    emit(ListLoading());
+
+    try {
+      final certifiedListResponse = await repository.fetchCertifiedList();
+      emit(CertifiedListState(certifiedResponse: certifiedListResponse));
     } catch (e) {
       emit(ListFailure(error: e.toString()));
     }

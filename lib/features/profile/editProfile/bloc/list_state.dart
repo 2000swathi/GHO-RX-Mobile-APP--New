@@ -44,3 +44,12 @@ class ListFailure extends ListState {
   @override
   List<Object> get props => [error];
 }
+
+//Certified
+
+class CertifiedListState extends ListState {
+  final CertifiedResponseModel certifiedResponse;
+  const CertifiedListState({required this.certifiedResponse});
+  @override
+  List<Object> get props => [certifiedResponse];
+}
