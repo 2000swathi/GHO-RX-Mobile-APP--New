@@ -27,14 +27,6 @@ class SpecialtyListState extends ListState {
   List<Object> get props => [specialtyResponse];
 }
 
-//accreditationtype
-class AccreditationTypeListState extends ListState {
-  final AccreditationTypeModel accreditationTypeResponse;
-  const AccreditationTypeListState({required this.accreditationTypeResponse});
-  @override
-  List<Object> get props => [accreditationTypeResponse];
-}
-
 //License
 class LicenseListState extends ListState {
   final LicenseListResponseModel licenseResponse;
@@ -43,7 +35,7 @@ class LicenseListState extends ListState {
   List<Object> get props => [licenseResponse];
 }
 
-//List Failure
+
 class ListFailure extends ListState {
   final String error;
 
