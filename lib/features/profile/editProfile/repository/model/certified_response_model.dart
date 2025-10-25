@@ -48,14 +48,14 @@ class CertifiedList {
   factory CertifiedList.fromJson(Map<String, dynamic> json) {
     return CertifiedList(
       certifiedID: json['certificationbodyid'] ?? 0,
-      certifiedName: json['Name'] ?? '',
+      certifiedName: json['CertifiedBoard'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'certificationbodyid': certifiedID,
-      'Name': certifiedName,
+      'CertifiedBoard': certifiedName,
     };
   }
 }
