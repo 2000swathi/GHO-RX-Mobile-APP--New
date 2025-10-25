@@ -29,7 +29,7 @@ class AddEditAccrediationBottomSheet {
             ? accreList
                 .firstWhere(
                   (e) => e.name == info?.accreditationType,
-                  orElse: () => accreList.first,
+                  orElse: () => accreList.first, 
                 )
                 .accreditationTypeID
                 .toString()
