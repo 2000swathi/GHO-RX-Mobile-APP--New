@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
-import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_snackbar.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
@@ -9,6 +8,7 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/logo_widget.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
+
 import 'bloc/auth_bloc.dart';
 import 'bloc/auth_event.dart';
 import 'bloc/auth_state.dart';
@@ -37,18 +37,14 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) async {
         if (state is AuthSuccess) {
-          CustomScaffoldMessenger.showSuccessMessage(
-            context,
-            "Login Successful. Welcome!",
-          );
-
+          CustomSnackbar.show(context, "Login Successfull.Welcome!", true);
           await Navigator.pushNamed(
             context,
             '/otp',
             arguments: state.otpResponse,
           );
         } else if (state is AuthFailure) {
-          CustomScaffoldMessenger.showErrorMessage(context, state.error);
+          CustomSnackbar.show(context, state.error, false);
         }
       },
       child: Scaffold(
