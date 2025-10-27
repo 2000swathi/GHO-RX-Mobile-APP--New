@@ -11,9 +11,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<FetchSpecialty>(_onFetchSpecialty);
     on<FetchInsurance>(_onFetchInsurance);
     on<FetchLicence>(_onFetchLicense);
+    on<FetchLanguage>(_onFetchLanguage);
+    on<FetchAccreditation>(_onFetchAccreditation);
+    on<FetchBankInfo>(_onFetchBankInfo);
   }
-  //personal info
 
+  //personal info
   Future<void> _onFetchProfile(
     FetchPersonalInfo event,
     Emitter<ProfileState> emit,
@@ -29,7 +32,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   //specialty
-
   Future<void> _onFetchSpecialty(
     FetchSpecialty event,
     Emitter<ProfileState> emit,
@@ -58,7 +60,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(ProfileError(message: e.toString()));
     }
   }
-  
+
   //license
   Future<void> _onFetchLicense(
     FetchLicence event,
@@ -67,8 +69,52 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(ProfileLoading());
 
     try {
-      final insurance = await repository.fetchLicenseInfo();
-      emit(LicenseState(licenseModel: insurance));
+      final license = await repository.fetchLicenseInfo();
+      emit(LicenseState(licenseModel: license));
+    } catch (e) {
+      emit(ProfileError(message: e.toString()));
+    }
+  }
+
+  //language
+  Future<void> _onFetchLanguage(
+    FetchLanguage event,
+    Emitter<ProfileState> emit,
+  ) async {
+    emit(ProfileLoading());
+
+    try {
+      final language = await repository.fetchLanguageInfo();
+      emit(LanguageState(languageModel: language));
+    } catch (e) {
+      emit(ProfileError(message: e.toString()));
+    }
+  }
+
+  //accreditation
+  Future<void> _onFetchAccreditation(
+    FetchAccreditation event,
+    Emitter<ProfileState> emit,
+  ) async {
+    emit(ProfileLoading());
+
+    try {
+      final accreditation = await repository.fetchAccreditationInfo();
+      emit(AccreditationState(accreditationModel: accreditation));
+    } catch (e) {
+      emit(ProfileError(message: e.toString()));
+    }
+  }
+
+  //bankinfo
+  Future<void> _onFetchBankInfo(
+    FetchBankInfo event,
+    Emitter<ProfileState> emit,
+  ) async {
+    emit(ProfileLoading());
+    try {
+      final bankList = await repository.fetchBankInfo();
+      emit(BankInfoState(bankListModel: bankList));
     } catch (e) {
       emit(ProfileError(message: e.toString()));
     }

@@ -9,7 +9,6 @@ class ProfileDtlContainer extends StatelessWidget {
   final Widget info;
   final bool isExpanded;
   final VoidCallback onTap;
-  final bool isadd;
 
   const ProfileDtlContainer({
     super.key,
@@ -18,7 +17,6 @@ class ProfileDtlContainer extends StatelessWidget {
     required this.info,
     required this.isExpanded,
     required this.onTap,
-    this.isadd = true,
   });
 
   @override
@@ -67,9 +65,7 @@ class ProfileDtlContainer extends StatelessWidget {
                 children: [
                   Divider(color: AppColors.hint2color),
                   info,
-                  // isadd == true
-                  //     ? Text("Add", style: AppFonts.textprogressbar)
-                  //     : SizedBox.shrink(),
+                 
                 ],
               ),
           ],

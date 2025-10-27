@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Validation {
+   static final DateFormat _format = DateFormat('dd MMM yyyy');
   static String? validateEmail(String? value) {
     final email = value?.trim();
     if (email == null || email.isEmpty) {
@@ -54,8 +55,8 @@ class Validation {
   static String? validatePhone(String? value) {
     if (value == null || value.trim().isEmpty) {
       return 'Phone number is required';
-      // } else if (!RegExp(r'^\d{10}$').hasMatch(value.trim())) {
-      //   return 'Enter a valid 10-digit number';
+    } else if (!RegExp(r'^[0-9]+$').hasMatch(value.trim())) {
+      return 'Phone number must contain only digits';
     }
     return null;
   }
@@ -86,16 +87,13 @@ class Validation {
 
     final trimmedValue = value.trim();
 
-    // Check for any non-digit characters
     if (!RegExp(r'^\d+$').hasMatch(trimmedValue)) {
       return 'Phone number must contain only digits';
     }
 
-    // Country-specific rule for India (countryID "102")
     if (countryID == "102" && trimmedValue.length != 10) {
       return 'Enter a valid 10-digit number';
     }
-
     return null;
   }
 
@@ -112,7 +110,9 @@ class Validation {
     }
 
     try {
-      final dob = DateFormat('dd/MM/yyyy').parseStrict(value);
+      // Handle both "dd/MM/yyyy" and "dd / MM / yyyy"
+      final dateString = value.replaceAll(' ', '');
+      final dob = DateFormat('dd/MM/yyyy').parseStrict(dateString);
       final now = DateTime.now();
 
       if (dob.isAfter(now)) {
@@ -201,55 +201,176 @@ class Validation {
     return null;
   }
 
-  static String? validateCVfield(
-    String? value, {
-    String fieldName = 'This field',
-  }) {
+  static String? field(String? value, {String fieldName = 'This field'}) {
     if (value == null || value.trim().isEmpty) {
       return '$fieldName is required';
     }
     return null;
   }
 
-  static String? validatedobinput(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Date of Birth is required';
+  static String? validateDate(String? value, {String fieldName = 'Date'}) {
+    if (value == null || value.trim().isEmpty) {
+      return '$fieldName is required';
     }
 
-    final RegExp dobRegex = RegExp(r'^\d{2}/\d{2}/\d{4}$');
-    if (!dobRegex.hasMatch(value)) {
-      return 'Enter DOB in DD/MM/YYYY format';
+    final trimmedValue = value.trim();
+
+    // Accepts formats like "06 June, 2025" or "6 June, 2025"
+    final RegExp dateRegex = RegExp(r'^\d{1,2}\s+[A-Za-z]+,\s+\d{4}$');
+
+    if (!dateRegex.hasMatch(trimmedValue)) {
+      return 'Enter $fieldName in DD Month, YYYY format (e.g. 06 June, 2025)';
     }
 
     try {
-      final parts = value.split('/');
+      final parts = trimmedValue.replaceAll(',', '').split(RegExp(r'\s+'));
       final day = int.parse(parts[0]);
-      final month = int.parse(parts[1]);
+      final monthName = parts[1].toLowerCase();
       final year = int.parse(parts[2]);
 
-      final dob = DateTime(year, month, day);
-      final now = DateTime.now();
+      // Map month names to numbers
+      final months = {
+        'january': 1,
+        'february': 2,
+        'march': 3,
+        'april': 4,
+        'may': 5,
+        'june': 6,
+        'july': 7,
+        'august': 8,
+        'september': 9,
+        'october': 10,
+        'november': 11,
+        'december': 12,
+      };
 
-      // Check if the date is valid
-      if (dob.year != year || dob.month != month || dob.day != day) {
-        return 'Enter a valid date';
+      final month = months[monthName];
+      if (month == null) return 'Enter a valid month name';
+
+      final date = DateTime(year, month, day);
+
+      // Ensure the parsed date matches the input
+      if (date.year != year || date.month != month || date.day != day) {
+        return 'Enter a valid $fieldName';
       }
 
-      final age =
-          now.year -
-          dob.year -
-          ((now.month < dob.month ||
-                  (now.month == dob.month && now.day < dob.day))
-              ? 1
-              : 0);
-
-      if (age < 0 || age > 130) {
-        return 'Enter a realistic date of birth';
-      }
-
-      return null; // valid
+      return null; // ✅ Valid date
     } catch (_) {
-      return 'Invalid date';
+      return 'Invalid $fieldName';
     }
   }
+
+  static String? validateSpecialty(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please choose a specialty';
+    }
+    return null;
+  }
+
+  static String? validateCertifiedBoard(Object? value) {
+    if (value == null || value.toString().trim().isEmpty) {
+      return 'Please choose a certfified board';
+    }
+    return null;
+  }
+
+  static String? validateSpecialtyType(Object? value) {
+    if (value == null || value.toString().trim().isEmpty) {
+      return 'Choose a specialty type';
+    }
+    return null;
+  }
+
+  static String? validateID(String? value, {String fieldName = 'ID'}) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Id is required';
+    } else if (!RegExp(r'^[0-9]+$').hasMatch(value.trim())) {
+      return 'Must contain only digits';
+    }
+    return null;
+  }
+
+
+  static String? validateProviderName(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Field is required';
+    }
+    return null;
+  }
+
+  static String? validateAccreditationNumber(
+    String? value, {
+    String fieldName = 'Accreditation Number',
+  }) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Field is required';
+    }
+
+    {
+      if (value.trim().isEmpty) {
+        return 'Field is required';
+      }
+
+      if (!RegExp(r'^[0-9]+$').hasMatch(value.trim())) {
+        return '$fieldName must contain only digits';
+      }
+      if (!RegExp(r'^[0-9]+$').hasMatch(value.trim())) {
+        return '$fieldName must contain only digits';
+      }
+
+      return null;
+    }
+  }
+
+  //issue date
+   static String? validateIssueDate(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please select issue date";
+    }
+
+    try {
+      final date = _format.parse(value);
+      final now = DateTime.now();
+      
+      final today = DateTime(now.year, now.month, now.day);
+      final issue = DateTime(date.year, date.month, date.day);
+
+      if (issue.isAfter(today)) {
+        return "Enter a valid issue date";
+      }
+    } catch (e) {
+      return "Invalid date format";
+    }
+
+    return null;
+  }
+
+  //expiry date
+  static String? validateExpiryDate(String? issueDate, String? expiryDate) {
+    if (expiryDate == null || expiryDate.isEmpty) {
+      return "Please select expiry date";
+    }
+
+    try {
+      final expiry = _format.parse(expiryDate);
+      final now = DateTime.now();
+      final today = DateTime(now.year, now.month, now.day);
+
+      if (!expiry.isAfter(today)) {
+        return "Enter a valid expiry date";
+      }
+
+      if (issueDate != null && issueDate.isNotEmpty) {
+        final issue = _format.parse(issueDate);
+        if (!expiry.isAfter(issue)) {
+          return "Expiry date must be after issue date";
+        }
+      }
+    } catch (e) {
+      return "Invalid date format";
+    }
+
+    return null;
+  }
+
 }

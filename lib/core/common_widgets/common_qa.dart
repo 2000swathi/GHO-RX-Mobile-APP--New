@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/utilities/size_config.dart';
@@ -7,12 +8,12 @@ class CommonQa extends StatelessWidget {
   final String qamsg1;
   final String ans;
 
-  final Icon icon1;
+  final Widget bullet;
 
   const CommonQa({
     super.key,
     required this.qamsg1,
-    required this.icon1,
+    required this.bullet,
     required this.ans,
   });
 
@@ -28,7 +29,7 @@ class CommonQa extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    icon1,
+                    SvgPicture.asset("assets/svg/blueBullet.svg"),
                     SizedBox(width: 10.25.w),
                     Flexible(
                       child: Text(

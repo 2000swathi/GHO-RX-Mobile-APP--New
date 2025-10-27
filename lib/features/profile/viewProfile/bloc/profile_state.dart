@@ -1,5 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/accreditation_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/bankinfo_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/insurance_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/language_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/license_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/personalinfo_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/specialty_model.dart';
@@ -46,6 +49,7 @@ class InsuranceState extends ProfileState {
   @override
   List<Object?> get props => [InsuranceModel];
 }
+
 //   license list
 class LicenseState extends ProfileState {
   final LicenseModel licenseModel;
@@ -54,6 +58,37 @@ class LicenseState extends ProfileState {
 
   @override
   List<Object?> get props => [LicenseModel];
+}
+
+//     language list
+class LanguageState extends ProfileState {
+  final LanguageModel languageModel;
+
+  const LanguageState({required this.languageModel});
+
+  @override
+  List<Object?> get props => [LicenseModel];
+}
+
+//Acreditation
+class AccreditationState extends ProfileState {
+  final AccreditationModel accreditationModel;
+
+  const AccreditationState({required this.accreditationModel});
+
+  @override
+  List<Object?> get props => [AccreditationModel];
+}
+
+
+// bankinfo list
+class BankInfoState extends ProfileState {
+  final BankInfoResponseModel bankListModel; 
+
+  const BankInfoState({required this.bankListModel});
+
+  @override
+  List<Object?> get props => [bankListModel];
 }
 
 // Error state
@@ -65,3 +100,4 @@ class ProfileError extends ProfileState {
   @override
   List<Object?> get props => [message];
 }
+

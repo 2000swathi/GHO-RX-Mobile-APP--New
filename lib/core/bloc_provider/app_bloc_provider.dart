@@ -4,6 +4,12 @@ import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_bloc.dart
 import 'package:ghorx_mobile_app_new/features/authentication/repository/auth_repository.dart';
 import 'package:ghorx_mobile_app_new/features/home/bloc/home_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/home/repository/home_repository.dart';
+import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/delete/bloc/delete_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/delete/repository/delete_repository.dart';
+import 'package:ghorx_mobile_app_new/features/profile/edit/bloc/edit_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/edit/repository/edit_repository.dart';
+import 'package:ghorx_mobile_app_new/features/profile/add/repository/add_profile_repo.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/list_repository.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
@@ -34,6 +40,15 @@ class AppBlocProvider extends StatelessWidget {
         ),
         BlocProvider<ListBloc>(
           create: (_) => ListBloc(repository: ListRepository()),
+        ),
+        BlocProvider<AddBloc>(
+          create: (_) => AddBloc(repository: AddProfileRepository()),
+        ),
+        BlocProvider<EditBloc>(
+          create: (_) => EditBloc(repository: EditprofileRepository()),
+        ),
+        BlocProvider<DeleteBloc>(
+          create: (_) => DeleteBloc(repository: DeleteProfileRepository()),
         ),
       ],
       child: child,

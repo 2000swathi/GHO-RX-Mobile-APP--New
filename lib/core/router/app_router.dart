@@ -31,7 +31,6 @@ class AppRouter {
   static const String homePage = '/homepage';
   static const String qaPage = '/qaPage';
 
-
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case splash:
@@ -52,11 +51,11 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => MainPage());
       case casepage:
         return MaterialPageRoute(builder: (_) => CasesPage());
-      case casedetails: 
+      case casedetails:
         return MaterialPageRoute(builder: (_) => CaseDetailsPage());
       case homePage:
         return MaterialPageRoute(builder: (_) => HomePage());
-       case qaPage:
+      case qaPage:
         return MaterialPageRoute(builder: (_) => PatientQueriesScreen());
 
       default:

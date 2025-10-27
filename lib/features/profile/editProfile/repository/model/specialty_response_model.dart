@@ -47,8 +47,8 @@ class SpecialtyList {
 
   factory SpecialtyList.fromJson(Map<String, dynamic> json) {
     return SpecialtyList(
-      specialtyID: json['SpecialtyID'],
-      specialtyName: json['SpecialtyName'],
+      specialtyID: json['SpecialtyID'] ?? 0,
+      specialtyName: json['SpecialtyName'] ?? '',
     );
   }
 
@@ -59,3 +59,4 @@ class SpecialtyList {
     };
   }
 }
+  

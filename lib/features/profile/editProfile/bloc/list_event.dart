@@ -8,5 +8,17 @@ sealed class ListEvent extends Equatable {
 }
 
 class FetchCountryList extends ListEvent {}
+
 class FetchSpecialtyList extends ListEvent {}
+
 class FetchLicenseList extends ListEvent {}
+
+class FetchLanguageList extends ListEvent {}
+
+class FetchAccrediationList extends ListEvent {}
+
+class FetchCertifiedList extends ListEvent {}
+
+class FetchSpecialtyTypeList extends ListEvent {}
+
+
