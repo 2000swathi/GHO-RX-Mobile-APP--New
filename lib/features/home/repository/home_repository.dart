@@ -23,7 +23,7 @@ class HomeRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
-      return HomePageModel.fromJson(response['Data'][0][0]);
+      return HomePageModel.fromJson(response);
     } catch (e) {
       throw Exception(e.toString());
     }

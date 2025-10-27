@@ -116,7 +116,6 @@ class ListBloc extends Bloc<ListEvent, ListState> {
 
     try {
       final certifiedListResponse = await repository.fetchCertifiedList();
-      print(certifiedListResponse);
       emit(CertifiedListState(certifiedResponse: certifiedListResponse));
     } catch (e) {
       emit(ListFailure(error: e.toString()));
@@ -132,7 +131,6 @@ class ListBloc extends Bloc<ListEvent, ListState> {
 
     try { 
       final specialtyTypeResponse = await repository.fetchSpecialtyTypeList();
-      print(Response);
       emit(SpecialtyTypeListState(specialtyTypeResponse: specialtyTypeResponse)); 
     } catch (e) {
       emit(ListFailure(error: e.toString()));

@@ -43,7 +43,6 @@ class ListRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
-      print(response);
       return SpecialtyResponseModel.fromJson(response);
     } catch (e) {
       throw Exception("Failed to fetch specialties: $e");
@@ -123,7 +122,6 @@ class ListRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
-      print(response);
       return CertifiedResponseModel.fromJson(response);
     } catch (e) {
       throw Exception("Failed to fetch certified: $e");
@@ -142,7 +140,6 @@ class ListRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
-      print(response);
       return SpecialtyTypeResponseModel.fromJson(response);
     } catch (e) {
       throw Exception("Failed to fetch specialtiestype: $e");

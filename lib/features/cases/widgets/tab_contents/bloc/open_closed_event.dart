@@ -8,3 +8,4 @@ sealed class OpenClosedEvent extends Equatable {
 }
 
 class FetchOpenCases extends OpenClosedEvent {}
+

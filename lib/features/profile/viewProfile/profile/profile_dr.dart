@@ -324,7 +324,8 @@ class _ProfileDrState extends State<ProfileDr> {
                                                 specialties,
                                                 certifiedBoards,
                                                 specialtyTypes,
-                                                true,
+                                                true, 
+                                                profileBloc: context.read<ProfileBloc>(),
                                               );
                                             } else {
                                               String errorMessage =
@@ -361,6 +362,11 @@ class _ProfileDrState extends State<ProfileDr> {
                             alignment: Alignment.centerRight,
                             child: InkWell(
                               onTap: () async {
+                                
+                                final listBloc = context.read<ListBloc>();
+                                listBloc.add(FetchSpecialtyList());
+                                listBloc.add(FetchCertifiedList());
+                                listBloc.add(FetchSpecialtyTypeList());
                                 showDialog(
                                   context: context,
                                   barrierDismissible: false,
@@ -370,10 +376,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                       ),
                                 );
 
-                                final listBloc = context.read<ListBloc>();
-                                listBloc.add(FetchSpecialtyList());
-                                listBloc.add(FetchCertifiedList());
-                                listBloc.add(FetchSpecialtyTypeList());
+                                
 
                                 final results = await Future.wait([
                                   listBloc.stream.firstWhere(
@@ -425,6 +428,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                     certifiedBoards,
                                     specialtyTypes,
                                     false,
+                                    profileBloc: context.read<ProfileBloc>(),
                                   );
                                 } else {
                                   String errorMessage = "Failed to load data.";
