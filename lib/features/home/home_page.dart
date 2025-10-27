@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
       create: (context) => HomeBloc(repository: repository)..add( FetchHomePageInfo()),
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
-          if (state is HomePageLoading) {
+          if (state is HomeInitial ||state is HomePageLoading) {
             return HomePageShimmerWidget();
           } else if (state is HomePageInfoState) {
             final info = state.homePageModel.data[0];

@@ -36,9 +36,10 @@ class _ProfileDrState extends State<ProfileDr> {
     final repository = ProfileRepository();
 
     return Scaffold(
-      appBar: CaseAppBar(title: 'Welcome, Doctor', istrue: true),
+      appBar: CaseAppBar(title: 'Welcome, Doctor',isLogout: true,),
       body: ListView(
         children: [
+          const SizedBox(height: 15),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Text(

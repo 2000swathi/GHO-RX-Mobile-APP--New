@@ -18,7 +18,7 @@ class OpenCasesTab extends StatelessWidget {
                 ..add(FetchOpenCases()),
       child: BlocBuilder<OpenClosedBloc, OpenClosedState>(
         builder: (context, state) {
-          if (state is OpenClosedLoading) {
+          if (state is OpenClosedInitial ||state is OpenClosedLoading) {
             return const Center(child: LoadingAnimation());
           } else if (state is OpenCaseLoaded) {
             final openCases = state.openCases;
@@ -133,7 +133,7 @@ class CaseCard extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 8),
                           RichText(
                             text: TextSpan(
                               text: "Due Date:",
