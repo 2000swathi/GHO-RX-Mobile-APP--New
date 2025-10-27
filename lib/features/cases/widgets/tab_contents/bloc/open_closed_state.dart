@@ -19,6 +19,14 @@ final class OpenCaseLoaded extends OpenClosedState {
   List<Object> get props => [openCases];
 }
 
+//closed cases
+final class ClosedCaseLoaded extends OpenClosedState {
+  final List<ClosedCaseModel> closedcases;
+  const ClosedCaseLoaded({required this.closedcases});
+  @override
+  List<Object> get props => [closedcases];
+}
+
 final class OpenCloseError extends OpenClosedState {
   final String message;
   const OpenCloseError({required this.message});

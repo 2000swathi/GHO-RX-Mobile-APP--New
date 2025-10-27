@@ -1,11 +1,16 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/commondelete_dialogbox.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
+import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_event.dart';
+import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_state.dart';
 
 class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
@@ -50,26 +55,54 @@ class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
               ? []
               : isLogout == true
               ? [
-                InkWell(
-                  onTap: () async {
-                    final confirmed = await showDeleteConfirmationDialog(
-                      context: context,
-                      title: "Logout App",
-                      content: "Are you sure want to logout?",
-                      deleteText: "Yes"
-                    );
-                    if(confirmed==true){
-                      CustomScaffoldMessenger.showSuccessMessage(context, "Logout your Account");
-                    }
-                    else{
-                      CustomScaffoldMessenger.showErrorMessage(context, "Logout Failed");
+                BlocListener<AuthBloc, AuthState>(
+                  listener: (context, state) {
+                    if (state is AuthLoading) {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (_) => const Center(child: LoadingAnimation()),
+                      );
+                    } else if (state is LogoutSuccess && state.isLogout) {
+                      // Successfully logged out
+                      CustomScaffoldMessenger.showSuccessMessage(
+                        context,
+                        "Logged out successfully!",
+                      );
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        '/login',
+                        (route) => false,
+                      );
+                    } else if (state is AuthFailure) {
+                      CustomScaffoldMessenger.showErrorMessage(
+                        context,
+                        state.error,
+                      );
                     }
                   },
-                  child: CircleAvatar(
-                    backgroundColor: AppColors.primarycolor.withAlpha(8),
-                    child: Icon(Icons.logout, color: AppColors.primarycolor),
+                  child: InkWell(
+                    onTap: () async {
+                      final confirmed = await showDeleteConfirmationDialog(
+                        context: context,
+                        title: "Logout App",
+                        content: "Are you sure want to logout?",
+                        deleteText: "Yes",
+                      );
+                      if (confirmed == true && context.mounted) {
+                        context.read<AuthBloc>().add(Logout());
+                      }
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: AppColors.primarycolor.withAlpha(8),
+                      child: const Icon(
+                        Icons.logout,
+                        color: AppColors.primarycolor,
+                      ),
+                    ),
                   ),
                 ),
+
                 const SizedBox(width: 15),
               ]
               : [

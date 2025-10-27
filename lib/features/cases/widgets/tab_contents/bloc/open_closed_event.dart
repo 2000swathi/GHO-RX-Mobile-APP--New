@@ -6,6 +6,9 @@ sealed class OpenClosedEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
-
+//open cases
 class FetchOpenCases extends OpenClosedEvent {}
+//closedcases
+class FetchClosedCases extends OpenClosedEvent {}
+
 
