@@ -108,7 +108,7 @@ class ListRepository {
       final response = await _dioHandler.post('', data: data);
       return SpecialtyTypeResponseModel.fromJson(response);
     } catch (e) {
-      throw Exception("Failed to fetch specialtiestype: $e");
+      throw Exception("Failed to fetch specialties type: $e");
     }
   }
 }
