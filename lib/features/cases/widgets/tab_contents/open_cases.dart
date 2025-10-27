@@ -33,8 +33,7 @@ class OpenCasesTab extends StatelessWidget {
                 final caseItem = openCases[index];
                 return CaseCard(
                   ontap: () {
-                    // Example navigation:
-                    // Navigator.pushNamed(context, '/caseDetails', arguments: caseItem);
+                    Navigator.pushNamed(context, '/casedetails', arguments: caseItem);
                   },
                   caseId: 'Case ID: ${caseItem.id}',
                   allottedTime: '${caseItem.timeAllowed}',
