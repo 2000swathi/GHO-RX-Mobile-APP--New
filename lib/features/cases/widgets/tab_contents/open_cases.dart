@@ -18,7 +18,7 @@ class OpenCasesTab extends StatelessWidget {
                 ..add(FetchOpenCases()),
       child: BlocBuilder<OpenClosedBloc, OpenClosedState>(
         builder: (context, state) {
-          if (state is OpenClosedInitial ||state is OpenClosedLoading) {
+          if (state is OpenClosedInitial || state is OpenClosedLoading) {
             return const Center(child: LoadingAnimation());
           } else if (state is OpenCaseLoaded) {
             final openCases = state.openCases;
@@ -33,7 +33,12 @@ class OpenCasesTab extends StatelessWidget {
                 final caseItem = openCases[index];
                 return CaseCard(
                   ontap: () {
-                    Navigator.pushNamed(context, '/casedetails', arguments: caseItem);
+                    print(caseItem.saltKey);
+                    Navigator.pushNamed(
+                      context,
+                      '/casedetails',
+                      arguments: caseItem,
+                    );
                   },
                   caseId: 'Case ID: ${caseItem.id}',
                   allottedTime: '${caseItem.timeAllowed}',
@@ -157,7 +162,12 @@ class CaseCard extends StatelessWidget {
                     thickness: 1,
                   ),
                   const SizedBox(height: 10),
-                  Text(description, style: AppFonts.textappbar),
+                  Text(
+                    description,
+                    style: AppFonts.textappbar,
+                    maxLines: 4,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ],
               ),
             ),

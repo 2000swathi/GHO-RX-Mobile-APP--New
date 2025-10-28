@@ -52,7 +52,10 @@ class AppRouter {
       case casepage:
         return MaterialPageRoute(builder: (_) => CasesPage());
       case casedetails:
-        return MaterialPageRoute(builder: (_) => CaseDetailsPage());
+        return MaterialPageRoute(
+          builder: (_) => CaseDetailsPage(),
+          settings: settings,
+        );
       case homePage:
         return MaterialPageRoute(builder: (_) => HomePage());
       case qaPage:

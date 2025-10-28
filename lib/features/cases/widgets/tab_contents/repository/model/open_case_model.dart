@@ -6,6 +6,7 @@ class OpenCaseModel {
   final int timeAllowed;
   final String dueDate;
   final String medicalSummary;
+  final String saltKey;
 
   OpenCaseModel({
     required this.id,
@@ -15,6 +16,7 @@ class OpenCaseModel {
     required this.timeAllowed,
     required this.dueDate,
     required this.medicalSummary,
+    required this.saltKey,
   });
 
   factory OpenCaseModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class OpenCaseModel {
       timeAllowed: json['TimeAllowed'] ?? 0,
       dueDate: json['DueDate'] ?? '',
       medicalSummary: json['MedicalSummary'] ?? '',
+      saltKey: json['SaltKey'] ?? '',
     );
   }
 
@@ -38,6 +41,7 @@ class OpenCaseModel {
       'TimeAllowed': timeAllowed,
       'DueDate': dueDate,
       'MedicalSummary': medicalSummary,
+      'SaltKey':saltKey
     };
   }
 }

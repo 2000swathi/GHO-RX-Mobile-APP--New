@@ -29,7 +29,7 @@ class Summerypage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Summery",
+            "Summary",
             style: AppFonts.hinttext2.copyWith(fontWeight: FontWeight.w600),
           ),
           SizedBox(height: 10),

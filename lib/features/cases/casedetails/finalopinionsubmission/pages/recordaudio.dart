@@ -12,18 +12,18 @@ class Recordaudio extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-  SizedBox(height: 10),
+        SizedBox(height: 10),
         Padding(
           padding: EdgeInsets.all(10.0),
           child: DottedBorder(
             color: AppColors.hint1color,
             strokeWidth: 1,
             borderType: BorderType.RRect,
-            radius:  Radius.circular(8.0),
+            radius: Radius.circular(8.0),
             dashPattern: [7, 8],
             child: Container(
               width: double.infinity,
-              padding:  EdgeInsets.all(12.0),
+              padding: EdgeInsets.all(12.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -35,12 +35,12 @@ class Recordaudio extends StatelessWidget {
                         'Drag and drop your files',
                         style: AppFonts.subheading,
                       ),
-                       SizedBox(height: 5.0),
-                      Text(
-                        'JPEG, PND, PDF, and MP4 formats, up to 1GB',
-                        style: AppFonts.hinttext2,
-                      ),
-                     SizedBox(height: 10),
+                      SizedBox(height: 5.0),
+                      //   Text(
+                      //     'JPEG, PND, PDF, and MP4 formats, up to 1GB',
+                      //     style: AppFonts.hinttext2,
+                      //   ),
+                      //  SizedBox(height: 10),
                       SizedBox(
                         width: 100,
                         child: CustomButton(
@@ -60,27 +60,28 @@ class Recordaudio extends StatelessWidget {
         ),
         SizedBox(height: 15),
         Padding(
-          padding:  EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(10.0),
           child: DottedBorder(
             color: AppColors.hint1color,
             strokeWidth: 1,
             borderType: BorderType.RRect,
-            radius:Radius.circular(8.0),
+            radius: Radius.circular(8.0),
             dashPattern: [7, 8],
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(height: 10),
                 SvgPicture.asset("assets/svg/record.svg"),
-             SizedBox(height: 8.0),
+                SizedBox(height: 8.0),
                 Column(
                   children: [
                     Text('Record Audio Summary', style: AppFonts.subheading),
-                   SizedBox(height: 5.0),
-                    Text(
-                      'Provide a short audio summary for clarity',
-                      style: AppFonts.hinttext2,
-                    ),
-                  SizedBox(height: 10.0),
+                    SizedBox(height: 5.0),
+                    //   Text(
+                    //     'Provide a short audio summary for clarity',
+                    //     style: AppFonts.hinttext2,
+                    //   ),
+                    // SizedBox(height: 10.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -92,8 +93,8 @@ class Recordaudio extends StatelessWidget {
                             color: AppColors.warningred,
                           ),
                         ),
-                        SizedBox(width: 10),
-                        Text("00:00", style: AppFonts.subheading),
+                        // SizedBox(width: 10),
+                        // Text("00:00", style: AppFonts.subheading),
                       ],
                     ),
                     SizedBox(height: 10.0),
@@ -112,10 +113,10 @@ class Recordaudio extends StatelessWidget {
           ),
         ),
         Padding(
-          padding:  EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(8.0),
           child: Container(
             width: double.infinity,
-            padding:  EdgeInsets.all(12.0),
+            padding: EdgeInsets.all(12.0),
             decoration: BoxDecoration(
               border: Border.all(color: AppColors.hint1color),
               borderRadius: BorderRadius.circular(8.0),
@@ -132,14 +133,14 @@ class Recordaudio extends StatelessWidget {
                         "Report name_T1.pdf",
                         style: AppFonts.subheading16.copyWith(fontSize: 16),
                       ),
-                    SizedBox(height: 5),
+                      SizedBox(height: 5),
                       Wrap(
                         spacing: 4.0,
                         runSpacing: 4.0,
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
                           Text("23.5MB | 55%", style: AppFonts.hinttext2),
-                           Icon(
+                          Icon(
                             Icons.circle,
                             size: 6,
                             color: AppColors.hint2color,
@@ -147,7 +148,7 @@ class Recordaudio extends StatelessWidget {
                           Text("37 sec left", style: AppFonts.hinttext2),
                           Row(
                             children: [
-                               Icon(
+                              Icon(
                                 Icons.hourglass_empty,
                                 size: 16,
                                 color: AppColors.hint2color,
@@ -168,10 +169,10 @@ class Recordaudio extends StatelessWidget {
         ),
         SizedBox(height: 10),
         Padding(
-          padding:  EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(10.0),
           child: Container(
             width: double.infinity,
-            padding:  EdgeInsets.all(12.0),
+            padding: EdgeInsets.all(12.0),
             decoration: BoxDecoration(
               border: Border.all(color: AppColors.hint1color),
               borderRadius: BorderRadius.circular(8.0),
@@ -179,7 +180,7 @@ class Recordaudio extends StatelessWidget {
             child: Row(
               children: [
                 SvgPicture.asset("assets/svg/pdfIcons.svg"),
-              SizedBox(width: 10),
+                SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,13 +189,13 @@ class Recordaudio extends StatelessWidget {
                         "Report name_Agt_1234.pdf",
                         style: AppFonts.subheading16.copyWith(fontSize: 16),
                       ),
-                     SizedBox(height:5),
+                      SizedBox(height: 5),
                       Wrap(
                         spacing: 4.0,
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
                           Text("23.5MB | 100%", style: AppFonts.hinttext2),
-                        Icon(
+                          Icon(
                             Icons.circle,
                             size: 6,
                             color: AppColors.hint2color,
