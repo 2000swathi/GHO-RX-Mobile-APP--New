@@ -23,7 +23,7 @@ class AddEditAccrediationBottomSheet {
     required ProfileBloc profileBloc,
     required List<AccreditationTypeData> accreList,
   }) {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     String? accreTypeID =
         isEdit
             ? accreList
@@ -58,7 +58,7 @@ class AddEditAccrediationBottomSheet {
         StatefulBuilder(
           builder: (context, setState) {
             return Form(
-              key: _formKey,
+              key: formKey,
               child: Column(
                 children: [
                   CustomTextFormField(
@@ -128,13 +128,10 @@ class AddEditAccrediationBottomSheet {
                 profileBloc.add(FetchAccreditation());
                 CustomScaffoldMessenger.showSuccessMessage(
                   context,
-                  state.message ?? "Edited Successfully",
+                  state.message,
                 );
               } else if (state is EditFailure) {
-                CustomScaffoldMessenger.showErrorMessage(
-                  context,
-                  state.error ?? "Failed to edit",
-                );
+                CustomScaffoldMessenger.showErrorMessage(context, state.error);
               }
             },
           ),
@@ -151,7 +148,7 @@ class AddEditAccrediationBottomSheet {
                   text: isEdit ? "Update Accreditation" : "Add Accreditation",
                   isLoading: isLoading,
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
+                    if (formKey.currentState!.validate()) {
                       if (isEdit) {
                         context.read<EditBloc>().add(
                           EditAcreditationEvent(

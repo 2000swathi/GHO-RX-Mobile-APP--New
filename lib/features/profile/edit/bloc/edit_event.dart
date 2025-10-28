@@ -30,12 +30,7 @@ class EditSpecialtyEvent extends EditEvent {
   });
 
   @override
-  List<Object> get props => [
-        id,
-        specialtyId,
-        certifiedBoard,
-        specialtyType,
-      ];
+  List<Object> get props => [id, specialtyId, certifiedBoard, specialtyType];
 }
 
 // accreditation
@@ -90,8 +85,8 @@ class EditInsuranceEvent extends EditEvent {
 //Edit License Event
 class EditLicenseEvent extends EditEvent {
   final String licenseNumber;
-  final int issuingAuthority;
-  final int licenseType;
+  final String issuingAuthority;
+  final String licenseType;
   final String issueDate;
   final String expiryDate;
   final String id;

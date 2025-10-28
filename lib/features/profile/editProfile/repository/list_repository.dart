@@ -18,8 +18,6 @@ class ListRepository {
       "Tags": [
         {"T": "c10", "V": "99"},
       ],
-        {"T": "c10", "V": "99"},
-      ],
     };
 
     try {
@@ -37,8 +35,6 @@ class ListRepository {
       "Tags": [
         {"T": "c10", "V": "98"},
       ],
-        {"T": "c10", "V": "98"},
-      ],
     };
 
     try {
@@ -49,14 +45,11 @@ class ListRepository {
     }
   }
 
-
   // accreditation_type
   Future<AccreditationTypeModel> fetchAccreditationTypeList() async {
     final data = {
       ...ApiUtils.getCommonParams(action: "lists", token: ""),
       "Tags": [
-        {"T": "c10", "V": "90"},
-      ],
         {"T": "c10", "V": "90"},
       ],
     };
@@ -68,9 +61,6 @@ class ListRepository {
       throw Exception("Failed to fetch accreditation types: $e");
     }
   }
-
-  // license
-  Future<LicenseListResponseModel> fetchLicenseList() async {
 
   // license list model
   Future<List<LicenseListModel>> fetchLicenseList() async {
@@ -88,7 +78,7 @@ class ListRepository {
           .map((json) => LicenseListModel.fromJson(json))
           .toList();
     } catch (e) {
-      throw Exception("$e");
+      throw Exception("--$e");
     }
   }
 
@@ -97,14 +87,13 @@ class ListRepository {
     final data = {
       ...ApiUtils.getCommonParams(action: "lists", token: ""),
       "Tags": [
-        {"T": "c10", "V": "97"},
-      ],
         {"T": "c10", "V": "91"},
       ],
     };
 
     try {
       final response = await _dioHandler.post('', data: data);
+      print(response);
       return LicenseAuthorityModel.fromJson(response);
     } catch (e) {
       throw Exception("Failed to fetch issuing authority: $e");
@@ -145,6 +134,4 @@ class ListRepository {
       throw Exception("Failed to fetch specialtiestype: $e");
     }
   }
-}
-
 }

@@ -104,11 +104,9 @@ class ListBloc extends Bloc<ListEvent, ListState> {
       emit(ListFailure(error: e.toString()));
     }
   }
-}
-
 
   //Certified
-   Future<void> _onFetchCertified(
+  Future<void> _onFetchCertified(
     FetchCertifiedList event,
     Emitter<ListState> emit,
   ) async {
@@ -129,9 +127,11 @@ class ListBloc extends Bloc<ListEvent, ListState> {
   ) async {
     emit(ListLoading());
 
-    try { 
+    try {
       final specialtyTypeResponse = await repository.fetchSpecialtyTypeList();
-      emit(SpecialtyTypeListState(specialtyTypeResponse: specialtyTypeResponse)); 
+      emit(
+        SpecialtyTypeListState(specialtyTypeResponse: specialtyTypeResponse),
+      );
     } catch (e) {
       emit(ListFailure(error: e.toString()));
     }

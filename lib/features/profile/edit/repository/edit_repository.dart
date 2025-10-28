@@ -35,11 +35,11 @@ class EditprofileRepository {
   //edit license
   Future editLicense({
     required String licenseNumber,
-    // required String issuingAuthority,
+    required String issuingAuthority,
     required String licenseType,
     required String issueDate,
     required String expiryDate,
-    // required String id,
+    required String id,
   }) async {
     final token = await SharedPreference.getToken();
     final reviewerId = await SharedPreference.getUserId();
@@ -48,17 +48,17 @@ class EditprofileRepository {
     }
     final c1Editdata = jsonEncode({
       "LicenseNumber": licenseNumber,
-      // "IssuingAuthority": issuingAuthority,
+      "IssuingAuthority": issuingAuthority,
       "LicenseType": licenseType,
       "IssueDate": issueDate,
       "ExpiryDate": expiryDate,
-      // "Id": id,
+      "Id": id,
     });
     final requestData = {
       ...ApiUtils.getCommonParams(action: "reviewerlic", token: token),
       "Tags": [
         {"T": "dk1", "V": reviewerId},
-        // {"T": "dk2", "V": id},
+        {"T": "dk2", "V": id},
         {"T": "c1", "V": c1Editdata},
         {"T": "c10", "V": "2"},
       ],

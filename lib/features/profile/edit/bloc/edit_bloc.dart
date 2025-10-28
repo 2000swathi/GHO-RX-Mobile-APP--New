@@ -122,14 +122,16 @@ class EditBloc extends Bloc<EditEvent, EditState> {
     try {
       final licenseresponse = await repository.editLicense(
         licenseNumber: editevent.licenseNumber,
-        // issuingAuthority: editevent.issuingAuthority,
+        issuingAuthority: editevent.issuingAuthority.toString(),
         licenseType: editevent.licenseType.toString(),
         issueDate: editevent.issueDate,
         expiryDate: editevent.expiryDate,
-        // id: editevent.id,
+        id: editevent.id,
       );
 
-      final message = licenseresponse['Info'] ?? "License updated successfully";
+      final message =
+          licenseresponse['Data'][0][0]["msg"] ??
+          "License updated successfully";
       emit(EditSuccess(message: message));
     } catch (e) {
       emit(EditFailure(error: e.toString()));

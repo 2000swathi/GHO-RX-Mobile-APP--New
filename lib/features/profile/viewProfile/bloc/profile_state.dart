@@ -47,7 +47,7 @@ class InsuranceState extends ProfileState {
   const InsuranceState({required this.insuranceModel});
 
   @override
-  List<Object?> get props => [InsuranceModel];
+  List<Object?> get props => [insuranceModel];
 }
 
 //   license list
@@ -57,7 +57,7 @@ class LicenseState extends ProfileState {
   const LicenseState({required this.licenseModel});
 
   @override
-  List<Object?> get props => [LicenseModel];
+  List<Object?> get props => [licenseModel];
 }
 
 //     language list
@@ -67,7 +67,7 @@ class LanguageState extends ProfileState {
   const LanguageState({required this.languageModel});
 
   @override
-  List<Object?> get props => [LicenseModel];
+  List<Object?> get props => [languageModel];
 }
 
 //Acreditation
@@ -77,7 +77,7 @@ class AccreditationState extends ProfileState {
   const AccreditationState({required this.accreditationModel});
 
   @override
-  List<Object?> get props => [AccreditationModel];
+  List<Object?> get props => [accreditationModel];
 }
 
 // bankinfo list

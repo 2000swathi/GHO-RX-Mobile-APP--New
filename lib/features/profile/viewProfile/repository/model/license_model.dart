@@ -23,7 +23,8 @@ class LicenseModel {
       data: flatList.map((item) => LicenseData.fromJson(item)).toList(),
     );
   }
-
+  get licenseTypeID => null;
+  get issuingAuthorityID => null;
   Map<String, dynamic> toJson() => {
     'Status': status,
     'Error': error,
