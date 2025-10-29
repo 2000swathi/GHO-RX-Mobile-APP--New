@@ -38,7 +38,10 @@ class CaseDetailsPage extends StatelessWidget {
             ),
           ),
         ),
-        title: Text("Case ID:${opencases?.id.toString()} ", style: AppFonts.subheading),
+        title: Text(
+          "Case ID : ${opencases?.id.toString()} ",
+          style: AppFonts.subheading,
+        ),
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 16.0),
@@ -69,7 +72,10 @@ class CaseDetailsPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(CaseInfo.patientName, style: AppFonts.subheading16),
+                        Text(
+                          CaseInfo.patientName,
+                          style: AppFonts.subheading16,
+                        ),
                         InkWell(
                           onTap: () {
                             Navigator.pushNamed(context, "/qaPage");
@@ -109,10 +115,12 @@ class CaseDetailsPage extends StatelessWidget {
                           style: AppFonts.subheading16.copyWith(fontSize: 14),
                         ),
                         SizedBox(width: 15),
-                        SvgPicture.asset("assets/svg/calender.svg"),
+                        CaseInfo.dob!.isNotEmpty || CaseInfo.dob != ""
+                            ? Icon(Icons.cake,size: 19,color: AppColors.textPrimary,)
+                            : SizedBox(),
                         SizedBox(width: 7),
                         Text(
-                          "12 Dec 1987",
+                          CaseInfo.dob.toString(),
                           style: AppFonts.subheading16.copyWith(fontSize: 14),
                         ),
                       ],
@@ -153,8 +161,7 @@ class CaseDetailsPage extends StatelessWidget {
                       },
                     ),
                     SizedBox(height: 14),
-                    CasesTabView(),
-
+                    CasesTabView(caseDetailsModel: state.caseDetailsModel),
                     SizedBox(height: 14),
                   ],
                 ),

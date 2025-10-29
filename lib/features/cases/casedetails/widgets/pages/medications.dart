@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/repository/model/case_details_model.dart';
 
 class Medications extends StatelessWidget {
-  Medications({super.key});
+  final List<MedicationModel>? medicationModel;
 
-  final List<Map<String, dynamic>> medication = [
-    {'title': 'Metformin', 'subtitle': '(Jun 2024)'},
-    {'title': 'Gabapentin', 'subtitle': '(Jun 2024)'},
-    {'title': 'Lisinopril', 'subtitle': '(Jun 2024)'},
-  ];
+  Medications({super.key, required this.medicationModel});
+
+  
 
   @override
   Widget build(BuildContext context) {
+    final medications=medicationModel??[];
+    if(medications.isEmpty){
+      return SizedBox();
+    }
+
     return Container(
-      margin:  EdgeInsets.all(1.0),
+      margin: EdgeInsets.all(1.0),
       padding: EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         color: AppColors.white,
@@ -35,14 +39,15 @@ class Medications extends StatelessWidget {
             "Medications",
             style: AppFonts.hinttext2.copyWith(fontWeight: FontWeight.w600),
           ),
-         SizedBox(height: 15),
+          SizedBox(height: 15),
           ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            itemCount: medication.length,
+            itemCount: medications.length,
             itemBuilder: (context, index) {
+              final medication= medications[index];
               return Padding(
-                padding:  EdgeInsets.symmetric(vertical: 10.0),
+                padding: EdgeInsets.symmetric(vertical: 10.0),
                 child: Column(
                   children: [
                     Row(
@@ -53,14 +58,14 @@ class Medications extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                medication[index]['title'] as String,
+                                medication.name.toString(),
                                 style: AppFonts.subheading16.copyWith(
                                   fontSize: 16,
                                 ),
                               ),
                               SizedBox(height: 4),
                               Text(
-                                medication[index]['subtitle'] as String,
+                                "${medication.endMonth.toString()} ${medication.endYear.toString()}" ,
                                 style: AppFonts.buttontxt16.copyWith(
                                   fontSize: 16,
                                   color: AppColors.red,
