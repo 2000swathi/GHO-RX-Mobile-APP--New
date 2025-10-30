@@ -7,7 +7,7 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_container.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/confirm_submission_dialog.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/doc_container.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/widget/doc_container.dart';
 import 'package:ghorx_mobile_app_new/utilities/size_config.dart';
 
 class FinalOpinionConfirmation extends StatelessWidget {

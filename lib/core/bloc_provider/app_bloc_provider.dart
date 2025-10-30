@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/repository/auth_repository.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/bloc/case_details_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/repository/case_det_repository.dart';
-import 'package:ghorx_mobile_app_new/features/cases/widgets/tab_contents/bloc/open_closed_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/cases/widgets/tab_contents/repository/open_closed_repo.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/questions/repository/bloc/q_and_a_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/questions/repository/q_and_a_save_repo.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/bloc/case_details_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/case_det_repository.dart';
+import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/bloc/open_closed_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/repository/open_closed_repo.dart';
 import 'package:ghorx_mobile_app_new/features/home/bloc/home_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/home/repository/home_repository.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
@@ -59,6 +61,9 @@ class AppBlocProvider extends StatelessWidget {
         ),
         BlocProvider<CaseDetailsBloc>(
           create: (_) => CaseDetailsBloc(repository: CaseDetRepository()),
+        ),
+        BlocProvider<QAndABloc>(
+          create: (_) => QAndABloc(repository: QAndASaveRepo()),
         ),
       ],
       child: child,

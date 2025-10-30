@@ -4,8 +4,8 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/final_opinion_confirmation.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/pages/recordaudio.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/pages/writtenreport.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/recordaudio.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/writtenreport.dart';
 
 class Finalsubmission extends StatefulWidget {
   const Finalsubmission({super.key});
