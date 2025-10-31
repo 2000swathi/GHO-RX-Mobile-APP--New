@@ -1,28 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/bloc/case_details_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/bloc/case_details_event.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/final_opinion_confirmation.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/case_det_repository.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/widgets/cases_tab_view.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/final_opinion_confirmation.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/repository/model/open_case_model.dart';
 
-class CaseDetailsPage extends StatelessWidget {
-  CaseDetailsPage({super.key});
-  final repository = CaseDetRepository();
+class CaseDetailsPage extends StatefulWidget {
+  const CaseDetailsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final opencases =
+  State<CaseDetailsPage> createState() => _CaseDetailsPageState();
+}
+
+class _CaseDetailsPageState extends State<CaseDetailsPage> {
+  final repository = CaseDetRepository();
+  late OpenCaseModel opencases;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Safe place to read ModalRoute arguments only once
+    opencases =
         ModalRoute.of(context)?.settings.arguments as OpenCaseModel;
+
+    // Dispatch event only once per page build
     context.read<CaseDetailsBloc>().add(
       CaseDetailsEventRequested(saltID: opencases.saltKey.toString()),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -59,12 +74,12 @@ class CaseDetailsPage extends StatelessWidget {
       body: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         builder: (context, state) {
           if (state is CaseDetailsLoading) {
-            return Center(child: LoadingAnimation());
+            return const Center(child: LoadingAnimation());
           } else if (state is casedetailsSuccess) {
             final CaseInfo = state.caseDetailsModel.caseInfo!;
             return SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -91,8 +106,7 @@ class CaseDetailsPage extends StatelessWidget {
                         ),
                       ],
                     ),
-
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       children: [
                         SvgPicture.asset(
@@ -103,27 +117,22 @@ class CaseDetailsPage extends StatelessWidget {
                           ),
                           width: 16,
                         ),
-                        SizedBox(width: 7),
+                        const SizedBox(width: 7),
                         Text(
                           CaseInfo.gender,
                           style: AppFonts.subheading16.copyWith(fontSize: 14),
                         ),
-                        SizedBox(width: 15),
-                        CaseInfo.dob!.isNotEmpty || CaseInfo.dob != ""
-                            ? Icon(
-                              Icons.cake,
-                              size: 19,
-                              color: AppColors.textPrimary,
-                            )
-                            : SizedBox(),
-                        SizedBox(width: 7),
+                        const SizedBox(width: 15),
+                        if (CaseInfo.dob!.isNotEmpty)
+                          const Icon(Icons.cake, size: 19, color: AppColors.textPrimary),
+                        const SizedBox(width: 7),
                         Text(
                           CaseInfo.dob.toString(),
                           style: AppFonts.subheading16.copyWith(fontSize: 14),
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -134,9 +143,9 @@ class CaseDetailsPage extends StatelessWidget {
                             color: AppColors.red,
                           ),
                         ),
-                        SizedBox(width: 3),
-                        Icon(Icons.circle, size: 6, color: AppColors.red),
-                        SizedBox(width: 3),
+                        const SizedBox(width: 3),
+                        const Icon(Icons.circle, size: 6, color: AppColors.red),
+                        const SizedBox(width: 3),
                         Text(
                           "Due Date: ${CaseInfo.dueDate}",
                           style: AppFonts.textSecondary.copyWith(
@@ -146,24 +155,25 @@ class CaseDetailsPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 14),
+                    const SizedBox(height: 14),
                     CustomButton(
                       text: "Submit Review",
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => FinalOpinionConfirmation(),
+                            builder: (context) =>
+                                const FinalOpinionConfirmation(),
                           ),
                         );
                       },
                     ),
-                    SizedBox(height: 14),
+                    const SizedBox(height: 14),
                     CasesTabView(
                       caseDetailsModel: state.caseDetailsModel,
                       saltID: opencases.saltKey,
                     ),
-                    SizedBox(height: 14),
+                    const SizedBox(height: 14),
                   ],
                 ),
               ),

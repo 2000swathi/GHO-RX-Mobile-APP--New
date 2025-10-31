@@ -51,7 +51,11 @@ class _CasesTabViewState extends State<CasesTabView> {
           saltID: saltID,
         );
       default:
-        return Reviewpage();
+        return Reviewpage(
+          saltID: saltID,
+          summaryRecords: widget.caseDetailsModel.caseInfo!.summaryOfRecords,
+          caseID: widget.caseDetailsModel.caseInfo!.id.toString(),
+        );
     }
   }
 }
