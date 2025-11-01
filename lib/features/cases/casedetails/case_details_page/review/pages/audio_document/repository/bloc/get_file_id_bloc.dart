@@ -12,7 +12,7 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
   GetFileIdBloc({required this.repository}) : super(GetFileIdInitial()) {
     /// Step 1: Get File ID
     on<GetFileIdEvent>((event, emit) async {
-      emit(GetFileIdLoading());
+      emit(GetFileIdLoading(filePath: event.filePath));
       try {
         final response = await repository.getFileID(
           event.caseID,
@@ -21,14 +21,13 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
           event.fileSize,
         );
 
-
         if (response["Status"] == 1 && response["Data"]?[0]?[0]?["id"] != null) {
-          emit(GetFileIdSuccess(response: response));
+          emit(GetFileIdSuccess(response: response, filePath: event.filePath));
 
           final String fileID = response["Data"][0][0]["fid"].toString();
-          final String fileType = response["Data"][0][0]["ftype"] ?? ""; 
+          final String fileType = response["Data"][0][0]["ftype"] ?? "";
 
-          /// Automatically trigger next step (get upload URL)
+          // Step 2: Automatically trigger get upload URL
           add(GetUploadUrlEvent(
             fileID: fileID,
             fileType: fileType,
@@ -36,16 +35,19 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
             context: event.context,
           ));
         } else {
-          emit(GetFileIdFailure(message: response["Info"] ?? "Failed to get file ID"));
+          emit(GetFileIdFailure(
+            message: response["Info"] ?? "Failed to get file ID",
+            filePath: event.filePath,
+          ));
         }
       } catch (e) {
-        emit(GetFileIdFailure(message: e.toString()));
+        emit(GetFileIdFailure(message: e.toString(), filePath: event.filePath));
       }
     });
 
     /// Step 2: Get Upload URL
     on<GetUploadUrlEvent>((event, emit) async {
-      emit(GetFileIdLoading());
+      emit(GetFileIdLoading(filePath: event.filePath));
       try {
         final uploadResponse = await repository.getUploadUrl(
           fileID: event.fileID,
@@ -53,25 +55,27 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
         );
 
         if (uploadResponse != null && uploadResponse["UploadUrl"] != null) {
-          emit(GetUploadUrlSuccess(response: uploadResponse));
+          emit(GetUploadUrlSuccess(
+              response: uploadResponse, filePath: event.filePath));
 
-          /// Automatically trigger file upload
+          // Step 3: Trigger upload
           add(UploadFileToS3Event(
             context: event.context,
             url: uploadResponse["UploadUrl"],
             filePath: event.filePath,
           ));
         } else {
-          emit(GetFileIdFailure(message: "Failed to get upload URL"));
+          emit(GetFileIdFailure(
+              message: "Failed to get upload URL", filePath: event.filePath));
         }
       } catch (e) {
-        emit(GetFileIdFailure(message: e.toString()));
+        emit(GetFileIdFailure(message: e.toString(), filePath: event.filePath));
       }
     });
 
     /// Step 3: Upload File to S3
     on<UploadFileToS3Event>((event, emit) async {
-      emit(GetFileIdLoading());
+      emit(GetFileIdLoading(filePath: event.filePath));
       try {
         final success = await repository.uploadFileToS3(
           event.context,
@@ -80,16 +84,17 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
         );
 
         if (success) {
-          emit(const FileUploadSuccess());
+          emit(FileUploadSuccess(filePath: event.filePath));
           CustomScaffoldMessenger.showSuccessMessage(
             event.context,
             "File uploaded successfully",
           );
         } else {
-          emit(const GetFileIdFailure(message: "File upload failed"));
+          emit(GetFileIdFailure(
+              message: "File upload failed", filePath: event.filePath));
         }
       } catch (e) {
-        emit(GetFileIdFailure(message: e.toString()));
+        emit(GetFileIdFailure(message: e.toString(), filePath: event.filePath));
       }
     });
   }

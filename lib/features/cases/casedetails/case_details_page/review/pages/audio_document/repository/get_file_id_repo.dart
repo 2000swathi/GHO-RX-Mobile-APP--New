@@ -103,10 +103,6 @@ class GetFileIDReo {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        CustomScaffoldMessenger.showSuccessMessage(
-          context,
-          "File uploaded successfully",
-        );
         return true;
       } else if (response.statusCode == 409) {
         CustomScaffoldMessenger.showErrorMessage(

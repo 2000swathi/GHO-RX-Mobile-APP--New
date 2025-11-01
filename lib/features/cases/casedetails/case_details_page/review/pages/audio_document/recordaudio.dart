@@ -31,7 +31,6 @@ class _RecordaudioState extends State<Recordaudio> {
   Timer? _timer;
   int _seconds = 0;
   bool isSelcted = false;
-  bool isLoading = false;
 
   final List<Map<String, dynamic>> _recordings = [];
 
@@ -47,6 +46,7 @@ class _RecordaudioState extends State<Recordaudio> {
       );
 
       setState(() {
+        isSelcted = false;
         _isRecording = true;
         _seconds = 0;
       });
@@ -80,15 +80,13 @@ class _RecordaudioState extends State<Recordaudio> {
         });
         _isRecording = false;
       });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Recording saved: ${path.split('/').last}')),
-      );
     }
   }
 
   // --- Delete recording ---
   void _deleteRecording(int index) {
+    if (index < 0 || index >= _recordings.length)
+      return; // ✅ Prevent RangeError
     final filePath = _recordings[index]['path'];
     File(filePath).deleteSync();
     setState(() => _recordings.removeAt(index));
@@ -132,12 +130,19 @@ class _RecordaudioState extends State<Recordaudio> {
                   Text('Drag and drop your files', style: AppFonts.subheading),
                   const SizedBox(height: 5),
                   isSelcted
-                      ? BlocBuilder<GetFileIdBloc, GetFileIdState>(
+                      ? BlocConsumer<GetFileIdBloc, GetFileIdState>(
+                        listener: (context, state) {
+                          if (state is FileUploadSuccess) {
+                            setState(() {
+                              isSelcted = false;
+                            });
+                          }
+                        },
                         builder: (context, state) {
                           if (state is GetFileIdLoading) {
-                            setState(() => isLoading = true);
                             return const Center(child: LoadingAnimation());
                           }
+
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -332,7 +337,6 @@ class _RecordaudioState extends State<Recordaudio> {
           final fileSizeInKB = (fileSizeInBytes / 1024).toStringAsFixed(2);
 
           return AudioItem(
-            isLoading: isLoading,
             fileName: recording['name'],
             duration: recording['duration'],
             filePath: recording['path'],
@@ -341,6 +345,7 @@ class _RecordaudioState extends State<Recordaudio> {
             onDelete: () => _deleteRecording(index),
           );
         }),
+        SizedBox(height: 20),
       ],
     );
   }

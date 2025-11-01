@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_bloc.dart';
@@ -16,17 +17,15 @@ class AudioItem extends StatefulWidget {
   final String fileSize;
   final String caseID;
   final VoidCallback onDelete;
-  final bool isLoading;
 
   const AudioItem({
     super.key,
     required this.fileName,
     required this.duration,
     required this.filePath,
-    required this.onDelete,
     required this.fileSize,
     required this.caseID,
-    required this.isLoading,
+    required this.onDelete,
   });
 
   @override
@@ -36,7 +35,7 @@ class AudioItem extends StatefulWidget {
 class _AudioItemState extends State<AudioItem> {
   final AudioPlayer _player = AudioPlayer();
   bool _isPlaying = false;
-  bool _isSubmitting = false;
+  bool _isUploading = false; 
   Duration _position = Duration.zero;
 
   late final StreamSubscription<Duration> _positionSub;
@@ -85,7 +84,8 @@ class _AudioItemState extends State<AudioItem> {
   }
 
   Future<void> _submitRecording() async {
-    setState(() => _isSubmitting = true);
+    if (_isUploading) return; // prevent double-tap uploads
+    setState(() => _isUploading = true);
 
     try {
       debugPrint("Submitting file: ${widget.filePath}");
@@ -100,14 +100,6 @@ class _AudioItemState extends State<AudioItem> {
           context: context,
         ),
       );
-
-      await Future.delayed(const Duration(seconds: 1));
-      if (mounted) {
-        CustomScaffoldMessenger.showSuccessMessage(
-          context,
-          "${widget.fileName} uploaded successfully!",
-        );
-      }
     } catch (e) {
       if (mounted) {
         CustomScaffoldMessenger.showErrorMessage(
@@ -115,8 +107,7 @@ class _AudioItemState extends State<AudioItem> {
           "Error uploading ${widget.fileName}: $e",
         );
       }
-    } finally {
-      if (mounted) setState(() => _isSubmitting = false);
+      setState(() => _isUploading = false);
     }
   }
 
@@ -136,94 +127,98 @@ class _AudioItemState extends State<AudioItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.9,
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColors.hint1color),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              IconButton(
-                iconSize: 36,
-                icon: Icon(
-                  _isPlaying ? Icons.stop_circle : Icons.play_circle_fill,
-                  color: AppColors.primarycolor,
-                ),
-                onPressed: _togglePlayStop,
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.fileName,
-                      style: AppFonts.subheading16,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Slider(
-                      padding: EdgeInsets.zero,
-                      value: _position.inSeconds.toDouble().clamp(
-                        0,
-                        widget.duration.inSeconds.toDouble(),
-                      ),
-                      max: widget.duration.inSeconds.toDouble(),
-                      onChanged: (value) async {
-                        await _player.seek(Duration(seconds: value.toInt()));
-                      },
-                      activeColor: AppColors.primarycolor,
-                      inactiveColor: AppColors.hint2color,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          _formatDuration(_position),
-                          style: AppFonts.hinttext2,
-                        ),
-                        Text(
-                          _formatDuration(widget.duration),
-                          style: AppFonts.hinttext2,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                children: [
-                  IconButton(
-                    icon: SvgPicture.asset(
-                      "assets/svg/trash.svg",
-                      width: 20,
-                      height: 20,
-                    ),
-                    onPressed: widget.onDelete,
+    return BlocListener<GetFileIdBloc, GetFileIdState>(
+      listener: (context, state) {
+        if (state is FileUploadSuccess && state.filePath == widget.filePath) {
+          setState(() => _isUploading = false);
+          widget.onDelete();
+        } else if (state is GetFileIdFailure && state.filePath == widget.filePath) {
+          setState(() => _isUploading = false);
+          CustomScaffoldMessenger.showErrorMessage(
+              context, "Failed to upload ${widget.fileName}");
+        }
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: BoxDecoration(
+          border: Border.all(color: AppColors.hint1color),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                IconButton(
+                  iconSize: 36,
+                  icon: Icon(
+                    _isPlaying ? Icons.stop_circle : Icons.play_circle_fill,
+                    color: AppColors.primarycolor,
                   ),
-                  _isSubmitting || widget.isLoading
-                      ? const SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                      : IconButton(
+                  onPressed: _togglePlayStop,
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.fileName,
+                        style: AppFonts.subheading16,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Slider(
+                        padding: EdgeInsets.zero,
+                        value: _position.inSeconds
+                            .toDouble()
+                            .clamp(0, widget.duration.inSeconds.toDouble()),
+                        max: widget.duration.inSeconds.toDouble(),
+                        onChanged: (value) async {
+                          await _player.seek(Duration(seconds: value.toInt()));
+                        },
+                        activeColor: AppColors.primarycolor,
+                        inactiveColor: AppColors.hint2color,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            _formatDuration(_position),
+                            style: AppFonts.hinttext2,
+                          ),
+                          Text(
+                            _formatDuration(widget.duration),
+                            style: AppFonts.hinttext2,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  icon: SvgPicture.asset(
+                    "assets/svg/trash.svg",
+                    width: 20,
+                    height: 20,
+                  ),
+                  onPressed: widget.onDelete,
+                ),
+                _isUploading
+                    ? Padding(
+                      padding: EdgeInsetsGeometry.all(10),
+                      child: const LoadingAnimation())
+                    : IconButton(
                         onPressed: _submitRecording,
                         icon: const Icon(
                           Icons.upload,
                           color: AppColors.primarycolor,
                         ),
                       ),
-                ],
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
