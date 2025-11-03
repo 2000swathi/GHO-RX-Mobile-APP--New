@@ -21,7 +21,7 @@ class CasesTabView extends StatefulWidget {
 class _CasesTabViewState extends State<CasesTabView> {
   int selectedIndex = 0;
 
-  final List<String> tabNames = ["Claimant", "Questions", "Review"];
+  final List<String> tabNames = ["Claimant", "Questions*", "Review*"];
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,8 @@ class _CasesTabViewState extends State<CasesTabView> {
         return Reviewpage(
           saltID: saltID,
           summaryRecords: widget.caseDetailsModel.caseInfo!.summaryOfRecords,
-          caseID: widget.caseDetailsModel.caseInfo!.id.toString(),
+          caseID: widget.caseDetailsModel.caseInfo!.caseID.toString(),
+          audioSummaryModel: widget.caseDetailsModel.draudiosummery,
         );
     }
   }

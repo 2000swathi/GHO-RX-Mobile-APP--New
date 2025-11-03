@@ -29,7 +29,7 @@ class _QueriesTabsState extends State<QueriesTabs> {
   String saltId = "";
   String questID = "";
 
-  final List<String> tabNames = ["Answer", "Support"];
+  final List<String> tabNames = ["Answer*", "Support"];
 
   void changeTab(int index) {
     setState(() {

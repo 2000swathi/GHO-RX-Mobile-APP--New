@@ -21,10 +21,7 @@ final class GetFileIdSuccess extends GetFileIdState {
   final Map<String, dynamic> response;
   final String filePath;
 
-  const GetFileIdSuccess({
-    required this.response,
-    required this.filePath,
-  });
+  const GetFileIdSuccess({required this.response, required this.filePath});
 
   @override
   List<Object> get props => [response, filePath];
@@ -34,10 +31,7 @@ final class GetUploadUrlSuccess extends GetFileIdState {
   final Map<String, dynamic> response;
   final String filePath;
 
-  const GetUploadUrlSuccess({
-    required this.response,
-    required this.filePath,
-  });
+  const GetUploadUrlSuccess({required this.response, required this.filePath});
 
   @override
   List<Object> get props => [response, filePath];
@@ -47,10 +41,7 @@ final class GetFileIdFailure extends GetFileIdState {
   final String message;
   final String filePath;
 
-  const GetFileIdFailure({
-    required this.message,
-    required this.filePath,
-  });
+  const GetFileIdFailure({required this.message, required this.filePath});
 
   @override
   List<Object> get props => [message, filePath];
@@ -62,4 +53,20 @@ final class FileUploadSuccess extends GetFileIdState {
 
   @override
   List<Object> get props => [filePath];
+}
+
+// success
+final class SuccessAPI extends GetFileIdState {
+  final String filePath;
+  const SuccessAPI({required this.filePath});
+  @override
+  List<Object> get props => [filePath];
+}
+
+//delete
+final class DeleteFileSuccess extends GetFileIdState {
+  final Map<String, dynamic> response;
+  const DeleteFileSuccess({required this.response});
+  @override
+  List<Object> get props => [response];
 }

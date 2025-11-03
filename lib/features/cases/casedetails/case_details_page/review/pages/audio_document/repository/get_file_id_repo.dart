@@ -122,4 +122,77 @@ class GetFileIDReo {
       return false;
     }
   }
+
+  //success api
+  Future<Map<String, dynamic>> successApi(
+    String caseID,
+    int docTypeID,
+    String fileUploadedID,
+    String status,
+  ) async {
+    final token = await SharedPreference.getToken();
+    final reviewerId = await SharedPreference.getUserId();
+
+    if (token == null ||
+        token.isEmpty ||
+        reviewerId == null ||
+        reviewerId.isEmpty) {
+      throw Exception('Token or ReviewerId not found in SharedPreferences');
+    }
+
+    final data = {
+      ...ApiUtils.getCommonParams(action: "filemgr", token: token),
+      "Tags": [
+        {"T": "dk1", "V": reviewerId},
+        {"T": "dk2", "V": docTypeID},
+        {"T": "c1", "V": int.parse(fileUploadedID)},
+        {"T": "c2", "V": status},
+        {"T": "c3", "V": caseID},
+        {"T": "c10", "V": "2"},
+      ],
+    };
+
+    try {
+      final response = await _dioHandler.post('', data: data);
+      return response;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  //delete
+
+  Future<Map<String, dynamic>> deleteFile(
+    String caseID,
+    int docTypeID,
+    int fileUploadedID,
+  ) async {
+    final token = await SharedPreference.getToken();
+    final reviewerId = await SharedPreference.getUserId();
+
+    if (token == null ||
+        token.isEmpty ||
+        reviewerId == null ||
+        reviewerId.isEmpty) {
+      throw Exception('Token or ReviewerId not found in SharedPreferences');
+    }
+
+    final data = {
+      ...ApiUtils.getCommonParams(action: "filemgr", token: token),
+      "Tags": [
+        {"T": "dk1", "V": reviewerId},
+        {"T": "dk2", "V": fileUploadedID},
+        {"T": "c1", "V": caseID},
+        {"T": "c2", "V": docTypeID},
+        {"T": "c10", "V": "4"},
+      ],
+    };
+
+    try {
+      final response = await _dioHandler.post('', data: data);
+      return response;
+    } catch (e) {
+      throw Exception("Error fetching File ID: $e");
+    }
+  }
 }

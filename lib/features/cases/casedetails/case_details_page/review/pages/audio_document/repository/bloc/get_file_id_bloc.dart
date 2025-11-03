@@ -21,24 +21,33 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
           event.fileSize,
         );
 
-        if (response["Status"] == 1 && response["Data"]?[0]?[0]?["id"] != null) {
+        if (response["Status"] == 1 &&
+            response["Data"]?[0]?[0]?["id"] != null) {
           emit(GetFileIdSuccess(response: response, filePath: event.filePath));
 
           final String fileID = response["Data"][0][0]["fid"].toString();
           final String fileType = response["Data"][0][0]["ftype"] ?? "";
+          final String fileUploadedID = response["Data"][0][0]["id"] ?? "";
 
           // Step 2: Automatically trigger get upload URL
-          add(GetUploadUrlEvent(
-            fileID: fileID,
-            fileType: fileType,
-            filePath: event.filePath,
-            context: event.context,
-          ));
+          add(
+            GetUploadUrlEvent(
+              fileID: fileID,
+              fileType: fileType,
+              filePath: event.filePath,
+              context: event.context,
+              caseID: event.caseID,
+              docTypeID: event.docTypeID,
+              fileUploadedID: fileUploadedID,
+            ),
+          );
         } else {
-          emit(GetFileIdFailure(
-            message: response["Info"] ?? "Failed to get file ID",
-            filePath: event.filePath,
-          ));
+          emit(
+            GetFileIdFailure(
+              message: response["Info"] ?? "Failed to get file ID",
+              filePath: event.filePath,
+            ),
+          );
         }
       } catch (e) {
         emit(GetFileIdFailure(message: e.toString(), filePath: event.filePath));
@@ -55,18 +64,31 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
         );
 
         if (uploadResponse != null && uploadResponse["UploadUrl"] != null) {
-          emit(GetUploadUrlSuccess(
-              response: uploadResponse, filePath: event.filePath));
+          emit(
+            GetUploadUrlSuccess(
+              response: uploadResponse,
+              filePath: event.filePath,
+            ),
+          );
 
           // Step 3: Trigger upload
-          add(UploadFileToS3Event(
-            context: event.context,
-            url: uploadResponse["UploadUrl"],
-            filePath: event.filePath,
-          ));
+          add(
+            UploadFileToS3Event(
+              context: event.context,
+              url: uploadResponse["UploadUrl"],
+              filePath: event.filePath,
+              caseID: event.caseID,
+              docTypeID: event.docTypeID,
+              fileUploadedID: event.fileUploadedID,
+            ),
+          );
         } else {
-          emit(GetFileIdFailure(
-              message: "Failed to get upload URL", filePath: event.filePath));
+          emit(
+            GetFileIdFailure(
+              message: "Failed to get upload URL",
+              filePath: event.filePath,
+            ),
+          );
         }
       } catch (e) {
         emit(GetFileIdFailure(message: e.toString(), filePath: event.filePath));
@@ -85,13 +107,84 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
 
         if (success) {
           emit(FileUploadSuccess(filePath: event.filePath));
-          CustomScaffoldMessenger.showSuccessMessage(
-            event.context,
-            "File uploaded successfully",
+          add(
+            SuccessApiEvent(
+              caseID: event.caseID,
+              docTypeID: event.docTypeID,
+              fileUploadedID: event.fileUploadedID,
+              status: "2",
+              filePath: event.filePath,
+              context: event.context,
+            ),
           );
         } else {
-          emit(GetFileIdFailure(
-              message: "File upload failed", filePath: event.filePath));
+          add(
+            SuccessApiEvent(
+              caseID: event.caseID,
+              docTypeID: event.docTypeID,
+              fileUploadedID: event.fileUploadedID,
+              status: "3",
+              filePath: event.filePath,
+              context: event.context,
+            ),
+          );
+        }
+      } catch (e) {
+        emit(GetFileIdFailure(message: e.toString(), filePath: event.filePath));
+      }
+    });
+
+    //success
+    on<SuccessApiEvent>((event, emit) async {
+      emit(GetFileIdLoading(filePath: event.filePath));
+      try {
+        final response = await repository.successApi(
+          event.caseID,
+          event.docTypeID,
+          event.fileUploadedID,
+          event.status,
+        );
+
+        if (response["Status"] == 1) {
+          emit(SuccessAPI(filePath: event.filePath));
+          CustomScaffoldMessenger.showSuccessMessage(
+            event.context,
+            "File upload successfully",
+          );
+        } else {
+          emit(
+            GetFileIdFailure(
+              message: response["Info"] ?? "File Upload Failed",
+              filePath: event.filePath,
+            ),
+          );
+        }
+      } catch (e) {
+        emit(GetFileIdFailure(message: e.toString(), filePath: event.filePath));
+      }
+    });
+    on<DeleteFileEvent>((event, emit) async {
+      emit(GetFileIdLoading(filePath: event.filePath));
+      try {
+        final response = await repository.deleteFile(
+          event.caseID,
+          event.docTypeId,
+          event.fileUploadedID,
+        );
+
+        if (response["Status"] == 1) {
+          emit(DeleteFileSuccess(response: response));
+          CustomScaffoldMessenger.showSuccessMessage(
+            event.context,
+            response["Data"][0][0]["msg"],
+          );
+        } else {
+          emit(
+            GetFileIdFailure(
+              message: response["Info"],
+              filePath: event.filePath,
+            ),
+          );
         }
       } catch (e) {
         emit(GetFileIdFailure(message: e.toString(), filePath: event.filePath));

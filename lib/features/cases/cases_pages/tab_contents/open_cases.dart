@@ -33,7 +33,6 @@ class OpenCasesTab extends StatelessWidget {
                 final caseItem = openCases[index];
                 return CaseCard(
                   ontap: () {
-                    print(caseItem.saltKey);
                     Navigator.pushNamed(
                       context,
                       '/casedetails',
@@ -138,18 +137,11 @@ class CaseCard extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 8),
-                          RichText(
-                            text: TextSpan(
-                              text: "Due Date:",
-                              style: AppFonts.subtext,
-                              children: [
-                                TextSpan(
-                                  text: ' $dueDate',
-                                  style: AppFonts.subtext.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
+
+                          Text(
+                            ' $dueDate',
+                            style: AppFonts.subtext.copyWith(
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ],

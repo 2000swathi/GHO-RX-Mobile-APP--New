@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/model/case_details_model.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/recordaudio.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/get_file_id_repo.dart';
@@ -10,11 +11,13 @@ class Reviewpage extends StatefulWidget {
   String saltID;
   String summaryRecords;
   String caseID;
+  List<AudioSummaryModel>? audioSummaryModel;
   Reviewpage({
     super.key,
     required this.saltID,
     required this.summaryRecords,
     required this.caseID,
+    required this.audioSummaryModel,
   });
 
   @override
@@ -44,7 +47,7 @@ class _ReviewpageState extends State<Reviewpage>
   }
 
   void _goToNextTab() {
-    FocusScope.of(context).unfocus(); 
+    FocusScope.of(context).unfocus();
     if (_tabController.index < _tabController.length - 1) {
       _tabController.animateTo(_tabController.index + 1);
     }
@@ -93,7 +96,7 @@ class _ReviewpageState extends State<Reviewpage>
                 fontWeight: FontWeight.w500,
               ),
               tabs: const [
-                Tab(text: 'Type Written Report'),
+                Tab(text: 'Type Written Report*'),
                 Tab(text: 'Attach / Record Audio'),
               ],
             ),
@@ -118,7 +121,12 @@ class _ReviewpageState extends State<Reviewpage>
                   maintainState: true,
                   child: BlocProvider(
                     create: (_) => GetFileIdBloc(repository: GetFileIDReo()),
-                    child: Recordaudio(caseID: widget.caseID),
+                    child: Recordaudio(
+                      caseID: widget.caseID,
+                      audioSummaryModel: widget.audioSummaryModel,
+                      saltID: widget.saltID,
+                      
+                    ),
                   ),
                 ),
               ],

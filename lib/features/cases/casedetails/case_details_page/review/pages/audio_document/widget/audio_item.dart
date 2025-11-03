@@ -129,7 +129,7 @@ class _AudioItemState extends State<AudioItem> {
   Widget build(BuildContext context) {
     return BlocListener<GetFileIdBloc, GetFileIdState>(
       listener: (context, state) {
-        if (state is FileUploadSuccess && state.filePath == widget.filePath) {
+        if (state is SuccessAPI && state.filePath == widget.filePath) {
           setState(() => _isUploading = false);
           widget.onDelete();
         } else if (state is GetFileIdFailure && state.filePath == widget.filePath) {

@@ -29,10 +29,15 @@ class _WrittenreportState extends State<Writtenreport> {
   final TextEditingController summaryController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     if (widget.summaryRecords.isNotEmpty) {
       summaryController.text = widget.summaryRecords;
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return BlocListener<SummaryBloc, SummaryState>(
       listener: (context, state) {
         if (state is SummarySuccess) {
@@ -71,7 +76,6 @@ class _WrittenreportState extends State<Writtenreport> {
               ),
             ),
             const SizedBox(height: 16),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -85,11 +89,11 @@ class _WrittenreportState extends State<Writtenreport> {
                         isLoading: isLoading,
                         onPressed: () {
                           context.read<SummaryBloc>().add(
-                            summarycaseEvent(
-                              saltID: widget.saltID,
-                              summary: summaryController.text.trim(),
-                            ),
-                          );
+                                summarycaseEvent(
+                                  saltID: widget.saltID,
+                                  summary: summaryController.text.trim(),
+                                ),
+                              );
                         },
                       ),
                     );

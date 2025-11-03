@@ -7,6 +7,7 @@ class CaseDetailsModel {
   final List<MedicationModel>? medications;
   final List<QuestionAnswerModel>? questions;
   final List<AudioSummaryModel>? audiosummery;
+  final List<AudioSummaryModel>? draudiosummery;
 
   CaseDetailsModel({
     required this.status,
@@ -17,6 +18,7 @@ class CaseDetailsModel {
     this.medications,
     this.questions,
     this.audiosummery,
+    this.draudiosummery,
   });
 
   factory CaseDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -52,13 +54,23 @@ class CaseDetailsModel {
           (data != null && data.length > 3 && data[3] is List)
               ? (data[3] as List)
                   .map(
-                    (e) => QuestionAnswerModel.fromJson(e as Map<String, dynamic>),
+                    (e) =>
+                        QuestionAnswerModel.fromJson(e as Map<String, dynamic>),
                   )
                   .toList()
               : [],
       audiosummery:
           (data != null && data.length > 4 && data[4] is List)
               ? (data[4] as List)
+                  .map(
+                    (e) =>
+                        AudioSummaryModel.fromJson(e as Map<String, dynamic>),
+                  )
+                  .toList()
+              : [],
+      draudiosummery:
+          (data != null && data.length > 4 && data[5] is List)
+              ? (data[5] as List)
                   .map(
                     (e) =>
                         AudioSummaryModel.fromJson(e as Map<String, dynamic>),
@@ -79,7 +91,8 @@ class CaseDetailsModel {
         medications!.map((m) => m.toJson()).toList(),
         questions!.map((q) => q.toJson()).toList(),
         audiosummery!.map((r) => r.toJson()).toList(),
-        [],
+        draudiosummery!.map((s) => s.toJson()).toList(),
+
         [],
       ],
     };
@@ -99,6 +112,7 @@ class CaseInfo {
   final String timeAllowed;
   final String? dateSubmitted;
   final String? dob;
+  final int caseID;
 
   CaseInfo({
     required this.id,
@@ -111,6 +125,7 @@ class CaseInfo {
     required this.timeAllowed,
     this.dateSubmitted,
     this.dob,
+    required this.caseID,
   });
 
   factory CaseInfo.fromJson(Map<String, dynamic> json) => CaseInfo(
@@ -124,6 +139,7 @@ class CaseInfo {
     timeAllowed: json['TimeAllowd'] ?? '',
     dateSubmitted: json['DateSubmitted'] ?? "",
     dob: json["DOB"] ?? "",
+    caseID: json["CaseID"] ?? 0,
   );
 
   Map<String, dynamic> toJson() => {
@@ -137,6 +153,7 @@ class CaseInfo {
     'TimeAllowd': timeAllowed,
     'DateSubmitted': dateSubmitted,
     "DOB": dob,
+    "CaseID": caseID,
   };
 }
 
@@ -189,12 +206,13 @@ class QuestionAnswerModel {
     this.support,
   });
 
-  factory QuestionAnswerModel.fromJson(Map<String, dynamic> json) => QuestionAnswerModel(
-    id: json['id'] ?? 0,
-    question: json['Question'] ?? '',
-    answer: json['Answer']??"",
-    support: json['Support']??"",
-  );
+  factory QuestionAnswerModel.fromJson(Map<String, dynamic> json) =>
+      QuestionAnswerModel(
+        id: json['id'] ?? 0,
+        question: json['Question'] ?? '',
+        answer: json['Answer'] ?? "",
+        support: json['Support'] ?? "",
+      );
 
   Map<String, dynamic> toJson() => {
     'id': id,
@@ -213,6 +231,7 @@ class AudioSummaryModel {
   final String uploadedDate;
   final String url;
   final int docTypeID;
+  final String userType;
 
   AudioSummaryModel({
     required this.id,
@@ -223,6 +242,7 @@ class AudioSummaryModel {
     required this.uploadedDate,
     required this.url,
     required this.docTypeID,
+    required this.userType,
   });
 
   factory AudioSummaryModel.fromJson(Map<String, dynamic> json) {
@@ -235,6 +255,7 @@ class AudioSummaryModel {
       uploadedDate: json['UploadedDate'] ?? '',
       url: json['_url'] ?? '',
       docTypeID: json['DocumentTypeid'] ?? 0,
+      userType: json['UserType'] ?? "P",
     );
   }
 
@@ -248,6 +269,7 @@ class AudioSummaryModel {
       'UploadedDate': uploadedDate,
       '_url': url,
       'DocumentTypeid': docTypeID,
+      'UserType': userType,
     };
   }
 }

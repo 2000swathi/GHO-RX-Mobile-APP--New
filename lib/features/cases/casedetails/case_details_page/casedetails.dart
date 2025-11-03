@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
@@ -27,8 +28,7 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Safe place to read ModalRoute arguments only once
-    opencases =
-        ModalRoute.of(context)?.settings.arguments as OpenCaseModel;
+    opencases = ModalRoute.of(context)?.settings.arguments as OpenCaseModel;
 
     // Dispatch event only once per page build
     context.read<CaseDetailsBloc>().add(
@@ -124,7 +124,11 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
                         ),
                         const SizedBox(width: 15),
                         if (CaseInfo.dob!.isNotEmpty)
-                          const Icon(Icons.cake, size: 19, color: AppColors.textPrimary),
+                          const Icon(
+                            Icons.cake,
+                            size: 19,
+                            color: AppColors.textPrimary,
+                          ),
                         const SizedBox(width: 7),
                         Text(
                           CaseInfo.dob.toString(),
@@ -136,18 +140,10 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(
-                          "3 hours left",
-                          style: AppFonts.textSecondary.copyWith(
-                            fontSize: 14,
-                            color: AppColors.red,
-                          ),
-                        ),
-                        const SizedBox(width: 3),
                         const Icon(Icons.circle, size: 6, color: AppColors.red),
                         const SizedBox(width: 3),
                         Text(
-                          "Due Date: ${CaseInfo.dueDate}",
+                          "${CaseInfo.dueDate}",
                           style: AppFonts.textSecondary.copyWith(
                             fontSize: 14,
                             color: AppColors.red,
@@ -159,11 +155,41 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
                     CustomButton(
                       text: "Submit Review",
                       onPressed: () {
+                        final summary =
+                            state.caseDetailsModel.caseInfo?.summaryOfRecords
+                                .trim() ??
+                            '';
+                        final hasUnanswered = state.caseDetailsModel.questions!
+                            .any((q) {
+                              final answer = q.answer?.toString().trim() ?? '';
+                              final support =
+                                  q.support?.toString().trim() ?? '';
+                              return answer.isEmpty || support.isEmpty;
+                            });
+                        if (summary.isEmpty && hasUnanswered) {
+                          return CustomScaffoldMessenger.showErrorMessage(
+                            context,
+                            "Please fill the required* fields before submitting!",
+                          );
+                        } else if (hasUnanswered) {
+                          return CustomScaffoldMessenger.showErrorMessage(
+                            context,
+                            "Please provide either an answer or support for each question before submitting!",
+                          );
+                        } else if (summary.isEmpty) {
+                          return CustomScaffoldMessenger.showErrorMessage(
+                            context,
+                            "Please add your review before submitting!",
+                          );
+                        }
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                const FinalOpinionConfirmation(),
+                            builder:
+                                (context) => FinalOpinionConfirmation(
+                                  caseDetailsModel: state.caseDetailsModel,
+                                  saltID: opencases.saltKey,
+                                ),
                           ),
                         );
                       },
