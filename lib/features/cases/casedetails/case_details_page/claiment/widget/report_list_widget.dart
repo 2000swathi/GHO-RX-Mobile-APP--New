@@ -78,7 +78,7 @@ class ReportListWidget extends StatelessWidget {
                     context.read<GetFileIdBloc>().add(
                       DeleteFileEvent(
                         caseID: caseID!,
-                        docTypeId: 6,
+                        docTypeId: 1,
                         fileUploadedID: report.id,
                         filePath: "",
                         context: context,
