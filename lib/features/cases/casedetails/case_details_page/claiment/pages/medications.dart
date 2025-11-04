@@ -8,12 +8,10 @@ class Medications extends StatelessWidget {
 
   Medications({super.key, required this.medicationModel});
 
-  
-
   @override
   Widget build(BuildContext context) {
-    final medications=medicationModel??[];
-    if(medications.isEmpty){
+    final medications = medicationModel ?? [];
+    if (medications.isEmpty) {
       return SizedBox();
     }
 
@@ -39,13 +37,13 @@ class Medications extends StatelessWidget {
             "Medications",
             style: AppFonts.hinttext2.copyWith(fontWeight: FontWeight.w600),
           ),
-          SizedBox(height: 15),
+
           ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             itemCount: medications.length,
             itemBuilder: (context, index) {
-              final medication= medications[index];
+              final medication = medications[index];
               return Padding(
                 padding: EdgeInsets.symmetric(vertical: 10.0),
                 child: Column(
@@ -65,7 +63,7 @@ class Medications extends StatelessWidget {
                               ),
                               SizedBox(height: 4),
                               Text(
-                                "${medication.endMonth.toString()} ${medication.endYear.toString()}" ,
+                                "${medication.endMonth.toString()} ${medication.endYear.toString()}",
                                 style: AppFonts.buttontxt16.copyWith(
                                   fontSize: 16,
                                   color: AppColors.red,

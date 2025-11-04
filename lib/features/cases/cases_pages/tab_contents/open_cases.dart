@@ -47,10 +47,13 @@ class OpenCasesTab extends StatelessWidget {
               },
             );
           } else if (state is OpenCloseError) {
-            return Center(
-              child: Text(
-                'Error: ${state.message}',
-                style: AppFonts.subtext.copyWith(color: AppColors.warningred),
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  '${state.message}',
+                  style: AppFonts.subtext,
+                ),
               ),
             );
           } else {

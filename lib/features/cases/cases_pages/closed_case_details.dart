@@ -86,14 +86,14 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
 
           if (state is casedetailsSuccess) {
             final caseDetails = state.caseDetailsModel;
-            final audioItems = caseDetails.draudiosummery ?? [];
+            final audioItemsdr = caseDetails.draudiosummery ?? [];
             final audioItemsPat = caseDetails.audiosummery ?? [];
             final audioListdr =
-                audioItems.where((item) => item.docTypeID == 6).toList();
+                audioItemsdr.where((item) => item.docTypeID == 6).toList();
             final audioListPat =
                 audioItemsPat.where((item) => item.docTypeID == 6).toList();
             final docList =
-                audioItems.where((item) => item.docTypeID != 6).toList();
+                audioItemsdr.where((item) => item.docTypeID != 6).toList();
             final docListPat =
                 audioItemsPat.where((item) => item.docTypeID != 6).toList();
 
@@ -167,8 +167,124 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
 
                       datas: caseDetails.medicalSummary!.medicalSummary,
                     ),
-                    SizedBox(height: 24),
+                    caseDetails.medications!.isEmpty
+                        ? SizedBox()
+                        : SizedBox(height: 16.h),
+                    caseDetails.medications!.isEmpty
+                        ? SizedBox()
+                        : CustomContainer(
+                          greyHeading: "Medication",
 
+                          customWidgets1: [
+                            SizedBox(height: 10),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: caseDetails.medications!.length,
+                              itemBuilder: (context, index) {
+                                var medications =
+                                    caseDetails.medications![index];
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          medications.name,
+                                          style: AppFonts.buttontxt.copyWith(color: AppColors.textPrimary),
+                                        ),
+                                        Spacer(),
+                                        Text(
+                                          "${medications.endMonth} ${medications.endYear}",
+                                          style: AppFonts.labelItalic,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                    docListPat.isEmpty ? SizedBox() : SizedBox(height: 16),
+                    docListPat.isEmpty
+                        ? SizedBox()
+                        : CustomContainer(
+                          greyHeading: "Patient Attached Documents",
+                          customWidgets: Container(
+                            width: 41.w,
+                            height: 16.h,
+                            decoration: BoxDecoration(
+                              color: AppColors.successcolor.withAlpha(10),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "${docListPat.length} Files",
+                                style: AppFonts.subtext.copyWith(
+                                  fontSize: 10,
+                                  color: AppColors.successcolor,
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          customWidgets1: [
+                            SizedBox(height: 10),
+                            ReportListWidget(
+                              fileList: docListPat,
+                              itemCount: docListPat.length,
+                              caseID: widget.closedCaseModel.caseID.toString(),
+                              saltID: widget.saltID,
+                            ),
+                          ],
+                        ),
+                    audioListPat.isEmpty ? SizedBox() : SizedBox(height: 16.h),
+                    audioListPat.isEmpty
+                        ? SizedBox()
+                        : CustomContainer(
+                          greyHeading: "Patient Audio Summary",
+
+                          customWidgets1:
+                              audioListPat.isNotEmpty
+                                  ? [
+                                    SizedBox(height: 10),
+                                    AudioSummaryListWidget(
+                                      audioList: audioListPat,
+                                      caseID:
+                                          widget.closedCaseModel.caseID
+                                              .toString(),
+                                      saltID: widget.saltID,
+                                    ),
+                                  ]
+                                  : [],
+                        ),
+                    caseDetails.questions!.isEmpty
+                        ? SizedBox()
+                        : SizedBox(height: 16.h),
+                    caseDetails.questions!.isEmpty
+                        ? SizedBox()
+                        : CustomContainer(
+                          greyHeading: "Q&A",
+
+                          customWidgets1: [
+                            SizedBox(height: 10),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: caseDetails.questions!.length,
+                              itemBuilder: (context, index) {
+                                var qaList = caseDetails.questions![index];
+                                return CommonQa(
+                                  question: qaList.question,
+                                  ans: qaList.answer.toString(),
+                                  support: qaList.support.toString(),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                    SizedBox(height: 16),
                     CustomContainer(
                       greyHeading: "Doctor Report",
                       datas: caseDetails.caseInfo!.summaryOfRecords,
@@ -177,7 +293,7 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                     docList.isEmpty
                         ? SizedBox()
                         : CustomContainer(
-                          greyHeading: "Attached Documents",
+                          greyHeading: "Doctor Attached Documents",
                           customWidgets: Container(
                             width: 41.w,
                             height: 16.h,
@@ -199,7 +315,6 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                           customWidgets1: [
                             SizedBox(height: 10),
                             ReportListWidget(
-                              isDrUploaded: true,
                               fileList: docList,
                               itemCount: docList.length,
                               caseID: widget.closedCaseModel.caseID.toString(),
@@ -211,7 +326,7 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                     audioListdr.isEmpty
                         ? SizedBox()
                         : CustomContainer(
-                          greyHeading: "Audio Summary",
+                          greyHeading: "Doctor Audio Summary",
 
                           customWidgets1:
                               audioListdr.isNotEmpty
@@ -227,27 +342,6 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                                   ]
                                   : [],
                         ),
-                    SizedBox(height: 16.h),
-                    CustomContainer(
-                      greyHeading: "Q&A",
-
-                      customWidgets1: [
-                        SizedBox(height: 10),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: caseDetails.questions!.length,
-                          itemBuilder: (context, index) {
-                            var qaList = caseDetails.questions![index];
-                            return CommonQa(
-                              question: qaList.question,
-                              ans: qaList.answer.toString(),
-                              support: qaList.support.toString(),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
 
                     SizedBox(height: 36),
                   ],
