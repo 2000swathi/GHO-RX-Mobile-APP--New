@@ -69,7 +69,7 @@ class CaseDetailsModel {
                   .toList()
               : [],
       draudiosummery:
-          (data != null && data.length > 4 && data[5] is List)
+          (data != null && data.length > 5 && data[5] is List)
               ? (data[5] as List)
                   .map(
                     (e) =>
@@ -112,7 +112,7 @@ class CaseInfo {
   final String timeAllowed;
   final String? dateSubmitted;
   final String? dob;
-  final int caseID;
+  final String caseID;
 
   CaseInfo({
     required this.id,
@@ -139,7 +139,7 @@ class CaseInfo {
     timeAllowed: json['TimeAllowd'] ?? '',
     dateSubmitted: json['DateSubmitted'] ?? "",
     dob: json["DOB"] ?? "",
-    caseID: json["CaseID"] ?? 0,
+    caseID: json["CaseID"] ?? "",
   );
 
   Map<String, dynamic> toJson() => {

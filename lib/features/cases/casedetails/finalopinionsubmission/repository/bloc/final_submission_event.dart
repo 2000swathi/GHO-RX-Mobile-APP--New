@@ -1,8 +1,8 @@
-part of 'final_submission_bloc.dart';
 
-sealed class FinalSubmissionEvent extends Equatable {
-  const FinalSubmissionEvent();
 
-  @override
-  List<Object> get props => [];
+abstract class FinalSubmissionEvent{
+}
+class SubmitCaseEvent extends FinalSubmissionEvent {
+  final String saltID;
+  SubmitCaseEvent({required this.saltID});
 }

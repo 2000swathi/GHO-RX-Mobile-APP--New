@@ -1,21 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/core/constants/get_files_icons.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/bloc/case_details_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/bloc/case_details_event.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/model/case_details_model.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_event.dart';
 
 class ReportListWidget extends StatelessWidget {
   final List<AudioSummaryModel> fileList;
   final int itemCount;
   final bool? isDrUploaded;
+  final String? caseID;
+  final String? saltID;
 
   const ReportListWidget({
     Key? key,
     required this.fileList,
     required this.itemCount,
     this.isDrUploaded = false,
+    this.caseID,
+    this.saltID,
   }) : super(key: key);
 
   @override
@@ -64,7 +73,23 @@ class ReportListWidget extends StatelessWidget {
               ),
             ),
             isDrUploaded == true
-                ? IconButton(onPressed: () {}, icon: SvgPicture.asset("assets/svg/trash.svg"))
+                ? IconButton(
+                  onPressed: () {
+                    context.read<GetFileIdBloc>().add(
+                      DeleteFileEvent(
+                        caseID: caseID!,
+                        docTypeId: 6,
+                        fileUploadedID: report.id,
+                        filePath: "",
+                        context: context,
+                      ),
+                    );
+                    context.read<CaseDetailsBloc>().add(
+                      CaseDetailsEventRequested(saltID: saltID!),
+                    );
+                  },
+                  icon: SvgPicture.asset("assets/svg/trash.svg"),
+                )
                 : SizedBox(),
           ],
         );

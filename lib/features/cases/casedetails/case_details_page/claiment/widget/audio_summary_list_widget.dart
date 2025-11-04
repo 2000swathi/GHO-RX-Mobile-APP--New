@@ -1,6 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/bloc/case_details_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/bloc/case_details_event.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_event.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
@@ -9,13 +14,15 @@ import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_pag
 class AudioSummaryListWidget extends StatefulWidget {
   final List<AudioSummaryModel> audioList;
   final bool? isDrUploaded;
-  final VoidCallback? onDelete;
+  final String? caseID;
+  final String? saltID;
 
   AudioSummaryListWidget({
     super.key,
     required this.audioList,
     this.isDrUploaded = false,
-    this.onDelete
+    this.caseID,
+    this.saltID,
   });
 
   @override
@@ -260,7 +267,20 @@ class _AudioSummaryListWidgetState extends State<AudioSummaryListWidget> {
             ),
             widget.isDrUploaded == true
                 ? IconButton(
-                  onPressed: widget.onDelete,
+                  onPressed: () {
+                    context.read<GetFileIdBloc>().add(
+                      DeleteFileEvent(
+                        caseID: widget.caseID!,
+                        docTypeId: 6,
+                        fileUploadedID: audio.id,
+                        filePath: "",
+                        context: context,
+                      ),
+                    );
+                    context.read<CaseDetailsBloc>().add(
+                      CaseDetailsEventRequested(saltID: widget.saltID!),
+                    );
+                  },
                   icon: SvgPicture.asset("assets/svg/trash.svg"),
                 )
                 : SizedBox(),

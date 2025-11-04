@@ -207,7 +207,9 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
           } else if (state is casedetailsFailure) {
             return Padding(
               padding: const EdgeInsets.all(15),
-              child: Center(child: Text(state.error)),
+              child: Center(
+                child: Text(state.error, textAlign: TextAlign.center),
+              ),
             );
           }
           return Container();

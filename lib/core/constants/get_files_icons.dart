@@ -10,19 +10,19 @@ class GetFilesandIcons {
     if (lower.endsWith(".pdf")) {
       return "assets/svg/pdfIcons.svg";
     } else if (lower.endsWith(".doc")) {
-      return "assets/svg/Files Icons.svg";
+      return "assets/svg/doc_icon.svg";
     } else if (lower.endsWith(".docx")) {
-      return "assets/svg/Files Icons.svg";
+      return "assets/svg/docx_file.svg";
     } else if (lower.endsWith(".xls")) {
-      return "assets/svg/Document.svg";
+      return "assets/svg/xls_icon.svg";
     } else if (lower.endsWith(".xlsx")) {
-      return "assets/svg/Document.svg";
+      return "assets/svg/xlsx_icon.svg";
     } else if (lower.endsWith(".img")) {
       return "assets/svg/img_icon.svg";
     } else if (lower.endsWith(".jpg")) {
-      return "assets/svg/img_icon.svg";
+      return "assets/svg/jpg_icon.svg";
     } else if (lower.endsWith(".jpeg")) {
-      return "assets/svg/img_icon.svg";
+      return "assets/svg/jpeg_icon.svg";
     } else if (lower.endsWith(".png")) {
       return "assets/svg/img_icon.svg";
     } else {

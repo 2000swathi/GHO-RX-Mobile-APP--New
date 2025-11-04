@@ -163,6 +163,7 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
         emit(GetFileIdFailure(message: e.toString(), filePath: event.filePath));
       }
     });
+    // delete
     on<DeleteFileEvent>((event, emit) async {
       emit(GetFileIdLoading(filePath: event.filePath));
       try {

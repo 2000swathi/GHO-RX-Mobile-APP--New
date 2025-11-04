@@ -6,6 +6,8 @@ class ClosedCaseModel {
   final int timeUsed;
   final String completedDate;
   final String summaryOfRecords;
+  final String saltID;
+  final String caseID;
 
   ClosedCaseModel({
     required this.id,
@@ -15,6 +17,8 @@ class ClosedCaseModel {
     required this.timeUsed,
     required this.completedDate,
     required this.summaryOfRecords,
+    required this.saltID,
+    required this.caseID,
   });
 
   factory ClosedCaseModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +30,8 @@ class ClosedCaseModel {
       timeUsed: json['TimeUsed'] ?? 0,
       completedDate: json['CompletedDate'] ?? '',
       summaryOfRecords: json['SummaryOfRecords'] ?? '',
+      saltID: json['SaltKey']??"",
+      caseID: json['CaseID']??""
     );
   }
 
@@ -38,6 +44,8 @@ class ClosedCaseModel {
       'TimeUsed': timeUsed,
       'CompletedDate': completedDate,
       'SummaryOfRecords': summaryOfRecords,
+      'SaltKey': saltID,
+      'CaseID':caseID
     };
   }
 }

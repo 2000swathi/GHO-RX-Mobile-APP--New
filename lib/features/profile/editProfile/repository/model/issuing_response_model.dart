@@ -1,24 +1,24 @@
-class LicenseListResponseModel {
+class IsuuingAuthResponseModel {
   final int status;
   final String error;
   final String info;
-  final List<List<LicenseList>> data;
+  final List<List<LAuthorityList>> data;
 
-  LicenseListResponseModel({
+  IsuuingAuthResponseModel({
     required this.status,
     required this.error,
     required this.info,
     required this.data,
   });
 
-  factory LicenseListResponseModel.fromJson(Map<String, dynamic> json) {
-    return LicenseListResponseModel(
+  factory IsuuingAuthResponseModel.fromJson(Map<String, dynamic> json) {
+    return IsuuingAuthResponseModel(
       status: json['Status'],
       error: json['Error'],
       info: json['Info'],
       data:(json['Data'] as List<dynamic>? ?? [])
         .map((innerList) => (innerList as List<dynamic>)
-            .map((item) => LicenseList.fromJson(item))
+            .map((item) => LAuthorityList.fromJson(item))
             .toList())
         .toList()
     );
@@ -36,26 +36,26 @@ class LicenseListResponseModel {
   }
 }
 
-class LicenseList {
-  final String licenseTypeID;
-  final String licenseTypeName;
+class LAuthorityList {
+  final String authorityID;
+  final String authorityName;
 
-  LicenseList({
-    required this.licenseTypeID,
-    required this.licenseTypeName,
+  LAuthorityList({
+    required this.authorityID,
+    required this.authorityName,
   });
 
-  factory LicenseList.fromJson(Map<String, dynamic> json) {
-    return LicenseList(
-      licenseTypeID: json['DataValue']??"",
-      licenseTypeName: json['DisplyText']??"",
+  factory LAuthorityList.fromJson(Map<String, dynamic> json) {
+    return LAuthorityList(
+      authorityID: json['DataValue']??"",
+      authorityName: json['DisplyText']??"",
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'DataValue': licenseTypeID,
-      'DisplyText': licenseTypeName,
+      'DataValue': authorityID,
+      'DisplyText': authorityName,
     };
   }
 }
