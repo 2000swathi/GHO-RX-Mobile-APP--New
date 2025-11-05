@@ -181,8 +181,8 @@ class GetFileIDReo {
       ...ApiUtils.getCommonParams(action: "filemgr", token: token),
       "Tags": [
         {"T": "dk1", "V": reviewerId},
-        {"T": "dk2", "V": fileUploadedID},
-        {"T": "c1", "V": caseID},
+        {"T": "dk2", "V": caseID},
+        {"T": "c1", "V": fileUploadedID},
         {"T": "c2", "V": docTypeID},
         {"T": "c10", "V": "4"},
       ],
