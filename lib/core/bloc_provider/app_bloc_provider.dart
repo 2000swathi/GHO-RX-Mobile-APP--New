@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/repository/auth_repository.dart';
+import 'package:ghorx_mobile_app_new/features/cases/widgets/tab_contents/bloc/open_closed_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/cases/widgets/tab_contents/repository/open_closed_repo.dart';
 import 'package:ghorx_mobile_app_new/features/home/bloc/home_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/home/repository/home_repository.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
@@ -49,6 +51,9 @@ class AppBlocProvider extends StatelessWidget {
         ),
         BlocProvider<DeleteBloc>(
           create: (_) => DeleteBloc(repository: DeleteProfileRepository()),
+        ),
+        BlocProvider<OpenClosedBloc>(
+          create: (_) => OpenClosedBloc(repository: OpenClosedRepository()),
         ),
       ],
       child: child,
