@@ -42,6 +42,13 @@ class LicenseListState extends ListState {
   @override
   List<Object> get props => [licenseResponse];
 }
+//License
+class AuthorityListState extends ListState {
+  final IsuuingAuthResponseModel response;
+  const AuthorityListState({required this.response});
+  @override
+  List<Object> get props => [response];
+}
 
 //List Failure
 class ListFailure extends ListState {

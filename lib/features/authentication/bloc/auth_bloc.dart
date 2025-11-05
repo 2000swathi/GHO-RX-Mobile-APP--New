@@ -91,5 +91,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthFailure(e.toString()));
       }
     });
+
+    on<Logout>((event, emit) async {
+      emit(AuthLoading());
+      try {
+        await SharedPreference.clear();
+        emit(const LogoutSuccess(true));
+      } on Exception catch (e) {
+        emit(AuthFailure(e.toString()));
+      }
+    });
   }
 }

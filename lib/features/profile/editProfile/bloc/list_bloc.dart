@@ -1,10 +1,10 @@
-import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/list_repository.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/accreditationtype_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/certified_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/country_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/issuing_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/license_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty%20type_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty_response_model.dart';
@@ -22,6 +22,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     on<FetchAccrediationList>(_onFetchAccreditation);
     on<FetchCertifiedList>(_onFetchCertified);
     on<FetchSpecialtyTypeList>(_onFetchSpecialtyType);
+    on<FetchAuthorityList>(_onFetchAuthorityType);
   }
 
   //country list
@@ -62,8 +63,13 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     emit(ListLoading());
 
     try {
-      final accreditationTypeResponse = await repository.fetchAccreditationTypeList();
-      emit(AccreditationTypeListState(accreditationTypeResponse: accreditationTypeResponse));
+      final accreditationTypeResponse =
+          await repository.fetchAccreditationTypeList();
+      emit(
+        AccreditationTypeListState(
+          accreditationTypeResponse: accreditationTypeResponse,
+        ),
+      );
     } catch (e) {
       emit(ListFailure(error: e.toString()));
     }
@@ -84,8 +90,23 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     }
   }
 
+  // athority
+  Future<void> _onFetchAuthorityType(
+    FetchAuthorityList event,
+    Emitter<ListState> emit,
+  ) async {
+    emit(ListLoading());
+
+    try {
+      final response = await repository.fetchAuthorityList();
+      emit(AuthorityListState(response: response));
+    } catch (e) {
+      emit(ListFailure(error: e.toString()));
+    }
+  }
+
   //Certified
-   Future<void> _onFetchCertified(
+  Future<void> _onFetchCertified(
     FetchCertifiedList event,
     Emitter<ListState> emit,
   ) async {
@@ -106,9 +127,11 @@ class ListBloc extends Bloc<ListEvent, ListState> {
   ) async {
     emit(ListLoading());
 
-    try { 
+    try {
       final specialtyTypeResponse = await repository.fetchSpecialtyTypeList();
-      emit(SpecialtyTypeListState(specialtyTypeResponse: specialtyTypeResponse)); 
+      emit(
+        SpecialtyTypeListState(specialtyTypeResponse: specialtyTypeResponse),
+      );
     } catch (e) {
       emit(ListFailure(error: e.toString()));
     }
