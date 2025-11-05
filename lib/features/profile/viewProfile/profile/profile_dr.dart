@@ -6,7 +6,7 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessan
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
-import 'package:ghorx_mobile_app_new/features/cases/widgets/case_appbar.dart';
+import 'package:ghorx_mobile_app_new/features/cases/cases_pages/widgets/case_appbar.dart';
 import 'package:ghorx_mobile_app_new/features/profile/delete/bloc/delete_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_language.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_specialty_sheet.dart';
@@ -36,9 +36,10 @@ class _ProfileDrState extends State<ProfileDr> {
     final repository = ProfileRepository();
 
     return Scaffold(
-      appBar: CaseAppBar(title: 'Welcome, Doctor', istrue: true),
+      appBar: CaseAppBar(title: 'Welcome, Doctor',isLogout: true,),
       body: ListView(
         children: [
+          const SizedBox(height: 15),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Text(

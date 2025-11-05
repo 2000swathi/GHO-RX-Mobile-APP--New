@@ -37,7 +37,7 @@ class LicenseListResponseModel {
 }
 
 class LicenseList {
-  final int licenseTypeID;
+  final String licenseTypeID;
   final String licenseTypeName;
 
   LicenseList({
@@ -47,15 +47,15 @@ class LicenseList {
 
   factory LicenseList.fromJson(Map<String, dynamic> json) {
     return LicenseList(
-      licenseTypeID: json['LicenseTypeID'],
-      licenseTypeName: json['LicenseType'],
+      licenseTypeID: json['DataValue']??"",
+      licenseTypeName: json['DisplyText']??"",
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'SpecialtyID': licenseTypeID,
-      'SpecialtyName': licenseTypeName,
+      'DataValue': licenseTypeID,
+      'DisplyText': licenseTypeName,
     };
   }
 }

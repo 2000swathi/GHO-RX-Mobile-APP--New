@@ -19,3 +19,6 @@ class OTPResend extends AuthEvent {
 
   OTPResend({required this.email});
 }
+
+//logout
+class Logout extends AuthEvent {}

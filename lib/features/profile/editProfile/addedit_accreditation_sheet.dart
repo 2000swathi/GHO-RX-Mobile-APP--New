@@ -128,12 +128,12 @@ class AddEditAccrediationBottomSheet {
                 profileBloc.add(FetchAccreditation());
                 CustomScaffoldMessenger.showSuccessMessage(
                   context,
-                  state.message ?? "Edited Successfully",
+                  state.message,
                 );
               } else if (state is EditFailure) {
                 CustomScaffoldMessenger.showErrorMessage(
                   context,
-                  state.error ?? "Failed to edit",
+                  state.error,
                 );
               }
             },

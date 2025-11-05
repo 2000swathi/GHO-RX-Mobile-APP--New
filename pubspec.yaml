@@ -45,11 +45,39 @@ dependencies:
   flutter_glass_morphism: ^1.0.1
   dotted_border: ^2.1.0
   dropdown_button2: ^2.3.9
+  shimmer: ^3.0.0
+  just_audio: ^0.10.5
+  url_launcher: ^6.3.2
+  open_filex: ^4.7.0
+  record: ^6.1.2
+  path_provider: ^2.1.5
+  image_picker: ^1.2.0
+  file_picker: ^10.3.3
+  device_info_plus: ^12.2.0
+  permission_handler: ^12.0.1
+  path: ^1.9.1
+  http: ^1.5.0
 
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.14.4
   flutter_test:
     sdk: flutter
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  web:
+    generate: true
+  windows:
+    generate: true
+  macos:
+    generate: true
+  remove_alpha_ios: true
+  image_path: "assets/images/rx logo-1024.png"
+  adaptive_icon_foreground: "assets/images/rx logo-1024.png"
+  adaptive_icon_background: "#ffffff"
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
