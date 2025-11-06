@@ -23,6 +23,7 @@ class CaseDetailsPage extends StatefulWidget {
 class _CaseDetailsPageState extends State<CaseDetailsPage> {
   final repository = CaseDetRepository();
   late OpenCaseModel opencases;
+  bool isRefreshed = false;
 
   @override
   void didChangeDependencies() {
@@ -32,7 +33,7 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
 
     // Dispatch event only once per page build
     context.read<CaseDetailsBloc>().add(
-      CaseDetailsEventRequested(saltID: opencases.saltKey.toString()),
+      CaseDetailsEventRequested(saltID: opencases.saltKey.toString(),silent: true),
     );
   }
 
@@ -73,9 +74,7 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
       ),
       body: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         builder: (context, state) {
-          if (state is CaseDetailsLoading) {
-            return const Center(child: LoadingAnimation());
-          } else if (state is casedetailsSuccess) {
+          if (state is casedetailsSuccess) {
             final CaseInfo = state.caseDetailsModel.caseInfo!;
             return SingleChildScrollView(
               child: Padding(
@@ -192,6 +191,7 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
                                 ),
                           ),
                         );
+                        ;
                       },
                     ),
                     const SizedBox(height: 14),

@@ -40,7 +40,7 @@ class _FinalOpinionConfirmationState extends State<FinalOpinionConfirmation> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     context.read<CaseDetailsBloc>().add(
-      CaseDetailsEventRequested(saltID: widget.saltID),
+      CaseDetailsEventRequested(saltID: widget.saltID,silent: true),
     );
     context.read<AttestBloc>().add(AttestListEvent(saltID: widget.saltID));
   }
@@ -266,27 +266,31 @@ class _FinalOpinionConfirmationState extends State<FinalOpinionConfirmation> {
                                       ]
                                       : [],
                             ),
-                        SizedBox(height: 16.h),
-                        CustomContainer(
-                          greyHeading: "Q&A",
+                        caseDetails.questions!.isEmpty
+                            ? SizedBox()
+                            : SizedBox(height: 16.h),
+                        caseDetails.questions!.isEmpty
+                            ? SizedBox()
+                            : CustomContainer(
+                              greyHeading: "Q&A",
 
-                          customWidgets1: [
-                            SizedBox(height: 10),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: caseDetails.questions!.length,
-                              itemBuilder: (context, index) {
-                                var qaList = caseDetails.questions![index];
-                                return CommonQa(
-                                  question: qaList.question,
-                                  ans: qaList.answer.toString(),
-                                  support: qaList.support.toString(),
-                                );
-                              },
+                              customWidgets1: [
+                                SizedBox(height: 10),
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: caseDetails.questions!.length,
+                                  itemBuilder: (context, index) {
+                                    var qaList = caseDetails.questions![index];
+                                    return CommonQa(
+                                      question: qaList.question,
+                                      ans: qaList.answer.toString(),
+                                      support: qaList.support.toString(),
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
                         SizedBox(height: 16.h),
                         BlocBuilder<AttestBloc, AttestState>(
                           builder: (context, attestState) {
