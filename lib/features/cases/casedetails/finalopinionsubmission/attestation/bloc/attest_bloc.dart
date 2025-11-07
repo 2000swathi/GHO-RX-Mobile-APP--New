@@ -8,7 +8,9 @@ class AttestBloc extends Bloc<AttestEvent, AttestState> {
   AttestationRepo repository;
   AttestBloc({required this.repository}) : super(AttestInitial()) {
     on<AttestListEvent>((event, emit) async {
-      emit(AttestLoading());
+      if (!event.silent) {
+        emit(AttestLoading());
+      }
       try {
         final response = await repository.getAttestation(event.saltID);
         if (response["Status"] == 1) {
