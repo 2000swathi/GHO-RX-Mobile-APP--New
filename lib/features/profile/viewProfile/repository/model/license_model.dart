@@ -38,7 +38,6 @@ class LicenseData {
   final String specialtyID;
   final String licenseExpertiseType;
   final String licenseTypeID;
-  final String licenseTypeID;
   final String licenseType;
   final String duration;
   final String issueDate;
