@@ -14,7 +14,12 @@ class QuestionTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final questionAns = questionAnswer ?? [];
     if (questionAns.isEmpty) {
-      return Center(child: Text("No Questions Added"));
+      return Column(
+        children: [
+          SizedBox(height: 200,),
+          Center(child: Text("No Questions Added")),
+        ],
+      );
     }
     return Container(
       margin: EdgeInsets.all(1.0),
