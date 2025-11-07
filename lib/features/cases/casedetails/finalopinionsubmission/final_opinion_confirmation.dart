@@ -40,9 +40,11 @@ class _FinalOpinionConfirmationState extends State<FinalOpinionConfirmation> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     context.read<CaseDetailsBloc>().add(
-      CaseDetailsEventRequested(saltID: widget.saltID,silent: true),
+      CaseDetailsEventRequested(saltID: widget.saltID, silent: true),
     );
-    context.read<AttestBloc>().add(AttestListEvent(saltID: widget.saltID));
+    context.read<AttestBloc>().add(
+      AttestListEvent(saltID: widget.saltID, silent: true),
+    );
   }
 
   List<bool> _attestationChecks = [];

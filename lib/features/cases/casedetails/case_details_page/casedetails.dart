@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
-import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/bloc/case_details_bloc.dart';
@@ -28,12 +27,14 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Safe place to read ModalRoute arguments only once
+
     opencases = ModalRoute.of(context)?.settings.arguments as OpenCaseModel;
 
-    // Dispatch event only once per page build
     context.read<CaseDetailsBloc>().add(
-      CaseDetailsEventRequested(saltID: opencases.saltKey.toString(),silent: true),
+      CaseDetailsEventRequested(
+        saltID: opencases.saltKey.toString(),
+        silent: true,
+      ),
     );
   }
 
