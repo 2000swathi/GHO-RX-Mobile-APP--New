@@ -14,7 +14,7 @@ class HomeRepository {
     }
 
     final data = {
-      ...ApiUtils.getCommonParams(action: "casereviewer", token: token),
+      ...ApiUtils.getCommonParams(action: "reviewercase", token: token),
       "Tags": [
         {"T": "dk1", "V": reviewerId},
         {"T": "c10", "V": "1"},

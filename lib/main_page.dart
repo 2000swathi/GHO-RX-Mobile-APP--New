@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
-import 'package:ghorx_mobile_app_new/features/cases/cases_page.dart';
+import 'package:ghorx_mobile_app_new/features/cases/cases_pages/cases_page.dart';
 import 'package:ghorx_mobile_app_new/features/home/home_page.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/profile/profile_dr.dart';
+import 'package:new_version_plus/new_version_plus.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -14,6 +15,11 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+    _checkForAppUpdate();
+  }
 
   final List<Widget> _pages = [
     HomePage(),
@@ -21,6 +27,27 @@ class _MainPageState extends State<MainPage> {
     const ProfileDr(),
     const HomePage(),
   ];
+  Future<void> _checkForAppUpdate() async {
+    final newVersion = NewVersionPlus(
+      iOSId: 'care.gho.globalHealthOpinionRx', // iOS bundle ID
+      androidId:
+          'in.globalhealthopinionrx', // android package name
+    );
+
+    final status = await newVersion.getVersionStatus();
+
+    if (status != null && status.canUpdate) {
+      newVersion.showUpdateDialog(
+        context: context,
+        versionStatus: status,
+        dialogTitle: 'Update Available',
+        dialogText:
+            'A new version (${status.storeVersion}) of the app is available. You’re using ${status.localVersion}. Please update for the latest features.',
+        updateButtonText: 'Update Now',
+        // dismissButtonText: 'Later',
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +60,7 @@ class _MainPageState extends State<MainPage> {
           });
         }
       },
+
       child: Scaffold(
         body: _pages[_currentIndex],
         bottomNavigationBar: BottomNavigationBar(

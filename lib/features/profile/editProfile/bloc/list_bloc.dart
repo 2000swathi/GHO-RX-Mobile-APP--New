@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/list_repository.dart';
@@ -64,8 +63,13 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     emit(ListLoading());
 
     try {
-      final accreditationTypeResponse = await repository.fetchAccreditationTypeList();
-      emit(AccreditationTypeListState(accreditationTypeResponse: accreditationTypeResponse));
+      final accreditationTypeResponse =
+          await repository.fetchAccreditationTypeList();
+      emit(
+        AccreditationTypeListState(
+          accreditationTypeResponse: accreditationTypeResponse,
+        ),
+      );
     } catch (e) {
       emit(ListFailure(error: e.toString()));
     }
@@ -87,8 +91,23 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     }
   }
 
+  // athority
+  Future<void> _onFetchAuthorityType(
+    FetchAuthorityList event,
+    Emitter<ListState> emit,
+  ) async {
+    emit(ListLoading());
+
+    try {
+      final response = await repository.fetchAuthorityList();
+      emit(AuthorityListState(response: response));
+    } catch (e) {
+      emit(ListFailure(error: e.toString()));
+    }
+  }
+
   //Certified
-   Future<void> _onFetchCertified(
+  Future<void> _onFetchCertified(
     FetchCertifiedList event,
     Emitter<ListState> emit,
   ) async {
@@ -109,7 +128,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
   ) async {
     emit(ListLoading());
 
-    try { 
+    try {
       final specialtyTypeResponse = await repository.fetchSpecialtyTypeList();
       emit(SpecialtyTypeListState(specialtyTypeResponse: specialtyTypeResponse)); 
     } catch (e) {

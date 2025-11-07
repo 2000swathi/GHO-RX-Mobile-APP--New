@@ -6,29 +6,39 @@ import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/utilities/size_config.dart';
 
 class ConfirmSubmissionDialog extends StatelessWidget {
-  const ConfirmSubmissionDialog({super.key});
+  final VoidCallback? onConfirm; // ✅ Callback for submission
+
+  const ConfirmSubmissionDialog({super.key, this.onConfirm});
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: AppColors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(height: 10.h),
+
+          // Close icon
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
-
             children: [
               Padding(
                 padding: const EdgeInsets.only(right: 22),
-                child: SvgPicture.asset("assets/svg/close_svg_button.svg"),
+                child: GestureDetector(
+                  onTap: () => Navigator.of(context).pop(), // ✅ close dialog
+                  child: SvgPicture.asset("assets/svg/close_svg_button.svg"),
+                ),
               ),
             ],
           ),
 
+          // Title and messages
           Padding(
-            padding: const EdgeInsets.only(left: 26, right: 26),
+            padding: const EdgeInsets.symmetric(horizontal: 26),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -48,27 +58,36 @@ class ConfirmSubmissionDialog extends StatelessWidget {
               ],
             ),
           ),
+
           SizedBox(height: 20.h),
 
+          // Buttons
           Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               children: [
                 Expanded(
                   child: CustomButton(
                     text: "Cancel / Edit",
-                    onPressed: () {},
+                    onPressed: () => Navigator.of(context).pop(), 
                     colortext: AppColors.primarycolor,
                     color: AppColors.primarycolor.withAlpha(15),
                   ),
                 ),
                 SizedBox(width: 6),
                 Expanded(
-                  child: CustomButton(text: "Yes, Submit", onPressed: () {}),
+                  child: CustomButton(
+                    text: "Yes, Submit",
+                    onPressed: () {
+                      Navigator.of(context).pop(); 
+                      if (onConfirm != null) onConfirm!(); 
+                    },
+                  ),
                 ),
               ],
             ),
           ),
+
           SizedBox(height: 25),
         ],
       ),

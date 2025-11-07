@@ -14,7 +14,7 @@ class AuthInitial extends AuthState {}
 class AuthLoading extends AuthState {}
 
 // login
-class AuthSuccess extends AuthState { 
+class AuthSuccess extends AuthState {
   final OtpResponse otpResponse;
 
   const AuthSuccess(this.otpResponse);
@@ -32,6 +32,7 @@ class AuthOTPSuccess extends AuthState {
   @override
   List<Object?> get props => [otpVerifyResponse];
 }
+
 //otpresend
 class ResendOTPSuccess extends AuthState {
   final OtpResponse otpResponse;
@@ -42,6 +43,13 @@ class ResendOTPSuccess extends AuthState {
   List<Object?> get props => [otpResponse];
 }
 
+//logout
+class LogoutSuccess extends AuthState {
+  final bool isLogout;
+  const LogoutSuccess(this.isLogout);
+  @override
+  List<Object?> get props => [isLogout];
+}
 
 class AuthFailure extends AuthState {
   final String error;

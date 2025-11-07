@@ -38,6 +38,7 @@ class LicenseData {
   final String specialtyID;
   final String licenseExpertiseType;
   final String licenseTypeID;
+  final String licenseTypeID;
   final String licenseType;
   final String duration;
   final String issueDate;
@@ -75,8 +76,8 @@ class LicenseData {
         'IssuingAuthority': issuingAuthority,
         'SpecialtyID': specialtyID,
         'LicenseExpertiseType': licenseExpertiseType,
-        'LicenseTypeID': licenseTypeID,
-        'LicenseType': licenseType,
+        'DataValue': licenseTypeID,
+        'DisplyText': licenseType,
         'Duration': duration,
         'IssueDate': issueDate,
         'ExpiryDate': expiryDate,

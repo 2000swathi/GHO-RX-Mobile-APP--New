@@ -78,6 +78,23 @@ class ListRepository {
       throw Exception("Failed to fetch license: $e");
     }
   }
+  //authority
+  Future<IsuuingAuthResponseModel> fetchAuthorityList() async {
+    final data = {
+      ...ApiUtils.getCommonParams(action: "lists", token: ""),
+      "Tags": [
+        {"T":"dk1","V":"ISSUINGAUTHORITY"},
+        {"T":"c10","V":"3"}
+      ],
+    };
+
+    try {
+      final response = await _dioHandler.post('', data: data);
+      return IsuuingAuthResponseModel.fromJson(response);
+    } catch (e) {
+      throw Exception("Failed to fetch issuing Authority: $e");
+    }
+  }
 
   //Certified
   Future<CertifiedResponseModel> fetchCertifiedList() async {

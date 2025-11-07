@@ -43,6 +43,7 @@ class LicenseListResponseModel {
 
 class LicenseList {
   final String licenseTypeID;
+  final String licenseTypeID;
   final String licenseTypeName;
 
   LicenseList({required this.licenseTypeID, required this.licenseTypeName});
