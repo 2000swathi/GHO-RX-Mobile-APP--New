@@ -21,4 +21,6 @@ class FetchCertifiedList extends ListEvent {}
 
 class FetchSpecialtyTypeList extends ListEvent {}
 
+class FetchIssueingAuthorityList extends ListEvent {}
+
 

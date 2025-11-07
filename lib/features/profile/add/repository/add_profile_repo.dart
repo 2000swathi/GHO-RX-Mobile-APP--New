@@ -112,6 +112,7 @@ class AddProfileRepository {
     required String licenseType,
     required String issueDate,
     required String expiryDate,
+    required String issuingAuthority,
   }) async {
     final reviewerId = await SharedPreference.getUserId();
     final token = await SharedPreference.getToken();
@@ -123,6 +124,7 @@ class AddProfileRepository {
       "LicenseType": licenseType,
       "IssueDate": issueDate,
       "ExpiryDate": expiryDate,
+      "IssuingAuthority": issuingAuthority,
     });
     final data = {
       ...ApiUtils.getCommonParams(action: "reviewerlic", token: token),
@@ -135,6 +137,7 @@ class AddProfileRepository {
     try {
       final response = await _dioHandler.post('', data: data);
       print(response);
+      return response;
     } catch (e) {
       throw Exception("Failed to add License: $e");
     }

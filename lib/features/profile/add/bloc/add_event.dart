@@ -44,14 +44,16 @@ class AddInsurance extends AddEvent {
 //license
 class AddLicense extends AddEvent {
   final String licenseNumber;
-  final int licenseType; // This should be int
+  final String licenseType; 
   final String issueDate;
   final String expiryDate;
+  final String issuingAuthority;
   AddLicense({
     required this.licenseNumber,
     required this.licenseType,
     required this.issueDate,
     required this.expiryDate,
+    required this.issuingAuthority,
   });
 }
 

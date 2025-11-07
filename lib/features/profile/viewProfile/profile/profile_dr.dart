@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -944,6 +946,7 @@ class _ProfileDrState extends State<ProfileDr> {
                                         },
                                         child: SvgPicture.asset(
                                           "assets/svg/trash.svg",
+                                          // ignore: deprecated_member_use
                                           color: Colors.red,
                                         ),
                                       ),
@@ -955,10 +958,6 @@ class _ProfileDrState extends State<ProfileDr> {
                                       alignment: Alignment.centerRight,
                                       child: InkWell(
                                         onTap: () async {
-                                          final listBloc =
-                                              context.read<ListBloc>();
-                                          listBloc.add(FetchLicenseList());
-
                                           showDialog(
                                             context: context,
                                             barrierDismissible: false,
@@ -968,28 +967,61 @@ class _ProfileDrState extends State<ProfileDr> {
                                                 ),
                                           );
 
-                                          final listState = await listBloc
-                                              .stream
-                                              .firstWhere(
-                                                (s) =>
-                                                    s is LicenseListState ||
-                                                    s is ListFailure,
-                                              );
+                                          final listBloc =
+                                              context.read<ListBloc>();
+                                          listBloc.add(FetchLicenseList());
+                                          listBloc.add(FetchIssueingAuthorityList());
 
-                                          Navigator.pop(context);
 
-                                          if (listState is LicenseListState) {
+                                          final results = await Future.wait([
+                                            listBloc.stream.firstWhere(
+                                              (s) =>
+                                                  s is LicenseListState ||
+                                                  s is ListFailure,
+                                            ),
+                                            listBloc.stream.firstWhere(
+                                              (s) =>
+                                                  s is IssueingauthorityListState ||
+                                                  s is ListFailure,
+                                            ),
+                                          ]);
+
+                                          // final listState = await listBloc
+                                          //     .stream
+                                          //     .firstWhere(
+                                          //       (s) =>
+                                          //           s is LicenseListState ||
+                                          //           s is ListFailure,
+                                          //     );
+
+                                          Navigator.of(
+                                            context,
+                                            rootNavigator: true,
+                                          ).pop();
+
+                                          final listState = results[0];
+                                          final issueingstate = results[1];
+
+
+                                          if (listState is LicenseListState && 
+                                              issueingstate is IssueingauthorityListState) {
                                             final licenses =
                                                 listState.licenseResponse.data
+                                                    .expand((inner) => inner)
+                                                    .toList();
+                                            final issueingList =
+                                                issueingstate.issueingauthorityResponse.data
                                                     .expand((inner) => inner)
                                                     .toList();
 
                                             AddEditLicenseSheet.showSheet(
                                               context,
                                               license,
+                                              licenses,
+                                              issueingList,
                                               true,
-                                             profileBloc: context.read<ProfileBloc>(),
-                                              licList: licenses,
+                                              profileBloc:
+                                                  context.read<ProfileBloc>(),
                                             );
                                           } else if (listState is ListFailure) {
                                             ScaffoldMessenger.of(
@@ -1019,6 +1051,7 @@ class _ProfileDrState extends State<ProfileDr> {
                               onTap: () async {
                                 final listBloc = context.read<ListBloc>();
                                 listBloc.add(FetchLicenseList());
+                                listBloc.add(FetchIssueingAuthorityList());
 
                                 showDialog(
                                   context: context,
@@ -1035,21 +1068,34 @@ class _ProfileDrState extends State<ProfileDr> {
                                           s is LicenseListState ||
                                           s is ListFailure,
                                     );
+                                final issueingstate = await listBloc.stream
+                                    .firstWhere(
+                                      (s) =>
+                                          s is IssueingauthorityListState ||
+                                          s is ListFailure,
+                                    );
 
                                 Navigator.pop(context);
 
-                                if (licenseState is LicenseListState) {
+                                if (licenseState is LicenseListState && 
+                                    issueingstate is IssueingauthorityListState) {
                                   final licenses =
                                       licenseState.licenseResponse.data
                                           .expand((inner) => inner)
                                           .toList();
+                                  final issueingList =
+                                      issueingstate.issueingauthorityResponse.data
+                                          .expand((inner) => inner)
+                                          .toList();
+
 
                                   AddEditLicenseSheet.showSheet(
                                     context,
                                     null,
+                                    licenses,
+                                    issueingList,
                                     false,
-                                   profileBloc: context.read<ProfileBloc>(),
-                                    licList: licenses,
+                                    profileBloc: context.read<ProfileBloc>(),
                                   );
                                 } else if (licenseState is ListFailure) {
                                   ScaffoldMessenger.of(context).showSnackBar(

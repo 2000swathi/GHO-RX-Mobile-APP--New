@@ -90,10 +90,12 @@ class EditInsuranceEvent extends EditEvent {
 //Edit License Event
 class EditLicenseEvent extends EditEvent {
   final String licenseNumber;
-  final int licenseType;
+  final String licenseType;
   final String issueDate;
   final String expiryDate;
   final String id;
+  final String issuingAuthority;
+
 
   const EditLicenseEvent({
     required this.licenseNumber,
@@ -101,6 +103,7 @@ class EditLicenseEvent extends EditEvent {
     required this.issueDate,
     required this.expiryDate,
     required this.id,
+    required this.issuingAuthority,
   });
 
   @override
@@ -110,6 +113,7 @@ class EditLicenseEvent extends EditEvent {
         issueDate,
         expiryDate,
         id,
+        issuingAuthority,
       ];
 }
 

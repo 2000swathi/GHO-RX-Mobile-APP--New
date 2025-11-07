@@ -17,15 +17,21 @@ class AddBloc extends Bloc<AddEvent, AddState> {
   }
   // License
   Future<void> _onAddLicense(AddLicense event, Emitter<AddState> emit) async {
+  
     try {
       final licenseResponse = await repository.addLicense(
         licenseNumber: event.licenseNumber,
         licenseType: event.licenseType.toString(),
         issueDate: event.issueDate,
         expiryDate: event.expiryDate,
+        issuingAuthority: event.issuingAuthority,
       );
-      emit(AddSuccess(response: licenseResponse));
-      print(licenseResponse);
+      if (licenseResponse['Status'] == 1) {
+        emit(AddSuccess(response: licenseResponse));
+      } else {
+        emit(AddError(
+            message: licenseResponse['Error'] ?? "Failed to add license"));
+      }
     } catch (e) {
       emit(AddError(message: e.toString()));
     }

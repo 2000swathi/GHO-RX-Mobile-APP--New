@@ -5,6 +5,7 @@ import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/lis
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/accreditationtype_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/certified_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/country_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/issueing_authority.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/license_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty%20type_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty_response_model.dart';
@@ -22,6 +23,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     on<FetchAccrediationList>(_onFetchAccreditation);
     on<FetchCertifiedList>(_onFetchCertified);
     on<FetchSpecialtyTypeList>(_onFetchSpecialtyType);
+    on<FetchIssueingAuthorityList>(_onFetchIssueingAuthority);
   }
 
   //country list
@@ -110,6 +112,21 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     try { 
       final specialtyTypeResponse = await repository.fetchSpecialtyTypeList();
       emit(SpecialtyTypeListState(specialtyTypeResponse: specialtyTypeResponse)); 
+    } catch (e) {
+      emit(ListFailure(error: e.toString()));
+    }
+  }
+
+  //Issueing Authority
+  Future<void> _onFetchIssueingAuthority(
+    FetchIssueingAuthorityList event,
+    Emitter<ListState> emit,
+  ) async {
+    emit(ListLoading());
+
+    try { 
+      final issueingauthorityResponse = await repository.fetchIssueingAuthorityList();
+      emit(IssueingauthorityListState(issueingauthorityResponse: issueingauthorityResponse)); 
     } catch (e) {
       emit(ListFailure(error: e.toString()));
     }

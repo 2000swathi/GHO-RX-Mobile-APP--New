@@ -70,3 +70,11 @@ class SpecialtyTypeListState extends ListState {
   @override
   List<Object> get props => [specialtyTypeResponse];
 }
+
+//issueing authority
+class IssueingauthorityListState extends ListState {
+  final IssueingAuthorityResponseModel issueingauthorityResponse;
+  const IssueingauthorityListState({required this.issueingauthorityResponse});
+  @override
+  List<Object> get props => [issueingauthorityResponse];
+}
