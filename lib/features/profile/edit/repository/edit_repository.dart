@@ -65,6 +65,7 @@ class EditprofileRepository {
     };
     try {
       final response = await _dioHandler.post('', data: requestData);
+      print(response);
       return response;
     } catch (e) {
       throw (e.toString());

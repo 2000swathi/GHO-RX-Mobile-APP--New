@@ -37,7 +37,7 @@ class LicenseData {
   final String issuingAuthority;
   final String specialtyID;
   final String licenseExpertiseType;
-  final int licenseTypeID;
+  final String licenseTypeID;
   final String licenseType;
   final String duration;
   final String issueDate;
@@ -62,7 +62,7 @@ class LicenseData {
         issuingAuthority: json['IssuingAuthority'] ?? '',
         specialtyID: json['SpecialtyID'] ?? '',
         licenseExpertiseType: json['LicenseExpertiseType'] ?? '',
-        licenseTypeID: json['LicenseTypeID'] ?? 0,
+        licenseTypeID: json['LicenseTypeID'] ?? '',
         licenseType: json['LicenseType'] ?? '',
         duration: json['Duration'] ?? '',
         issueDate: json['IssueDate'] ?? '',

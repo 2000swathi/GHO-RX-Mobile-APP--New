@@ -20,12 +20,12 @@ class AddBloc extends Bloc<AddEvent, AddState> {
     try {
       final licenseResponse = await repository.addLicense(
         licenseNumber: event.licenseNumber,
-        licenseType: event.licenseType,
+        licenseType: event.licenseType.toString(),
         issueDate: event.issueDate,
         expiryDate: event.expiryDate,
       );
-
       emit(AddSuccess(response: licenseResponse));
+      print(licenseResponse);
     } catch (e) {
       emit(AddError(message: e.toString()));
     }
@@ -49,6 +49,8 @@ class AddBloc extends Bloc<AddEvent, AddState> {
       emit(AddError(message: "An error occurred: ${e.toString()}"));
     }
   }
+
+// Language
 
   Future<void> _onAddLanguage(AddLanguage event, Emitter<AddState> emit) async {
     emit(AddLoading());
@@ -92,7 +94,7 @@ class AddBloc extends Bloc<AddEvent, AddState> {
         accreditationbody: event.accreditationbody,
         accreditationnumber: event.accreditationnumber,
       );
-      emit(AddSuccess(response:response ));
+      emit(AddSuccess(response: response));
     } catch (e) {
       emit(AddError(message: "An error occurred: ${e.toString()}"));
     }

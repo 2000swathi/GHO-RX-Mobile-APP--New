@@ -122,7 +122,7 @@ class EditBloc extends Bloc<EditEvent, EditState> {
       final licenseresponse = await repository.editLicense(
         licenseNumber: editevent.licenseNumber,
         // issuingAuthority: editevent.issuingAuthority,
-        licenseType: editevent.licenseType,
+        licenseType: editevent.licenseType.toString(),
         issueDate: editevent.issueDate,
         expiryDate: editevent.expiryDate,
         id: editevent.id,

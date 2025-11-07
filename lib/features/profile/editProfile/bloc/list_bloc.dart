@@ -78,6 +78,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
 
     try {
       final licenseListResponse = await repository.fetchLicenseList();
+      print(Response);
       emit(LicenseListState(licenseResponse: licenseListResponse));
     } catch (e) {
       emit(ListFailure(error: e.toString()));

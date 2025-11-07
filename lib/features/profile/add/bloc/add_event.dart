@@ -44,7 +44,7 @@ class AddInsurance extends AddEvent {
 //license
 class AddLicense extends AddEvent {
   final String licenseNumber;
-  final int licenseType;
+  final int licenseType; // This should be int
   final String issueDate;
   final String expiryDate;
   AddLicense({

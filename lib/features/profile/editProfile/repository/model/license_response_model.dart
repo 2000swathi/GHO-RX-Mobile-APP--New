@@ -47,15 +47,15 @@ class LicenseList {
 
   factory LicenseList.fromJson(Map<String, dynamic> json) {
     return LicenseList(
-      licenseTypeID: json['LicenseTypeID'],
-      licenseTypeName: json['LicenseType'],
+      licenseTypeID: json['LicenseTypeID'] ?? 0,
+      licenseTypeName: json['LicenseType'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'SpecialtyID': licenseTypeID,
-      'SpecialtyName': licenseTypeName,
+      'LicenseTypeID': licenseTypeID,
+      'LicenseType': licenseTypeName,
     };
   }
 }
