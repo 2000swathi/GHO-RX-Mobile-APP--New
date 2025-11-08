@@ -17,6 +17,8 @@ import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubm
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/bloc/open_closed_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/repository/open_closed_repo.dart';
 import 'package:ghorx_mobile_app_new/features/home/bloc/home_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/home/daterange/repository/date_range_repo.dart';
 import 'package:ghorx_mobile_app_new/features/home/repository/home_repository.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/delete/bloc/delete_bloc.dart';
@@ -79,6 +81,7 @@ class AppBlocProvider extends StatelessWidget {
         BlocProvider(create: (_) => GetFileIdBloc(repository: GetFileIDReo())),
         BlocProvider(create: (_) => AttestBloc(repository: AttestationRepo())),
         BlocProvider(create: (_) => FinalSubmissionBloc(repository: SubmitCaseRepo())),
+        BlocProvider(create: (_) => DateRangeBloc(repository: DateRangeRepo())),
       ],
       child: child,
     );
