@@ -1,18 +1,20 @@
-class LicenseListResponseModel {
+// ignore_for_file: non_constant_identifier_names
+
+class IssueingAuthorityResponseModel {
   final int status;
   final String error;
   final String info;
-  final List<List<LicenseList>> data;
+  final List<List<IssueingList>> data;
 
-  LicenseListResponseModel({
+  IssueingAuthorityResponseModel({
     required this.status,
     required this.error,
     required this.info,
     required this.data,
   });
 
-  factory LicenseListResponseModel.fromJson(Map<String, dynamic> json) {
-    return LicenseListResponseModel(
+  factory IssueingAuthorityResponseModel.fromJson(Map<String, dynamic> json) {
+    return IssueingAuthorityResponseModel(
       status: json['Status'] ?? 0,
       error: json['Error'] ?? '',
       info: json['Info'] ?? '',
@@ -21,7 +23,7 @@ class LicenseListResponseModel {
               .map(
                 (innerList) =>
                     (innerList as List<dynamic>)
-                        .map((item) => LicenseList.fromJson(item))
+                        .map((item) => IssueingList.fromJson(item))
                         .toList(),
               )
               .toList(),
@@ -41,22 +43,21 @@ class LicenseListResponseModel {
   }
 }
 
-class LicenseList {
-  final String licenseTypeID;
-  final String licenseTypeName;
+class IssueingList {
+  final String IssueingTypeID;
+  final String IssueingTypeName;
 
-  LicenseList({required this.licenseTypeID, required this.licenseTypeName});
+  IssueingList({required this.IssueingTypeID, required this.IssueingTypeName});
 
-  factory LicenseList.fromJson(Map<String, dynamic> json) {
-    return LicenseList(
-      licenseTypeID: json['DataValue'] ?? '',
-      licenseTypeName: json['DisplyText'] ?? '',
+  factory IssueingList.fromJson(Map<String, dynamic> json) {
+    return IssueingList(
+      IssueingTypeID: json['DataValue'] ?? '',
+      IssueingTypeName: json['DisplyText'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'DataValue': licenseTypeID, 
-    'DisplyText': licenseTypeName};
+    return {'DataValue': IssueingTypeID,
+     'DisplyText': IssueingTypeName};
   }
 }

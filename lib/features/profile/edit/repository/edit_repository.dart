@@ -35,7 +35,7 @@ class EditprofileRepository {
   //edit license
   Future editLicense({
     required String licenseNumber,
-    // required String issuingAuthority,
+    required String issuingAuthority,
     required String licenseType,
     required String issueDate,
     required String expiryDate,
@@ -48,7 +48,7 @@ class EditprofileRepository {
     }
     final c1Editdata = jsonEncode({
       "LicenseNumber": licenseNumber,
-      // "IssuingAuthority": issuingAuthority,
+      "IssuingAuthority": issuingAuthority,
       "LicenseType": licenseType,
       "IssueDate": issueDate,
       "ExpiryDate": expiryDate,
@@ -65,6 +65,7 @@ class EditprofileRepository {
     };
     try {
       final response = await _dioHandler.post('', data: requestData);
+      print(response);
       return response;
     } catch (e) {
       throw (e.toString());
