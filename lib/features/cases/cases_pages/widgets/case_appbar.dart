@@ -11,6 +11,7 @@ import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_event.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_state.dart';
+import 'package:ghorx_mobile_app_new/features/cases/send_message.dart';
 
 class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
@@ -106,10 +107,16 @@ class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
                 const SizedBox(width: 15),
               ]
               : [
-                CircleAvatar(
-                  backgroundColor: AppColors.primarycolor.withAlpha(8),
-                  child: SvgPicture.asset("assets/svg/email_svg.svg"),
+                InkWell(
+                  onTap: () {
+                    showDialog(context: context, builder: (_) => SendMessage());
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: AppColors.primarycolor.withAlpha(8),
+                    child: SvgPicture.asset("assets/svg/email_svg.svg"),
+                  ),
                 ),
+
                 const SizedBox(width: 15),
                 CircleAvatar(
                   backgroundColor: AppColors.primarycolor.withAlpha(8),
