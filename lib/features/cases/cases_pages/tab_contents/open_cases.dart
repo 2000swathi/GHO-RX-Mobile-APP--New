@@ -31,7 +31,7 @@ class OpenCasesTab extends StatelessWidget {
               separatorBuilder: (_, __) => const SizedBox(height: 15),
               itemBuilder: (context, index) {
                 final caseItem = openCases[index];
-                return CaseCard(
+                return OpenCaseCard(
                   ontap: () {
                     Navigator.pushNamed(
                       context,
@@ -65,13 +65,13 @@ class OpenCasesTab extends StatelessWidget {
   }
 }
 
-class CaseCard extends StatelessWidget {
+class OpenCaseCard extends StatelessWidget {
   final String caseId;
   final String allottedTime;
   final String dueDate;
   final String description;
   final Function()? ontap;
-  const CaseCard({
+  const OpenCaseCard({
     super.key,
     required this.caseId,
     required this.allottedTime,

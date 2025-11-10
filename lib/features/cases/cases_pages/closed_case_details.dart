@@ -35,7 +35,7 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     context.read<CaseDetailsBloc>().add(
-      CaseDetailsEventRequested(saltID: widget.saltID, silent: true),
+      CaseDetailsEventRequested(saltID: widget.saltID),
     );
     context.read<AttestBloc>().add(AttestListEvent(saltID: widget.saltID));
   }

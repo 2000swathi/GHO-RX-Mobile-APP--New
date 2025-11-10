@@ -36,10 +36,119 @@ class HomePage extends StatelessWidget {
                   const SizedBox(height: 15),
                   Row(
                     children: [
-                      CircleAvatar(
-                        backgroundColor: AppColors.profilepink.withAlpha(13),
-                        child: SvgPicture.asset("assets/svg/person.svg"),
+                      InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                contentPadding: const EdgeInsets.all(20),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    // Profile avatar container
+                                    Container(
+                                      color: AppColors.profilepink.withAlpha(
+                                        13,
+                                      ),
+                                      height: 200,
+                                      width: 200,
+                                      child: Center(
+                                        child: SvgPicture.asset(
+                                          "assets/svg/person.svg",
+                                          width: 60,
+                                          height: 60,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 20),
+
+                                    // Second container with edit & delete icons
+                                    Container(
+                                      width: 200,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.shade100,
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                          color: Colors.grey.shade300,
+                                        ),
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 15,
+                                        vertical: 10,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          // Edit icon
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                              // TODO: Add your edit logic here
+                                            },
+                                            child: Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.edit,
+                                                  color: Colors.blueAccent,
+                                                  size: 22,
+                                                ),
+                                                const SizedBox(width: 5),
+                                                Text(
+                                                  "Edit",
+                                                  style: AppFonts.subtext
+                                                      .copyWith(
+                                                        color:
+                                                            Colors.blueAccent,
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+
+                                          // Delete icon
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                              // TODO: Add your delete logic here
+                                            },
+                                            child: Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.delete,
+                                                  color: Colors.redAccent,
+                                                  size: 22,
+                                                ),
+                                                const SizedBox(width: 5),
+                                                Text(
+                                                  "Delete",
+                                                  style: AppFonts.subtext
+                                                      .copyWith(
+                                                        color: Colors.redAccent,
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: AppColors.profilepink.withAlpha(13),
+                          child: SvgPicture.asset("assets/svg/person.svg"),
+                        ),
                       ),
+
                       const SizedBox(width: 5),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,66 +168,7 @@ class HomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   UpcomingCase(),
-                  
-                  // // 🔸 Verification notice
-                  // Container(
-                  //   margin: const EdgeInsets.only(bottom: 15),
-                  //   padding: const EdgeInsets.symmetric(
-                  //     horizontal: 10,
-                  //     vertical: 10,
-                  //   ),
-                  //   decoration: BoxDecoration(
-                  //     color: AppColors.profilepink.withAlpha(13),
-                  //     border: Border.all(
-                  //       color: const Color(0xffF6E3B3),
-                  //       width: 1,
-                  //     ),
-                  //     borderRadius: BorderRadius.circular(10),
-                  //   ),
-                  //   child: Row(
-                  //     crossAxisAlignment: CrossAxisAlignment.center,
-                  //     children: [
-                  //       Container(
-                  //         width: 16.67,
-                  //         height: 16.67,
-                  //         decoration: BoxDecoration(
-                  //           color: const Color(0xffFFF8E6),
-                  //           shape: BoxShape.circle,
-                  //           border: Border.all(
-                  //             color: const Color(0xff983C3C),
-                  //             width: 1.5,
-                  //           ),
-                  //         ),
-                  //         child: const Icon(
-                  //           Icons.priority_high,
-                  //           color: Color(0xff983C3C),
-                  //           size: 10,
-                  //         ),
-                  //       ),
-                  //       const SizedBox(width: 10),
-                  //       Flexible(
-                  //         child: Column(
-                  //           crossAxisAlignment: CrossAxisAlignment.start,
-                  //           children: [
-                  //             Text(
-                  //               "Profile Verification Pending",
-                  //               style: AppFonts.textblue.copyWith(
-                  //                 color: const Color(0xff983C3C),
-                  //               ),
-                  //             ),
-                  //             Text(
-                  //               "Your profile is currently under review by a GHO administrator. We will notify you when it is approved.",
-                  //               style: AppFonts.textappbar.copyWith(
-                  //                 fontFamily: 'Roboto Flex',
-                  //                 color: const Color(0xffAA5757),
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
+
                   const PerformanceSnapshotWidget(),
                   const SizedBox(height: 15),
                   KPIHeader(),

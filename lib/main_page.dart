@@ -9,14 +9,15 @@ import 'package:ghorx_mobile_app_new/features/profile/viewProfile/profile/profil
 import 'package:new_version_plus/new_version_plus.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  final int initialIndex;
+  const MainPage({super.key, this.initialIndex = 0});
 
   @override
   State<MainPage> createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
-  int _currentIndex = 0;
+  late int  _currentIndex;
 
   final List<Widget> _pages = const [
     HomePage(),
@@ -28,6 +29,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
+    _currentIndex=widget.initialIndex;
     _checkForAppUpdate();
   }
 
@@ -64,14 +66,21 @@ class _MainPageState extends State<MainPage> {
         } else if (_currentIndex == 0) {
           final shouldExit = await showDialog<bool>(
             context: context,
-            builder: (context) => AlertDialog(
-              title: const Text('Exit App?'),
-              content: const Text('Do you want to close the app?'),
-              actions: [
-                TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('No')),
-                TextButton(onPressed: () => Navigator.pop(context, true), child: const Text('Yes')),
-              ],
-            ),
+            builder:
+                (context) => AlertDialog(
+                  title: const Text('Exit App?'),
+                  content: const Text('Do you want to close the app?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: const Text('No'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      child: const Text('Yes'),
+                    ),
+                  ],
+                ),
           );
           if (shouldExit == true) {
             SystemNavigator.pop();
@@ -79,10 +88,7 @@ class _MainPageState extends State<MainPage> {
         }
       },
       child: Scaffold(
-        body: IndexedStack(
-          index: _currentIndex,
-          children: _pages,
-        ),
+        body: IndexedStack(index: _currentIndex, children: _pages),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,
           backgroundColor: AppColors.primarycolor,
@@ -92,27 +98,31 @@ class _MainPageState extends State<MainPage> {
           onTap: (index) => setState(() => _currentIndex = index),
           items: [
             BottomNavigationBarItem(
-              icon: _currentIndex == 0
-                  ? SvgPicture.asset("assets/svg/homeclick.svg")
-                  : SvgPicture.asset("assets/svg/home_svg.svg"),
+              icon:
+                  _currentIndex == 0
+                      ? SvgPicture.asset("assets/svg/homeclick.svg")
+                      : SvgPicture.asset("assets/svg/home_svg.svg"),
               label: "Home",
             ),
             BottomNavigationBarItem(
-              icon: _currentIndex == 1
-                  ? SvgPicture.asset("assets/svg/caseclick.svg")
-                  : SvgPicture.asset("assets/svg/cases_svg.svg"),
+              icon:
+                  _currentIndex == 1
+                      ? SvgPicture.asset("assets/svg/caseclick.svg")
+                      : SvgPicture.asset("assets/svg/cases_svg.svg"),
               label: "Cases",
             ),
             BottomNavigationBarItem(
-              icon: _currentIndex == 2
-                 ? SvgPicture.asset("assets/svg/caseclick.svg")
-                  : SvgPicture.asset("assets/svg/cases_svg.svg"),
-              label: "Payment",
+              icon:
+                  _currentIndex == 2
+                      ? SvgPicture.asset("assets/svg/payment_click_icon.svg")
+                      : SvgPicture.asset("assets/svg/payment_icon.svg"),
+              label: "Earnings",
             ),
             BottomNavigationBarItem(
-              icon: _currentIndex == 3
-                  ? SvgPicture.asset("assets/svg/profile_clik.svg")
-                  : SvgPicture.asset("assets/svg/profile_svg.svg"),
+              icon:
+                  _currentIndex == 3
+                      ? SvgPicture.asset("assets/svg/profile_clik.svg")
+                      : SvgPicture.asset("assets/svg/profile_svg.svg"),
               label: "Profile",
             ),
           ],
