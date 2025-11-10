@@ -59,6 +59,7 @@ class HomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   UpcomingCase(),
+                  
                   // // 🔸 Verification notice
                   // Container(
                   //   margin: const EdgeInsets.only(bottom: 15),
