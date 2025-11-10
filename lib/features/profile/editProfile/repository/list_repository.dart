@@ -1,6 +1,7 @@
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/accreditationtype_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/certified_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/country_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/issueing_authority.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/issuing_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/license_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty%20type_response_model.dart';
@@ -66,8 +67,8 @@ class ListRepository {
     final data = {
       ...ApiUtils.getCommonParams(action: "lists", token: ""),
       "Tags": [
-        {"T":"dk1","V":"LICENSETYPE"},
-        {"T":"c10","V":"3"}
+        {"T": "dk1", "V": "LICENSETYPE"},
+        {"T": "c10", "V": "3"},
       ],
     };
 
@@ -127,7 +128,24 @@ class ListRepository {
       final response = await _dioHandler.post('', data: data);
       return SpecialtyTypeResponseModel.fromJson(response);
     } catch (e) {
-      throw Exception("Failed to fetch specialtiestype: $e");
+      throw Exception("Failed to fetch specialties type: $e");
+    }
+  }
+  //Issueing Authority
+  Future<IssueingAuthorityResponseModel> fetchIssueingAuthorityList() async {
+    final data = {
+      ...ApiUtils.getCommonParams(action: "lists", token: ""),
+      "Tags": [
+       {"T":"dk1","V":"ISSUINGAUTHORITY"},
+        {"T":"c10","V":"3"}  
+      ],
+    };
+
+    try {
+      final response = await _dioHandler.post('', data: data);
+      return IssueingAuthorityResponseModel.fromJson(response);
+    } catch (e) {
+      throw Exception("Failed to fetch issueing authority: $e");
     }
   }
 }

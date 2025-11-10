@@ -280,6 +280,12 @@ class Validation {
     }
     return null;
   }
+  static String? validateLicenecType(Object? value) {
+    if (value == null || value.toString().trim().isEmpty) {
+      return 'Choose a licence type';
+    }
+    return null;
+  }
 
   static String? validateID(String? value, {String fieldName = 'ID'}) {
     if (value == null || value.trim().isEmpty) {
@@ -341,7 +347,6 @@ class Validation {
     } catch (e) {
       return "Invalid date format";
     }
-
     return null;
   }
 

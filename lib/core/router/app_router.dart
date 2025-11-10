@@ -5,6 +5,7 @@ import 'package:ghorx_mobile_app_new/features/authentication/add_page.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/reset_password.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/casedetails.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/cases_page.dart';
+import 'package:ghorx_mobile_app_new/features/cases/send_message.dart';
 import 'package:ghorx_mobile_app_new/features/home/home_page.dart';
 import 'package:ghorx_mobile_app_new/main_page.dart';
 import '../../features/authentication/login_screen.dart';
@@ -28,6 +29,7 @@ class AppRouter {
   static const String casepage = '/case';
   static const String casedetails = '/casedetails';
   static const String homePage = '/homepage';
+  static const String Message = '/messages';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -54,6 +56,8 @@ class AppRouter {
           builder: (_) => CaseDetailsPage(),
           settings: settings,
         );
+        case Message:
+        return MaterialPageRoute(builder: (_) =>SendMessage());
       case homePage:
         return MaterialPageRoute(builder: (_) => HomePage());
       default:
