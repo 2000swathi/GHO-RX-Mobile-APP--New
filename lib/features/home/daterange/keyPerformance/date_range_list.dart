@@ -1,14 +1,16 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/common_container.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:ghorx_mobile_app_new/features/home/bloc/home_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_event.dart';
+import 'package:ghorx_mobile_app_new/features/home/repository/bloc/date_range_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/home/repository/bloc/date_range_event.dart';
+import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/repository/bloc/key_performance_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/repository/bloc/key_performance_event.dart';
+import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/widget/key_performance_shimmer.dart';
 
 class KPIHeader extends StatefulWidget {
   const KPIHeader({super.key});
@@ -25,6 +27,7 @@ class _KPIHeaderState extends State<KPIHeader> {
     super.initState();
     // Fetch API data for date ranges
     context.read<DateRangeBloc>().add(FetchDateRangeInfo());
+    context.read<KeyPerformanceBloc>().add(KeyPerEvent(dateValue: "7"));
   }
 
   @override
@@ -49,9 +52,7 @@ class _KPIHeaderState extends State<KPIHeader> {
               child: BlocBuilder<DateRangeBloc, DateRangeState>(
                 builder: (context, state) {
                   if (state is HomePageLoading) {
-                    return const Center(
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    );
+                    return const Center(child: LoadingAnimation());
                   }
 
                   if (state is DateRangeInfoState) {
@@ -82,6 +83,9 @@ class _KPIHeaderState extends State<KPIHeader> {
                       onChanged: (value) {
                         setState(() {
                           _selectedDuration = value;
+                          context.read<KeyPerformanceBloc>().add(
+                            KeyPerEvent(dateValue: value.toString()),
+                          );
                         });
                       },
                       validator:
@@ -104,70 +108,93 @@ class _KPIHeaderState extends State<KPIHeader> {
           ],
         ),
         const SizedBox(height: 15),
-        Row(
-          children: [
-            Expanded(
-              child: CommonContainer(
-                borderColor: const Color(0xff667EFA).withAlpha(33),
-                color: const Color(0xff667EFA).withAlpha(5),
-                textColor: const Color(0xff384EC1),
-                data: "Total Review",
-                data1: "17",
-                icon: const Icon(Icons.expand_less, color: Colors.green),
-                data2Color: Colors.green,
-                data2: "+2%",
-                data3: "vs last Period",
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: CommonContainer(
-                borderColor: const Color(0xffFF8A65).withAlpha(48),
-                color: const Color(0xffFF8A65).withAlpha(10),
-                textColor: const Color(0xffB93106),
-                data: "Open Review",
-                data1: "3",
-                image: Image.asset("assets/images/double.png"),
-                data2: "0%",
-                data2Color: const Color(0xff39393A),
-                data3: "vs last period",
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        Row(
-          children: [
-            Expanded(
-              child: CommonContainer(
-                borderColor: const Color(0xffC5EFC8),
-                color: const Color(0xffF1FFF2),
-                textColor: const Color(0xff146B1A),
-                data: "Total Revenue",
-                data1: "\$150.31",
-                icon: const Icon(
-                  Icons.arrow_upward_outlined,
-                  color: Colors.green,
-                ),
-                data2Color: Colors.green,
-                data2: "+2%",
-                data3: "vs last period",
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: CommonContainer(
-                borderColor: const Color(0xffCCCDCD),
-                color: const Color(0xffF4F5F7),
-                textColor: const Color(0xff404040).withAlpha(48),
-                data: "Next Payout",
-                data1: "\$80.00",
-                data2Color: const Color(0xff94989B),
-                data2: "Due:",
-                data3: "Oct 10",
-              ),
-            ),
-          ],
+        BlocBuilder<KeyPerformanceBloc, KeyPerformanceState>(
+          builder: (context, state) {
+            if (state is KeyPerformanceLoading) {
+              return Column(children: [Center(child: KeyPerformanceShimmer())]);
+            } else if (state is KeyPerformanceFailure) {
+              return Center(child: Text(state.message));
+            } else if (state is KeyPerformanceSuccess) {
+              final response = state.response;
+              final data = response["Data"];
+              if (data != null || data.isNotEmpty || data[0].isNotEmpty) {
+                final data1 = response["Data"][0][0];
+                return Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CommonContainer(
+                            borderColor: const Color(0xff667EFA).withAlpha(33),
+                            color: const Color(0xff667EFA).withAlpha(5),
+                            textColor: const Color(0xff384EC1),
+                            data: "Total Review",
+                            data1: data1["TotalReview"].toString(),
+                            icon: const Icon(
+                              Icons.expand_less,
+                              color: Colors.green,
+                            ),
+                            data2Color: Colors.green,
+                            data2: "+2%",
+                            data3: "vs last Period",
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: CommonContainer(
+                            borderColor: const Color(0xffFF8A65).withAlpha(48),
+                            color: const Color(0xffFF8A65).withAlpha(10),
+                            textColor: const Color(0xffB93106),
+                            data: "Open Review",
+                            data1: data1["PendingReview"].toString(),
+                            image: Image.asset("assets/images/double.png"),
+                            data2: "0%",
+                            data2Color: const Color(0xff39393A),
+                            data3: "vs last period",
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CommonContainer(
+                            borderColor: const Color(0xffC5EFC8),
+                            color: const Color(0xffF1FFF2),
+                            textColor: const Color(0xff146B1A),
+                            data: "Total Revenue",
+                            data1: data1["Totalrevenue"].toString(),
+                            icon: const Icon(
+                              Icons.arrow_upward_outlined,
+                              color: Colors.green,
+                            ),
+                            data2Color: Colors.green,
+                            data2: "+2%",
+                            data3: "vs last period",
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: CommonContainer(
+                            borderColor: const Color(0xffCCCDCD),
+                            color: const Color(0xffF4F5F7),
+                            textColor: const Color(0xff404040).withAlpha(48),
+                            data: "Next Payout",
+                            data1: data1["NextPayout"].toString(),
+                            data2Color: const Color(0xff94989B),
+                            data2: "Due:",
+                            data3: "Oct 10",
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              }
+            }
+            return SizedBox();
+          },
         ),
         const SizedBox(height: 20),
       ],

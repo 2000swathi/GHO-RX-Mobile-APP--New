@@ -40,7 +40,7 @@ class OpenCasesTab extends StatelessWidget {
                     );
                   },
                   caseId: 'Case ID: ${caseItem.id}',
-                  allottedTime: '${caseItem.timeAllowed}',
+
                   dueDate: caseItem.dueDate,
                   description: caseItem.medicalSummary,
                 );
@@ -50,10 +50,7 @@ class OpenCasesTab extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Center(
-                child: Text(
-                  '${state.message}',
-                  style: AppFonts.subtext,
-                ),
+                child: Text('${state.message}', style: AppFonts.subtext),
               ),
             );
           } else {
@@ -67,14 +64,14 @@ class OpenCasesTab extends StatelessWidget {
 
 class OpenCaseCard extends StatelessWidget {
   final String caseId;
-  final String allottedTime;
+
   final String dueDate;
   final String description;
   final Function()? ontap;
   const OpenCaseCard({
     super.key,
     required this.caseId,
-    required this.allottedTime,
+
     required this.dueDate,
     required this.description,
     this.ontap,
@@ -114,7 +111,7 @@ class OpenCaseCard extends StatelessWidget {
                           Text('Case Identifier', style: AppFonts.subtext),
                           const SizedBox(height: 4),
                           Text(
-                            caseId,
+                            "Case ID : ${caseId}",
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -125,19 +122,9 @@ class OpenCaseCard extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          RichText(
-                            text: TextSpan(
-                              text: "Allotted Time:",
-                              style: AppFonts.subtext,
-                              children: [
-                                TextSpan(
-                                  text: ' $allottedTime',
-                                  style: AppFonts.subtext.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
+                          Text(
+                            'Due Date :',
+                            style: AppFonts.subtext
                           ),
                           const SizedBox(height: 8),
 

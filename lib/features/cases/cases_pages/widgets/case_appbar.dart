@@ -11,7 +11,8 @@ import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_event.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_state.dart';
-import 'package:ghorx_mobile_app_new/features/cases/send_message.dart';
+import 'package:ghorx_mobile_app_new/features/send%20mail/send_message.dart';
+import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
 
 class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
@@ -108,8 +109,18 @@ class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
               ]
               : [
                 InkWell(
-                  onTap: () {
-                    showDialog(context: context, builder: (_) => SendMessage());
+                  onTap: () async {
+                    String? email = await SharedPreference.getEmail();
+                    print(email);
+
+                    showDialog(
+                      context: context,
+                      builder:
+                          (_) => SendMessage(
+                            from: email ?? "",
+                            to: "admin@gho.care",
+                          ),
+                    );
                   },
                   child: CircleAvatar(
                     backgroundColor: AppColors.primarycolor.withAlpha(8),

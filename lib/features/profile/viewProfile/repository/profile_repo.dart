@@ -31,7 +31,10 @@ class ProfileRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
-      return PersonalInfoModel.fromJson(response['Data'][0][0]);
+
+      final info = PersonalInfoModel.fromJson(response['Data'][0][0]);
+      await SharedPreference.setEmail(info.email);
+      return info;
     } catch (e) {
       throw (e.toString());
     }
@@ -107,7 +110,7 @@ class ProfileRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
-     
+
       return LicenseModel.fromJson(response);
     } catch (e) {
       throw (e.toString());

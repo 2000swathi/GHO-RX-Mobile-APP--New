@@ -5,15 +5,21 @@ import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/widgets/case_appbar.dart';
 import 'package:ghorx_mobile_app_new/features/home/bloc/home_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_event.dart';
-import 'package:ghorx_mobile_app_new/features/home/widget/date_range_list.dart';
+import 'package:ghorx_mobile_app_new/features/home/repository/bloc/date_range_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/home/repository/bloc/date_range_event.dart';
+import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/date_range_list.dart';
 import 'package:ghorx_mobile_app_new/features/home/widget/performance_snapshot.dart';
 import 'package:ghorx_mobile_app_new/features/home/widget/upcoming_case.dart';
 import 'package:ghorx_mobile_app_new/features/shimmer/home_page_shimmer.dart';
+import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+  Future<void> _saveEmailToPrefs(String? email) async {
+    if (email == null || email.isEmpty) return;
+
+    await SharedPreference.setEmail(email);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +31,10 @@ class HomePage extends StatelessWidget {
         if (state is HomeInitial || state is HomePageLoading) {
           return const HomePageShimmerWidget();
         } else if (state is HomePageInfoState) {
-          final info = state.homePageModel.data[0];
+          final info = state.response["Data"][0][0];
+          final email = info["Email"];
+          _saveEmailToPrefs(email);
+          final cases = state.response["Data"][1][0];
 
           return Scaffold(
             backgroundColor: Colors.white,
@@ -49,7 +58,6 @@ class HomePage extends StatelessWidget {
                                 content: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    // Profile avatar container
                                     Container(
                                       color: AppColors.profilepink.withAlpha(
                                         13,
@@ -154,7 +162,7 @@ class HomePage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Hello", style: AppFonts.textblue),
-                          Text(info.name, style: AppFonts.subtext),
+                          Text(info["Name"], style: AppFonts.subtext),
                         ],
                       ),
                     ],
@@ -167,7 +175,7 @@ class HomePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  UpcomingCase(),
+                  UpcomingCase(cases: cases),
 
                   const PerformanceSnapshotWidget(),
                   const SizedBox(height: 15),

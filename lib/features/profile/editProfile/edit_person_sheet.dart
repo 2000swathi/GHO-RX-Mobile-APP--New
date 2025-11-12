@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_drop_down_field.dart';
@@ -10,6 +11,7 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessan
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
 import 'package:ghorx_mobile_app_new/core/constants/date_input_formatter.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
+import 'package:ghorx_mobile_app_new/features/home/bloc/home_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/edit/repository/edit_repository.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/country_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/personalinfo_model.dart';
@@ -103,8 +105,8 @@ class EditProfileSheet {
                     keyboardType: TextInputType.number,
                     validator: Validation.validateDOB,
                     inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly, // Ensure only digits are typed
-                      DobInputFormatter(), // Apply the auto-formatting
+                      FilteringTextInputFormatter.digitsOnly, 
+                      DobInputFormatter(),
                     ],
                   ),
                   const SizedBox(height: 10),
@@ -223,6 +225,7 @@ class EditProfileSheet {
                         "Profile updated successfully";
                     Navigator.pop(context);
                     CustomScaffoldMessenger.showSuccessMessage(context, msg);
+                    context.read<HomeBloc>().add(FetchHomePageInfo());
                   } else {
                     final err = response["Info"] ?? "Something went wrong";
                     Navigator.pop(context);

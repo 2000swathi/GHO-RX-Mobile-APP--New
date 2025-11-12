@@ -16,12 +16,12 @@ class HomePageLoading extends HomeState {}
 
 //  home info
 class HomePageInfoState extends HomeState {
-  final HomePageModel homePageModel;
+  final Map<String, dynamic> response;
 
-  const HomePageInfoState({required this.homePageModel});
+  const HomePageInfoState({required this.response});
 
   @override
-  List<Object> get props => [homePageModel];
+  List<Object> get props => [response];
 }
 
 class HomePageError extends HomeState {
