@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:ghorx_mobile_app_new/features/home/repository/bloc/date_range_event.dart';
+import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_event.dart';
 import 'package:ghorx_mobile_app_new/features/home/daterange/repository/date_range_repo.dart';
 
 part 'date_range_state.dart';

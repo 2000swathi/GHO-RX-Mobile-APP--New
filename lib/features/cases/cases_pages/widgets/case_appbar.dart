@@ -41,6 +41,7 @@ class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      toolbarHeight: isHome==true?75:null,
       backgroundColor: AppColors.white,
       automaticallyImplyLeading: false,
       elevation: 0,

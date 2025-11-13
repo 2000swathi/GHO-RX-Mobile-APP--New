@@ -115,52 +115,10 @@ class _RecordaudioState extends State<Recordaudio> {
 
   @override
   Widget build(BuildContext context) {
-    // final audioItems = widget.audioSummaryModel ?? [];
-    // final audioList = audioItems.where((item) => item.docTypeID == 6).toList();
-    // final docList = audioItems.where((item) => item.docTypeID != 6).toList();
-
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // // --- Document List ---
-          // if (docList.isNotEmpty) ...[
-          //   Padding(
-          //     padding: const EdgeInsets.all(10.0),
-          //     child: Text(
-          //       "Documents",
-          //       style: AppFonts.hinttext2.copyWith(fontWeight: FontWeight.w600),
-          //     ),
-          //   ),
-          //   Padding(
-          //     padding: const EdgeInsets.all(8.0),
-          //     child: ReportListWidget(
-          //       isDrUploaded: true,
-          //       fileList: docList,
-          //       itemCount: docList.length,
-          //     ),
-          //   ),
-          // ],
-
-          // // --- Audio Summary List ---
-          // if (audioList.isNotEmpty) ...[
-          //   Padding(
-          //     padding: const EdgeInsets.all(10.0),
-          //     child: Text(
-          //       "Audio Summary",
-          //       style: AppFonts.hinttext2.copyWith(fontWeight: FontWeight.w600),
-          //     ),
-          //   ),
-          //   Padding(
-          //     padding: const EdgeInsets.all(8.0),
-          //     child: AudioSummaryListWidget(
-          //       audioList: audioList,
-          //       isDrUploaded: true,
-          //     ),
-          //   ),
-          // ],
-
-          // --- Upload Section ---
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: CustomDottedBorderContainer(

@@ -4,9 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/widgets/case_appbar.dart';
-import 'package:ghorx_mobile_app_new/features/home/bloc/home_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/home/repository/bloc/date_range_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/home/repository/bloc/date_range_event.dart';
+import 'package:ghorx_mobile_app_new/features/home/repository/bloc/home_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_event.dart';
 import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/date_range_list.dart';
 import 'package:ghorx_mobile_app_new/features/home/widget/performance_snapshot.dart';
 import 'package:ghorx_mobile_app_new/features/home/widget/profile_pic_dialogue.dart';
@@ -40,6 +40,7 @@ class HomePage extends StatelessWidget {
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: CaseAppBar(
+              
               isHome: true,
               widgets: Column(
                 children: [
@@ -50,16 +51,65 @@ class HomePage extends StatelessWidget {
                         onTap: () {
                           showDialog(
                             context: context,
-                            builder:
-                                (context) => ProfileDialog(
-                                  caseID: "widget.caseID",
-                                  saltID: "widget.saltID",
-                                ),
+                            builder: (context) => ProfileDialog(url:info["url"] ,),
                           );
                         },
                         child: CircleAvatar(
-                          backgroundColor: AppColors.profilepink.withAlpha(13),
-                          child: SvgPicture.asset("assets/svg/person.svg"),
+                          radius: 25,
+                          child: CircleAvatar(
+                            radius: 23,
+                            backgroundColor: AppColors.profilepink.withAlpha(13),
+                            child:
+                                info["url"] != null && info["url"].isNotEmpty
+                                    ? ClipOval(
+                                      child: Image.network(
+                                        info["url"],
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                        loadingBuilder: (
+                                          context,
+                                          child,
+                                          loadingProgress,
+                                        ) {
+                                          if (loadingProgress == null) {
+                                            return child;
+                                          }
+                                         
+                                          return Center(
+                                            child: SizedBox(
+                                              height: 15,
+                                              width: 15,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<Color>(
+                                                      AppColors.profilepink,
+                                                    ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        errorBuilder: (
+                                          context,
+                                          error,
+                                          stackTrace,
+                                        ) {
+                                          // Fallback if image fails to load
+                                          return SvgPicture.asset(
+                                            "assets/svg/person.svg",
+                                            height: 24,
+                                            width: 24,
+                                          );
+                                        },
+                                      ),
+                                    )
+                                    : SvgPicture.asset(
+                                      "assets/svg/person.svg",
+                                      height: 24,
+                                      width: 24,
+                                    ),
+                          ),
                         ),
                       ),
 
@@ -68,6 +118,7 @@ class HomePage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Hello", style: AppFonts.textblue),
+                          SizedBox(height: 5,),
                           Text(info["Name"], style: AppFonts.subtext),
                         ],
                       ),
@@ -77,12 +128,11 @@ class HomePage extends StatelessWidget {
               ),
             ),
             body: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   UpcomingCase(cases: cases),
-
                   const PerformanceSnapshotWidget(),
                   const SizedBox(height: 15),
                   KPIHeader(),

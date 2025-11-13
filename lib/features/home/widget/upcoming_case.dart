@@ -28,7 +28,7 @@ class UpcomingCase extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 15),
+        SizedBox(height: 10),
         InkWell(
           onTap: () {
             final openCase = OpenCaseModel.fromJson(cases);

@@ -32,6 +32,30 @@ class ImagePickerService {
       );
     }
   }
+  
+  //pick single Image
+  Future<void> pickSingleImageFromGallery(BuildContext context) async {
+  bool permissionGranted = await requestStoragePermission(context);
+
+  if (permissionGranted) {
+    final XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      File file = File(image.path);
+      imageFileList
+        ..clear()
+        ..add(image);
+      fileList
+        ..clear()
+        ..add(file);
+    }
+  } else {
+    CustomScaffoldMessenger.showErrorMessage(
+      context,
+      "Please allow access to the gallery.",
+    );
+  }
+}
+
 
   /// Pick an image from the camera
   Future<void> pickImageFromCamera(BuildContext context) async {

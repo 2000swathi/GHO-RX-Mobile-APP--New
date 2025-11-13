@@ -16,8 +16,8 @@ import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubm
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/repository/final_submit_repo.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/bloc/open_closed_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/repository/open_closed_repo.dart';
-import 'package:ghorx_mobile_app_new/features/home/bloc/home_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/home/repository/bloc/date_range_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/home/repository/bloc/home_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/repository/bloc/key_performance_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/repository/key_perfomance_repo.dart';
 import 'package:ghorx_mobile_app_new/features/home/daterange/repository/date_range_repo.dart';
