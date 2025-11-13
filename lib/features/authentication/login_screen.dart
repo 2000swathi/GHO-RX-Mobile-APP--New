@@ -77,6 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             name: "Email",
                             hintText: "Enter your email",
                             controller: emailController,
+                            keyboardType: TextInputType.emailAddress,
                             validator: Validation.validateEmail,
                           ),
                           SizedBox(height: 20),
