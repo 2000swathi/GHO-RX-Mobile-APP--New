@@ -9,6 +9,7 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart'
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/widgets/case_appbar.dart';
+import 'package:ghorx_mobile_app_new/features/home/widget/profile_pic_dialogue.dart';
 import 'package:ghorx_mobile_app_new/features/profile/delete/bloc/delete_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_language.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_specialty_sheet.dart';
@@ -18,12 +19,13 @@ import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_bankin
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_state.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/license_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/profile/widget/profile_appbar_shimmer.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/profile_repo.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_insurance_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_license_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_person_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/widget/profiledetails.dart';
+import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
 
 class ProfileDr extends StatefulWidget {
   const ProfileDr({super.key});
@@ -32,14 +34,127 @@ class ProfileDr extends StatefulWidget {
   State<ProfileDr> createState() => _ProfileDrState();
 }
 
+Future<void> _saveEmailToPrefs(String? email) async {
+  if (email == null || email.isEmpty) return;
+
+  await SharedPreference.setEmail(email);
+}
+
 class _ProfileDrState extends State<ProfileDr> {
   int _expandedIndex = -1;
   @override
   Widget build(BuildContext context) {
+    context.read<ProfileBloc>().add(FetchPersonalInfo());
     final repository = ProfileRepository();
 
     return Scaffold(
-      appBar: CaseAppBar(title: 'Welcome, Doctor', isLogout: true),
+      appBar: CaseAppBar(
+        isLogout: true,
+        isHome: true,
+        isappbarHeight: true,
+        widgets: BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            if (state is ProfileInitial || state is ProfileLoading) {
+              return const ProfileAppbarShimmer();
+            } else if (state is PersonalInfoState) {
+              final info = state.personalInfomodel;
+              final email = info.email;
+              _saveEmailToPrefs(email);
+
+              return Column(
+                children: [
+                  const SizedBox(height: 15),
+                  Row(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder:
+                                (context) => ProfileDialog(url: info.imageUrl),
+                          );
+                        },
+                        child: CircleAvatar(
+                          radius: 25,
+                          child: CircleAvatar(
+                            radius: 23,
+                            backgroundColor: AppColors.profilepink.withAlpha(
+                              13,
+                            ),
+                            child:
+                                info.imageUrl.isNotEmpty
+                                    ? ClipOval(
+                                      child: Image.network(
+                                        info.imageUrl,
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                        loadingBuilder: (
+                                          context,
+                                          child,
+                                          loadingProgress,
+                                        ) {
+                                          if (loadingProgress == null) {
+                                            return child;
+                                          }
+
+                                          return Center(
+                                            child: SizedBox(
+                                              height: 15,
+                                              width: 15,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                      Color
+                                                    >(AppColors.profilepink),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        errorBuilder: (
+                                          context,
+                                          error,
+                                          stackTrace,
+                                        ) {
+                                          // Fallback if image fails to load
+                                          return SvgPicture.asset(
+                                            "assets/svg/person.svg",
+                                            height: 24,
+                                            width: 24,
+                                          );
+                                        },
+                                      ),
+                                    )
+                                    : SvgPicture.asset(
+                                      "assets/svg/person.svg",
+                                      height: 24,
+                                      width: 24,
+                                    ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(width: 5),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Hello", style: AppFonts.textblue),
+                          SizedBox(height: 5),
+                          Text("${info.firstName} ${info.lastName}", style: AppFonts.subtext.copyWith(fontWeight: FontWeight.w600)),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            } else if (state is ProfileError) {
+              return Center(child: Text(state.message));
+            }
+            return Center(child: Text("unknown state"));
+          },
+        ),
+      ),
       body: ListView(
         children: [
           const SizedBox(height: 15),
@@ -970,8 +1085,9 @@ class _ProfileDrState extends State<ProfileDr> {
                                           final listBloc =
                                               context.read<ListBloc>();
                                           listBloc.add(FetchLicenseList());
-                                          listBloc.add(FetchIssueingAuthorityList());
-
+                                          listBloc.add(
+                                            FetchIssueingAuthorityList(),
+                                          );
 
                                           final results = await Future.wait([
                                             listBloc.stream.firstWhere(
@@ -1002,15 +1118,17 @@ class _ProfileDrState extends State<ProfileDr> {
                                           final listState = results[0];
                                           final issueingstate = results[1];
 
-
-                                          if (listState is LicenseListState && 
-                                              issueingstate is IssueingauthorityListState) {
+                                          if (listState is LicenseListState &&
+                                              issueingstate
+                                                  is IssueingauthorityListState) {
                                             final licenses =
                                                 listState.licenseResponse.data
                                                     .expand((inner) => inner)
                                                     .toList();
                                             final issueingList =
-                                                issueingstate.issueingauthorityResponse.data
+                                                issueingstate
+                                                    .issueingauthorityResponse
+                                                    .data
                                                     .expand((inner) => inner)
                                                     .toList();
 
@@ -1077,17 +1195,19 @@ class _ProfileDrState extends State<ProfileDr> {
 
                                 Navigator.pop(context);
 
-                                if (licenseState is LicenseListState && 
-                                    issueingstate is IssueingauthorityListState) {
+                                if (licenseState is LicenseListState &&
+                                    issueingstate
+                                        is IssueingauthorityListState) {
                                   final licenses =
                                       licenseState.licenseResponse.data
                                           .expand((inner) => inner)
                                           .toList();
                                   final issueingList =
-                                      issueingstate.issueingauthorityResponse.data
+                                      issueingstate
+                                          .issueingauthorityResponse
+                                          .data
                                           .expand((inner) => inner)
                                           .toList();
-
 
                                   AddEditLicenseSheet.showSheet(
                                     context,

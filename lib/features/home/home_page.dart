@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/logo_widget.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/widgets/case_appbar.dart';
@@ -9,7 +10,6 @@ import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_blo
 import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_event.dart';
 import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/date_range_list.dart';
 import 'package:ghorx_mobile_app_new/features/home/widget/performance_snapshot.dart';
-import 'package:ghorx_mobile_app_new/features/home/widget/profile_pic_dialogue.dart';
 import 'package:ghorx_mobile_app_new/features/home/widget/upcoming_case.dart';
 import 'package:ghorx_mobile_app_new/features/shimmer/home_page_shimmer.dart';
 import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
@@ -40,102 +40,22 @@ class HomePage extends StatelessWidget {
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: CaseAppBar(
-              
               isHome: true,
-              widgets: Column(
-                children: [
-                  const SizedBox(height: 15),
-                  Row(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) => ProfileDialog(url:info["url"] ,),
-                          );
-                        },
-                        child: CircleAvatar(
-                          radius: 25,
-                          child: CircleAvatar(
-                            radius: 23,
-                            backgroundColor: AppColors.profilepink.withAlpha(13),
-                            child:
-                                info["url"] != null && info["url"].isNotEmpty
-                                    ? ClipOval(
-                                      child: Image.network(
-                                        info["url"],
-                                        fit: BoxFit.cover,
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                        loadingBuilder: (
-                                          context,
-                                          child,
-                                          loadingProgress,
-                                        ) {
-                                          if (loadingProgress == null) {
-                                            return child;
-                                          }
-                                         
-                                          return Center(
-                                            child: SizedBox(
-                                              height: 15,
-                                              width: 15,
-                                              child: CircularProgressIndicator(
-                                                strokeWidth: 2,
-                                                valueColor:
-                                                    AlwaysStoppedAnimation<Color>(
-                                                      AppColors.profilepink,
-                                                    ),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        errorBuilder: (
-                                          context,
-                                          error,
-                                          stackTrace,
-                                        ) {
-                                          // Fallback if image fails to load
-                                          return SvgPicture.asset(
-                                            "assets/svg/person.svg",
-                                            height: 24,
-                                            width: 24,
-                                          );
-                                        },
-                                      ),
-                                    )
-                                    : SvgPicture.asset(
-                                      "assets/svg/person.svg",
-                                      height: 24,
-                                      width: 24,
-                                    ),
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(width: 5),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Hello", style: AppFonts.textblue),
-                          SizedBox(height: 5,),
-                          Text(info["Name"], style: AppFonts.subtext),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
+              widgets: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [CustomLogo(isSmall: true)],
               ),
             ),
             body: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   UpcomingCase(cases: cases),
-                  const PerformanceSnapshotWidget(),
-                  const SizedBox(height: 15),
+
+                  const SizedBox(height: 10),
                   KPIHeader(),
+                  const PerformanceSnapshotWidget(),
                 ],
               ),
             ),

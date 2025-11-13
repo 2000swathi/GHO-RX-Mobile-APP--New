@@ -10,6 +10,9 @@ import 'package:ghorx_mobile_app_new/core/constants/file_picker.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_event.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/widget/pick_file_dialogue_box.dart';
+import 'package:ghorx_mobile_app_new/features/home/repository/bloc/home_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
 import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
 
 class ProfileDialog extends StatefulWidget {
@@ -127,6 +130,7 @@ class _ProfileDialogState extends State<ProfileDialog> {
         return BlocListener<GetFileIdBloc, GetFileIdState>(
           listener: (context, state) {
             if (state is SuccessAPI) {
+              context.read<ProfileBloc>().add(FetchPersonalInfo());
               Navigator.pop(context);
             } else if (state is GetFileIdFailure) {
               Navigator.pop(context);
@@ -148,7 +152,7 @@ class _ProfileDialogState extends State<ProfileDialog> {
                     const Spacer(),
                     IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.close),
+                      icon: const Icon(Icons.close,color: AppColors.black,),
                     ),
                   ],
                 ),
@@ -231,7 +235,7 @@ class _ProfileDialogState extends State<ProfileDialog> {
                                       label: "Scan",
                                       onTap: () async {
                                         final picker = ImagePickerService();
-                                        await picker.pickImageFromCamera(
+                                        await picker.picksingleImageFromCamera(
                                           context,
                                         );
 

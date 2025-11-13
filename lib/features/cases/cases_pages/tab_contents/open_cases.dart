@@ -39,6 +39,7 @@ class OpenCasesTab extends StatelessWidget {
                       arguments: caseItem,
                     );
                   },
+                
                   caseId: 'Case ID: ${caseItem.id}',
 
                   dueDate: caseItem.dueDate,
