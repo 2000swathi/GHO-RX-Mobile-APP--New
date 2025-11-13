@@ -46,7 +46,8 @@ class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
       toolbarHeight: isappbarHeight==true?75:null,
       backgroundColor: AppColors.white,
       automaticallyImplyLeading: false,
-      elevation: 0,
+      scrolledUnderElevation: 0, // 👈 removes tint when scrolling (Material 3)
+      surfaceTintColor: AppColors.white,
       title:
           isHome == true
               ? widgets
