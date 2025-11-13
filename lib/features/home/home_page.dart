@@ -9,6 +9,7 @@ import 'package:ghorx_mobile_app_new/features/home/repository/bloc/date_range_bl
 import 'package:ghorx_mobile_app_new/features/home/repository/bloc/date_range_event.dart';
 import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/date_range_list.dart';
 import 'package:ghorx_mobile_app_new/features/home/widget/performance_snapshot.dart';
+import 'package:ghorx_mobile_app_new/features/home/widget/profile_pic_dialogue.dart';
 import 'package:ghorx_mobile_app_new/features/home/widget/upcoming_case.dart';
 import 'package:ghorx_mobile_app_new/features/shimmer/home_page_shimmer.dart';
 import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
@@ -49,106 +50,11 @@ class HomePage extends StatelessWidget {
                         onTap: () {
                           showDialog(
                             context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
+                            builder:
+                                (context) => ProfileDialog(
+                                  caseID: "widget.caseID",
+                                  saltID: "widget.saltID",
                                 ),
-                                contentPadding: const EdgeInsets.all(20),
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(
-                                      color: AppColors.profilepink.withAlpha(
-                                        13,
-                                      ),
-                                      height: 200,
-                                      width: 200,
-                                      child: Center(
-                                        child: SvgPicture.asset(
-                                          "assets/svg/person.svg",
-                                          width: 60,
-                                          height: 60,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 20),
-
-                                    // Second container with edit & delete icons
-                                    Container(
-                                      width: 200,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey.shade100,
-                                        borderRadius: BorderRadius.circular(12),
-                                        border: Border.all(
-                                          color: Colors.grey.shade300,
-                                        ),
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 15,
-                                        vertical: 10,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          // Edit icon
-                                          InkWell(
-                                            onTap: () {
-                                              Navigator.pop(context);
-                                              // TODO: Add your edit logic here
-                                            },
-                                            child: Row(
-                                              children: [
-                                                const Icon(
-                                                  Icons.edit,
-                                                  color: Colors.blueAccent,
-                                                  size: 22,
-                                                ),
-                                                const SizedBox(width: 5),
-                                                Text(
-                                                  "Edit",
-                                                  style: AppFonts.subtext
-                                                      .copyWith(
-                                                        color:
-                                                            Colors.blueAccent,
-                                                      ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-
-                                          // Delete icon
-                                          InkWell(
-                                            onTap: () {
-                                              Navigator.pop(context);
-                                              // TODO: Add your delete logic here
-                                            },
-                                            child: Row(
-                                              children: [
-                                                const Icon(
-                                                  Icons.delete,
-                                                  color: Colors.redAccent,
-                                                  size: 22,
-                                                ),
-                                                const SizedBox(width: 5),
-                                                Text(
-                                                  "Delete",
-                                                  style: AppFonts.subtext
-                                                      .copyWith(
-                                                        color: Colors.redAccent,
-                                                      ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
                           );
                         },
                         child: CircleAvatar(
