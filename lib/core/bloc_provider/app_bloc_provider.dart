@@ -17,6 +17,10 @@ import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubm
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/bloc/open_closed_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/repository/open_closed_repo.dart';
 import 'package:ghorx_mobile_app_new/features/home/bloc/home_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/home/repository/bloc/date_range_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/repository/bloc/key_performance_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/repository/key_perfomance_repo.dart';
+import 'package:ghorx_mobile_app_new/features/home/daterange/repository/date_range_repo.dart';
 import 'package:ghorx_mobile_app_new/features/home/repository/home_repository.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/delete/bloc/delete_bloc.dart';
@@ -28,6 +32,8 @@ import 'package:ghorx_mobile_app_new/features/profile/editProfile/bloc/list_bloc
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/list_repository.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/profile_repo.dart';
+import 'package:ghorx_mobile_app_new/features/send%20mail/repository/bloc/sendmail_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/send%20mail/repository/sendmail_repo.dart';
 import 'package:ghorx_mobile_app_new/features/splash/bloc/spalsh_event.dart';
 import 'package:ghorx_mobile_app_new/features/splash/bloc/splash_bloc.dart';
 
@@ -78,7 +84,14 @@ class AppBlocProvider extends StatelessWidget {
         ),
         BlocProvider(create: (_) => GetFileIdBloc(repository: GetFileIDReo())),
         BlocProvider(create: (_) => AttestBloc(repository: AttestationRepo())),
-        BlocProvider(create: (_) => FinalSubmissionBloc(repository: SubmitCaseRepo())),
+        BlocProvider(
+          create: (_) => FinalSubmissionBloc(repository: SubmitCaseRepo()),
+        ),
+        BlocProvider(create: (_) => DateRangeBloc(repository: DateRangeRepo())),
+        BlocProvider(
+          create: (_) => SendmailBloc(repository: SendEmailRepository()),
+        ),
+        BlocProvider(create: (_)=>KeyPerformanceBloc(repository: KeyPerRepo()))
       ],
       child: child,
     );

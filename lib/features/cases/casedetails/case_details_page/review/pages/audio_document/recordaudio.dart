@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_dotted_container.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
@@ -188,11 +189,11 @@ class _RecordaudioState extends State<Recordaudio> {
                               setState(() {
                                 isSelcted = false;
                               });
-                              // context.read<CaseDetailsBloc>().add(
-                              //   CaseDetailsEventRequested(
-                              //     saltID: widget.saltID,
-                              //   ),
-                              // );
+                            } else if (state is GetFileIdFailure) {
+                              CustomScaffoldMessenger.showErrorMessage(
+                                context,
+                                state.message,
+                              );
                             }
                           },
                           builder: (context, state) {
@@ -236,6 +237,7 @@ class _RecordaudioState extends State<Recordaudio> {
                                                 docTypeID: 1,
                                                 filename: fileName,
                                                 fileSize: fileSize,
+                                                saltKey: widget.saltID,
                                                 context: context,
                                               ),
                                             );
@@ -280,6 +282,7 @@ class _RecordaudioState extends State<Recordaudio> {
                                                 docTypeID: 1,
                                                 filename: fileName,
                                                 fileSize: fileSize,
+                                                saltKey: widget.saltID,
                                                 context: context,
                                               ),
                                             );
@@ -377,6 +380,7 @@ class _RecordaudioState extends State<Recordaudio> {
                 filePath: recording['path'],
                 fileSize: '$fileSizeInKB KB',
                 caseID: widget.caseID,
+                saltKey: widget.saltID,
                 onDelete: () => _deleteRecording(index),
               );
             }),
