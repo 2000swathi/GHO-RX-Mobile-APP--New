@@ -22,6 +22,7 @@ class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double height;
   final PreferredSizeWidget? tabBar;
   final bool? isLogout;
+  final bool? isappbarHeight;
 
   const CaseAppBar({
     super.key,
@@ -29,9 +30,10 @@ class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.istrue = false,
     this.isHome = false,
     this.widgets,
-    this.height = 70,
+    this.height = 80,
     this.tabBar,
     this.isLogout = false,
+    this.isappbarHeight=false
   });
 
   @override
@@ -41,6 +43,7 @@ class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      toolbarHeight: isappbarHeight==true?75:null,
       backgroundColor: AppColors.white,
       automaticallyImplyLeading: false,
       elevation: 0,

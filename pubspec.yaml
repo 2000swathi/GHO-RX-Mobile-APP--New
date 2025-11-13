@@ -58,6 +58,7 @@ dependencies:
   path: ^1.9.1
   http: ^1.5.0
   new_version_plus: ^0.1.1
+  image_editor_plus: ^1.0.8
 
 
 dev_dependencies:
