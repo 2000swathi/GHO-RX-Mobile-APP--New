@@ -89,6 +89,7 @@ class EditProfileSheet {
                     name: "First Name",
                     hintText: "Enter your first name",
                     validator: Validation.validateFirstName,
+                    textInputAction: TextInputAction.done,
                   ),
                   const SizedBox(height: 10),
                   CustomTextFormField(
@@ -105,7 +106,7 @@ class EditProfileSheet {
                     keyboardType: TextInputType.number,
                     validator: Validation.validateDOB,
                     inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly, 
+                      FilteringTextInputFormatter.digitsOnly,
                       DobInputFormatter(),
                     ],
                   ),
@@ -147,6 +148,7 @@ class EditProfileSheet {
                     name: "Email",
                     hintText: "Enter your email address",
                     validator: Validation.validateEmail,
+                    keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 10),
                   CustomTextFormField(
@@ -182,6 +184,7 @@ class EditProfileSheet {
                     name: "Zip Code",
                     hintText: "Enter your zip code",
                     validator: Validation.postalCodeValidator,
+                    keyboardType: TextInputType.number,
                   ),
                   const SizedBox(height: 10),
                 ],
