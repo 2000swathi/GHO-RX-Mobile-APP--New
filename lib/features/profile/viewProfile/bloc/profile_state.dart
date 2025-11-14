@@ -20,15 +20,7 @@ class ProfileInitial extends ProfileState {}
 // Loading state
 class ProfileLoading extends ProfileState {}
 
-//  personal info
-class PersonalInfoState extends ProfileState {
-  final PersonalInfoModel personalInfomodel;
 
-  const PersonalInfoState({required this.personalInfomodel});
-
-  @override
-  List<Object?> get props => [personalInfomodel];
-}
 
 //   specialty list
 class SpecialtyState extends ProfileState {
