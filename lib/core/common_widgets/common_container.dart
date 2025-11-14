@@ -9,8 +9,8 @@ class CommonContainer extends StatelessWidget {
   final Color borderColor;
   final String data;
   final String data1;
-  final String data2;
-  final String data3;
+  final String? data2;
+  final String? data3;
   final Icon? icon;
   final Image? image;
   const CommonContainer({
@@ -20,8 +20,8 @@ class CommonContainer extends StatelessWidget {
     required this.data2Color,
     required this.data,
     required this.data1,
-    required this.data2,
-    required this.data3,
+     this.data2,
+     this.data3,
     required this.textColor,
     this.icon,
     this.image,

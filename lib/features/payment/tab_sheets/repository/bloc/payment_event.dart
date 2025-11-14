@@ -1,13 +1,13 @@
 part of 'payment_bloc.dart';
 
 sealed class PaymentEvent extends Equatable {
-  const PaymentEvent();
+  const PaymentEvent({required String dateValue});
 
   @override
   List<Object> get props => [];
 }
 
 class FetchPaymentInfo extends PaymentEvent {
-  String? dateValue;
-  FetchPaymentInfo({this.dateValue});
+  String dateValue;
+  FetchPaymentInfo({required this.dateValue}) : super(dateValue: '');
 }

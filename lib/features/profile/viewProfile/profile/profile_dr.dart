@@ -52,7 +52,7 @@ class _ProfileDrState extends State<ProfileDr> {
       appBar: CaseAppBar(
         isLogout: true,
         isHome: true,
-        isappbarHeight: true,
+        isappbarHeight: 75,
         widgets: BlocBuilder<ProfileInfoBloc, ProfileInfoState>(
           builder: (context, state) {
             if (state is ProfileInfoInitial || state is ProfileInfoLoading) {
