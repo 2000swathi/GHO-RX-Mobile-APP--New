@@ -16,6 +16,7 @@ import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
 
 class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
+  final String? subTitle;
   final bool istrue;
   final bool? isHome;
   final Widget? widgets;
@@ -27,6 +28,7 @@ class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CaseAppBar({
     super.key,
     this.title,
+    this.subTitle,
     this.istrue = false,
     this.isHome = false,
     this.widgets,
@@ -51,10 +53,19 @@ class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
       title:
           isHome == true
               ? widgets
-              : Padding(
-                padding: const EdgeInsets.only(top: 15.0),
-                child: Text(title ?? '', style: AppFonts.heading),
+              : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(title ?? '', style: AppFonts.heading),
+                  if (subTitle != null && subTitle!.isNotEmpty)
+                    SizedBox(height: 25), // small spacing
+                  if (subTitle != null && subTitle!.isNotEmpty)
+                    Text(subTitle!, style: AppFonts.subheading16),
+                ],
               ),
+
       bottom: tabBar,
       actions:
           istrue

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
+import 'package:ghorx_mobile_app_new/features/payment/widgets/common_days_dropdown.dart';
 import 'package:ghorx_mobile_app_new/features/payment/widgets/dropdown_month.dart';
 
 class PayReceived extends StatelessWidget {
@@ -8,32 +9,37 @@ class PayReceived extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 14, right: 14),
-        child: Column(
-          children: [
-            Expanded(
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width,
+    return SingleChildScrollView(
+      child: Container(
+        decoration: BoxDecoration(color: AppColors.white),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 14, right: 14),
+          child: Column(
+            children: [
+              SizedBox(height: 20),
+              SizedBox(
                 height: 382,
-                child: Image.asset("assets/images/statics.png"),
+                width: double.infinity,
+                child: Container(
+                  child: Image.asset(
+                    "assets/images/statics.png",
+                    // fit: BoxFit.cover,
+                  ),
+                ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Recent Transactions", style: AppFonts.subheading16),
-                MonthlyDropdown(),
-              ],
-            ),
-            SizedBox(height: 36),
-            Expanded(
-              child: ListView.builder(
+              SizedBox(height: 24),
+              KPIHeader2(),
+              SizedBox(height: 25),
+              ListView.builder(
+                shrinkWrap:
+                    true, // Important! Makes list take only needed space
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: 5,
 
                 itemBuilder: (context, index) {
                   return Card(
+                    elevation: 0,
+                    color: AppColors.white,
                     margin: EdgeInsets.symmetric(vertical: 6),
                     child: ListTile(
                       leading: Icon(Icons.verified, color: AppColors.green),
@@ -53,8 +59,8 @@ class PayReceived extends StatelessWidget {
                   );
                 },
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
