@@ -7,7 +7,6 @@ abstract class ProfileEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class FetchPersonalInfo extends ProfileEvent {}
 
 class FetchSpecialty extends ProfileEvent {}
 

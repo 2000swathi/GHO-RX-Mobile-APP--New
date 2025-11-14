@@ -16,6 +16,7 @@ import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_specia
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_accreditation_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_bankinfo.dart';
+import 'package:ghorx_mobile_app_new/features/profile/profile%20Info/bloc/profile_info_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_state.dart';
@@ -44,7 +45,7 @@ class _ProfileDrState extends State<ProfileDr> {
   int _expandedIndex = -1;
   @override
   Widget build(BuildContext context) {
-    context.read<ProfileBloc>().add(FetchPersonalInfo());
+    context.read<ProfileInfoBloc>().add(FetchPersonalInfo());
     final repository = ProfileRepository();
 
     return Scaffold(
@@ -52,9 +53,9 @@ class _ProfileDrState extends State<ProfileDr> {
         isLogout: true,
         isHome: true,
         isappbarHeight: true,
-        widgets: BlocBuilder<ProfileBloc, ProfileState>(
+        widgets: BlocBuilder<ProfileInfoBloc, ProfileInfoState>(
           builder: (context, state) {
-            if (state is ProfileInitial || state is ProfileLoading) {
+            if (state is ProfileInfoInitial || state is ProfileInfoLoading) {
               return const ProfileAppbarShimmer();
             } else if (state is PersonalInfoState) {
               final info = state.personalInfomodel;
@@ -148,7 +149,7 @@ class _ProfileDrState extends State<ProfileDr> {
                   ),
                 ],
               );
-            } else if (state is ProfileError) {
+            } else if (state is ProfileInfoError) {
               return Center(child: Text(state.message));
             }
             return Center(child: Text("unknown state"));
@@ -176,92 +177,86 @@ class _ProfileDrState extends State<ProfileDr> {
             index: 0,
             heading: "Personal information",
             subheading: "View your basic and contact details.",
-            content: BlocProvider(
-              create:
-                  (_) =>
-                      ProfileBloc(repository: repository)
-                        ..add(FetchPersonalInfo()),
-              child: BlocBuilder<ProfileBloc, ProfileState>(
-                builder: (context, state) {
-                  if (state is ProfileLoading) {
-                    return const Center(child: LoadingAnimation());
-                  } else if (state is PersonalInfoState) {
-                    final info = state.personalInfomodel;
-                    return Column(
-                      children: [
-                        _buildRow(
-                          "Full Name",
-                          "${info.firstName} ${info.lastName}",
-                        ),
-                        _buildRow("Birth Date", info.birthDate),
-                        _buildRow("Email", info.email),
-                        _buildRow("Phone", info.phone),
-                        _buildRow("Country", info.countryName),
-                        _buildRow(
-                          "Address",
-                          "${info.address1} ${info.address2} ${info.city} ${info.state}",
-                        ),
-                        _buildRow("Zip Code", info.zipCode),
-                        const SizedBox(height: 15),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: BlocListener<ListBloc, ListState>(
-                            listener: (context, listState) async {
-                              if (Navigator.canPop(context)) {
-                                Navigator.pop(context);
-                              }
-
-                              if (listState is CountryState) {
-                                final countries =
-                                    listState.countryResponse.data
-                                        .expand((inner) => inner)
-                                        .toList();
-
-                                Future.microtask(() {
-                                  EditProfileSheet.showSheet(
-                                    context,
-                                    info,
-                                    countries,
-                                  );
-                                });
-                                setState(() {
-                                  _expandedIndex = -1;
-                                });
-                              } else if (listState is ListFailure) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(listState.error)),
+            content: BlocBuilder<ProfileInfoBloc, ProfileInfoState>(
+              builder: (context, state) {
+                if (state is ProfileInfoLoading) {
+                  return const Center(child: LoadingAnimation());
+                } else if (state is PersonalInfoState) {
+                  final info = state.personalInfomodel;
+                  return Column(
+                    children: [
+                      _buildRow(
+                        "Full Name",
+                        "${info.firstName} ${info.lastName}",
+                      ),
+                      _buildRow("Birth Date", info.birthDate),
+                      _buildRow("Email", info.email),
+                      _buildRow("Phone", info.phone),
+                      _buildRow("Country", info.countryName),
+                      _buildRow(
+                        "Address",
+                        "${info.address1} ${info.address2} ${info.city} ${info.state}",
+                      ),
+                      _buildRow("Zip Code", info.zipCode),
+                      const SizedBox(height: 15),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: BlocListener<ListBloc, ListState>(
+                          listener: (context, listState) async {
+                            if (Navigator.canPop(context)) {
+                              Navigator.pop(context);
+                            }
+            
+                            if (listState is CountryState) {
+                              final countries =
+                                  listState.countryResponse.data
+                                      .expand((inner) => inner)
+                                      .toList();
+            
+                              Future.microtask(() {
+                                EditProfileSheet.showSheet(
+                                  context,
+                                  info,
+                                  countries,
                                 );
-                              }
+                              });
+                              setState(() {
+                                _expandedIndex = -1;
+                              });
+                            } else if (listState is ListFailure) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(listState.error)),
+                              );
+                            }
+                          },
+                          child: InkWell(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder:
+                                    (_) => const Center(
+                                      child: LoadingAnimation(),
+                                    ),
+                              );
+            
+                              context.read<ListBloc>().add(
+                                FetchCountryList(),
+                              );
                             },
-                            child: InkWell(
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder:
-                                      (_) => const Center(
-                                        child: LoadingAnimation(),
-                                      ),
-                                );
-
-                                context.read<ListBloc>().add(
-                                  FetchCountryList(),
-                                );
-                              },
-                              child: SvgPicture.asset(
-                                "assets/svg/edit_svg.svg",
-                              ),
+                            child: SvgPicture.asset(
+                              "assets/svg/edit_svg.svg",
                             ),
                           ),
                         ),
-                      ],
-                    );
-                  } else if (state is ProfileError) {
-                    return Center(child: Text(state.message));
-                  }
-                  return Container();
-                },
-              ),
+                      ),
+                    ],
+                  );
+                } else if (state is ProfileInfoError) {
+                  return Center(child: Text(state.message));
+                }
+                return Container();
+              },
             ),
           ),
           _buildSection(

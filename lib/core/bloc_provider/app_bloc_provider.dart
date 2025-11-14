@@ -30,6 +30,8 @@ import 'package:ghorx_mobile_app_new/features/profile/edit/repository/edit_repos
 import 'package:ghorx_mobile_app_new/features/profile/add/repository/add_profile_repo.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/list_repository.dart';
+import 'package:ghorx_mobile_app_new/features/profile/profile%20Info/bloc/profile_info_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/profile%20Info/profile_info_repo.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/profile_repo.dart';
 import 'package:ghorx_mobile_app_new/features/send%20mail/repository/bloc/sendmail_bloc.dart';
@@ -91,7 +93,8 @@ class AppBlocProvider extends StatelessWidget {
         BlocProvider(
           create: (_) => SendmailBloc(repository: SendEmailRepository()),
         ),
-        BlocProvider(create: (_)=>KeyPerformanceBloc(repository: KeyPerRepo()))
+        BlocProvider(create: (_)=>KeyPerformanceBloc(repository: KeyPerRepo())),
+        BlocProvider(create: (_)=>ProfileInfoBloc(repository: ProfileInfoRepo()))
       ],
       child: child,
     );

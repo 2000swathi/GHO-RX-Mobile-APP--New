@@ -196,7 +196,7 @@ class EditProfileSheet {
       actionButton: StatefulBuilder(
         builder: (context, setState) {
           return CustomButton(
-            text: isLoading ? "Submitting..." : "Submit Request",
+            text:  "Submit Request",
             isLoading: isLoading,
             onPressed: () async {
               if (formKey.currentState!.validate()) {
