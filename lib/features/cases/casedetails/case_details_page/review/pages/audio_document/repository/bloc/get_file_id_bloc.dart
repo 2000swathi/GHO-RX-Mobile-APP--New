@@ -19,6 +19,7 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
           event.docTypeID,
           event.filename,
           event.fileSize,
+          event.saltKey,
         );
 
         if (response["Status"] == 1 &&
@@ -38,6 +39,7 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
               context: event.context,
               caseID: event.caseID,
               docTypeID: event.docTypeID,
+              saltKey: event.saltKey,
               fileUploadedID: fileUploadedID,
             ),
           );
@@ -79,6 +81,7 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
               filePath: event.filePath,
               caseID: event.caseID,
               docTypeID: event.docTypeID,
+              saltKey: event.saltKey,
               fileUploadedID: event.fileUploadedID,
             ),
           );
@@ -114,6 +117,7 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
               fileUploadedID: event.fileUploadedID,
               status: "2",
               filePath: event.filePath,
+              saltKey: event.saltKey,
               context: event.context,
             ),
           );
@@ -125,6 +129,7 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
               fileUploadedID: event.fileUploadedID,
               status: "3",
               filePath: event.filePath,
+              saltKey: event.saltKey,
               context: event.context,
             ),
           );
@@ -143,6 +148,7 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
           event.docTypeID,
           event.fileUploadedID,
           event.status,
+          event.saltKey,
         );
 
         if (response["Status"] == 1) {

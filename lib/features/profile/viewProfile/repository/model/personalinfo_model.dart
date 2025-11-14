@@ -12,6 +12,7 @@ class PersonalInfoModel {
   final String zipCode;
   final String birthDate;
   final String countryName;
+  final String imageUrl;
 
   PersonalInfoModel({
     required this.firstName,
@@ -26,6 +27,7 @@ class PersonalInfoModel {
     required this.zipCode,
     required this.birthDate,
     required this.countryName,
+    required this.imageUrl,
   });
 
   factory PersonalInfoModel.fromJson(Map<String, dynamic> json) {
@@ -42,6 +44,7 @@ class PersonalInfoModel {
       zipCode: json['ZipCode'] ?? "",
       birthDate: json['BirthDate'] ?? "",
       countryName: json['CountryName'] ?? "",
+      imageUrl: json['_Url'] ?? "",
     );
   }
 }

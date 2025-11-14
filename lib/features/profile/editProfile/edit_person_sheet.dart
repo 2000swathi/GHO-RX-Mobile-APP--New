@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_drop_down_field.dart';
@@ -10,6 +11,7 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessan
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
 import 'package:ghorx_mobile_app_new/core/constants/date_input_formatter.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
+import 'package:ghorx_mobile_app_new/features/home/repository/bloc/home_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/edit/repository/edit_repository.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/country_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/personalinfo_model.dart';
@@ -87,6 +89,7 @@ class EditProfileSheet {
                     name: "First Name",
                     hintText: "Enter your first name",
                     validator: Validation.validateFirstName,
+                    textInputAction: TextInputAction.done,
                   ),
                   const SizedBox(height: 10),
                   CustomTextFormField(
@@ -103,8 +106,8 @@ class EditProfileSheet {
                     keyboardType: TextInputType.number,
                     validator: Validation.validateDOB,
                     inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly, // Ensure only digits are typed
-                      DobInputFormatter(), // Apply the auto-formatting
+                      FilteringTextInputFormatter.digitsOnly,
+                      DobInputFormatter(),
                     ],
                   ),
                   const SizedBox(height: 10),
@@ -145,6 +148,7 @@ class EditProfileSheet {
                     name: "Email",
                     hintText: "Enter your email address",
                     validator: Validation.validateEmail,
+                    keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 10),
                   CustomTextFormField(
@@ -180,6 +184,7 @@ class EditProfileSheet {
                     name: "Zip Code",
                     hintText: "Enter your zip code",
                     validator: Validation.postalCodeValidator,
+                    keyboardType: TextInputType.number,
                   ),
                   const SizedBox(height: 10),
                 ],
@@ -191,7 +196,7 @@ class EditProfileSheet {
       actionButton: StatefulBuilder(
         builder: (context, setState) {
           return CustomButton(
-            text: isLoading ? "Submitting..." : "Submit Request",
+            text:  "Submit Request",
             isLoading: isLoading,
             onPressed: () async {
               if (formKey.currentState!.validate()) {
@@ -223,6 +228,7 @@ class EditProfileSheet {
                         "Profile updated successfully";
                     Navigator.pop(context);
                     CustomScaffoldMessenger.showSuccessMessage(context, msg);
+                    context.read<HomeBloc>().add(FetchHomePageInfo());
                   } else {
                     final err = response["Info"] ?? "Something went wrong";
                     Navigator.pop(context);

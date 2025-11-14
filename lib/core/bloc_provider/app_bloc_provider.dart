@@ -16,8 +16,20 @@ import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubm
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/repository/final_submit_repo.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/bloc/open_closed_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/repository/open_closed_repo.dart';
-import 'package:ghorx_mobile_app_new/features/home/bloc/home_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/home/repository/bloc/home_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/repository/bloc/key_performance_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/repository/key_perfomance_repo.dart';
+import 'package:ghorx_mobile_app_new/features/home/daterange/repository/date_range_repo.dart';
 import 'package:ghorx_mobile_app_new/features/home/repository/home_repository.dart';
+import 'package:ghorx_mobile_app_new/features/payment/repository/bloc/earnings_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/payment/repository/earnings_repo.dart';
+import 'package:ghorx_mobile_app_new/features/payment/repository/graph/bloc/payment_graph_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/payment/repository/graph/month/bloc/month_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/payment/repository/graph/month/month_repo.dart';
+import 'package:ghorx_mobile_app_new/features/payment/repository/graph/payment_graph_repo.dart';
+import 'package:ghorx_mobile_app_new/features/payment/tab_sheets/repository/bloc/payment_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/payment/tab_sheets/repository/payment_repo.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/delete/bloc/delete_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/delete/repository/delete_repository.dart';
@@ -26,8 +38,12 @@ import 'package:ghorx_mobile_app_new/features/profile/edit/repository/edit_repos
 import 'package:ghorx_mobile_app_new/features/profile/add/repository/add_profile_repo.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/list_repository.dart';
+import 'package:ghorx_mobile_app_new/features/profile/profile%20Info/bloc/profile_info_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/profile%20Info/profile_info_repo.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/profile_repo.dart';
+import 'package:ghorx_mobile_app_new/features/send%20mail/repository/bloc/sendmail_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/send%20mail/repository/sendmail_repo.dart';
 import 'package:ghorx_mobile_app_new/features/splash/bloc/spalsh_event.dart';
 import 'package:ghorx_mobile_app_new/features/splash/bloc/splash_bloc.dart';
 
@@ -78,7 +94,19 @@ class AppBlocProvider extends StatelessWidget {
         ),
         BlocProvider(create: (_) => GetFileIdBloc(repository: GetFileIDReo())),
         BlocProvider(create: (_) => AttestBloc(repository: AttestationRepo())),
-        BlocProvider(create: (_) => FinalSubmissionBloc(repository: SubmitCaseRepo())),
+        BlocProvider(
+          create: (_) => FinalSubmissionBloc(repository: SubmitCaseRepo()),
+        ),
+        BlocProvider(create: (_) => DateRangeBloc(repository: DateRangeRepo())),
+        BlocProvider(
+          create: (_) => SendmailBloc(repository: SendEmailRepository()),
+        ),
+        BlocProvider(create: (_)=>KeyPerformanceBloc(repository: KeyPerRepo())),
+        BlocProvider(create: (_)=>ProfileInfoBloc(repository: ProfileInfoRepo())),
+        BlocProvider(create: (_)=>PaymentBloc(repository: PaymentRepo())),
+        BlocProvider(create: (_)=>EarningsBloc(repository: EarningsRepo())),
+        BlocProvider(create: (_)=>MonthBloc(repository: MonthRepo())),
+        BlocProvider(create: (_)=>PaymentGraphBloc(repository: PaymentGraphRepo())),
       ],
       child: child,
     );

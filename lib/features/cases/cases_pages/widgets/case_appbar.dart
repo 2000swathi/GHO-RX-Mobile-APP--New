@@ -11,26 +11,31 @@ import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_event.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_state.dart';
-import 'package:ghorx_mobile_app_new/features/cases/send_message.dart';
+import 'package:ghorx_mobile_app_new/features/send%20mail/send_message.dart';
+import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
 
 class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
+  final String? subTitle;
   final bool istrue;
   final bool? isHome;
   final Widget? widgets;
   final double height;
   final PreferredSizeWidget? tabBar;
   final bool? isLogout;
+  final double? isappbarHeight;
 
   const CaseAppBar({
     super.key,
     this.title,
+    this.subTitle,
     this.istrue = false,
     this.isHome = false,
     this.widgets,
-    this.height = 70,
+    this.height = 80,
     this.tabBar,
     this.isLogout = false,
+    this.isappbarHeight = 75,
   });
 
   @override
@@ -40,16 +45,26 @@ class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      toolbarHeight: isappbarHeight,
       backgroundColor: AppColors.white,
       automaticallyImplyLeading: false,
-      elevation: 0,
+      scrolledUnderElevation: 0,
+      surfaceTintColor: AppColors.white,
       title:
           isHome == true
               ? widgets
-              : Padding(
-                padding: const EdgeInsets.only(top: 15.0),
-                child: Text(title ?? '', style: AppFonts.heading),
+              : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(title ?? '', style: AppFonts.heading),
+                  if (subTitle != null && subTitle!.isNotEmpty)
+                    if (subTitle != null && subTitle!.isNotEmpty)
+                      Text(subTitle!, style: AppFonts.subheading16),
+                ],
               ),
+
       bottom: tabBar,
       actions:
           istrue
@@ -108,8 +123,18 @@ class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
               ]
               : [
                 InkWell(
-                  onTap: () {
-                    showDialog(context: context, builder: (_) => SendMessage());
+                  onTap: () async {
+                    String? email = await SharedPreference.getEmail();
+                    print(email);
+
+                    showDialog(
+                      context: context,
+                      builder:
+                          (_) => SendMessage(
+                            from: email ?? "",
+                            to: "admin@gho.care",
+                          ),
+                    );
                   },
                   child: CircleAvatar(
                     backgroundColor: AppColors.primarycolor.withAlpha(8),

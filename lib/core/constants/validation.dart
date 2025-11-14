@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Validation {
-   static final DateFormat _format = DateFormat('dd MMM yyyy');
+  static final DateFormat _format = DateFormat('dd MMM yyyy');
   static String? validateEmail(String? value) {
     final email = value?.trim();
     if (email == null || email.isEmpty) {
@@ -280,6 +280,7 @@ class Validation {
     }
     return null;
   }
+
   static String? validateLicenecType(Object? value) {
     if (value == null || value.toString().trim().isEmpty) {
       return 'Choose a licence type';
@@ -295,7 +296,6 @@ class Validation {
     }
     return null;
   }
-
 
   static String? validateProviderName(String? value) {
     if (value == null || value.trim().isEmpty) {
@@ -329,7 +329,7 @@ class Validation {
   }
 
   //issue date
-   static String? validateIssueDate(String? value) {
+  static String? validateIssueDate(String? value) {
     if (value == null || value.isEmpty) {
       return "Please select issue date";
     }
@@ -337,7 +337,7 @@ class Validation {
     try {
       final date = _format.parse(value);
       final now = DateTime.now();
-      
+
       final today = DateTime(now.year, now.month, now.day);
       final issue = DateTime(date.year, date.month, date.day);
 
@@ -377,5 +377,4 @@ class Validation {
 
     return null;
   }
-
 }

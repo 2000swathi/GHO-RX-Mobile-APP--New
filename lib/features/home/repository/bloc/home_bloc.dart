@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/home/repository/home_repository.dart';
-import 'package:ghorx_mobile_app_new/features/home/repository/model/homepage_model.dart';
 part 'home_event.dart';
 part 'home_state.dart';
 
@@ -18,8 +17,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(HomePageLoading());
 
     try {
-      final home = await repository.fetchHomePageInfo();
-      emit(HomePageInfoState(homePageModel: home));
+      final response = await repository.fetchHomePageInfo();
+      if (response["Status"] == 1) {
+        emit(HomePageInfoState(response: response));
+      }else{
+        emit(HomePageError(message: response["Info"]));
+      }
     } catch (e) {
       emit(HomePageError(message: e.toString()));
     }

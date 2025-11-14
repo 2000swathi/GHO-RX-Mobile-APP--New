@@ -19,6 +19,7 @@ class _CasesPageState extends State<CasesPage> {
       child: Scaffold(
         backgroundColor: AppColors.white,
         appBar: CaseAppBar(
+          
           height: 45,
           title: "Cases",
           tabBar: TabBar(

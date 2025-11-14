@@ -7,28 +7,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final ProfileRepository repository;
 
   ProfileBloc({required this.repository}) : super(ProfileInitial()) {
-    on<FetchPersonalInfo>(_onFetchProfile);
     on<FetchSpecialty>(_onFetchSpecialty);
     on<FetchInsurance>(_onFetchInsurance);
     on<FetchLicence>(_onFetchLicense);
     on<FetchLanguage>(_onFetchLanguage);
     on<FetchAccreditation>(_onFetchAccreditation);
     on<FetchBankInfo>(_onFetchBankInfo);
-  }
-
-  //personal info
-  Future<void> _onFetchProfile(
-    FetchPersonalInfo event,
-    Emitter<ProfileState> emit,
-  ) async {
-    emit(ProfileLoading());
-
-    try {
-      final profile = await repository.fetchPersonalInfo();
-      emit(PersonalInfoState(personalInfomodel: profile));
-    } catch (e) {
-      emit(ProfileError(message: e.toString()));
-    }
   }
 
   //specialty

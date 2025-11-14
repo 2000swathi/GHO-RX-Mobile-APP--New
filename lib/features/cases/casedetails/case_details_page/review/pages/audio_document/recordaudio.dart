@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_dotted_container.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
@@ -114,52 +115,10 @@ class _RecordaudioState extends State<Recordaudio> {
 
   @override
   Widget build(BuildContext context) {
-    // final audioItems = widget.audioSummaryModel ?? [];
-    // final audioList = audioItems.where((item) => item.docTypeID == 6).toList();
-    // final docList = audioItems.where((item) => item.docTypeID != 6).toList();
-
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // // --- Document List ---
-          // if (docList.isNotEmpty) ...[
-          //   Padding(
-          //     padding: const EdgeInsets.all(10.0),
-          //     child: Text(
-          //       "Documents",
-          //       style: AppFonts.hinttext2.copyWith(fontWeight: FontWeight.w600),
-          //     ),
-          //   ),
-          //   Padding(
-          //     padding: const EdgeInsets.all(8.0),
-          //     child: ReportListWidget(
-          //       isDrUploaded: true,
-          //       fileList: docList,
-          //       itemCount: docList.length,
-          //     ),
-          //   ),
-          // ],
-
-          // // --- Audio Summary List ---
-          // if (audioList.isNotEmpty) ...[
-          //   Padding(
-          //     padding: const EdgeInsets.all(10.0),
-          //     child: Text(
-          //       "Audio Summary",
-          //       style: AppFonts.hinttext2.copyWith(fontWeight: FontWeight.w600),
-          //     ),
-          //   ),
-          //   Padding(
-          //     padding: const EdgeInsets.all(8.0),
-          //     child: AudioSummaryListWidget(
-          //       audioList: audioList,
-          //       isDrUploaded: true,
-          //     ),
-          //   ),
-          // ],
-
-          // --- Upload Section ---
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: CustomDottedBorderContainer(
@@ -188,11 +147,11 @@ class _RecordaudioState extends State<Recordaudio> {
                               setState(() {
                                 isSelcted = false;
                               });
-                              // context.read<CaseDetailsBloc>().add(
-                              //   CaseDetailsEventRequested(
-                              //     saltID: widget.saltID,
-                              //   ),
-                              // );
+                            } else if (state is GetFileIdFailure) {
+                              CustomScaffoldMessenger.showErrorMessage(
+                                context,
+                                state.message,
+                              );
                             }
                           },
                           builder: (context, state) {
@@ -236,6 +195,7 @@ class _RecordaudioState extends State<Recordaudio> {
                                                 docTypeID: 1,
                                                 filename: fileName,
                                                 fileSize: fileSize,
+                                                saltKey: widget.saltID,
                                                 context: context,
                                               ),
                                             );
@@ -280,6 +240,7 @@ class _RecordaudioState extends State<Recordaudio> {
                                                 docTypeID: 1,
                                                 filename: fileName,
                                                 fileSize: fileSize,
+                                                saltKey: widget.saltID,
                                                 context: context,
                                               ),
                                             );
@@ -377,6 +338,7 @@ class _RecordaudioState extends State<Recordaudio> {
                 filePath: recording['path'],
                 fileSize: '$fileSizeInKB KB',
                 caseID: widget.caseID,
+                saltKey: widget.saltID,
                 onDelete: () => _deleteRecording(index),
               );
             }),

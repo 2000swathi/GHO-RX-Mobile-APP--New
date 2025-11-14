@@ -231,7 +231,7 @@ class AudioSummaryModel {
   final String uploadedDate;
   final String url;
   final int docTypeID;
-  final String userType;
+  // final String userType;
 
   AudioSummaryModel({
     required this.id,
@@ -242,7 +242,7 @@ class AudioSummaryModel {
     required this.uploadedDate,
     required this.url,
     required this.docTypeID,
-    required this.userType,
+    // required this.userType,
   });
 
   factory AudioSummaryModel.fromJson(Map<String, dynamic> json) {
@@ -255,7 +255,7 @@ class AudioSummaryModel {
       uploadedDate: json['UploadedDate'] ?? '',
       url: json['_url'] ?? '',
       docTypeID: json['DocumentTypeid'] ?? 0,
-      userType: json['UserType'] ?? "P",
+      // userType: json['UserType'] ?? "P",
     );
   }
 
@@ -269,7 +269,7 @@ class AudioSummaryModel {
       'UploadedDate': uploadedDate,
       '_url': url,
       'DocumentTypeid': docTypeID,
-      'UserType': userType,
+      // 'UserType': userType,
     };
   }
 }

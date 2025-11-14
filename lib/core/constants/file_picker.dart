@@ -1,6 +1,9 @@
 import 'dart:io';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
+import 'package:image_editor_plus/image_editor_plus.dart';
+import 'package:image_editor_plus/options.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -31,6 +34,159 @@ class ImagePickerService {
         "Please allow access to the gallery.",
       );
     }
+  }
+
+  Future<void> pickSingleImageFromGallery(BuildContext context) async {
+    bool permissionGranted = await requestStoragePermission(context);
+
+    if (permissionGranted) {
+      final XFile? image = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+      );
+      if (image != null) {
+        File file = File(image.path);
+
+        // ✅ Open image editor
+        final editedImage = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder:
+                (context) => ImageEditor(
+                  image: file.readAsBytesSync(),
+                  blurOption: null,
+                  brushOption: null,
+                  emojiOption: null,
+                  filtersOption: null,
+                  flipOption: null,
+                  textOption: null,
+                  cropOption: const CropOption(),
+                  rotateOption: const RotateOption(),
+                ),
+          ),
+        );
+
+        if (editedImage != null) {
+          // ✅ Save edited image
+          final File editedFile = await File(
+            image.path,
+          ).writeAsBytes(editedImage);
+
+          imageFileList
+            ..clear()
+            ..add(image);
+          fileList
+            ..clear()
+            ..add(editedFile);
+        }
+      }
+    }
+  }
+
+  // Future<void> pickProfileImageFromCamera(BuildContext context) async {
+  //   bool permissionGranted = await requestStoragePermission(context);
+
+  //   if (permissionGranted) {
+  //     final XFile? image = await _imagePicker.pickImage(
+  //       source: ImageSource.camera,
+  //     );
+
+  //     if (image != null) {
+  //       File file = File(image.path);
+
+  //       // ✅ Open image editor (same as gallery)
+  //       final editedImage = await Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder:
+  //               (context) => ImageEditor(
+  //                 image: file.readAsBytesSync(),
+  //                 blurOption: null,
+  //                 brushOption: null,
+  //                 emojiOption: null,
+  //                 filtersOption: null,
+  //                 flipOption: null,
+  //                 textOption: null,
+  //                 cropOption: CropOption(),
+  //                 rotateOption: const RotateOption(),
+  //               ),
+  //         ),
+  //       );
+
+  //       if (editedImage != null) {
+  //         Directory tempDir = await getApplicationDocumentsDirectory();
+  //         String newPath =
+  //             "${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg";
+  //         File newFile = await File(newPath).writeAsBytes(editedImage);
+
+  //         imageFileList
+  //           ..clear()
+  //           ..add(XFile(newFile.path));
+  //         fileList
+  //           ..clear()
+  //           ..add(newFile);
+  //       }
+  //     } else {
+  //       CustomScaffoldMessenger.showErrorMessage(
+  //         context,
+  //         "Please capture an image.",
+  //       );
+  //     }
+  //   }
+  // }
+  Future<void> picksingleImageFromCamera(BuildContext context) async {
+    final XFile? image = await _imagePicker.pickImage(
+      source: ImageSource.camera,
+    );
+
+    if (image == null) {
+      CustomScaffoldMessenger.showErrorMessage(
+        context,
+        "Please capture an image.",
+      );
+      return;
+    }
+
+    final File file = File(image.path);
+    final bytes = await file.readAsBytes();
+    final codec = await ui.instantiateImageCodec(bytes);
+    final frame = await codec.getNextFrame();
+    final img = frame.image;
+
+    // Crop square from center
+    final size = img.width < img.height ? img.width : img.height;
+    final x = (img.width - size) ~/ 2;
+    final y = (img.height - size) ~/ 2;
+
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(recorder);
+    final paint = Paint();
+
+    canvas.drawImageRect(
+      img,
+      Rect.fromLTWH(
+        x.toDouble(),
+        y.toDouble(),
+        size.toDouble(),
+        size.toDouble(),
+      ),
+      Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()),
+      paint,
+    );
+
+    final croppedImage = await recorder.endRecording().toImage(size, size);
+    final byteData = await croppedImage.toByteData(
+      format: ui.ImageByteFormat.png,
+    );
+
+    Directory tempDir = await getApplicationDocumentsDirectory();
+    String newPath =
+        "${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.png";
+    final newFile = await File(
+      newPath,
+    ).writeAsBytes(byteData!.buffer.asUint8List());
+
+    imageFileList.insert(0, XFile(newFile.path));
+    fileList.insert(0, newFile);
   }
 
   /// Pick an image from the camera

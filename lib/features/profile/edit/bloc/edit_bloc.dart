@@ -22,9 +22,13 @@ class EditBloc extends Bloc<EditEvent, EditState> {
     emit(EditLoading());
     try {
       final response = await repository.editPersonalInfo(event.data);
-
-      final message = response["Data"][0][0]["msg"] ?? "profile updated successfully";
-      emit(EditSuccess(message: message));
+      if (response["Status"] == 1) {
+        final message =
+            response["Data"][0][0]["msg"] ?? "profile updated successfully";
+        emit(EditSuccess(message: message));
+      }else{
+         emit(EditFailure(error:response["Info"]));
+      }
     } catch (e) {
       emit(EditFailure(error: e.toString()));
     }
@@ -130,10 +134,15 @@ class EditBloc extends Bloc<EditEvent, EditState> {
 
       if (licenseresponse["Status"] == 1) {
         final message =
-            licenseresponse["Data"][0][0]["msg"] ?? "License updated successfully";
+            licenseresponse["Data"][0][0]["msg"] ??
+            "License updated successfully";
         emit(EditSuccess(message: message));
       } else {
-        emit(EditFailure(error: licenseresponse["Error"] ?? "Failed to update license"));
+        emit(
+          EditFailure(
+            error: licenseresponse["Error"] ?? "Failed to update license",
+          ),
+        );
       }
     } catch (e) {
       emit(EditFailure(error: e.toString()));

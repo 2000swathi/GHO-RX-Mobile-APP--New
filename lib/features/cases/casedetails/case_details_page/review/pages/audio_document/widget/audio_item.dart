@@ -16,6 +16,7 @@ class AudioItem extends StatefulWidget {
   final String filePath;
   final String fileSize;
   final String caseID;
+  final String saltKey;
   final VoidCallback onDelete;
 
   const AudioItem({
@@ -25,6 +26,7 @@ class AudioItem extends StatefulWidget {
     required this.filePath,
     required this.fileSize,
     required this.caseID,
+    required this.saltKey,
     required this.onDelete,
   });
 
@@ -97,6 +99,7 @@ class _AudioItemState extends State<AudioItem> {
           docTypeID: 6,
           filename: widget.fileName,
           fileSize: widget.fileSize,
+          saltKey: widget.saltKey,
           context: context,
         ),
       );
@@ -135,7 +138,7 @@ class _AudioItemState extends State<AudioItem> {
         } else if (state is GetFileIdFailure && state.filePath == widget.filePath) {
           setState(() => _isUploading = false);
           CustomScaffoldMessenger.showErrorMessage(
-              context, "Failed to upload ${widget.fileName}");
+              context, state.message);
         }
       },
       child: Container(
