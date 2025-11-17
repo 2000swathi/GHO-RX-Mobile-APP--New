@@ -124,7 +124,7 @@ class GetFileIDReo {
     int docTypeID,
     String fileUploadedID,
     String status,
-    String saltID
+    String saltID,
   ) async {
     final token = await SharedPreference.getToken();
 
@@ -168,11 +168,14 @@ class GetFileIDReo {
       throw Exception('Token or ReviewerId not found in SharedPreferences');
     }
 
+    // If caseID is empty → use reviewerId
+    final dk1Value =
+        (caseID.isEmpty || caseID.trim().isEmpty) ? reviewerId : caseID;
+
     final data = {
       ...ApiUtils.getCommonParams(action: "filemgr", token: token),
       "Tags": [
-        {"T": "dk1", "V": reviewerId},
-        {"T": "dk2", "V": caseID},
+        {"T": "dk1", "V": dk1Value},
         {"T": "c1", "V": fileUploadedID},
         {"T": "c2", "V": docTypeID},
         {"T": "c10", "V": "4"},

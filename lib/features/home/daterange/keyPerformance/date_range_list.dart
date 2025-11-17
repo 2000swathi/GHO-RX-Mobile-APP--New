@@ -38,11 +38,13 @@ class _KPIHeaderState extends State<KPIHeader> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              "Key Performance Indicators",
-              style: AppFonts.subtext.copyWith(
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
+            Expanded(
+              child: Text(
+                "Key Performance Indicators",
+                style: AppFonts.subtext.copyWith(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
               ),
             ),
 
