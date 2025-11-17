@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
+import 'package:ghorx_mobile_app_new/features/account/account_page.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/cases/cases_pages/cases_page.dart';
 import 'package:ghorx_mobile_app_new/features/home/home_page.dart';
 import 'package:ghorx_mobile_app_new/features/payment/payment_page.dart';
@@ -24,6 +25,7 @@ class _MainPageState extends State<MainPage> {
     CasesPage(),
     PaymentPage(),
     ProfileDr(),
+    AccountPage()
   ];
 
   @override
@@ -124,6 +126,13 @@ class _MainPageState extends State<MainPage> {
                       ? SvgPicture.asset("assets/svg/profile_clik.svg")
                       : SvgPicture.asset("assets/svg/profile_svg.svg"),
               label: "Profile",
+            ),
+            BottomNavigationBarItem(
+              icon:
+                  _currentIndex == 4
+                      ? SvgPicture.asset("assets/svg/profile_clik.svg")
+                      : SvgPicture.asset("assets/svg/profile_svg.svg"),
+              label: "Account",
             ),
           ],
         ),
