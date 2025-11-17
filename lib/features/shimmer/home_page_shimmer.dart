@@ -64,19 +64,19 @@ class HomePageShimmerWidget extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 30),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     ShimmerShapes.line(width: 180, height: 16),
-            //     ShimmerShapes.line(width: 60, height: 16),
-            //   ],
-            // ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ShimmerShapes.line(width: 180, height: 16),
+                ShimmerShapes.line(width: 60, height: 16),
+              ],
+            ),
 
-            // const SizedBox(height: 20),
-            // ShimmerShapes.box(height: 350),
+            const SizedBox(height: 20),
+            ShimmerShapes.box(height: 350),
 
-            // const SizedBox(height: 20),
-            // ShimmerShapes.box(height: 180),
+            const SizedBox(height: 20),
+            ShimmerShapes.box(height: 180),
           ],
         ),
       ),

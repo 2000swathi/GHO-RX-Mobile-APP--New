@@ -7,6 +7,7 @@ import 'package:ghorx_mobile_app_new/features/home/repository/bloc/home_bloc.dar
 import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_event.dart';
 import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/date_range_list.dart';
+import 'package:ghorx_mobile_app_new/features/home/widget/performance_snapshot.dart';
 import 'package:ghorx_mobile_app_new/features/home/widget/upcoming_case.dart';
 import 'package:ghorx_mobile_app_new/features/shimmer/home_page_shimmer.dart';
 import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
@@ -53,17 +54,20 @@ class HomePage extends StatelessWidget {
 
                   const SizedBox(height: 10),
                   KPIHeader(),
-                  // const PerformanceSnapshotWidget(),
+                  const PerformanceSnapshotWidget(),
                 ],
               ),
             ),
           );
         } else if (state is HomePageError) {
           return Scaffold(
-            body: Center(
-              child: Text(
-                "Error: ${state.message}",
-                style: AppFonts.textprimary,
+            body: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  "Error: ${state.message}",
+                  style: AppFonts.textprimary,
+                ),
               ),
             ),
           );

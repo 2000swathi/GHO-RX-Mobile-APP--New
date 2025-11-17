@@ -131,5 +131,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
-dependency_overrides:
-  vector_math: ^2.2.0
+# dependency_overrides:
+#   vector_math: ^2.2.0
