@@ -1,64 +1,70 @@
 import 'package:flutter/material.dart';
-import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
+import 'package:ghorx_mobile_app_new/features/payment/tab_sheets/repository/bloc/payment_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/payment/widgets/common_days_dropdown.dart';
+import 'package:ghorx_mobile_app_new/features/payment/widgets/line_graph.dart';
 
 class PayReceived extends StatelessWidget {
-  const PayReceived({super.key});
+  PayReceived({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Container(
-        decoration: BoxDecoration(color: AppColors.white),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 14, right: 14),
-          child: Column(
-            children: [
-              SizedBox(height: 20),
-              SizedBox(
-                height: 382,
-                width: double.infinity,
-                child: Container(
-                  child: Image.asset(
-                    "assets/images/statics.png",
-                    // fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              SizedBox(height: 24),
-              KPIHeader2(),
-              SizedBox(height: 25),
-              ListView.builder(
-                shrinkWrap:
-                    true, // Important! Makes list take only needed space
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: 5,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14),
+        child: Column(
+          children: [
+            SizedBox(height: 20),
 
-                itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 0,
-                    color: AppColors.white,
-                    margin: EdgeInsets.symmetric(vertical: 6),
-                    child: ListTile(
-                      leading: Icon(Icons.verified, color: AppColors.green),
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [Text("Helen M Martin"), Text("₹1,200.00")],
-                      ),
+            DailyPaymentGraph(),
 
-                      subtitle: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Case ID: GHO-2024-9610"),
-                          Text("23/08/2025 11:16 am"),
-                        ],
-                      ),
-                    ),
+            SizedBox(height: 24),
+
+            KPIHeader2(),
+
+            SizedBox(height: 25),
+
+            BlocBuilder<PaymentBloc, PaymentState>(
+              builder: (context, state) {
+                if (state is PaymentLoading) {
+                  return LoadingAnimation();
+                }
+
+                if (state is PaymentSuccess) {
+                  final list = state.response["Data"][0] ?? [];
+
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: list.length,
+                    itemBuilder: (context, index) {
+                      final pay = list[index];
+                      return ListTile(
+                        title: Text("${pay["Name"]}"),
+                        subtitle: Text("Case ID : ${pay["CaseID"]}"),
+                        trailing: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              "${pay["AmountPaid"]}",
+                              style: AppFonts.subtext.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text("${pay["PaymentDate"]}"),
+                          ],
+                        ),
+                      );
+                    },
                   );
-                },
-              ),
-            ],
-          ),
+                }
+
+                return Text("No data");
+              },
+            ),
+          ],
         ),
       ),
     );

@@ -22,12 +22,23 @@ import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/repo
 import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/repository/key_perfomance_repo.dart';
 import 'package:ghorx_mobile_app_new/features/home/daterange/repository/date_range_repo.dart';
 import 'package:ghorx_mobile_app_new/features/home/repository/home_repository.dart';
+<<<<<<< HEAD
 import 'package:ghorx_mobile_app_new/features/profile/Bank_info/bankinforepo.dart';
 import 'package:ghorx_mobile_app_new/features/profile/Bank_info/bloc/bank_info_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/License/bloc/license_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/License/license_repo.dart';
 import 'package:ghorx_mobile_app_new/features/profile/accreditation/acc_repo.dart';
 import 'package:ghorx_mobile_app_new/features/profile/accreditation/bloc/accreditation_bloc.dart';
+=======
+import 'package:ghorx_mobile_app_new/features/payment/repository/bloc/earnings_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/payment/repository/earnings_repo.dart';
+import 'package:ghorx_mobile_app_new/features/payment/repository/graph/bloc/payment_graph_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/payment/repository/graph/month/bloc/month_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/payment/repository/graph/month/month_repo.dart';
+import 'package:ghorx_mobile_app_new/features/payment/repository/graph/payment_graph_repo.dart';
+import 'package:ghorx_mobile_app_new/features/payment/tab_sheets/repository/bloc/payment_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/payment/tab_sheets/repository/payment_repo.dart';
+>>>>>>> develop
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/delete/bloc/delete_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/delete/repository/delete_repository.dart';
@@ -105,6 +116,7 @@ class AppBlocProvider extends StatelessWidget {
         BlocProvider(
           create: (_) => SendmailBloc(repository: SendEmailRepository()),
         ),
+<<<<<<< HEAD
         BlocProvider(
           create: (_) => KeyPerformanceBloc(repository: KeyPerRepo()),
         ),
@@ -117,6 +129,14 @@ class AppBlocProvider extends StatelessWidget {
         BlocProvider(create: (_) => LicenseBloc(repository: LicenseRepo())),
         BlocProvider(create: (_) => LanguageBloc(repository: LanguageRepo())),
         BlocProvider(create: (_) => BankInfoBloc(repository: Bankinforepo())),
+=======
+        BlocProvider(create: (_)=>KeyPerformanceBloc(repository: KeyPerRepo())),
+        BlocProvider(create: (_)=>ProfileInfoBloc(repository: ProfileInfoRepo())),
+        BlocProvider(create: (_)=>PaymentBloc(repository: PaymentRepo())),
+        BlocProvider(create: (_)=>EarningsBloc(repository: EarningsRepo())),
+        BlocProvider(create: (_)=>MonthBloc(repository: MonthRepo())),
+        BlocProvider(create: (_)=>PaymentGraphBloc(repository: PaymentGraphRepo())),
+>>>>>>> develop
       ],
       child: child,
     );

@@ -5,7 +5,7 @@ import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
 class PaymentRepo {
   final DioHandler _dioHandler = DioHandler();
 
-  Future<Map<String, dynamic>> fetchPaymentHis(String? dateValue) async {
+  Future<Map<String, dynamic>> fetchPaymentHis(String dateValue) async {
     final token = await SharedPreference.getToken();
     final reviewerId = await SharedPreference.getUserId();
     if (token!.isEmpty || reviewerId!.isEmpty) {
@@ -16,7 +16,7 @@ class PaymentRepo {
       ...ApiUtils.getCommonParams(action: "accountpayable", token: token),
       "Tags": [
         {"T": "dk1", "V": reviewerId},
-        {"T": "dk2", "V": dateValue!.isEmpty ? "" : dateValue},
+        {"T": "dk2", "V": dateValue},
         {"T": "c10", "V": "4"},
       ],
     };

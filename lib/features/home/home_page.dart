@@ -35,10 +35,7 @@ class HomePage extends StatelessWidget {
           print(info);
           final email = info["Email"];
           _saveEmailToPrefs(email);
-          final cases = state.response["Data"][1][0];
-          if (cases.isEmpty) {
-            return SizedBox();
-          }
+          final cases = state.response["Data"][1];
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: CaseAppBar(
@@ -53,7 +50,9 @@ class HomePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  UpcomingCase(cases: cases),
+                  cases.isEmpty
+                      ? SizedBox.shrink()
+                      : UpcomingCase(cases: cases[0]),
 
                   const SizedBox(height: 10),
                   KPIHeader(),
