@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/payment/tab_sheets/repository/bloc/payment_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/payment/widgets/common_days_dropdown.dart';
@@ -44,6 +45,7 @@ class PayReceived extends StatelessWidget {
                       return ListTile(
                         title: Text("${pay["Name"]}"),
                         subtitle: Text("Case ID : ${pay["CaseID"]}"),
+                        leading: Icon(Icons.verified, color: AppColors.successcolor),
                         trailing: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
