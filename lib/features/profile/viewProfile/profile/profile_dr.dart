@@ -1264,6 +1264,7 @@ class _ProfileDrState extends State<ProfileDr> {
                       return const Center(child: Text("No language added"));
                     }
                     final info = state.languageModel;
+
                     return Column(
                       children: [
                         if (languageList.isEmpty)
@@ -1319,8 +1320,11 @@ class _ProfileDrState extends State<ProfileDr> {
                                       onTap: () async {
                                         AddeditLanguageSheet.showSheet(
                                           context,
-                                          info,
+                                          languageList,
+
                                           true,
+                                          languagebloc:
+                                              context.read<LanguageBloc>(),
                                         );
                                       },
                                       child: SvgPicture.asset(
@@ -1341,8 +1345,9 @@ class _ProfileDrState extends State<ProfileDr> {
                             onTap: () {
                               AddeditLanguageSheet.showSheet(
                                 context,
-                                info,
+                                languageList,
                                 false,
+                                languagebloc: context.read<LanguageBloc>(),
                               );
                             },
                             child: Row(
