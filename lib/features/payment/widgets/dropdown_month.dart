@@ -47,7 +47,7 @@ class _MonthlyDropdownState extends State<MonthlyDropdown> {
             ),
           ),
           iconSize: 20, // 👈 smaller dropdown arrow
-          initialValue: selectedMonth,
+          value: selectedMonth,
           items:
               months.map((month) {
                 return DropdownMenuItem<String>(
