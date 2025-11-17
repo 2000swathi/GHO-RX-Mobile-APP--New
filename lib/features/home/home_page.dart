@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/logo_widget.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
-import 'package:ghorx_mobile_app_new/features/cases/cases_pages/widgets/case_appbar.dart';
+import 'package:ghorx_mobile_app_new/features/authentication/cases/cases_pages/widgets/case_appbar.dart';
 import 'package:ghorx_mobile_app_new/features/home/repository/bloc/home_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_event.dart';
@@ -11,6 +11,7 @@ import 'package:ghorx_mobile_app_new/features/home/widget/performance_snapshot.d
 import 'package:ghorx_mobile_app_new/features/home/widget/upcoming_case.dart';
 import 'package:ghorx_mobile_app_new/features/shimmer/home_page_shimmer.dart';
 import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
+import 'package:http/http.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -31,6 +32,7 @@ class HomePage extends StatelessWidget {
           return const HomePageShimmerWidget();
         } else if (state is HomePageInfoState) {
           final info = state.response["Data"][0][0];
+          print(info);
           final email = info["Email"];
           _saveEmailToPrefs(email);
           final cases = state.response["Data"][1];

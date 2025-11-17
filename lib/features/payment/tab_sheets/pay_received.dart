@@ -7,8 +7,7 @@ import 'package:ghorx_mobile_app_new/features/payment/widgets/common_days_dropdo
 import 'package:ghorx_mobile_app_new/features/payment/widgets/line_graph.dart';
 
 class PayReceived extends StatelessWidget {
-   PayReceived({super.key});
- 
+  PayReceived({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +22,7 @@ class PayReceived extends StatelessWidget {
 
             SizedBox(height: 24),
 
-            KPIHeader2(), 
+            KPIHeader2(),
 
             SizedBox(height: 25),
 
@@ -48,7 +47,12 @@ class PayReceived extends StatelessWidget {
                         trailing: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Text("${pay["AmountPaid"]}",style: AppFonts.subtext.copyWith(fontWeight: FontWeight.w600),),
+                            Text(
+                              "${pay["AmountPaid"]}",
+                              style: AppFonts.subtext.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                             Text("${pay["PaymentDate"]}"),
                           ],
                         ),

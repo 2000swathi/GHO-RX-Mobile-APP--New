@@ -10,30 +10,32 @@ import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/edit/bloc/edit_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/certified_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty%20type_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/specialty/bloc/specialty_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/specialty_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/specialty/model/specialty_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty_response_model.dart';
 
 class AddEditSpecialtySheet {
   static void showSheet(
     BuildContext context,
-    Specialty? info,
+    Specialtym? info,
     List<SpecialtyList> splList,
     List<CertifiedList> certList,
     List<SpecialtytypeList> specList,
     bool isEdit, {
-    required ProfileBloc profileBloc,
+    // required ProfileBloc profileBloc,
+    required SpecialtyBloc specBloc,
   }) {
     final formKey = GlobalKey<FormState>();
     String? selectedSpecialtyID = isEdit ? info?.specialtyId.toString() : null;
     String? selectedCertifiedBoard;
     if (isEdit && info?.certifiedBoard != null) {
       try {
-        selectedCertifiedBoard = certList
-            .firstWhere((e) => e.certifiedName == info!.certifiedBoard)
-            .certifiedID
-            .toString();
+        selectedCertifiedBoard =
+            certList
+                .firstWhere((e) => e.certifiedName == info!.certifiedBoard)
+                .certifiedID
+                .toString();
       } catch (e) {
         selectedCertifiedBoard = null;
       }
@@ -41,10 +43,11 @@ class AddEditSpecialtySheet {
     String? selectedSpecialtyType;
     if (isEdit && info?.specialtyType != null) {
       try {
-        selectedSpecialtyType = specList
-            .firstWhere((e) => e.specialtytypeName == info!.specialtyType)
-            .specialtytypeID
-            .toString();
+        selectedSpecialtyType =
+            specList
+                .firstWhere((e) => e.specialtytypeName == info!.specialtyType)
+                .specialtytypeID
+                .toString();
       } catch (e) {
         selectedSpecialtyType = null;
       }
@@ -109,7 +112,7 @@ class AddEditSpecialtySheet {
                   CustomDropdownFormField<String>(
                     name: "Specialty Type",
                     hintText: "-Select Specialty Type-",
-                   items:
+                    items:
                         specList
                             .map(
                               (e) => DropdownItem<String>(
@@ -118,10 +121,10 @@ class AddEditSpecialtySheet {
                               ),
                             )
                             .toList(),
-                    value:selectedSpecialtyType,
+                    value: selectedSpecialtyType,
                     onChanged: (id) {
                       setState(() {
-                       selectedSpecialtyType = id;
+                        selectedSpecialtyType = id;
                       });
                     },
                     validator: Validation.validateSpecialtyType,
@@ -139,7 +142,7 @@ class AddEditSpecialtySheet {
             listener: (context, state) {
               if (state is AddSuccess) {
                 Navigator.pop(context);
-                profileBloc.add(FetchSpecialty());
+                context.read<SpecialtyBloc>().add(FetchSpecialty());
                 CustomScaffoldMessenger.showSuccessMessage(
                   context,
                   state.response["Data"][0][0]['msg'],
@@ -156,16 +159,13 @@ class AddEditSpecialtySheet {
             listener: (context, state) {
               if (state is EditSuccess) {
                 Navigator.pop(context);
-                profileBloc.add(FetchSpecialty());
+                context.read<SpecialtyBloc>().add(FetchSpecialty());
                 CustomScaffoldMessenger.showSuccessMessage(
                   context,
                   state.message,
                 );
               } else if (state is EditFailure) {
-                CustomScaffoldMessenger.showErrorMessage(
-                  context,
-                  state.error,
-                );
+                CustomScaffoldMessenger.showErrorMessage(context, state.error);
               }
             },
           ),
@@ -192,9 +192,14 @@ class AddEditSpecialtySheet {
                         String certifiedBoardName = '';
                         if (selectedCertifiedBoard != null) {
                           try {
-                            certifiedBoardName = certList.firstWhere(
-                              (b) => b.certifiedID.toString() == selectedCertifiedBoard
-                            ).certifiedName;
+                            certifiedBoardName =
+                                certList
+                                    .firstWhere(
+                                      (b) =>
+                                          b.certifiedID.toString() ==
+                                          selectedCertifiedBoard,
+                                    )
+                                    .certifiedName;
                           } catch (e) {
                             // Handle case where ID is not found, though unlikely if dropdown is populated correctly
                           }
