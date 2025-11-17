@@ -5,7 +5,6 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_drop_down_field.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/language/model/language_model.dart';
 
 class AddeditLanguageSheet {
@@ -16,13 +15,7 @@ class AddeditLanguageSheet {
   ) {
     final bool editing = isEdit == true && info.data.isNotEmpty;
     final _formKey = GlobalKey<FormState>();
-    final TextEditingController languageController = TextEditingController(
-      text: editing ? info.data[0].language : "",
-    );
 
-    final TextEditingController proficiencyController = TextEditingController(
-      text: editing ? info.data[0].proficiency : "",
-    );
     String? selectedLanguage = editing ? info.data[0].language : null;
     String? selectedProficiency = editing ? info.data[0].proficiency : null;
     CustomBottomSheet.show(
@@ -75,7 +68,6 @@ class AddeditLanguageSheet {
             listener: (context, state) {
               if (state is AddSuccess) {
                 Navigator.pop(context);
-                context.read<ListBloc>().add(FetchLanguageList());
               }
             },
             child: CustomButton(

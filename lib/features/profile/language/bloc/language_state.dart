@@ -18,7 +18,7 @@ class Language extends LanguageState {
   const Language({required this.languageModel});
 
   @override
-  List<Object> get props => [LicenseModel];
+  List<Object> get props => [LanguageModel];
 }
 
 class LangugageError extends LanguageState {

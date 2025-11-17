@@ -46,16 +46,23 @@ Future<void> _saveEmailToPrefs(String? email) async {
 class _ProfileDrState extends State<ProfileDr> {
   int _expandedIndex = -1;
   @override
-  Widget build(BuildContext context) {
-    context.read<ProfileInfoBloc>().add(FetchPersonalInfo());
-    context.read<SpecialtyBloc>().add(FetchSpecialty());
-    context.read<InsuranceBloc>().add(FetchInsurance());
-    context.read<AccreditationBloc>().add(FetchAccreditation());
-    context.read<LicenseBloc>().add(FetchLicense());
-    context.read<LanguageBloc>().add(FetchLanguage());
-    context.read<BankInfoBloc>().add(FetchBankInfo());
-    // final repository = ProfileRepository();
+  void initState() {
+    super.initState();
 
+    // Dispatch events here
+    final contextBloc = context.read;
+
+    contextBloc<ProfileInfoBloc>().add(FetchPersonalInfo());
+    contextBloc<SpecialtyBloc>().add(FetchSpecialty());
+    contextBloc<InsuranceBloc>().add(FetchInsurance());
+    contextBloc<AccreditationBloc>().add(FetchAccreditation());
+    contextBloc<LicenseBloc>().add(FetchLicense());
+    contextBloc<LanguageBloc>().add(FetchLanguage());
+    contextBloc<BankInfoBloc>().add(FetchBankInfo());
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: CaseAppBar(
         isLogout: true,
@@ -1224,77 +1231,143 @@ class _ProfileDrState extends State<ProfileDr> {
             heading: "Language",
             subheading: "Choose your Language and proficiency",
 
-            content: BlocBuilder<LanguageBloc, LanguageState>(
-              builder: (context, state) {
-                if (state is LanguageLoading) {
-                  return const Center(child: LoadingAnimation());
+            content: BlocListener<DeleteBloc, DeleteState>(
+              listener: (context, state) {
+                if (state is DeleteLoading) {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (_) => const Center(child: LoadingAnimation()),
+                  );
+                } else if (state is DeleteSuccess) {
+                  Navigator.pop(context);
+                  CustomScaffoldMessenger.showSuccessMessage(
+                    context,
+                    "Language deleted successfully",
+                  );
+                  context.read<LanguageBloc>().add(FetchLanguage());
+                } else if (state is DeleteFailure) {
+                  Navigator.pop(context);
+                  CustomScaffoldMessenger.showErrorMessage(
+                    context,
+                    "Failed to delete language",
+                  );
                 }
-                if (state is Language) {
-                  final languageList = state.languageModel.data;
-                  if (languageList.isEmpty) {
-                    return const Center(child: Text("No license added"));
-                  }
-                  final info = state.languageModel;
-                  return Column(
-                    children: [
-                      ...languageList.map(
-                        (language) => Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildRow("Language", language.language),
-                            _buildRow("Proficiency", language.proficiency),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: InkWell(
-                                onTap: () async {
-                                  AddeditLanguageSheet.showSheet(
-                                    context,
-                                    info,
-                                    true,
-                                  );
-                                },
-                                child: SvgPicture.asset(
-                                  "assets/svg/edit_svg.svg",
-                                ),
-                              ),
+              },
+              child: BlocBuilder<LanguageBloc, LanguageState>(
+                builder: (context, state) {
+                  if (state is LanguageLoading) {
+                    return const Center(child: LoadingAnimation());
+                  } else if (state is Language) {
+                    final languageList = state.languageModel.data;
+                    if (languageList.isEmpty) {
+                      return const Center(child: Text("No language added"));
+                    }
+                    final info = state.languageModel;
+                    return Column(
+                      children: [
+                        if (languageList.isEmpty)
+                          const Center(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Text("No language found"),
                             ),
-                            Divider(color: AppColors.hint2color),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 12),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: InkWell(
-                          onTap: () {
-                            AddeditLanguageSheet.showSheet(
-                              context,
-                              info,
-                              false,
-                            );
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          ),
+                        ...languageList.map(
+                          (language) => Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "Add Language",
-                                style: AppFonts.textprogressbar.copyWith(
-                                  color: AppColors.primarycolor,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                              _buildRow("Language", language.language),
+                              _buildRow("Proficiency", language.proficiency),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: InkWell(
+                                      onTap: () async {
+                                        final confirmed =
+                                            await showDeleteConfirmationDialog(
+                                              context: context,
+                                              title: "Delete Language",
+                                              content:
+                                                  "Are you sure you want to delete?",
+                                            );
+                                        if (confirmed == true &&
+                                            context.mounted) {
+                                          context.read<DeleteBloc>().add(
+                                            DeleteProfileItem(
+                                              id: language.id.toString(),
+                                              action: "reviewerlang",
+                                              isLang: true,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      child: SvgPicture.asset(
+                                        "assets/svg/trash.svg",
+                                        // ignore: deprecated_member_use
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                  ),
+
+                                  const SizedBox(width: 15),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: InkWell(
+                                      onTap: () async {
+                                        AddeditLanguageSheet.showSheet(
+                                          context,
+                                          info,
+                                          true,
+                                        );
+                                      },
+                                      child: SvgPicture.asset(
+                                        "assets/svg/edit_svg.svg",
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
+                              Divider(color: AppColors.hint2color),
                             ],
                           ),
                         ),
-                      ),
-                    ],
-                  );
-                }
-                if (state is LangugageError) {
-                  return Center(child: Text(state.message));
-                }
-                return Container();
-              },
+                        SizedBox(height: 12),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: InkWell(
+                            onTap: () {
+                              AddeditLanguageSheet.showSheet(
+                                context,
+                                info,
+                                false,
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Add Language",
+                                  style: AppFonts.textprogressbar.copyWith(
+                                    color: AppColors.primarycolor,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                  if (state is LangugageError) {
+                    return Center(child: Text(state.message));
+                  }
+                  return Container();
+                },
+              ),
             ),
           ),
           _buildSection(

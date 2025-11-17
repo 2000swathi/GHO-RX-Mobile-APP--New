@@ -15,8 +15,6 @@ class FetchLicenseList extends ListEvent {}
 
 class FetchAuthorityList extends ListEvent {}
 
-class FetchLanguageList extends ListEvent {}
-
 class FetchAccrediationList extends ListEvent {}
 
 class FetchCertifiedList extends ListEvent {}
@@ -24,5 +22,3 @@ class FetchCertifiedList extends ListEvent {}
 class FetchSpecialtyTypeList extends ListEvent {}
 
 class FetchIssueingAuthorityList extends ListEvent {}
-
-
