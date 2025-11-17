@@ -14,7 +14,7 @@ import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
 import 'package:ghorx_mobile_app_new/features/home/repository/bloc/home_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/edit/repository/edit_repository.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/country_response_model.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/personalinfo_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/profile%20Info/model/personalinfo_model.dart';
 import 'package:intl/intl.dart';
 
 class EditProfileSheet {
@@ -196,7 +196,7 @@ class EditProfileSheet {
       actionButton: StatefulBuilder(
         builder: (context, setState) {
           return CustomButton(
-            text:  "Submit Request",
+            text: "Submit Request",
             isLoading: isLoading,
             onPressed: () async {
               if (formKey.currentState!.validate()) {

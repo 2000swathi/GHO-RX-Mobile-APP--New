@@ -11,16 +11,17 @@ import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/edit/bloc/edit_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/profile/insurances/bloc/insurance_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/insurance_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/insurances/model/insurance_model.dart';
 
 class AddEditInsuranceSheet {
   static void showSheet(
     BuildContext context,
     InsuranceData? info,
     bool isEdit, {
-    required ProfileBloc profileBloc,
+    required InsuranceBloc insuranceBloc,
   }) {
     final TextEditingController prIDController = TextEditingController(
       text: isEdit ? info?.providerID ?? '' : '',
@@ -47,9 +48,7 @@ class AddEditInsuranceSheet {
             children: [
               CustomTextFormField(
                 keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                ],
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 controller: prIDController,
                 name: "Provider ID",
                 hintText: "Enter Provider ID",
@@ -73,11 +72,11 @@ class AddEditInsuranceSheet {
                   color: AppColors.primarycolor,
                   size: 20,
                 ),
-                onTap: () =>
-                  showCommonDatePicker(
-                    context: context, 
-                    controller: issueDateController
-                  ),
+                onTap:
+                    () => showCommonDatePicker(
+                      context: context,
+                      controller: issueDateController,
+                    ),
                 validator: (value) => Validation.validateIssueDate(value),
               ),
               const SizedBox(height: 10),
@@ -91,12 +90,16 @@ class AddEditInsuranceSheet {
                   color: AppColors.primarycolor,
                   size: 20,
                 ),
-                onTap: () => 
-                  showCommonDatePicker(
-                    context: context, 
-                    controller: expDateController
-                  ),
-                  validator: (value) => Validation.validateExpiryDate(issueDateController.text, value),
+                onTap:
+                    () => showCommonDatePicker(
+                      context: context,
+                      controller: expDateController,
+                    ),
+                validator:
+                    (value) => Validation.validateExpiryDate(
+                      issueDateController.text,
+                      value,
+                    ),
               ),
               const SizedBox(height: 10),
             ],
@@ -110,7 +113,7 @@ class AddEditInsuranceSheet {
             listener: (context, state) {
               if (state is AddSuccess) {
                 Navigator.pop(context);
-                profileBloc.add(FetchInsurance());
+                insuranceBloc.add(FetchInsurance());
                 CustomScaffoldMessenger.showSuccessMessage(
                   context,
                   state.response["Data"][0][0]['msg'],
@@ -128,7 +131,7 @@ class AddEditInsuranceSheet {
             listener: (context, state) {
               if (state is EditSuccess) {
                 Navigator.pop(context);
-                profileBloc.add(FetchInsurance());
+                insuranceBloc.add(FetchInsurance());
                 CustomScaffoldMessenger.showSuccessMessage(
                   context,
                   state.message,

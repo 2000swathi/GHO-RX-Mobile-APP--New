@@ -6,7 +6,7 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_drop_down_field.
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/bloc/list_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/language_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/language/model/language_model.dart';
 
 class AddeditLanguageSheet {
   static void showSheet(

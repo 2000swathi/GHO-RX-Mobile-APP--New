@@ -7,20 +7,19 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_drop_down_field.
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
+import 'package:ghorx_mobile_app_new/features/profile/accreditation/bloc/accreditation_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/edit/bloc/edit_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/accreditationtype_response_model.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/accreditation_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/accreditation/model/accreditationsmodel.dart';
 
 class AddEditAccrediationBottomSheet {
   static void showSheet(
     BuildContext context,
     AccreditationData? info,
     bool isEdit, {
-    required ProfileBloc profileBloc,
+    required AccreditationBloc accrBloc,
     required List<AccreditationTypeData> accreList,
   }) {
     final _formKey = GlobalKey<FormState>();
@@ -29,7 +28,7 @@ class AddEditAccrediationBottomSheet {
             ? accreList
                 .firstWhere(
                   (e) => e.name == info?.accreditationType,
-                  orElse: () => accreList.first, 
+                  orElse: () => accreList.first,
                 )
                 .accreditationTypeID
                 .toString()
@@ -108,7 +107,7 @@ class AddEditAccrediationBottomSheet {
             listener: (context, state) {
               if (state is AddSuccess) {
                 Navigator.pop(context);
-                profileBloc.add(FetchAccreditation());
+                accrBloc.add(FetchAccreditation());
                 CustomScaffoldMessenger.showSuccessMessage(
                   context,
                   state.response["Data"][0][0]['msg'],
@@ -125,16 +124,13 @@ class AddEditAccrediationBottomSheet {
             listener: (context, state) {
               if (state is EditSuccess) {
                 Navigator.pop(context);
-                profileBloc.add(FetchAccreditation());
+                accrBloc.add(FetchAccreditation());
                 CustomScaffoldMessenger.showSuccessMessage(
                   context,
                   state.message,
                 );
               } else if (state is EditFailure) {
-                CustomScaffoldMessenger.showErrorMessage(
-                  context,
-                  state.error,
-                );
+                CustomScaffoldMessenger.showErrorMessage(context, state.error);
               }
             },
           ),
