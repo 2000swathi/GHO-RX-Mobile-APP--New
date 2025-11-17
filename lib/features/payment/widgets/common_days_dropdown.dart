@@ -1,14 +1,13 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_event.dart';
-import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/repository/bloc/key_performance_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/repository/bloc/key_performance_event.dart';
 import 'package:ghorx_mobile_app_new/features/home/repository/bloc/home_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/payment/tab_sheets/repository/bloc/payment_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/shimmer/widget/shapes.dart';
 
 class KPIHeader2 extends StatefulWidget {
   const KPIHeader2({super.key});
@@ -23,9 +22,7 @@ class _KPIHeader2State extends State<KPIHeader2> {
   @override
   void initState() {
     super.initState();
-    // Fetch API data for date ranges
     context.read<DateRangeBloc>().add(FetchDateRangeInfo());
-    context.read<KeyPerformanceBloc>().add(KeyPerEvent(dateValue: "7"));
   }
 
   @override
@@ -49,8 +46,10 @@ class _KPIHeader2State extends State<KPIHeader2> {
               width: 150,
               child: BlocBuilder<DateRangeBloc, DateRangeState>(
                 builder: (context, state) {
-                  if (state is HomePageLoading) {
-                    return const Center(child: LoadingAnimation());
+                  if (state is DateListPageLoading) {
+                    return  Center(
+                      child: ShimmerShapes.line(width: 130, height: 20),
+                    );
                   }
 
                   if (state is DateRangeInfoState) {
@@ -79,12 +78,11 @@ class _KPIHeader2State extends State<KPIHeader2> {
                       items: durationItems,
                       value: _selectedDuration,
                       onChanged: (value) {
-                        setState(() {
-                          _selectedDuration = value;
-                          context.read<KeyPerformanceBloc>().add(
-                            KeyPerEvent(dateValue: value.toString()),
-                          );
-                        });
+                        setState(() => _selectedDuration = value);
+
+                        context.read<PaymentBloc>().add(
+                          FetchPaymentInfo(dateValue: value.toString()),
+                        );
                       },
                       validator:
                           (value) =>

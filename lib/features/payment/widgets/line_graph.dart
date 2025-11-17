@@ -1,67 +1,93 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:ghorx_mobile_app_new/core/common_widgets/common_container.dart';
-import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/home/repository/bloc/home_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_event.dart';
-import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/repository/bloc/key_performance_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/repository/bloc/key_performance_event.dart';
-import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/widget/key_performance_shimmer.dart';
+import 'package:ghorx_mobile_app_new/features/payment/repository/graph/month/bloc/month_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/shimmer/widget/shapes.dart';
 
-class KPIHeader extends StatefulWidget {
-  const KPIHeader({super.key});
+class DailyPaymentGraph extends StatefulWidget {
+  DailyPaymentGraph({super.key});
 
   @override
-  State<KPIHeader> createState() => _KPIHeaderState();
+  State<DailyPaymentGraph> createState() => _DailyPaymentGraphState();
 }
 
-class _KPIHeaderState extends State<KPIHeader> {
+class _DailyPaymentGraphState extends State<DailyPaymentGraph> {
   String? _selectedDuration;
+  final Map<int, double> payments = {
+    1: 1500.0,
+    2: 2300.0,
+    3: 1800.0,
+    4: 2200.0,
+    5: 2000.0,
+    6: 2500.0,
+    7: 1900.0,
+    8: 3000.0,
+    9: 1700.0,
+    10: 2100.0,
+    11: 2800.0,
+    12: 2600.0,
+    13: 3100.0,
+    14: 2900.0,
+  };
+  final Map<int, String> monthNames = {
+    1: 'Jan',
+    2: 'Feb',
+    3: 'Mar',
+    4: 'Apr',
+    5: 'May',
+    6: 'Jun',
+    7: 'Jul',
+    8: 'Aug',
+    9: 'Sep',
+    10: 'Oct',
+    11: 'Nov',
+    12: 'Dec',
+  };
 
   @override
   void initState() {
     super.initState();
-    // Fetch API data for date ranges
-    context.read<DateRangeBloc>().add(FetchDateRangeInfo());
-    context.read<KeyPerformanceBloc>().add(KeyPerEvent(dateValue: "7"));
+    context.read<MonthBloc>().add(FetchMonthEvent());
   }
 
   @override
   Widget build(BuildContext context) {
+    final spots =
+        payments.entries.map((e) => FlSpot(e.key.toDouble(), e.value)).toList();
+
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Key Performance Indicators",
-              style: AppFonts.subtext.copyWith(
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-              ),
+              "Payment Analytics",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
 
             // Listen to HomeBloc for dropdown items
             SizedBox(
               width: 150,
-              child: BlocBuilder<DateRangeBloc, DateRangeState>(
+              child: BlocBuilder<MonthBloc, MonthState>(
                 builder: (context, state) {
-                  if (state is HomePageLoading) {
-                    return const Center(child: LoadingAnimation());
+                  if (state is MonthFailure) {
+                    return Center(
+                      child: ShimmerShapes.line(width: 130, height: 20),
+                    );
                   }
 
-                  if (state is DateRangeInfoState) {
+                  if (state is MonthScuccess) {
                     final List<DropdownItem<String>> durationItems =
                         (state.response["Data"][0] as List)
                             .map(
                               (item) => DropdownItem<String>(
-                                value: item["ID"].toString(),
-                                label: item["Txt"].toString(),
+                                value: item["D"].toString(),
+                                label: item["T"].toString(),
                               ),
                             )
                             .toList();
@@ -81,12 +107,7 @@ class _KPIHeaderState extends State<KPIHeader> {
                       items: durationItems,
                       value: _selectedDuration,
                       onChanged: (value) {
-                        setState(() {
-                          _selectedDuration = value;
-                          context.read<KeyPerformanceBloc>().add(
-                            KeyPerEvent(dateValue: value.toString()),
-                          );
-                        });
+                        setState(() => _selectedDuration = value);
                       },
                       validator:
                           (value) =>
@@ -94,7 +115,7 @@ class _KPIHeaderState extends State<KPIHeader> {
                     );
                   }
 
-                  if (state is HomePageError) {
+                  if (state is MonthFailure) {
                     return Text(
                       'Failed to load durations',
                       style: TextStyle(color: Colors.red, fontSize: 12),
@@ -107,82 +128,98 @@ class _KPIHeaderState extends State<KPIHeader> {
             ),
           ],
         ),
-        const SizedBox(height: 15),
-        BlocBuilder<KeyPerformanceBloc, KeyPerformanceState>(
-          builder: (context, state) {
-            if (state is KeyPerformanceLoading) {
-              return Column(children: [Center(child: KeyPerformanceShimmer())]);
-            } else if (state is KeyPerformanceFailure) {
-              return Center(child: Text(state.message));
-            } else if (state is KeyPerformanceSuccess) {
-              final response = state.response;
-              final data = response["Data"];
-              if (data != null || data.isNotEmpty || data[0].isNotEmpty) {
-                final data1 = response["Data"][0][0];
-                return Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: CommonContainer(
-                            borderColor: const Color(0xff667EFA).withAlpha(33),
-                            color: const Color(0xff667EFA).withAlpha(5),
-                            textColor: const Color(0xff384EC1),
-                            data: "Total Review",
-                            data1: data1["TotalReview"].toString(),
 
-                            data2Color: Colors.green,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: CommonContainer(
-                            borderColor: const Color(0xffFF8A65).withAlpha(48),
-                            color: const Color(0xffFF8A65).withAlpha(10),
-                            textColor: const Color(0xffB93106),
-                            data: "Open Review",
-                            data1: data1["PendingReview"].toString(),
-
-                            data2Color: const Color(0xff39393A),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: CommonContainer(
-                            borderColor: const Color(0xffC5EFC8),
-                            color: const Color(0xffF1FFF2),
-                            textColor: const Color(0xff146B1A),
-                            data: "Total Revenue",
-                            data1: data1["Totalrevenue"].toString(),
-
-                            data2Color: Colors.green,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: CommonContainer(
-                            borderColor: const Color(0xffCCCDCD),
-                            color: const Color(0xffF4F5F7),
-                            textColor: const Color(0xff404040).withAlpha(48),
-                            data: "Next Payout",
-                            data1: data1["NextPayout"].toString(),
-                            data2Color: const Color(0xff94989B),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                );
-              }
-            }
-            return SizedBox();
-          },
-        ),
         const SizedBox(height: 20),
+
+        SizedBox(
+          height: 310,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: LineChart(
+              LineChartData(
+                minX: 1,
+                maxX: 12,
+                minY: 0,
+                maxY: 5000,
+                //  payments.values.reduce((a, b) => a > b ? a : b) * 1.2,
+                borderData: FlBorderData(show: false),
+                gridData: FlGridData(
+                  show: true,
+                  drawVerticalLine: false,
+                  horizontalInterval: 1000,
+                  getDrawingHorizontalLine:
+                      (value) =>
+                          FlLine(color: Colors.grey.shade300, strokeWidth: 1),
+                ),
+                titlesData: FlTitlesData(
+                  leftTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      interval: 1000,
+                      reservedSize: 45,
+                      getTitlesWidget: (value, meta) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 5),
+                          child: Text(
+                            value.toInt().toString(),
+                            style: const TextStyle(fontSize: 11),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      interval: 1, // each month
+                      getTitlesWidget: (value, meta) {
+                        final month = monthNames[value.toInt()];
+                        return Text(
+                          month ?? '',
+                          style: const TextStyle(fontSize: 11),
+                        );
+                      },
+                    ),
+                  ),
+                  rightTitles: AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  topTitles: AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                ),
+                lineBarsData: [
+                  LineChartBarData(
+                    spots: spots,
+                    isCurved: true,
+                    color: AppColors.primarycolor,
+                    barWidth: 3,
+                    dotData: FlDotData(show: false),
+                    belowBarData: BarAreaData(
+                      show: true,
+                      color: AppColors.primarycolor.withAlpha(5),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 10),
+
+        // Legend
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircleAvatar(radius: 5, backgroundColor: AppColors.primarycolor),
+            SizedBox(width: 6),
+            Text(
+              "Payment received",
+              style: TextStyle(color: AppColors.primarycolor, fontSize: 14),
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -222,12 +259,12 @@ class _RangeDropdownFormFieldState<T> extends State<RangeDropdownFormField<T>> {
         if (widget.name.isNotEmpty) const SizedBox(height: 8),
 
         SizedBox(
-          height: 30,
+          // height: 30,
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
             decoration: BoxDecoration(
-              color: AppColors.offgreycolor,
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: Colors.black12),
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButtonFormField2<T>(
