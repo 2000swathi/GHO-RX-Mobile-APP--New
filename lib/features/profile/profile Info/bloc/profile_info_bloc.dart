@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:ghorx_mobile_app_new/features/profile/profile%20Info/profile_info_repo.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/personalinfo_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/profile%20Info/model/personalinfo_model.dart';
 
 part 'profile_info_event.dart';
 part 'profile_info_state.dart';

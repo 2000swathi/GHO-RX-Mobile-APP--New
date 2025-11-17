@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
-import 'package:ghorx_mobile_app_new/features/cases/cases_pages/cases_page.dart';
+import 'package:ghorx_mobile_app_new/features/authentication/cases/cases_pages/cases_page.dart';
 import 'package:ghorx_mobile_app_new/features/home/home_page.dart';
 import 'package:ghorx_mobile_app_new/features/payment/payment_page.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/profile/profile_dr.dart';
@@ -17,7 +17,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  late int  _currentIndex;
+  late int _currentIndex;
 
   final List<Widget> _pages = const [
     HomePage(),
@@ -29,7 +29,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    _currentIndex=widget.initialIndex;
+    _currentIndex = widget.initialIndex;
     _checkForAppUpdate();
   }
 

@@ -4,11 +4,10 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
+import 'package:ghorx_mobile_app_new/features/profile/Bank_info/bloc/bank_info_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/bankinfo_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/Bank_info/model/bankinfo_model.dart';
 
 class AddEditBankInfoBottonSheet {
   static void showSheet(
@@ -77,7 +76,7 @@ class AddEditBankInfoBottonSheet {
       actionButton: BlocListener<AddBloc, AddState>(
         listener: (context, state) {
           if (state is AddSuccess) {
-            context.read<ProfileBloc>().add(FetchLicence());
+            context.read<BankInfoBloc>().add(FetchBankInfo());
 
             Navigator.of(context).pop();
           } else if (state is AddError) {

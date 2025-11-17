@@ -7,15 +7,10 @@ abstract class ProfileEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+// class FetchSpecialty extends ProfileEvent {}
 
-class FetchSpecialty extends ProfileEvent {}
+// class FetchInsurance extends ProfileEvent {}
 
-class FetchInsurance extends ProfileEvent {}
+// class FetchLicence extends ProfileEvent {}
 
-class FetchLicence extends ProfileEvent {}
-
-class FetchBankInfo extends ProfileEvent {}
-
-class FetchAccreditation extends ProfileEvent {}
-
-class FetchLanguage extends ProfileEvent {}
+// class FetchLanguage extends ProfileEvent {}

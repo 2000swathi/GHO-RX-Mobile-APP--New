@@ -6,3 +6,5 @@ sealed class SpecialtyEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class FetchSpecialty extends SpecialtyEvent {}

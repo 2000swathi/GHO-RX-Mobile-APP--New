@@ -1,12 +1,9 @@
-import 'dart:convert';
-
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/personalinfo_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/profile%20Info/model/personalinfo_model.dart';
 import 'package:ghorx_mobile_app_new/utilities/network/api_utils.dart';
 import 'package:ghorx_mobile_app_new/utilities/network/dio_handler.dart';
 import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
 
 class ProfileInfoRepo {
-
   final DioHandler _dioHandler = DioHandler();
   //get
   Future<PersonalInfoModel> fetchPersonalInfo() async {

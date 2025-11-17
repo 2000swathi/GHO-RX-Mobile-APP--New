@@ -9,6 +9,7 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.da
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/custom_datepicker.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
+import 'package:ghorx_mobile_app_new/features/profile/License/bloc/license_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/edit/bloc/edit_bloc.dart';
@@ -16,7 +17,7 @@ import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/mod
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/license_response_model.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/repository/model/license_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/License/model/license_model.dart';
 
 class AddEditLicenseSheet {
   static void showSheet(
@@ -25,7 +26,7 @@ class AddEditLicenseSheet {
     List<LicenseList> licList,
     List<IssueingList> issueingList,
     bool isEdit, {
-    required ProfileBloc profileBloc,
+    required LicenseBloc licenseBloc,
   }) {
     // ignore: no_leading_underscores_for_local_identifiers
     final _formKey = GlobalKey<FormState>();
@@ -42,13 +43,13 @@ class AddEditLicenseSheet {
         selectedLicenceType = null;
       }
     }
-     String? selectedIssueingType;
-    if (isEdit && info?.issuingAuthority!= null) {
+    String? selectedIssueingType;
+    if (isEdit && info?.issuingAuthority != null) {
       try {
         selectedIssueingType =
             issueingList
                 .firstWhere((e) => e.IssueingTypeID == info!.issuingAuthority)
-                .IssueingTypeID 
+                .IssueingTypeID
                 .toString();
       } catch (e) {
         selectedIssueingType = null;
@@ -109,7 +110,7 @@ class AddEditLicenseSheet {
                     name: "issuing Authority",
                     hintText: " -Select issuing Authority- ",
                     items:
-                       issueingList
+                        issueingList
                             .map(
                               (e) => DropdownItem<String>(
                                 label: e.IssueingTypeName,
@@ -123,47 +124,55 @@ class AddEditLicenseSheet {
                         selectedIssueingType = id;
                       });
                     },
-                    validator: (value) => Validation.field(value, fieldName: "Issuing Authority"),
+                    validator:
+                        (value) => Validation.field(
+                          value,
+                          fieldName: "Issuing Authority",
+                        ),
                   ),
                   const SizedBox(height: 20),
 
                   // Issue Date
                   CustomTextFormField(
-                controller: issueDateController,
-                name: "Issue Date",
-                hintText: "Issue Date",
-                readOnly: true,
-                suffixIcon: Icon(
-                  Icons.calendar_today_outlined,
-                  color: AppColors.primarycolor,
-                  size: 20,
-                ),
-                onTap: () =>
-                  showCommonDatePicker(
-                    context: context, 
-                    controller: issueDateController
+                    controller: issueDateController,
+                    name: "Issue Date",
+                    hintText: "Issue Date",
+                    readOnly: true,
+                    suffixIcon: Icon(
+                      Icons.calendar_today_outlined,
+                      color: AppColors.primarycolor,
+                      size: 20,
+                    ),
+                    onTap:
+                        () => showCommonDatePicker(
+                          context: context,
+                          controller: issueDateController,
+                        ),
+                    validator: (value) => Validation.validateIssueDate(value),
                   ),
-                validator: (value) => Validation.validateIssueDate(value),
-              ),
                   SizedBox(height: 20),
 
                   CustomTextFormField(
-                controller: expDateController,
-                name: "Expiry Date",
-                hintText: "Expiry Date",
-                readOnly: true,
-                suffixIcon: Icon(
-                  Icons.calendar_today_outlined,
-                  color: AppColors.primarycolor,
-                  size: 20,
-                ),
-                onTap: () => 
-                  showCommonDatePicker(
-                    context: context, 
-                    controller: expDateController
+                    controller: expDateController,
+                    name: "Expiry Date",
+                    hintText: "Expiry Date",
+                    readOnly: true,
+                    suffixIcon: Icon(
+                      Icons.calendar_today_outlined,
+                      color: AppColors.primarycolor,
+                      size: 20,
+                    ),
+                    onTap:
+                        () => showCommonDatePicker(
+                          context: context,
+                          controller: expDateController,
+                        ),
+                    validator:
+                        (value) => Validation.validateExpiryDate(
+                          issueDateController.text,
+                          value,
+                        ),
                   ),
-                  validator: (value) => Validation.validateExpiryDate(issueDateController.text, value),
-              ),
                 ],
               ),
             );
@@ -177,7 +186,7 @@ class AddEditLicenseSheet {
             listener: (context, state) {
               if (state is AddSuccess) {
                 Navigator.pop(context);
-                profileBloc.add(FetchLicence());
+                licenseBloc.add(FetchLicense());
                 CustomScaffoldMessenger.showSuccessMessage(
                   context,
                   state.response["Data"][0][0]['msg'] ??
@@ -195,13 +204,16 @@ class AddEditLicenseSheet {
             listener: (context, state) {
               if (state is EditSuccess) {
                 Navigator.pop(context);
-                profileBloc.add(FetchLicence());
+                licenseBloc.add(FetchLicense());
                 CustomScaffoldMessenger.showSuccessMessage(
                   context,
-                  state.message?? "License Updated Successfully",
+                  state.message ?? "License Updated Successfully",
                 );
               } else if (state is EditFailure) {
-                CustomScaffoldMessenger.showErrorMessage(context, state.error?? "Failed to update license");
+                CustomScaffoldMessenger.showErrorMessage(
+                  context,
+                  state.error ?? "Failed to update license",
+                );
               }
             },
           ),
