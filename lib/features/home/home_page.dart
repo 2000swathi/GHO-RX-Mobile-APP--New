@@ -63,10 +63,13 @@ class HomePage extends StatelessWidget {
           );
         } else if (state is HomePageError) {
           return Scaffold(
-            body: Center(
-              child: Text(
-                "Error: ${state.message}",
-                style: AppFonts.textprimary,
+            body: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  "Error: ${state.message}",
+                  style: AppFonts.textprimary,
+                ),
               ),
             ),
           );
