@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/prfile_pic/profile_pic_repo.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/repository/auth_repository.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/cases/casedetails/case_details_page/questions/repository/bloc/q_and_a_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/cases/casedetails/case_details_page/questions/repository/q_and_a_save_repo.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/cases/casedetails/case_details_page/repository/bloc/case_details_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/cases/casedetails/case_details_page/repository/case_det_repository.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/cases/casedetails/case_details_page/review/pages/audio_document/repository/get_file_id_repo.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/cases/casedetails/case_details_page/review/pages/summary/repository/bloc/summary_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/cases/casedetails/case_details_page/review/pages/summary/repository/summary_reo.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/cases/casedetails/finalopinionsubmission/attestation/attestation_repo.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/cases/casedetails/finalopinionsubmission/attestation/bloc/attest_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/cases/casedetails/finalopinionsubmission/repository/bloc/final_submission_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/cases/casedetails/finalopinionsubmission/repository/final_submit_repo.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/cases/cases_pages/tab_contents/bloc/open_closed_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/cases/cases_pages/tab_contents/repository/open_closed_repo.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/questions/repository/bloc/q_and_a_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/questions/repository/q_and_a_save_repo.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/bloc/case_details_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/case_det_repository.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/get_file_id_repo.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/summary/repository/bloc/summary_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/summary/repository/summary_reo.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/attestation/attestation_repo.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/attestation/bloc/attest_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/repository/bloc/final_submission_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/repository/final_submit_repo.dart';
+import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/bloc/open_closed_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/repository/open_closed_repo.dart';
 import 'package:ghorx_mobile_app_new/features/home/repository/bloc/home_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/repository/bloc/key_performance_bloc.dart';
@@ -126,6 +128,7 @@ class AppBlocProvider extends StatelessWidget {
         BlocProvider(create: (_) => LicenseBloc(repository: LicenseRepo())),
         BlocProvider(create: (_) => LanguageBloc(repository: LanguageRepo())),
         BlocProvider(create: (_) => BankInfoBloc(repository: Bankinforepo())),
+        BlocProvider(create: (_) => PicBloc(repository: ProfilePicRepo())),
       ],
       child: child,
     );
