@@ -5,67 +5,71 @@ import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/closed_case_details.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/bloc/open_closed_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/repository/open_closed_repo.dart';
 
-class ClosedCasesTab extends StatelessWidget {
+
+class ClosedCasesTab extends StatefulWidget {
   const ClosedCasesTab({super.key});
 
   @override
+  State<ClosedCasesTab> createState() => _ClosedCasesTabState();
+}
+
+class _ClosedCasesTabState extends State<ClosedCasesTab> {
+    @override
+  void initState() {
+    super.initState();
+    context.read<OpenClosedBloc>().add(FetchClosedCases());
+  }
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create:
-          (context) =>
-              OpenClosedBloc(repository: OpenClosedRepository())
-                ..add(FetchClosedCases()),
-      child: BlocBuilder<OpenClosedBloc, OpenClosedState>(
-        builder: (context, state) {
-          if (state is OpenClosedInitial || state is OpenClosedLoading) {
-            return const Center(child: LoadingAnimation());
-          } else if (state is ClosedCaseLoaded) {
-            final closedCases = state.closedcases;
-            if (closedCases.isEmpty) {
-              return const Center(child: Text('No closed cases available'));
-            }
-            return ListView.separated(
-              shrinkWrap: true,
-              physics: BouncingScrollPhysics(),
-              padding: const EdgeInsets.all(16),
-              separatorBuilder: (_, __) => const SizedBox(height: 15),
-              itemCount: closedCases.length,
-              itemBuilder: (context, index) {
-                final caseItem = closedCases[index];
-                return CaseCard(
-                  ontap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder:
-                            (_) => ClosedCaseDetails(
-                              closedCaseModel: caseItem,
-                              saltID: caseItem.saltID.toString(),
-                            ),
-                      ),
-                    );
-                  },
-                  caseId: "Case ID ${caseItem.id.toString()}",
-                  name: caseItem.patientName,
-                  payout: "80",
-                  dueDate: caseItem.completedDate,
-                  description: caseItem.summaryOfRecords,
-                );
-              },
-            );
-          } else if (state is OpenCloseError) {
-            return Center(
-              child: Text(
-                'Error: ${state.message}',
-                style: AppFonts.subtext.copyWith(color: AppColors.warningred),
-              ),
-            );
-          } else {
-            return const Center(child: Text('No data available'));
+    return BlocBuilder<OpenClosedBloc, OpenClosedState>(
+      builder: (context, state) {
+        if (state is OpenClosedInitial || state is OpenClosedLoading) {
+          return const Center(child: LoadingAnimation());
+        } else if (state is ClosedCaseLoaded) {
+          final closedCases = state.closedcases;
+          if (closedCases.isEmpty) {
+            return const Center(child: Text('No closed cases available'));
           }
-        },
-      ),
+          return ListView.separated(
+            shrinkWrap: true,
+            physics: BouncingScrollPhysics(),
+            padding: const EdgeInsets.all(16),
+            separatorBuilder: (_, __) => const SizedBox(height: 15),
+            itemCount: closedCases.length,
+            itemBuilder: (context, index) {
+              final caseItem = closedCases[index];
+              return CaseCard(
+                ontap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder:
+                          (_) => ClosedCaseDetails(
+                            closedCaseModel: caseItem,
+                            saltID: caseItem.saltID.toString(),
+                          ),
+                    ),
+                  );
+                },
+                caseId: "Case ID ${caseItem.id.toString()}",
+                name: caseItem.patientName,
+                payout: "80",
+                dueDate: caseItem.completedDate,
+                description: caseItem.summaryOfRecords,
+              );
+            },
+          );
+        } else if (state is OpenCloseError) {
+          return Center(
+            child: Text(
+              'Error: ${state.message}',
+              style: AppFonts.subtext.copyWith(color: AppColors.warningred),
+            ),
+          );
+        } else {
+          return const Center(child: Text('No data available'));
+        }
+      },
     );
   }
 }
