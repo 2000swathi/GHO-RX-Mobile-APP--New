@@ -104,6 +104,7 @@ flutter:
   assets:
     - assets/images/
     - assets/svg/
+    - assets/svg/account/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -131,5 +132,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
-# dependency_overrides:
-#   vector_math: ^2.2.0
+dependency_overrides:
+  vector_math: ^2.2.0
