@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ghorx_mobile_app_new/features/account/personal_information.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/otp_screen.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/repository/model/login_model.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/add_page.dart';
@@ -20,7 +21,6 @@ class AppRouter {
   static const String otp = '/otp';
   static const String reset = '/reset';
   static const String addPage = '/addPage';
-  static const String personalinfo = '/personalinfo';
   static const String mainPage = '/mainpage';
   static const String personalInfo = '/personalInfo';
   static const String drSpecialty = '/drSpecialty';
@@ -64,6 +64,8 @@ class AppRouter {
 
       case homePage:
         return MaterialPageRoute(builder: (_) => HomePage());
+      case personalinformation:
+        return MaterialPageRoute(builder: (_) => PersonalInformationScreen());
       default:
         return MaterialPageRoute(
           builder:
