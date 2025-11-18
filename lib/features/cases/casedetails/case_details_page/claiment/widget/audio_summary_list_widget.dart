@@ -270,7 +270,7 @@ class _AudioSummaryListWidgetState extends State<AudioSummaryListWidget> {
                   onPressed: () {
                     context.read<GetFileIdBloc>().add(
                       DeleteFileEvent(
-                        caseID: widget.caseID!,
+                        saltID: widget.caseID!,
                         docTypeId: 6,
                         fileUploadedID: audio.id,
                         filePath: "",

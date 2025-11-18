@@ -69,13 +69,13 @@ class UploadFileToS3Event extends GetEvent {
 
 class DeleteFileEvent extends GetEvent {
   final BuildContext context;
-  final String caseID;
+  final String saltID;
   final int docTypeId;
   final int fileUploadedID;
   final String filePath;
 
   DeleteFileEvent({
-    required this.caseID,
+    required this.saltID,
     required this.docTypeId,
     required this.fileUploadedID,
     required this.filePath,

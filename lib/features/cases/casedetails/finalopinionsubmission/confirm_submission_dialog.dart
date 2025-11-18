@@ -6,7 +6,7 @@ import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/utilities/size_config.dart';
 
 class ConfirmSubmissionDialog extends StatelessWidget {
-  final VoidCallback? onConfirm; // ✅ Callback for submission
+  final VoidCallback? onConfirm; 
 
   const ConfirmSubmissionDialog({super.key, this.onConfirm});
 

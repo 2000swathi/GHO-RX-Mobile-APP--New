@@ -174,7 +174,7 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
       emit(GetFileIdLoading(filePath: event.filePath));
       try {
         final response = await repository.deleteFile(
-          event.caseID,
+          event.saltID,
           event.docTypeId,
           event.fileUploadedID,
         );

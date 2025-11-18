@@ -154,7 +154,7 @@ class GetFileIDReo {
   //delete
 
   Future<Map<String, dynamic>> deleteFile(
-    String caseID,
+    String saltID,
     int docTypeID,
     int fileUploadedID,
   ) async {
@@ -170,7 +170,7 @@ class GetFileIDReo {
 
     // If caseID is empty → use reviewerId
     final dk1Value =
-        (caseID.isEmpty || caseID.trim().isEmpty) ? reviewerId : caseID;
+        (saltID.isEmpty || saltID.trim().isEmpty) ? reviewerId : saltID;
 
     final data = {
       ...ApiUtils.getCommonParams(action: "filemgr", token: token),

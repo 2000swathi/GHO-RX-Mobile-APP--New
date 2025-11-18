@@ -6,6 +6,7 @@ import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/closed_case_details.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/bloc/open_closed_bloc.dart';
 
+
 class ClosedCasesTab extends StatefulWidget {
   const ClosedCasesTab({super.key});
 
