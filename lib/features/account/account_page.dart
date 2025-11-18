@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/common_container.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/cases/cases_pages/widgets/case_appbar.dart';
+import 'package:ghorx_mobile_app_new/features/cases/cases_pages/widgets/case_appbar.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
