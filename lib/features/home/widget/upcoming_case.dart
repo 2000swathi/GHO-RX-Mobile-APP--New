@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/cases/cases_pages/tab_contents/open_cases.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/cases/cases_pages/tab_contents/repository/model/open_case_model.dart';
+import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/open_cases.dart';
+import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/repository/model/open_case_model.dart';
 import 'package:ghorx_mobile_app_new/main_page.dart';
 
 class UpcomingCase extends StatelessWidget {

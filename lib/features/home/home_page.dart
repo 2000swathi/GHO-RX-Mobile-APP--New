@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/logo_widget.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/cases/cases_pages/widgets/case_appbar.dart';
+import 'package:ghorx_mobile_app_new/features/cases/cases_pages/widgets/case_appbar.dart';
 import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/home/daterange/bloc/date_range_event.dart';
 import 'package:ghorx_mobile_app_new/features/home/daterange/keyPerformance/date_range_list.dart';
@@ -20,7 +21,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   Future<void> _saveEmailToPrefs(String? email) async {
     if (email == null || email.isEmpty) return;
     await SharedPreference.setEmail(email);
@@ -60,19 +60,29 @@ class _HomePageState extends State<HomePage> {
                   children: [CustomLogo(isSmall: true)],
                 ),
               ),
-              body: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    cases.isEmpty
-                        ? SizedBox.shrink()
-                        : UpcomingCase(cases: cases[0]),
+              body: RefreshIndicator(
+                color: AppColors.white,
+                backgroundColor: AppColors.primarycolor,
+                onRefresh: () async {
+                  context.read<HomeBloc>().add(FetchHomePageInfo());
+                  context.read<DateRangeBloc>().add(FetchDateRangeInfo());
 
-                    const SizedBox(height: 10),
-                    KPIHeader(),
-                    const PerformanceSnapshotWidget(),
-                  ],
+                  await Future.delayed(const Duration(seconds: 1));
+                },
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      cases.isEmpty
+                          ? SizedBox.shrink()
+                          : UpcomingCase(cases: cases[0]),
+
+                      const SizedBox(height: 10),
+                      KPIHeader(),
+                      const PerformanceSnapshotWidget(),
+                    ],
+                  ),
                 ),
               ),
             );
