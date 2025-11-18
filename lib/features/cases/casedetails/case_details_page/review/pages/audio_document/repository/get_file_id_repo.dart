@@ -20,14 +20,21 @@ class GetFileIDReo {
     String saltID,
   ) async {
     final token = await SharedPreference.getToken();
-    if (token == null || token.isEmpty) {
+    final reviewerId = await SharedPreference.getUserId();
+
+    if (token == null ||
+        token.isEmpty ||
+        reviewerId == null ||
+        reviewerId.isEmpty) {
       throw Exception('Token or ReviewerId not found in SharedPreferences');
     }
+    final dk1Value =
+        (saltID.isEmpty || saltID.trim().isEmpty) ? reviewerId : saltID;
 
     final data = {
       ...ApiUtils.getCommonParams(action: "filemgr", token: token),
       "Tags": [
-        {"T": "dk1", "V": saltID},
+        {"T": "dk1", "V": dk1Value},
         {"T": "c1", "V": docTypeID},
         {"T": "c2", "V": fileName},
         {"T": "c3", "V": fileSize},
@@ -127,15 +134,21 @@ class GetFileIDReo {
     String saltID,
   ) async {
     final token = await SharedPreference.getToken();
+    final reviewerId = await SharedPreference.getUserId();
 
-    if (token == null || token.isEmpty) {
+    if (token == null ||
+        token.isEmpty ||
+        reviewerId == null ||
+        reviewerId.isEmpty) {
       throw Exception('Token or ReviewerId not found in SharedPreferences');
     }
+    final dk1Value =
+        (saltID.isEmpty || saltID.trim().isEmpty) ? reviewerId : saltID;
 
     final data = {
       ...ApiUtils.getCommonParams(action: "filemgr", token: token),
       "Tags": [
-        {"T": "dk1", "V": saltID},
+        {"T": "dk1", "V": dk1Value},
         {"T": "dk2", "V": docTypeID},
         {"T": "c1", "V": int.parse(fileUploadedID)},
         {"T": "c2", "V": status},

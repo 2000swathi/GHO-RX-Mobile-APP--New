@@ -1,14 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
+import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_event.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/custom_appdrawer.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/group_container.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/single_container.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/widgets/case_appbar.dart';
+import 'package:ghorx_mobile_app_new/features/home/widget/profile_pic_dialogue.dart';
 
-class AccountPage extends StatelessWidget {
+class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
+
+  @override
+  State<AccountPage> createState() => _AccountPageState();
+}
+
+class _AccountPageState extends State<AccountPage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<PicBloc>().add(FetchPicEvent());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,36 +38,127 @@ class AccountPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Column(
-              children: [
-                Center(
-                  child: Stack(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: AppColors.glasscontainer,
-                        radius: 47,
-                      ),
+            BlocBuilder<PicBloc, PicState>(
+              builder: (context, state) {
+                if (state is PicLoading) {
+                  return LoadingAnimation();
+                } else if (state is PicFailure) {
+                  return SizedBox();
+                } else if (state is PicSuccess) {
+                  final data = state.response["Data"];
 
-                      Positioned(
-                        right: 0,
-                        bottom: 0,
-                        child: CircleAvatar(
-                          radius: 16,
-                          backgroundColor: AppColors.white,
-                          child: SvgPicture.asset(
-                            "assets/svg/account/edit.svg",
-                            height: 16,
-                            width: 16,
+                  if (data == null ||
+                      data.isEmpty ||
+                      data[0] == null ||
+                      data[0].isEmpty) {
+                    return SizedBox();
+                  }
+
+                  final info = data[0][0];
+                  return Column(
+                    children: [
+                      Center(
+                        child: SizedBox(
+                          height: 110,
+                          width: 110,
+                          child: Stack(
+                            children: [
+                              Center(
+                                child: CircleAvatar(
+                                  radius: 47,
+                                  backgroundColor: AppColors.primarycolor
+                                      .withAlpha(13),
+                                  child:
+                                      info["_Url"] != null &&
+                                              info["_Url"].isNotEmpty
+                                          ? ClipOval(
+                                            child: Image.network(
+                                              info["_Url"],
+                                              fit: BoxFit.cover,
+                                              width: double.infinity,
+                                              height: double.infinity,
+                                              loadingBuilder: (
+                                                context,
+                                                child,
+                                                loadingProgress,
+                                              ) {
+                                                if (loadingProgress == null)
+                                                  return child;
+
+                                                return Center(
+                                                  child: SizedBox(
+                                                    height: 15,
+                                                    width: 15,
+                                                    child: CircularProgressIndicator(
+                                                      strokeWidth: 2,
+                                                      valueColor:
+                                                          AlwaysStoppedAnimation<
+                                                            Color
+                                                          >(
+                                                            AppColors
+                                                                .primarycolor,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              errorBuilder: (
+                                                context,
+                                                error,
+                                                stackTrace,
+                                              ) {
+                                                return SvgPicture.asset(
+                                                  "assets/svg/person.svg",
+                                                  height: 24,
+                                                  width: 24,
+                                                );
+                                              },
+                                            ),
+                                          )
+                                          : SvgPicture.asset(
+                                            "assets/svg/person.svg",
+                                            height: 24,
+                                            width: 24,
+                                          ),
+                                ),
+                              ),
+
+                              // Edit Icon
+                              Positioned(
+                                right: 4,
+                                bottom: 4,
+                                child: InkWell(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder:
+                                          (context) =>
+                                              ProfileDialog(url: info["_Url"]),
+                                    );
+                                  },
+                                  child: CircleAvatar(
+                                    radius: 16,
+                                    backgroundColor: AppColors.white,
+                                    child: SvgPicture.asset(
+                                      "assets/svg/account/edit.svg",
+                                      height: 16,
+                                      width: 16,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
+                      SizedBox(height: 5),
+                      Text(info["FullName"], style: AppFonts.heading),
+                      Text(info["email"], style: AppFonts.textSecondary),
                     ],
-                  ),
-                ),
-                SizedBox(height: 5),
-                Text("data", style: AppFonts.heading),
-                Text("data", style: AppFonts.textSecondary),
-              ],
+                  );
+                }
+                return Text("invalid State");
+              },
             ),
             Padding(
               padding: const EdgeInsets.only(left: 14, right: 14),
@@ -75,9 +182,7 @@ class AccountPage extends StatelessWidget {
                             subTitle: "Manage your account details",
                             svgPath: "assets/svg/account/accperson.svg",
                             onTap: () {
-                              Scaffold.of(
-                                context,
-                              ).openDrawer(); 
+                              Scaffold.of(context).openDrawer();
                             },
                           ),
                         ],

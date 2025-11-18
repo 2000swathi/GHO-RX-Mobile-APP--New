@@ -7,6 +7,8 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart'
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/core/constants/file_picker.dart';
+import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_event.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_event.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/widget/pick_file_dialogue_box.dart';
@@ -22,14 +24,6 @@ class ProfileDialog extends StatefulWidget {
 }
 
 class _ProfileDialogState extends State<ProfileDialog> {
-  Future<String> getReviewerID() async {
-    final reviewerID = await SharedPreference.getUserId();
-    if (reviewerID == null || reviewerID.isEmpty) {
-      throw Exception('ReviewerId not found in SharedPreferences');
-    }
-    return reviewerID;
-  }
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -128,7 +122,7 @@ class _ProfileDialogState extends State<ProfileDialog> {
         return BlocListener<GetFileIdBloc, GetFileIdState>(
           listener: (context, state) {
             if (state is SuccessAPI) {
-              context.read<ProfileInfoBloc>().add(FetchPersonalInfo());
+              context.read<PicBloc>().add(FetchPicEvent());
               Navigator.pop(context);
             } else if (state is GetFileIdFailure) {
               Navigator.pop(context);
@@ -208,7 +202,7 @@ class _ProfileDialogState extends State<ProfileDialog> {
                                               docTypeID: 9,
                                               filename: fileName,
                                               fileSize: fileSize,
-                                              saltKey: await getReviewerID(),
+                                              saltKey: "",
                                               context: context,
                                             ),
                                           );
@@ -252,7 +246,7 @@ class _ProfileDialogState extends State<ProfileDialog> {
                                               docTypeID: 9,
                                               filename: fileName,
                                               fileSize: fileSize,
-                                              saltKey: await getReviewerID(),
+                                              saltKey: "",
                                               context: context,
                                             ),
                                           );
