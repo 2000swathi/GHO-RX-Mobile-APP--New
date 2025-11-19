@@ -38,7 +38,7 @@ class _AccountPageState extends State<AccountPage> {
           scaffoldKey.currentState?.closeDrawer();
           return false;
         }
-        return true; 
+        return true;
       },
       child: Scaffold(
         key: scaffoldKey,
@@ -224,7 +224,9 @@ class _AccountPageState extends State<AccountPage> {
                           title: "Change Password",
                           subTitle: "Reset your password anytime for safety.",
                           svgPath: "assets/svg/account/lock.svg",
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.pushNamed(context, AppRouter.changePW);
+                          },
                         ),
                         SettingRow(
                           title: "Privacy Policy",
