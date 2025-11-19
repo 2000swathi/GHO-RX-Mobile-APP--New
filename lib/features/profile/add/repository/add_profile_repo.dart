@@ -194,12 +194,13 @@ class AddProfileRepository {
         {"T": "c2", "V": routingNumber},
         {"T": "c3", "V": accountNumber},
         {"T": "c4", "V": holderName},
+        {"T": "c10", "V": "1"},
       ],
     };
 
     try {
       final response = await _dioHandler.post('', data: data);
-      print(response);
+      // print(response);
       return response;
     } catch (e) {
       throw Exception("Failed to add Bank Info: $e");

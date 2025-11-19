@@ -1258,12 +1258,14 @@ class _ProfileDrState extends State<ProfileDr> {
                 builder: (context, state) {
                   if (state is LanguageLoading) {
                     return const Center(child: LoadingAnimation());
-                  } else if (state is Language) {
+                  }
+                  if (state is Language) {
                     final languageList = state.languageModel.data;
-                    if (languageList.isEmpty) {
-                      return const Center(child: Text("No language added"));
-                    }
-                    final info = state.languageModel;
+                    // if (languageList.isEmpty) {
+                    //   return const Center(child: Text("No language added"));
+                    // }
+                    // final info = state.languageModel;
+
                     return Column(
                       children: [
                         if (languageList.isEmpty)
@@ -1319,8 +1321,10 @@ class _ProfileDrState extends State<ProfileDr> {
                                       onTap: () async {
                                         AddeditLanguageSheet.showSheet(
                                           context,
-                                          info,
+                                          languageList,
                                           true,
+                                          languagebloc:
+                                              context.read<LanguageBloc>(),
                                         );
                                       },
                                       child: SvgPicture.asset(
@@ -1341,8 +1345,9 @@ class _ProfileDrState extends State<ProfileDr> {
                             onTap: () {
                               AddeditLanguageSheet.showSheet(
                                 context,
-                                info,
+                                languageList,
                                 false,
+                                languagebloc: context.read<LanguageBloc>(),
                               );
                             },
                             child: Row(
@@ -1374,86 +1379,170 @@ class _ProfileDrState extends State<ProfileDr> {
             index: 6,
             heading: "Bank Information",
             subheading: "Check your registered bank or payment details.",
-            content: BlocBuilder<BankInfoBloc, BankInfoState>(
-              builder: (context, state) {
-                if (state is BankInfoLoading) {
-                  return const Center(child: LoadingAnimation());
-                }
-                if (state is BankInfo) {
-                  final bankList = state.bankListModel.data;
-                  if (bankList.isEmpty) {
-                    return const Center(child: Text("No bank added"));
-                  }
-                  final info = state.bankListModel;
-
-                  return Column(
-                    children: [
-                      ...bankList.map((bank) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildRow("Bank Type", bank.accountType),
-                            _buildRow("Routing Number", bank.routingNumber),
-                            _buildRow("Account Number", bank.accountNumber),
-                            _buildRow("Account Name", bank.accountHolderName),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: InkWell(
-                                onTap: () async {
-                                  AddEditBankInfoBottonSheet.showSheet(
-                                    context,
-                                    info,
-                                    true,
-                                  );
-                                },
-                                child: SvgPicture.asset(
-                                  "assets/svg/edit_svg.svg",
-                                ),
-                              ),
-                            ),
-
-                            Divider(color: AppColors.hint2color),
-                          ],
-                        );
-                      }),
-                      const SizedBox(height: 12),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: InkWell(
-                          onTap: () {
-                            AddEditBankInfoBottonSheet.showSheet(
-                              context,
-                              info,
-                              false,
-                            );
-                            AddEditBankInfoBottonSheet.showSheet(
-                              context,
-                              info,
-                              false,
-                            );
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Add Bank Info",
-                                style: AppFonts.textprogressbar.copyWith(
-                                  color: AppColors.primarycolor,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+            content: BlocListener<DeleteBloc, DeleteState>(
+              listener: (context, state) {
+                if (state is DeleteLoading) {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (_) => const Center(child: LoadingAnimation()),
+                  );
+                } else if (state is DeleteSuccess) {
+                  Navigator.pop(context);
+                  CustomScaffoldMessenger.showSuccessMessage(
+                    context,
+                    "Bank Information deleted successfully",
+                  );
+                  context.read<BankInfoBloc>().add(FetchBankInfo());
+                } else if (state is DeleteFailure) {
+                  Navigator.pop(context);
+                  CustomScaffoldMessenger.showSuccessMessage(
+                    context,
+                    "Failed to delete Bank Information",
                   );
                 }
-                if (state is BankInfoError) {
-                  return Center(child: Text(state.message));
-                }
-                return Container();
               },
+              child: BlocBuilder<BankInfoBloc, BankInfoState>(
+                builder: (context, state) {
+                  if (state is BankInfoLoading) {
+                    return const Center(child: LoadingAnimation());
+                  }
+                  if (state is BankInfo) {
+                    final bankList = state.bankListModel.data;
+                    // if (bankList.isEmpty) {
+                    //   return const Center(child: Text("No bank added"));
+                    // }
+                    final info = state.bankListModel;
+
+                    return Column(
+                      children: [
+                        if (bankList.isEmpty)
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text("No Bank information found"),
+                            ),
+                          ),
+
+                        ...bankList.map((bank) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildRow("Bank Type", bank.accountType),
+                              _buildRow("Routing Number", bank.routingNumber),
+                              _buildRow("Account Number", bank.accountNumber),
+                              _buildRow("Account Name", bank.accountHolderName),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: InkWell(
+                                      onTap: () async {
+                                        final confirmed =
+                                            await showDeleteConfirmationDialog(
+                                              context: context,
+                                              title: "Delete Bank information",
+                                              content:
+                                                  "Are you sure want to delete",
+                                            );
+                                        if (confirmed == true &&
+                                            context.mounted) {
+                                          context.read<DeleteBloc>().add(
+                                            DeleteProfileItem(
+                                              id: bank.id.toString(),
+                                              action: "revieweracc",
+                                              isLang: false,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      child: SvgPicture.asset(
+                                        "assets/svg/trash.svg",
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 15),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: InkWell(
+                                      onTap: () async {
+                                        showDialog(
+                                          context: context,
+                                          barrierDismissible: false,
+                                          builder:
+                                              (_) => const Center(
+                                                child: LoadingAnimation(),
+                                              ),
+                                        );
+                                        Navigator.of(
+                                          context,
+                                          rootNavigator: true,
+                                        ).pop();
+                                        AddEditBankInfoBottonSheet.showSheet(
+                                          context,
+                                          info,
+                                          true,
+                                          bankinfobloc:
+                                              context.read<BankInfoBloc>(),
+                                        );
+                                      },
+                                      child: SvgPicture.asset(
+                                        "assets/svg/edit_svg.svg",
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              Divider(color: AppColors.hint2color),
+                            ],
+                          );
+                        }),
+                        SizedBox(height: 12),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: InkWell(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder:
+                                    (_) =>
+                                        const Center(child: LoadingAnimation()),
+                              );
+                              Navigator.pop(context);
+                              AddEditBankInfoBottonSheet.showSheet(
+                                context,
+                                info,
+                                false,
+                                bankinfobloc: context.read<BankInfoBloc>(),
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Add Bank Info",
+                                  style: AppFonts.textprogressbar.copyWith(
+                                    color: AppColors.primarycolor,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                  if (state is BankInfoError) {
+                    return Center(child: Text(state.message));
+                  }
+                  return Container();
+                },
+              ),
             ),
           ),
         ],

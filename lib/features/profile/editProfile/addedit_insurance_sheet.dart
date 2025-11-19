@@ -12,8 +12,6 @@ import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/edit/bloc/edit_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/insurances/bloc/insurance_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/insurances/model/insurance_model.dart';
 
 class AddEditInsuranceSheet {

@@ -118,12 +118,12 @@ class EditprofileRepository {
     final data = {
       ...ApiUtils.getCommonParams(action: "revieweracc", token: token),
       "Tags": [
-        {"T": "dk1", "V": token},
+        {"T": "dk1", "V": userID},
         {"T": "dk2", "V": id},
-        {"T": "c1", "V": accountType}, //account type
-        {"T": "c2", "V": routingNumber}, //routing number
-        {"T": "c3", "V": accountNumber}, //account number
-        {"T": "c4", "V": holderName}, //holder name
+        {"T": "c1", "V": accountType},
+        {"T": "c2", "V": routingNumber},
+        {"T": "c3", "V": accountNumber},
+        {"T": "c4", "V": holderName},
         {"T": "c10", "V": "2"},
       ],
     };

@@ -20,8 +20,12 @@ class BankInfoBloc extends Bloc<BankInfoEvent, BankInfoState> {
   ) async {
     emit(BankInfoLoading());
     try {
-      final bankList = await repository.fetchBankInfo();
-      emit(BankInfo(bankListModel: bankList));
+      final response = await repository.fetchBankInfo();
+      if (response.status == 1) {
+        emit(BankInfo(bankListModel: response));
+      } else {
+        emit(BankInfoError(message: response.info.toString()));
+      }
     } catch (e) {
       emit(BankInfoError(message: e.toString()));
     }

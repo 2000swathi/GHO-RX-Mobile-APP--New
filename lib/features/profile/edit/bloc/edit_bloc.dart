@@ -20,21 +20,39 @@ class EditBloc extends Bloc<EditEvent, EditState> {
   //profile Bloc
   Future<void> _onEditInfo(EditInfoEvent event, Emitter<EditState> emit) async {
     emit(EditLoading());
+
     try {
       final response = await repository.editPersonalInfo(event.data);
+
       if (response["Status"] == 1) {
-        final message =
-            response["Data"][0][0]["msg"] ?? "profile updated successfully";
+        String message = "Profile updated successfully";
+
+        // Safely extract nested message
+        final data = response["Data"];
+        if (data is List && data.isNotEmpty) {
+          final inner = data[0];
+          if (inner is List && inner.isNotEmpty) {
+            final msgObject = inner[0];
+            if (msgObject is Map && msgObject["msg"] != null) {
+              message = msgObject["msg"].toString();
+            }
+          }
+        }
+
         emit(EditSuccess(message: message));
-      }else{
-         emit(EditFailure(error:response["Info"]));
+      } else {
+        emit(
+          EditFailure(
+            error: response["Info"]?.toString() ?? "Something went wrong",
+          ),
+        );
       }
     } catch (e) {
       emit(EditFailure(error: e.toString()));
     }
   }
 
-  //SpecialtyF
+  //Specialty
   Future<void> _editSpecialty(
     EditSpecialtyEvent event,
     Emitter<EditState> emit,
@@ -50,10 +68,21 @@ class EditBloc extends Bloc<EditEvent, EditState> {
       );
 
       if (response["Status"] == 1) {
-        final message = response["Data"][0][0]["msg"] ?? "Updated Successfully";
+        String message = "Updated Successfully";
+        final data = response["Data"];
+        if (data is List && data.isNotEmpty) {
+          final firstLevel = data[0];
+          if (firstLevel is List && firstLevel.isNotEmpty) {
+            final msgObject = firstLevel[0];
+            if (msgObject is Map && msgObject["msg"] != null) {
+              message = msgObject["msg"].toString();
+            }
+          }
+        }
         emit(EditSuccess(message: message));
       } else {
-        final error = response["Error"] ?? "Failed to update specialty";
+        final error =
+            response["Error"]?.toString() ?? "Failed to update specialty";
         emit(EditFailure(error: error));
       }
     } catch (e) {
@@ -61,7 +90,7 @@ class EditBloc extends Bloc<EditEvent, EditState> {
     }
   }
 
-  //Accreditaion
+  // Accreditation
   Future<void> _editAccreditation(
     EditAcreditationEvent event,
     Emitter<EditState> emit,
@@ -77,10 +106,21 @@ class EditBloc extends Bloc<EditEvent, EditState> {
       );
 
       if (response["Status"] == 1) {
-        final message = response["Data"][0][0]["msg"] ?? "Updated Successfully";
+        String message = "Updated Successfully";
+        final data = response["Data"];
+        if (data is List && data.isNotEmpty) {
+          final level1 = data[0];
+          if (level1 is List && level1.isNotEmpty) {
+            final msgObj = level1[0];
+            if (msgObj is Map && msgObj["msg"] != null) {
+              message = msgObj["msg"].toString();
+            }
+          }
+        }
         emit(EditSuccess(message: message));
       } else {
-        final error = response["Error"] ?? "Failed to update accreditation";
+        final error =
+            response["Error"]?.toString() ?? "Failed to update accreditation";
         emit(EditFailure(error: error));
       }
     } catch (e) {
@@ -117,11 +157,13 @@ class EditBloc extends Bloc<EditEvent, EditState> {
   }
 
   //Edit license
+  // Edit license
   Future<void> _onEditLicense(
     EditLicenseEvent editevent,
     Emitter<EditState> emit,
   ) async {
     emit(EditLoading());
+
     try {
       final licenseresponse = await repository.editLicense(
         licenseNumber: editevent.licenseNumber,
@@ -133,61 +175,98 @@ class EditBloc extends Bloc<EditEvent, EditState> {
       );
 
       if (licenseresponse["Status"] == 1) {
-        final message =
-            licenseresponse["Data"][0][0]["msg"] ??
-            "License updated successfully";
+        String message = "License updated successfully";
+
+        final data = licenseresponse["Data"];
+        if (data is List && data.isNotEmpty) {
+          final level1 = data[0];
+          if (level1 is List && level1.isNotEmpty) {
+            final msgObj = level1[0];
+            if (msgObj is Map && msgObj["msg"] != null) {
+              message = msgObj["msg"].toString();
+            }
+          }
+        }
+
         emit(EditSuccess(message: message));
       } else {
-        emit(
-          EditFailure(
-            error: licenseresponse["Error"] ?? "Failed to update license",
-          ),
-        );
+        final error =
+            licenseresponse["Error"]?.toString() ?? "Failed to update license";
+        emit(EditFailure(error: error));
       }
     } catch (e) {
       emit(EditFailure(error: e.toString()));
     }
   }
 
-  //language
+  // Language
   Future<void> _onEditLanguage(
     EditLanguageEvent editevent,
     Emitter<EditState> emit,
   ) async {
     emit(EditLoading());
+
     try {
-      final languageRespone = await repository.editLanguage(
+      final languageResponse = await repository.editLanguage(
         language: editevent.language,
         proficiency: editevent.proficiency,
         id: editevent.id,
       );
 
-      final message =
-          languageRespone['Info'] ?? "Language updated successfully";
-      emit(EditSuccess(message: message));
+      if (languageResponse["Status"] == 1) {
+        final message =
+            languageResponse["Info"]?.toString() ??
+            "Language updated successfully";
+
+        emit(EditSuccess(message: message));
+      } else {
+        final error =
+            languageResponse["Error"]?.toString() ??
+            "Failed to update language";
+
+        emit(EditFailure(error: error));
+      }
     } catch (e) {
       emit(EditFailure(error: e.toString()));
     }
   }
 
-  //Bank Info
+  // Bank Info
   Future<void> _onEditBankInfo(
-    EditBankInfoEvent editBankevent,
+    EditBankInfoEvent event,
     Emitter<EditState> emit,
   ) async {
     emit(EditLoading());
+
     try {
-      final bankInforesponse = await repository.editBankInfo(
-        accountType: editBankevent.accountType,
-        routingNumber: editBankevent.routingNumber,
-        accountNumber: editBankevent.accountNumber,
-        holderName: editBankevent.holderName,
-        id: editBankevent.id,
+      final response = await repository.editBankInfo(
+        accountType: event.accountType,
+        routingNumber: event.routingNumber,
+        accountNumber: event.accountNumber,
+        holderName: event.holderName,
+        id: event.id,
       );
 
-      final message =
-          bankInforesponse['Info'] ?? "Profile updated successfully";
-      emit(EditSuccess(message: message));
+      if (response["Status"] == 1) {
+        String message = "Bank info updated successfully";
+
+        final data = response["Data"];
+        if (data is List && data.isNotEmpty) {
+          final level1 = data[0];
+          if (level1 is List && level1.isNotEmpty) {
+            final msgObj = level1[0];
+            if (msgObj is Map && msgObj["msg"] != null) {
+              message = msgObj["msg"].toString();
+            }
+          }
+        }
+        emit(EditSuccess(message: message));
+      } else {
+        final error =
+            response["Info"]?.toString() ?? "Failed to update bank information";
+
+        emit(EditFailure(error: error));
+      }
     } catch (e) {
       emit(EditFailure(error: e.toString()));
     }
