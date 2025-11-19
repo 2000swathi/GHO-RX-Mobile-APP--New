@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/features/account/education/education_screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/languages/language_screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/change_password/change_password.dart';
+import 'package:ghorx_mobile_app_new/features/account/logout/logout_scrn.dart';
 import 'package:ghorx_mobile_app_new/features/account/license/licensescreen.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/personal_information.dart';
+import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_event.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/otp_screen.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/repository/model/login_model.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/add_page.dart';
@@ -39,6 +41,8 @@ class AppRouter {
   static const String educationscreen = '/educationscreen';
   //profile
   static const String changePW = '/changePW';
+  static const String logout = '/logout';
+  static const String delAcc = '/delAcc';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -85,6 +89,10 @@ class AppRouter {
       //profile
       case changePW:
         return MaterialPageRoute(builder: (_) => ChangePassword());
+      case logout:
+        return MaterialPageRoute(builder: (_) => LogoutScrn());
+      case delAcc:
+        return MaterialPageRoute(builder: (_) => LogoutScrn());
       default:
         return MaterialPageRoute(
           builder:
