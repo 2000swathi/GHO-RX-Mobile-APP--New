@@ -21,12 +21,12 @@ import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_accred
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_bankinfo.dart';
 import 'package:ghorx_mobile_app_new/features/profile/insurances/bloc/insurance_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/language/bloc/language_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/profile%20Info/bloc/profile_info_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/bloc/profile_info_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/specialty/bloc/specialty_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/profile/widget/profile_appbar_shimmer.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_insurance_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_license_sheet.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/edit_person_sheet.dart';
+import 'package:ghorx_mobile_app_new/features/account/personal_info/edit_person_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/widget/profiledetails.dart';
 import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
 
@@ -52,7 +52,7 @@ class _ProfileDrState extends State<ProfileDr> {
     // Dispatch events here
     final contextBloc = context.read;
 
-    contextBloc<ProfileInfoBloc>().add(FetchPersonalInfo());
+    // contextBloc<ProfileInfoBloc>().add(FetchPersonalInfo());
     contextBloc<SpecialtyBloc>().add(FetchSpecialty());
     contextBloc<InsuranceBloc>().add(FetchInsurance());
     contextBloc<AccreditationBloc>().add(FetchAccreditation());
@@ -64,118 +64,118 @@ class _ProfileDrState extends State<ProfileDr> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CaseAppBar(
-        isLogout: true,
-        isHome: true,
-        isappbarHeight: 75,
-        widgets: BlocBuilder<ProfileInfoBloc, ProfileInfoState>(
-          builder: (context, state) {
-            if (state is ProfileInfoInitial || state is ProfileInfoLoading) {
-              return const ProfileAppbarShimmer();
-            } else if (state is PersonalInfoState) {
-              final info = state.personalInfomodel;
-              final email = info.email;
-              _saveEmailToPrefs(email);
+      // appBar: CaseAppBar(
+      //   isLogout: true,
+      //   isHome: true,
+      //   isappbarHeight: 75,
+      //   widgets: BlocBuilder<ProfileInfoBloc, ProfileInfoState>(
+      //     builder: (context, state) {
+      //       if (state is ProfileInfoInitial || state is ProfileInfoLoading) {
+      //         return const ProfileAppbarShimmer();
+      //       } else if (state is PersonalInfoState) {
+      //         final info = state.personalInfomodel;
+      //         final email = info.email;
+      //         _saveEmailToPrefs(email);
 
-              return Column(
-                children: [
-                  const SizedBox(height: 15),
-                  Row(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder:
-                                (context) => ProfileDialog(url: info.imageUrl),
-                          );
-                        },
-                        child: CircleAvatar(
-                          radius: 25,
-                          child: CircleAvatar(
-                            radius: 23,
-                            backgroundColor: AppColors.profilepink.withAlpha(
-                              13,
-                            ),
-                            child:
-                                info.imageUrl.isNotEmpty
-                                    ? ClipOval(
-                                      child: Image.network(
-                                        info.imageUrl,
-                                        fit: BoxFit.cover,
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                        loadingBuilder: (
-                                          context,
-                                          child,
-                                          loadingProgress,
-                                        ) {
-                                          if (loadingProgress == null) {
-                                            return child;
-                                          }
+      //         return Column(
+      //           children: [
+      //             const SizedBox(height: 15),
+      //             Row(
+      //               children: [
+      //                 InkWell(
+      //                   onTap: () {
+      //                     showDialog(
+      //                       context: context,
+      //                       builder:
+      //                           (context) => ProfileDialog(url: info.imageUrl),
+      //                     );
+      //                   },
+      //                   child: CircleAvatar(
+      //                     radius: 25,
+      //                     child: CircleAvatar(
+      //                       radius: 23,
+      //                       backgroundColor: AppColors.profilepink.withAlpha(
+      //                         13,
+      //                       ),
+      //                       child:
+      //                           info.imageUrl.isNotEmpty
+      //                               ? ClipOval(
+      //                                 child: Image.network(
+      //                                   info.imageUrl,
+      //                                   fit: BoxFit.cover,
+      //                                   width: double.infinity,
+      //                                   height: double.infinity,
+      //                                   loadingBuilder: (
+      //                                     context,
+      //                                     child,
+      //                                     loadingProgress,
+      //                                   ) {
+      //                                     if (loadingProgress == null) {
+      //                                       return child;
+      //                                     }
 
-                                          return Center(
-                                            child: SizedBox(
-                                              height: 15,
-                                              width: 15,
-                                              child: CircularProgressIndicator(
-                                                strokeWidth: 2,
-                                                valueColor:
-                                                    AlwaysStoppedAnimation<
-                                                      Color
-                                                    >(AppColors.profilepink),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        errorBuilder: (
-                                          context,
-                                          error,
-                                          stackTrace,
-                                        ) {
-                                          // Fallback if image fails to load
-                                          return SvgPicture.asset(
-                                            "assets/svg/person.svg",
-                                            height: 24,
-                                            width: 24,
-                                          );
-                                        },
-                                      ),
-                                    )
-                                    : SvgPicture.asset(
-                                      "assets/svg/person.svg",
-                                      height: 24,
-                                      width: 24,
-                                    ),
-                          ),
-                        ),
-                      ),
+      //                                     return Center(
+      //                                       child: SizedBox(
+      //                                         height: 15,
+      //                                         width: 15,
+      //                                         child: CircularProgressIndicator(
+      //                                           strokeWidth: 2,
+      //                                           valueColor:
+      //                                               AlwaysStoppedAnimation<
+      //                                                 Color
+      //                                               >(AppColors.profilepink),
+      //                                         ),
+      //                                       ),
+      //                                     );
+      //                                   },
+      //                                   errorBuilder: (
+      //                                     context,
+      //                                     error,
+      //                                     stackTrace,
+      //                                   ) {
+      //                                     // Fallback if image fails to load
+      //                                     return SvgPicture.asset(
+      //                                       "assets/svg/person.svg",
+      //                                       height: 24,
+      //                                       width: 24,
+      //                                     );
+      //                                   },
+      //                                 ),
+      //                               )
+      //                               : SvgPicture.asset(
+      //                                 "assets/svg/person.svg",
+      //                                 height: 24,
+      //                                 width: 24,
+      //                               ),
+      //                     ),
+      //                   ),
+      //                 ),
 
-                      const SizedBox(width: 5),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Hello", style: AppFonts.textblue),
-                          SizedBox(height: 5),
-                          Text(
-                            "${info.firstName} ${info.lastName}",
-                            style: AppFonts.subtext.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              );
-            } else if (state is ProfileInfoError) {
-              return Center(child: Text(state.message));
-            }
-            return Center(child: Text("unknown state"));
-          },
-        ),
-      ),
+      //                 const SizedBox(width: 5),
+      //                 Column(
+      //                   crossAxisAlignment: CrossAxisAlignment.start,
+      //                   children: [
+      //                     Text("Hello", style: AppFonts.textblue),
+      //                     SizedBox(height: 5),
+      //                     Text(
+      //                       "${info.firstName} ${info.lastName}",
+      //                       style: AppFonts.subtext.copyWith(
+      //                         fontWeight: FontWeight.w600,
+      //                       ),
+      //                     ),
+      //                   ],
+      //                 ),
+      //               ],
+      //             ),
+      //           ],
+      //         );
+      //       } else if (state is ProfileInfoError) {
+      //         return Center(child: Text(state.message));
+      //       }
+      //       return Center(child: Text("unknown state"));
+      //     },
+      //   ),
+      // ),
       body: ListView(
         children: [
           const SizedBox(height: 15),
@@ -192,88 +192,88 @@ class _ProfileDrState extends State<ProfileDr> {
           const Divider(),
           const SizedBox(height: 15),
           //////////////////////////////////////////////////////////person inf0
-          _buildSection(
-            isadd: false,
-            index: 0,
-            heading: "Personal information",
-            subheading: "View your basic and contact details.",
-            content: BlocBuilder<ProfileInfoBloc, ProfileInfoState>(
-              builder: (context, state) {
-                if (state is ProfileInfoLoading) {
-                  return const Center(child: LoadingAnimation());
-                } else if (state is PersonalInfoState) {
-                  final info = state.personalInfomodel;
-                  return Column(
-                    children: [
-                      _buildRow(
-                        "Full Name",
-                        "${info.firstName} ${info.lastName}",
-                      ),
-                      _buildRow("Birth Date", info.birthDate),
-                      _buildRow("Email", info.email),
-                      _buildRow("Phone", info.phone),
-                      _buildRow("Country", info.countryName),
-                      _buildRow(
-                        "Address",
-                        "${info.address1} ${info.address2} ${info.city} ${info.state}",
-                      ),
-                      _buildRow("Zip Code", info.zipCode),
-                      const SizedBox(height: 15),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: BlocListener<ListBloc, ListState>(
-                          listener: (context, listState) async {
-                            if (Navigator.canPop(context)) {
-                              Navigator.pop(context);
-                            }
+          // _buildSection(
+          //   isadd: false,
+          //   index: 0,
+          //   heading: "Personal information",
+          //   subheading: "View your basic and contact details.",
+          //   content: BlocBuilder<ProfileInfoBloc, ProfileInfoState>(
+          //     builder: (context, state) {
+          //       if (state is ProfileInfoLoading) {
+          //         return const Center(child: LoadingAnimation());
+          //       } else if (state is PersonalInfoState) {
+          //         final info = state.personalInfomodel;
+          //         return Column(
+          //           children: [
+          //             _buildRow(
+          //               "Full Name",
+          //               "${info.firstName} ${info.lastName}",
+          //             ),
+          //             _buildRow("Birth Date", info.birthDate),
+          //             _buildRow("Email", info.email),
+          //             _buildRow("Phone", info.phone),
+          //             _buildRow("Country", info.countryName),
+          //             _buildRow(
+          //               "Address",
+          //               "${info.address1} ${info.address2} ${info.city} ${info.state}",
+          //             ),
+          //             _buildRow("Zip Code", info.zipCode),
+          //             const SizedBox(height: 15),
+          //             Align(
+          //               alignment: Alignment.centerRight,
+          //               child: BlocListener<ListBloc, ListState>(
+          //                 listener: (context, listState) async {
+          //                   if (Navigator.canPop(context)) {
+          //                     Navigator.pop(context);
+          //                   }
 
-                            if (listState is CountryState) {
-                              final countries =
-                                  listState.countryResponse.data
-                                      .expand((inner) => inner)
-                                      .toList();
+          //                   if (listState is CountryState) {
+          //                     final countries =
+          //                         listState.countryResponse.data
+          //                             .expand((inner) => inner)
+          //                             .toList();
 
-                              Future.microtask(() {
-                                EditProfileSheet.showSheet(
-                                  context,
-                                  info,
-                                  countries,
-                                );
-                              });
-                              setState(() {
-                                _expandedIndex = -1;
-                              });
-                            } else if (listState is ListFailure) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(listState.error)),
-                              );
-                            }
-                          },
-                          child: InkWell(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder:
-                                    (_) =>
-                                        const Center(child: LoadingAnimation()),
-                              );
+          //                     Future.microtask(() {
+          //                       EditProfileSheet.showSheet(
+          //                         context,
+          //                         info,
+          //                         countries,
+          //                       );
+          //                     });
+          //                     setState(() {
+          //                       _expandedIndex = -1;
+          //                     });
+          //                   } else if (listState is ListFailure) {
+          //                     ScaffoldMessenger.of(context).showSnackBar(
+          //                       SnackBar(content: Text(listState.error)),
+          //                     );
+          //                   }
+          //                 },
+          //                 child: InkWell(
+          //                   onTap: () {
+          //                     showDialog(
+          //                       context: context,
+          //                       barrierDismissible: false,
+          //                       builder:
+          //                           (_) =>
+          //                               const Center(child: LoadingAnimation()),
+          //                     );
 
-                              context.read<ListBloc>().add(FetchCountryList());
-                            },
-                            child: SvgPicture.asset("assets/svg/edit_svg.svg"),
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                } else if (state is ProfileInfoError) {
-                  return Center(child: Text(state.message));
-                }
-                return Container();
-              },
-            ),
-          ),
+          //                     context.read<ListBloc>().add(FetchCountryList());
+          //                   },
+          //                   child: SvgPicture.asset("assets/svg/edit_svg.svg"),
+          //                 ),
+          //               ),
+          //             ),
+          //           ],
+          //         );
+          //       } else if (state is ProfileInfoError) {
+          //         return Center(child: Text(state.message));
+          //       }
+          //       return Container();
+          //     },
+          //   ),
+          // ),
 
           //////////////////////////////////////////////spl
           _buildSection(

@@ -7,14 +7,15 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart'
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/core/constants/file_picker.dart';
+import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/bloc/profile_info_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_event.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_event.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/widget/pick_file_dialogue_box.dart';
-import 'package:ghorx_mobile_app_new/features/profile/profile%20Info/bloc/profile_info_bloc.dart';
-import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
 
+
+// ignore: must_be_immutable
 class ProfileDialog extends StatefulWidget {
   String url;
   ProfileDialog({super.key, required this.url});
@@ -123,6 +124,7 @@ class _ProfileDialogState extends State<ProfileDialog> {
           listener: (context, state) {
             if (state is SuccessAPI) {
               context.read<PicBloc>().add(FetchPicEvent());
+              context.read<ProfileInfoBloc>().add(FetchPersonalInfo());
               Navigator.pop(context);
             } else if (state is GetFileIdFailure) {
               Navigator.pop(context);

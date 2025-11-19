@@ -35,7 +35,7 @@ class PersonalInfoModel {
       firstName: json['FirstName'] ?? "",
       lastName: json['LastName'] ?? "",
       phone: json['Phone'] ?? "",
-      email: json['eMail'] ?? "",
+      email: json['Email'] ?? "",
       countryID: json['CountryID'] ?? 0,
       address1: json['Address1'] ?? "",
       address2: json['Address2'] ?? "",

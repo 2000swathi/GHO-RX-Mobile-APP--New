@@ -50,8 +50,8 @@ import 'package:ghorx_mobile_app_new/features/profile/insurances/bloc/insurance_
 import 'package:ghorx_mobile_app_new/features/profile/insurances/insurance_repo.dart';
 import 'package:ghorx_mobile_app_new/features/profile/language/bloc/language_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/language/language_repo.dart';
-import 'package:ghorx_mobile_app_new/features/profile/profile%20Info/bloc/profile_info_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/profile%20Info/profile_info_repo.dart';
+import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/bloc/profile_info_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/profile_info_repo.dart';
 import 'package:ghorx_mobile_app_new/features/profile/specialty/bloc/specialty_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/specialty/specialty_repo.dart';
 import 'package:ghorx_mobile_app_new/features/send%20mail/repository/bloc/sendmail_bloc.dart';

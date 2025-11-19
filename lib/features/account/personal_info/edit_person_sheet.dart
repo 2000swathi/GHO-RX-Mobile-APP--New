@@ -11,10 +11,11 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessan
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
 import 'package:ghorx_mobile_app_new/core/constants/date_input_formatter.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
+import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/bloc/profile_info_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/home/repository/bloc/home_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/edit/repository/edit_repository.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/country_response_model.dart';
-import 'package:ghorx_mobile_app_new/features/profile/profile%20Info/model/personalinfo_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/model/personalinfo_model.dart';
 import 'package:intl/intl.dart';
 
 class EditProfileSheet {
@@ -226,9 +227,10 @@ class EditProfileSheet {
                     final msg =
                         response["Data"]?[0]?[0]?["msg"] ??
                         "Profile updated successfully";
-                    Navigator.pop(context);
+
                     CustomScaffoldMessenger.showSuccessMessage(context, msg);
-                    context.read<HomeBloc>().add(FetchHomePageInfo());
+                    context.read<ProfileInfoBloc>().add(FetchPersonalInfo());
+                    Navigator.pop(context);
                   } else {
                     final err = response["Info"] ?? "Something went wrong";
                     Navigator.pop(context);

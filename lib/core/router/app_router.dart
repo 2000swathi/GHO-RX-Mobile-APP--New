@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ghorx_mobile_app_new/features/account/personal_information.dart';
+import 'package:ghorx_mobile_app_new/features/account/personal_info/personal_information.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/otp_screen.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/repository/model/login_model.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/add_page.dart';

@@ -14,8 +14,6 @@ import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/edit/bloc/edit_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/issueing_authority.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/bloc/profile_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/license_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/License/model/license_model.dart';
 

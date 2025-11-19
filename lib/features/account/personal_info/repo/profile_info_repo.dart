@@ -1,10 +1,11 @@
-import 'package:ghorx_mobile_app_new/features/profile/profile%20Info/model/personalinfo_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/model/personalinfo_model.dart';
 import 'package:ghorx_mobile_app_new/utilities/network/api_utils.dart';
 import 'package:ghorx_mobile_app_new/utilities/network/dio_handler.dart';
 import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
 
 class ProfileInfoRepo {
   final DioHandler _dioHandler = DioHandler();
+
   //get
   Future<PersonalInfoModel> fetchPersonalInfo() async {
     final token = await SharedPreference.getToken();
@@ -24,11 +25,32 @@ class ProfileInfoRepo {
     try {
       final response = await _dioHandler.post('', data: data);
 
-      final info = PersonalInfoModel.fromJson(response['Data'][0][0]);
-      await SharedPreference.setEmail(info.email);
+      final dataList = response['Data'];
+      if (dataList == null || dataList.isEmpty) {
+        throw "Data is null or empty";
+      }
+
+      final innerList = dataList[0];
+      if (innerList == null || innerList.isEmpty) {
+        throw "Inner data is null or empty";
+      }
+
+      final infoJson = innerList[0];
+      if (infoJson == null) {
+        throw "Personal info data is null";
+      }
+
+      final info = PersonalInfoModel.fromJson(infoJson);
+
+      if (info.email.isNotEmpty) {
+        await SharedPreference.setEmail(info.email);
+      } else {
+        print("Email is null or empty — not saving to SharedPreferences");
+      }
+
       return info;
     } catch (e) {
-      throw (e.toString());
+      throw e.toString();
     }
   }
 }
