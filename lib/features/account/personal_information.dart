@@ -68,7 +68,7 @@ class PersonalInformationScreen extends StatelessWidget {
                     radius: 50,
                     backgroundColor: AppColors.glasscontainer,
                     backgroundImage: const AssetImage(
-                      "assets/images/default_user.png", // set your default image here
+                      "assets/images/default_user.png", 
                     ),
                   ),
                   Positioned(
