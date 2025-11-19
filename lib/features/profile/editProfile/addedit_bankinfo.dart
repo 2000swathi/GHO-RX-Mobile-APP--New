@@ -2,19 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
 import 'package:ghorx_mobile_app_new/features/profile/Bank_info/bloc/bank_info_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/Bank_info/model/bankinfo_model.dart';
+import 'package:ghorx_mobile_app_new/features/profile/edit/bloc/edit_bloc.dart';
 
 class AddEditBankInfoBottonSheet {
   static void showSheet(
     BuildContext context,
     BankInfoResponseModel? info,
-    bool? isEdit,
-  ) {
+    bool? isEdit, {
+    required BankInfoBloc bankinfobloc,
+  }) {
     final bool editing = isEdit == true && info != null;
     final _formKey = GlobalKey<FormState>();
     final TextEditingController bankTypeController = TextEditingController(
@@ -73,41 +76,77 @@ class AddEditBankInfoBottonSheet {
           ),
         ),
       ],
-      actionButton: BlocListener<AddBloc, AddState>(
-        listener: (context, state) {
-          if (state is AddSuccess) {
-            context.read<BankInfoBloc>().add(FetchBankInfo());
+      actionButton: MultiBlocListener(
+        listeners: [
+          BlocListener<AddBloc, AddState>(
+            listener: (context, state) {
+              if (state is AddSuccess) {
+                if (Navigator.canPop(context)) Navigator.pop(context);
+                bankinfobloc.add(FetchBankInfo());
+                CustomScaffoldMessenger.showSuccessMessage(
+                  context,
+                  state.response["Data"][0][0]["msg"].toString(),
+                );
+              } else if (state is AddError) {
+                CustomScaffoldMessenger.showErrorMessage(
+                  context,
+                  state.message,
+                );
+              }
+            },
+          ),
 
-            Navigator.of(context).pop();
-          } else if (state is AddError) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
-          }
-        },
+          BlocListener<EditBloc, EditState>(
+            listener: (context, state) {
+              if (state is EditSuccess) {
+                if (Navigator.canPop(context)) Navigator.pop(context);
+                bankinfobloc.add(FetchBankInfo());
+                CustomScaffoldMessenger.showSuccessMessage(
+                  context,
+                  state.message,
+                );
+              } else if (state is EditFailure) {
+                CustomScaffoldMessenger.showErrorMessage(context, state.error);
+              }
+            },
+          ),
+        ],
         child: BlocBuilder<AddBloc, AddState>(
-          builder: (context, state) {
-            return CustomButton(
-              text:
-                  state is AddLoading
-                      ? "Saving..."
-                      : (isEdit == true ? "Edit Bank Info" : "Add Bank Info"),
-              onPressed: () {
-                // 1️⃣ Prevent click during loading
-                if (state is AddLoading) return;
+          builder: (context, addState) {
+            final bool isAddLoading = addState is AddLoading;
+            return BlocBuilder<EditBloc, EditState>(
+              builder: (context, editState) {
+                final bool isEditLoading = editState is EditLoading;
+                final bool isLoading = isAddLoading || isEditLoading;
 
-                // 2️⃣ Validate form safely
-                if (_formKey.currentState != null &&
-                    _formKey.currentState!.validate()) {
-                  context.read<AddBloc>().add(
-                    AddBankInfo(
-                      accountNumber: accountNameController.text,
-                      accountType: bankTypeController.text,
-                      holderName: accountNameController.text,
-                      routingNumber: routingNumberController.text,
-                    ),
-                  );
-                }
+                return CustomButton(
+                  text: isEdit! ? "Update Bank Info" : "Submit Bank Info",
+                  isLoading: isLoading,
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      if (isEdit) {
+                        context.read<EditBloc>().add(
+                          EditBankInfoEvent(
+                            id: info!.data[0].id.toString(),
+                            accountNumber: accountNameController.text,
+                            accountType: bankTypeController.text,
+                            holderName: accountNameController.text,
+                            routingNumber: routingNumberController.text,
+                          ),
+                        );
+                      } else {
+                        context.read<AddBloc>().add(
+                          AddBankInfo(
+                            accountNumber: accountNameController.text,
+                            accountType: bankTypeController.text,
+                            holderName: accountNameController.text,
+                            routingNumber: routingNumberController.text,
+                          ),
+                        );
+                      }
+                    }
+                  },
+                );
               },
             );
           },
