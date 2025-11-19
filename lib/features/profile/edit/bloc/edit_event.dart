@@ -119,20 +119,20 @@ class EditLicenseEvent extends EditEvent {
 
 // Edit language event
 
-class EditLanguageEvent extends EditEvent {
-  final String language;
-  final String proficiency;
-  final String id;
+// class EditLanguageEvent extends EditEvent {
+//   final String language;
+//   final String proficiency;
+//   final String id;
 
-  const EditLanguageEvent({
-    required this.language,
-    required this.id,
-    required this.proficiency,
-  });
+//   const EditLanguageEvent({
+//     required this.language,
+//     required this.id,
+//     required this.proficiency,
+//   });
 
-  @override
-  List<Object> get props => [language, proficiency, id];
-}
+//   @override
+//   List<Object> get props => [language, proficiency, id];
+// }
 
 //Edit Bank Event
 class EditBankInfoEvent extends EditEvent {

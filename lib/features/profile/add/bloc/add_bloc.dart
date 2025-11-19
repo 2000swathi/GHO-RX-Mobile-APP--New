@@ -9,7 +9,7 @@ class AddBloc extends Bloc<AddEvent, AddState> {
 
   AddBloc({required this.repository}) : super(AddInitial()) {
     on<AddLicense>(_onAddLicense);
-    on<AddLanguage>(_onAddLanguage);
+    // on<AddLanguage>(_onAddLanguage);
     on<AddBankInfo>(_onAddBankInfo);
     on<AddSpecialty>(_onAddSpecialty);
     on<AddAccrediation>(addaccrediation);
@@ -56,20 +56,20 @@ class AddBloc extends Bloc<AddEvent, AddState> {
     }
   }
 
-// Language
+// // Language
 
-  Future<void> _onAddLanguage(AddLanguage event, Emitter<AddState> emit) async {
-    emit(AddLoading());
-    try {
-      final languageResponse = await repository.addLanguage(
-        language: event.language,
-        proficiency: event.proficiency,
-      );
-      emit(AddSuccess(response: languageResponse));
-    } catch (e) {
-      emit(AddError(message: e.toString()));
-    }
-  }
+//   Future<void> _onAddLanguage(AddLanguage event, Emitter<AddState> emit) async {
+//     emit(AddLoading());
+//     try {
+//       final languageResponse = await repository.addLanguage(
+//         language: event.language,
+//         proficiency: event.proficiency,
+//       );
+//       emit(AddSuccess(response: languageResponse));
+//     } catch (e) {
+//       emit(AddError(message: e.toString()));
+//     }
+//   }
 
   // Bank Info
   Future<void> _onAddBankInfo(AddBankInfo event, Emitter<AddState> emit) async {

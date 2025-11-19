@@ -14,13 +14,13 @@ import 'package:ghorx_mobile_app_new/features/profile/Bank_info/bloc/bank_info_b
 import 'package:ghorx_mobile_app_new/features/profile/License/bloc/license_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/accreditation/bloc/accreditation_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/delete/bloc/delete_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_language.dart';
+import 'package:ghorx_mobile_app_new/features/account/languages/addedit_language.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_specialty_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_accreditation_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_bankinfo.dart';
 import 'package:ghorx_mobile_app_new/features/profile/insurances/bloc/insurance_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/language/bloc/language_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/languages/repo/bloc/language_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/bloc/profile_info_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/specialty/bloc/specialty_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/profile/widget/profile_appbar_shimmer.dart';
@@ -1226,155 +1226,155 @@ class _ProfileDrState extends State<ProfileDr> {
             ),
           ),
 
-          _buildSection(
-            index: 5,
-            heading: "Language",
-            subheading: "Choose your Language and proficiency",
+          // _buildSection(
+          //   index: 5,
+          //   heading: "Language",
+          //   subheading: "Choose your Language and proficiency",
 
-            content: BlocListener<DeleteBloc, DeleteState>(
-              listener: (context, state) {
-                if (state is DeleteLoading) {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (_) => const Center(child: LoadingAnimation()),
-                  );
-                } else if (state is DeleteSuccess) {
-                  Navigator.pop(context);
-                  CustomScaffoldMessenger.showSuccessMessage(
-                    context,
-                    "Language deleted successfully",
-                  );
-                  context.read<LanguageBloc>().add(FetchLanguage());
-                } else if (state is DeleteFailure) {
-                  Navigator.pop(context);
-                  CustomScaffoldMessenger.showErrorMessage(
-                    context,
-                    "Failed to delete language",
-                  );
-                }
-              },
-              child: BlocBuilder<LanguageBloc, LanguageState>(
-                builder: (context, state) {
-                  if (state is LanguageLoading) {
-                    return const Center(child: LoadingAnimation());
-                  }
-                  if (state is Language) {
-                    final languageList = state.languageModel.data;
-                    // if (languageList.isEmpty) {
-                    //   return const Center(child: Text("No language added"));
-                    // }
-                    // final info = state.languageModel;
+          //   content: BlocListener<DeleteBloc, DeleteState>(
+          //     listener: (context, state) {
+          //       if (state is DeleteLoading) {
+          //         showDialog(
+          //           context: context,
+          //           barrierDismissible: false,
+          //           builder: (_) => const Center(child: LoadingAnimation()),
+          //         );
+          //       } else if (state is DeleteSuccess) {
+          //         Navigator.pop(context);
+          //         CustomScaffoldMessenger.showSuccessMessage(
+          //           context,
+          //           "Language deleted successfully",
+          //         );
+          //         context.read<LanguageBloc>().add(FetchLanguage());
+          //       } else if (state is DeleteFailure) {
+          //         Navigator.pop(context);
+          //         CustomScaffoldMessenger.showErrorMessage(
+          //           context,
+          //           "Failed to delete language",
+          //         );
+          //       }
+          //     },
+          //     child: BlocBuilder<LanguageBloc, LanguageState>(
+          //       builder: (context, state) {
+          //         if (state is LanguageLoading) {
+          //           return const Center(child: LoadingAnimation());
+          //         }
+          //         if (state is Language) {
+          //           final languageList = state.languageModel.data;
+          //           // if (languageList.isEmpty) {
+          //           //   return const Center(child: Text("No language added"));
+          //           // }
+          //           // final info = state.languageModel;
 
-                    return Column(
-                      children: [
-                        if (languageList.isEmpty)
-                          const Center(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 10),
-                              child: Text("No language found"),
-                            ),
-                          ),
-                        ...languageList.map(
-                          (language) => Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _buildRow("Language", language.language),
-                              _buildRow("Proficiency", language.proficiency),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: InkWell(
-                                      onTap: () async {
-                                        final confirmed =
-                                            await showDeleteConfirmationDialog(
-                                              context: context,
-                                              title: "Delete Language",
-                                              content:
-                                                  "Are you sure you want to delete?",
-                                            );
-                                        if (confirmed == true &&
-                                            context.mounted) {
-                                          context.read<DeleteBloc>().add(
-                                            DeleteProfileItem(
-                                              id: language.id.toString(),
-                                              action: "reviewerlang",
-                                              isLang: true,
-                                            ),
-                                          );
-                                        }
-                                      },
-                                      child: SvgPicture.asset(
-                                        "assets/svg/trash.svg",
-                                        // ignore: deprecated_member_use
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                  ),
+          //           return Column(
+          //             children: [
+          //               if (languageList.isEmpty)
+          //                 const Center(
+          //                   child: Padding(
+          //                     padding: EdgeInsets.symmetric(vertical: 10),
+          //                     child: Text("No language found"),
+          //                   ),
+          //                 ),
+          //               ...languageList.map(
+          //                 (language) => Column(
+          //                   crossAxisAlignment: CrossAxisAlignment.start,
+          //                   children: [
+          //                     _buildRow("Language", language.language),
+          //                     _buildRow("Proficiency", language.proficiency),
+          //                     Row(
+          //                       mainAxisAlignment: MainAxisAlignment.end,
+          //                       children: [
+          //                         Align(
+          //                           alignment: Alignment.centerRight,
+          //                           child: InkWell(
+          //                             onTap: () async {
+          //                               final confirmed =
+          //                                   await showDeleteConfirmationDialog(
+          //                                     context: context,
+          //                                     title: "Delete Language",
+          //                                     content:
+          //                                         "Are you sure you want to delete?",
+          //                                   );
+          //                               if (confirmed == true &&
+          //                                   context.mounted) {
+          //                                 context.read<DeleteBloc>().add(
+          //                                   DeleteProfileItem(
+          //                                     id: language.id.toString(),
+          //                                     action: "reviewerlang",
+          //                                     isLang: true,
+          //                                   ),
+          //                                 );
+          //                               }
+          //                             },
+          //                             child: SvgPicture.asset(
+          //                               "assets/svg/trash.svg",
+          //                               // ignore: deprecated_member_use
+          //                               color: Colors.red,
+          //                             ),
+          //                           ),
+          //                         ),
 
-                                  const SizedBox(width: 15),
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: InkWell(
-                                      onTap: () async {
-                                        AddeditLanguageSheet.showSheet(
-                                          context,
-                                          languageList,
-                                          true,
-                                          languagebloc:
-                                              context.read<LanguageBloc>(),
-                                        );
-                                      },
-                                      child: SvgPicture.asset(
-                                        "assets/svg/edit_svg.svg",
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Divider(color: AppColors.hint2color),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 12),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: InkWell(
-                            onTap: () {
-                              AddeditLanguageSheet.showSheet(
-                                context,
-                                languageList,
-                                false,
-                                languagebloc: context.read<LanguageBloc>(),
-                              );
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Add Language",
-                                  style: AppFonts.textprogressbar.copyWith(
-                                    color: AppColors.primarycolor,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-                  if (state is LangugageError) {
-                    return Center(child: Text(state.message));
-                  }
-                  return Container();
-                },
-              ),
-            ),
-          ),
+          //                         const SizedBox(width: 15),
+          //                         Align(
+          //                           alignment: Alignment.centerRight,
+          //                           child: InkWell(
+          //                             onTap: () async {
+          //                               AddeditLanguageSheet.showSheet(
+          //                                 context,
+          //                                 languageList,
+          //                                 true,
+          //                                 languagebloc:
+          //                                     context.read<LanguageBloc>(),
+          //                               );
+          //                             },
+          //                             child: SvgPicture.asset(
+          //                               "assets/svg/edit_svg.svg",
+          //                             ),
+          //                           ),
+          //                         ),
+          //                       ],
+          //                     ),
+          //                     Divider(color: AppColors.hint2color),
+          //                   ],
+          //                 ),
+          //               ),
+          //               SizedBox(height: 12),
+          //               Align(
+          //                 alignment: Alignment.centerRight,
+          //                 child: InkWell(
+          //                   onTap: () {
+          //                     AddeditLanguageSheet.showSheet(
+          //                       context,
+          //                       languageList,
+          //                       false,
+          //                       languagebloc: context.read<LanguageBloc>(),
+          //                     );
+          //                   },
+          //                   child: Row(
+          //                     mainAxisAlignment: MainAxisAlignment.center,
+          //                     children: [
+          //                       Text(
+          //                         "Add Language",
+          //                         style: AppFonts.textprogressbar.copyWith(
+          //                           color: AppColors.primarycolor,
+          //                           fontWeight: FontWeight.w600,
+          //                         ),
+          //                       ),
+          //                     ],
+          //                   ),
+          //                 ),
+          //               ),
+          //             ],
+          //           );
+          //         }
+          //         if (state is LangugageError) {
+          //           return Center(child: Text(state.message));
+          //         }
+          //         return Container();
+          //       },
+          //     ),
+          //   ),
+          // ),
           _buildSection(
             index: 6,
             heading: "Bank Information",

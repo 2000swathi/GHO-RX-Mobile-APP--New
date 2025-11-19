@@ -10,7 +10,7 @@ class EditBloc extends Bloc<EditEvent, EditState> {
   EditBloc({required this.repository}) : super(EditInitial()) {
     // on<EditInfoEvent>(_onEditInfo);
     on<EditLicenseEvent>(_onEditLicense);
-    on<EditLanguageEvent>(_onEditLanguage);
+    // on<EditLanguageEvent>(_onEditLanguage);
     on<EditBankInfoEvent>(_onEditBankInfo);
     on<EditSpecialtyEvent>(_editSpecialty);
     on<EditAcreditationEvent>(_editAccreditation);
@@ -199,37 +199,37 @@ class EditBloc extends Bloc<EditEvent, EditState> {
     }
   }
 
-  // Language
-  Future<void> _onEditLanguage(
-    EditLanguageEvent editevent,
-    Emitter<EditState> emit,
-  ) async {
-    emit(EditLoading());
+  // // Language
+  // Future<void> _onEditLanguage(
+  //   EditLanguageEvent editevent,
+  //   Emitter<EditState> emit,
+  // ) async {
+  //   emit(EditLoading());
 
-    try {
-      final languageResponse = await repository.editLanguage(
-        language: editevent.language,
-        proficiency: editevent.proficiency,
-        id: editevent.id,
-      );
+  //   try {
+  //     final languageResponse = await repository.editLanguage(
+  //       language: editevent.language,
+  //       proficiency: editevent.proficiency,
+  //       id: editevent.id,
+  //     );
 
-      if (languageResponse["Status"] == 1) {
-        final message =
-            languageResponse["Info"]?.toString() ??
-            "Language updated successfully";
+  //     if (languageResponse["Status"] == 1) {
+  //       final message =
+  //           languageResponse["Info"]?.toString() ??
+  //           "Language updated successfully";
 
-        emit(EditSuccess(message: message));
-      } else {
-        final error =
-            languageResponse["Error"]?.toString() ??
-            "Failed to update language";
+  //       emit(EditSuccess(message: message));
+  //     } else {
+  //       final error =
+  //           languageResponse["Error"]?.toString() ??
+  //           "Failed to update language";
 
-        emit(EditFailure(error: error));
-      }
-    } catch (e) {
-      emit(EditFailure(error: e.toString()));
-    }
-  }
+  //       emit(EditFailure(error: error));
+  //     }
+  //   } catch (e) {
+  //     emit(EditFailure(error: e.toString()));
+  //   }
+  // }
 
   // Bank Info
   Future<void> _onEditBankInfo(

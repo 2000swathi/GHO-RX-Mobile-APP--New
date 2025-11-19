@@ -148,4 +148,20 @@ class ListRepository {
       throw Exception("Failed to fetch issueing authority: $e");
     }
   }
+  Future<Map<String,dynamic>> fetchLangList() async {
+    final data = {
+      ...ApiUtils.getCommonParams(action: "lists", token: ""),
+      "Tags": [
+       {"T":"dk1","V":"LANGUAGE"},
+        {"T":"c10","V":"3"}  
+      ],
+    };
+
+    try {
+      final response = await _dioHandler.post('', data: data);
+      return response;
+    } catch (e) {
+      throw Exception("Failed to fetch language list: $e");
+    }
+  }
 }

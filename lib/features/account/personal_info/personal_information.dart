@@ -10,21 +10,10 @@ import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/model/p
 import 'package:ghorx_mobile_app_new/features/home/widget/profile_pic_dialogue.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/bloc/list_bloc.dart';
 
-class PersonalInformationScreen extends StatefulWidget {
-  const PersonalInformationScreen({super.key});
+class PersonalInformationScreen extends StatelessWidget {
+   PersonalInformationScreen({super.key});
 
-  @override
-  State<PersonalInformationScreen> createState() =>
-      _PersonalInformationScreenState();
-}
-
-class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
   PersonalInfoModel? personalInfo;
-  @override
-  void initState() {
-    super.initState();
-    context.read<ProfileInfoBloc>().add(FetchPersonalInfo());
-  }
 
   @override
   Widget build(BuildContext context) {

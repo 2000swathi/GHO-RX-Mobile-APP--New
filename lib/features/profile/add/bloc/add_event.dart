@@ -57,12 +57,12 @@ class AddLicense extends AddEvent {
   });
 }
 
-//language
-class AddLanguage extends AddEvent {
-  final String language;
-  final String proficiency;
-  AddLanguage({required this.language, required this.proficiency});
-}
+// //language
+// class AddLanguage extends AddEvent {
+//   final String language;
+//   final String proficiency;
+//   AddLanguage({required this.language, required this.proficiency});
+// }
 
 //Bank info
 class AddBankInfo extends AddEvent {
