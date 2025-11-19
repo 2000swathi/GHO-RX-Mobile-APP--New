@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ghorx_mobile_app_new/features/account/education/education_screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/languages/language_screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/change_password/change_password.dart';
+import 'package:ghorx_mobile_app_new/features/account/license/licensescreen.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/personal_information.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/otp_screen.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/repository/model/login_model.dart';
@@ -33,6 +35,8 @@ class AppRouter {
   static const String homePage = '/homepage';
   static const String Message = '/messages';
   static const String languagescreen = '/languagescreen';
+  static const String licensescreen = '/licensescreen';
+  static const String educationscreen = '/educationscreen';
   //profile
   static const String changePW = '/changePW';
 
@@ -73,6 +77,11 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => PersonalInformationScreen());
       case languagescreen:
         return MaterialPageRoute(builder: (_) => LanguageScreen());
+      case licensescreen:
+        return MaterialPageRoute(builder: (_) => Licensescreen());
+      case educationscreen:
+        return MaterialPageRoute(builder: (_) => EducationScreen());
+
       //profile
       case changePW:
         return MaterialPageRoute(builder: (_) => ChangePassword());
