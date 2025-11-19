@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
+import 'package:ghorx_mobile_app_new/core/router/app_router.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_event.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/custom_appdrawer.dart';
@@ -203,7 +204,9 @@ class _AccountPageState extends State<AccountPage> {
                         title: "Change Password",
                         subTitle: "Reset your password anytime for safety.",
                         svgPath: "assets/svg/account/lock.svg",
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRouter.changePW);
+                        },
                       ),
                       SettingRow(
                         title: "Privacy Policy",
