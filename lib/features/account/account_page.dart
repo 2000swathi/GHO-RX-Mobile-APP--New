@@ -213,6 +213,9 @@ class _AccountPageState extends State<AccountPage> {
                     DrawerItemTile(
                       imagePath: "assets/svg/account/accredited 1.png",
                       title: "Accreditations",
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRouter.accreditationscreen);
+                      },
                     ),
                     DrawerItemTile(
                       imagePath: "assets/svg/account/graduation-hat.png",
@@ -224,6 +227,9 @@ class _AccountPageState extends State<AccountPage> {
                     DrawerItemTile(
                       imagePath: "assets/svg/account/refer.png",
                       title: "Professional References",
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRouter.professionalreferences);
+                      },
                     ),
                     DrawerItemTile(
                       imagePath: "assets/svg/account/agreement.png",
@@ -235,10 +241,16 @@ class _AccountPageState extends State<AccountPage> {
                     DrawerItemTile(
                       imagePath: "assets/svg/account/health-insurance.png",
                       title: "Professional Indemnity Insurance",
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRouter.profesindInsurance);
+                      },
                     ),
                     DrawerItemTile(
                       imagePath: "assets/svg/account/folders.png",
                       title: "Documents",
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRouter.documents);
+                      },
                     ),
                     DrawerItemTile(
                       imagePath: "assets/svg/account/question-mark.png",
