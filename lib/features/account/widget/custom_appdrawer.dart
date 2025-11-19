@@ -42,18 +42,12 @@ class CustomAppDrawer extends StatelessWidget {
                 children: const [
                   Text(
                     "Profile Information",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 4),
                   Text(
                     "Manage your account details",
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 14,
-                    ),
+                    style: TextStyle(color: Colors.grey, fontSize: 14),
                   ),
                 ],
               ),
@@ -64,44 +58,49 @@ class CustomAppDrawer extends StatelessWidget {
               child: ListView(
                 children: [
                   DrawerItemTile(
-                    imagePath: "assets/svg/account/user.png", 
+                    imagePath: "assets/svg/account/user.png",
                     title: "Personal Information",
                     onTap: () {
-                   Navigator.pushNamed(context,AppRouter.personalinformation ,);
-                       
+                      Navigator.pushNamed(
+                        context,
+                        AppRouter.personalinformation,
+                      );
                     },
                   ),
                   DrawerItemTile(
-                    imagePath: "assets/svg/account/translation.png", 
-                    title: "Languages"
+                    imagePath: "assets/svg/account/translation.png",
+                    title: "Languages",
+                    onTap: () {
+                      Navigator.pushNamed(context, AppRouter.languagescreen);
+                    },
                   ),
                   DrawerItemTile(
-                    imagePath: "assets/svg/account/accredited 1.png", 
-                    title: "Accreditations"
+                    imagePath: "assets/svg/account/accredited 1.png",
+                    title: "Accreditations",
                   ),
                   DrawerItemTile(
-                    imagePath: "assets/svg/account/graduation-hat.png", 
-                    title: "Education"
+                    imagePath: "assets/svg/account/graduation-hat.png",
+                    title: "Education",
                   ),
                   DrawerItemTile(
-                    imagePath: "assets/svg/account/refer.png", 
-                    title: "Professional References"
+                    imagePath: "assets/svg/account/refer.png",
+                    title: "Professional References",
                   ),
                   DrawerItemTile(
-                    imagePath: "assets/svg/account/agreement.png", 
-                    title: "Licenses"
+                    imagePath: "assets/svg/account/agreement.png",
+                    title: "Licenses",
                   ),
                   DrawerItemTile(
-                    imagePath: "assets/svg/account/health-insurance.png", 
-                    title: "Professional Indemnity Insurance"
+                    imagePath: "assets/svg/account/health-insurance.png",
+                    title: "Professional Indemnity Insurance",
                   ),
                   DrawerItemTile(
-                    imagePath: "assets/svg/account/folders.png", 
-                    title: "Documents"
+                    imagePath: "assets/svg/account/folders.png",
+                    title: "Documents",
                   ),
                   DrawerItemTile(
-                    imagePath: "assets/svg/account/question-mark.png", 
-                    title: "Questionnaire"
+                    imagePath: "assets/svg/account/question-mark.png",
+                    title: "Questionnaire",
                   ),
                 ],
               ),

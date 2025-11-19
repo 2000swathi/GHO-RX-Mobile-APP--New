@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
+import 'package:ghorx_mobile_app_new/features/account/widget/custom_profile_appbar.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/edit_bottomsheet.dart';
 
 class PersonalInformationScreen extends StatelessWidget {
@@ -9,49 +10,11 @@ class PersonalInformationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: AppColors.backgroundcolor,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            size: 24,
-            color: AppColors.black,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-
-        title: const Text(
-          "Personal Information",
-          style: AppFonts.heading,
-        ),
-
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: InkWell(
-              onTap: () {
-                EditPersonalInfo().showSheet(
-                  context
-                );
-              },
-              child: Row(
-                children: [
-                  SvgPicture.asset(
-                    "assets/svg/account/pencil.svg",
-                    height: 20,
-                  ),
-                  const SizedBox(width: 6),
-                  Text(
-                    "Edit",
-                    style: AppFonts.textblue,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
+      appBar: CustomAccountAppBar(
+        title: "Personal Information",
+        onEdit: () => EditPersonalInfo().showSheet(context),
       ),
 
       body: SingleChildScrollView(
@@ -60,16 +23,12 @@ class PersonalInformationScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              
               // PROFILE IMAGE
               Stack(
                 children: [
                   CircleAvatar(
                     radius: 50,
                     backgroundColor: AppColors.glasscontainer,
-                    backgroundImage: const AssetImage(
-                      "assets/images/default_user.png", 
-                    ),
                   ),
                   Positioned(
                     right: 0,
@@ -78,7 +37,7 @@ class PersonalInformationScreen extends StatelessWidget {
                       "assets/svg/account/Appointments.svg",
                       height: 36,
                       width: 36,
-                    )
+                    ),
                   ),
                 ],
               ),
@@ -117,15 +76,9 @@ class PersonalInformationScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "$label:",
-            style: AppFonts.hinttext2
-          ),
+          Text("$label:", style: AppFonts.hinttext2),
           const SizedBox(height: 5),
-          Text(
-            value,
-            style: AppFonts.textprimary
-          ),
+          Text(value, style: AppFonts.textprimary),
         ],
       ),
     );
