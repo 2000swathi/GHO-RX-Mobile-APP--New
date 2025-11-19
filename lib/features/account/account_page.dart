@@ -222,6 +222,9 @@ class _AccountPageState extends State<AccountPage> {
                     DrawerItemTile(
                       imagePath: "assets/svg/account/graduation-hat.png",
                       title: "Education",
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRouter.educationscreen);
+                      },
                     ),
                     DrawerItemTile(
                       imagePath: "assets/svg/account/refer.png",
@@ -230,6 +233,9 @@ class _AccountPageState extends State<AccountPage> {
                     DrawerItemTile(
                       imagePath: "assets/svg/account/agreement.png",
                       title: "Licenses",
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRouter.licensescreen);
+                      },
                     ),
                     DrawerItemTile(
                       imagePath: "assets/svg/account/health-insurance.png",
