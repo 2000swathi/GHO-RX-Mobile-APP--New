@@ -32,45 +32,45 @@ class EditprofileRepository {
   //   }
   // }
 
-  //edit license
-  Future editLicense({
-    required String licenseNumber,
-    required String issuingAuthority,
-    required String licenseType,
-    required String issueDate,
-    required String expiryDate,
-    required String id,
-  }) async {
-    final token = await SharedPreference.getToken();
-    final reviewerId = await SharedPreference.getUserId();
-    if (token!.isEmpty || reviewerId!.isEmpty) {
-      throw Exception('Token or ReviewerId not found in SharedPreferences');
-    }
-    final c1Editdata = jsonEncode({
-      "LicenseNumber": licenseNumber,
-      "IssuingAuthority": issuingAuthority,
-      "LicenseType": licenseType,
-      "IssueDate": issueDate,
-      "ExpiryDate": expiryDate,
-      "Id": id,
-    });
-    final requestData = {
-      ...ApiUtils.getCommonParams(action: "reviewerlic", token: token),
-      "Tags": [
-        {"T": "dk1", "V": reviewerId},
-        {"T": "dk2", "V": id},
-        {"T": "c1", "V": c1Editdata},
-        {"T": "c10", "V": "2"},
-      ],
-    };
-    try {
-      final response = await _dioHandler.post('', data: requestData);
-      print(response);
-      return response;
-    } catch (e) {
-      throw (e.toString());
-    }
-  }
+  // //edit license
+  // Future editLicense({
+  //   required String licenseNumber,
+  //   required String issuingAuthority,
+  //   required String licenseType,
+  //   required String issueDate,
+  //   required String expiryDate,
+  //   required String id,
+  // }) async {
+  //   final token = await SharedPreference.getToken();
+  //   final reviewerId = await SharedPreference.getUserId();
+  //   if (token!.isEmpty || reviewerId!.isEmpty) {
+  //     throw Exception('Token or ReviewerId not found in SharedPreferences');
+  //   }
+  //   final c1Editdata = jsonEncode({
+  //     "LicenseNumber": licenseNumber,
+  //     "IssuingAuthority": issuingAuthority,
+  //     "LicenseType": licenseType,
+  //     "IssueDate": issueDate,
+  //     "ExpiryDate": expiryDate,
+  //     "Id": id,
+  //   });
+  //   final requestData = {
+  //     ...ApiUtils.getCommonParams(action: "reviewerlic", token: token),
+  //     "Tags": [
+  //       {"T": "dk1", "V": reviewerId},
+  //       {"T": "dk2", "V": id},
+  //       {"T": "c1", "V": c1Editdata},
+  //       {"T": "c10", "V": "2"},
+  //     ],
+  //   };
+  //   try {
+  //     final response = await _dioHandler.post('', data: requestData);
+  //     print(response);
+  //     return response;
+  //   } catch (e) {
+  //     throw (e.toString());
+  //   }
+  // }
 
   // //edit language
   // Future editLanguage({

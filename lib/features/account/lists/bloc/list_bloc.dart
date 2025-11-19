@@ -1,15 +1,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/list_repository.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/accreditationtype_response_model.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/certified_response_model.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/country_response_model.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/issueing_authority.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/issuing_response_model.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/license_response_model.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty%20type_response_model.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/repository/list_repository.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/accreditationtype_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/certified_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/country_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/issueing_authority.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/issuing_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/license_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/specialty%20type_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/specialty_response_model.dart';
 
 part 'list_event.dart';
 part 'list_state.dart';

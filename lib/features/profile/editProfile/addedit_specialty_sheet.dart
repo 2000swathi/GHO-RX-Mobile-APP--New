@@ -8,11 +8,11 @@ import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/edit/bloc/edit_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/certified_response_model.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty%20type_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/certified_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/specialty%20type_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/profile/specialty/bloc/specialty_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/specialty/model/specialty_model.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/specialty_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/specialty_response_model.dart';
 
 class AddEditSpecialtySheet {
   static void showSheet(

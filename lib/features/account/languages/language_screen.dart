@@ -5,8 +5,8 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart'
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/custom_profile_appbar.dart';
-import 'package:ghorx_mobile_app_new/features/profile/delete/bloc/delete_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/bloc/list_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/deleteBloc/bloc/delete_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/languages/repo/bloc/language_bloc.dart';
 
 class LanguageScreen extends StatefulWidget {
@@ -25,7 +25,6 @@ class _LanguageScreenState extends State<LanguageScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<ListBloc>().add(fetchLangList());
       context.read<LanguageBloc>().add(FetchLanguage());
-      
     });
   }
 
@@ -123,17 +122,22 @@ class _LanguageScreenState extends State<LanguageScreen> {
                         ),
                       ),
 
-                      Wrap(
-                        spacing: 12,
-                        runSpacing: 12,
-                        children:
-                            unselected.map((name) {
-                              return languageItem(
-                                name,
-                                0,
-                                false,
-                              ); // ID = 0 for unselected
-                            }).toList(),
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: unselected.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3, 
+                              crossAxisSpacing: 12,
+                              mainAxisSpacing: 12, 
+                              childAspectRatio:
+                                  2.5, 
+                            ),
+                        itemBuilder: (context, index) {
+                          final name = unselected[index];
+                          return languageItem(name, 0, false);
+                        },
                       ),
                     ],
                   ),
@@ -174,9 +178,13 @@ class _LanguageScreenState extends State<LanguageScreen> {
             onChanged: (_) {
               setState(() {
                 if (isSelected) {
-                 selectedLanguages.removeWhere((e) => e["language"] == name);
+                  selectedLanguages.removeWhere((e) => e["language"] == name);
                   context.read<DeleteBloc>().add(
-                    DeleteProfileItem(id: id.toString(), action: "reviewerlang",isLang: true),
+                    DeleteProfileItem(
+                      id: id.toString(),
+                      action: "reviewerlang",
+                      isLang: true,
+                    ),
                   );
                 } else {
                   selectedLanguages.add({"id": id, "language": name});
@@ -190,12 +198,14 @@ class _LanguageScreenState extends State<LanguageScreen> {
             },
             activeColor: AppColors.primarycolor,
           ),
-          Text(
-            name,
-            style: AppFonts.textprimary.copyWith(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textPrimary,
+          Flexible(
+            child: Text(
+              name,
+              style: AppFonts.textprimary.copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textPrimary,
+              ),
             ),
           ),
         ],

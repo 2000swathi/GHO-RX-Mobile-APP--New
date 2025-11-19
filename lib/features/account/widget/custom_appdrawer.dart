@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/core/router/app_router.dart';
-import 'package:ghorx_mobile_app_new/features/account/delete_account.dart/delAcc.dart';
+import 'package:ghorx_mobile_app_new/features/account/drawer/delete_account.dart/delAcc.dart';
 import 'package:ghorx_mobile_app_new/features/account/logout/logout_scrn.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/group_container.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/single_container.dart';

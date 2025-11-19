@@ -14,7 +14,7 @@ import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/bloc/profile_info_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/profile_info_repo.dart';
 import 'package:ghorx_mobile_app_new/features/profile/edit/repository/edit_repository.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/country_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/country_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/model/personalinfo_model.dart';
 import 'package:intl/intl.dart';
 

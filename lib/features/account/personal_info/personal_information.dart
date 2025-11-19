@@ -8,7 +8,7 @@ import 'package:ghorx_mobile_app_new/features/account/personal_info/edit_person_
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/bloc/profile_info_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/model/personalinfo_model.dart';
 import 'package:ghorx_mobile_app_new/features/home/widget/profile_pic_dialogue.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/bloc/list_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart';
 
 class PersonalInformationScreen extends StatelessWidget {
    PersonalInformationScreen({super.key});

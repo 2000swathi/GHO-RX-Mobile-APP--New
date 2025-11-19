@@ -9,7 +9,7 @@ class EditBloc extends Bloc<EditEvent, EditState> {
 
   EditBloc({required this.repository}) : super(EditInitial()) {
     // on<EditInfoEvent>(_onEditInfo);
-    on<EditLicenseEvent>(_onEditLicense);
+    // on<EditLicenseEvent>(_onEditLicense);
     // on<EditLanguageEvent>(_onEditLanguage);
     on<EditBankInfoEvent>(_onEditBankInfo);
     on<EditSpecialtyEvent>(_editSpecialty);
@@ -158,46 +158,46 @@ class EditBloc extends Bloc<EditEvent, EditState> {
 
   //Edit license
   // Edit license
-  Future<void> _onEditLicense(
-    EditLicenseEvent editevent,
-    Emitter<EditState> emit,
-  ) async {
-    emit(EditLoading());
+  // Future<void> _onEditLicense(
+  //   EditLicenseEvent editevent,
+  //   Emitter<EditState> emit,
+  // ) async {
+  //   emit(EditLoading());
 
-    try {
-      final licenseresponse = await repository.editLicense(
-        licenseNumber: editevent.licenseNumber,
-        licenseType: editevent.licenseType.toString(),
-        issueDate: editevent.issueDate,
-        expiryDate: editevent.expiryDate,
-        id: editevent.id,
-        issuingAuthority: editevent.issuingAuthority,
-      );
+  //   try {
+  //     final licenseresponse = await repository.editLicense(
+  //       licenseNumber: editevent.licenseNumber,
+  //       licenseType: editevent.licenseType.toString(),
+  //       issueDate: editevent.issueDate,
+  //       expiryDate: editevent.expiryDate,
+  //       id: editevent.id,
+  //       issuingAuthority: editevent.issuingAuthority,
+  //     );
 
-      if (licenseresponse["Status"] == 1) {
-        String message = "License updated successfully";
+  //     if (licenseresponse["Status"] == 1) {
+  //       String message = "License updated successfully";
 
-        final data = licenseresponse["Data"];
-        if (data is List && data.isNotEmpty) {
-          final level1 = data[0];
-          if (level1 is List && level1.isNotEmpty) {
-            final msgObj = level1[0];
-            if (msgObj is Map && msgObj["msg"] != null) {
-              message = msgObj["msg"].toString();
-            }
-          }
-        }
+  //       final data = licenseresponse["Data"];
+  //       if (data is List && data.isNotEmpty) {
+  //         final level1 = data[0];
+  //         if (level1 is List && level1.isNotEmpty) {
+  //           final msgObj = level1[0];
+  //           if (msgObj is Map && msgObj["msg"] != null) {
+  //             message = msgObj["msg"].toString();
+  //           }
+  //         }
+  //       }
 
-        emit(EditSuccess(message: message));
-      } else {
-        final error =
-            licenseresponse["Error"]?.toString() ?? "Failed to update license";
-        emit(EditFailure(error: error));
-      }
-    } catch (e) {
-      emit(EditFailure(error: e.toString()));
-    }
-  }
+  //       emit(EditSuccess(message: message));
+  //     } else {
+  //       final error =
+  //           licenseresponse["Error"]?.toString() ?? "Failed to update license";
+  //       emit(EditFailure(error: error));
+  //     }
+  //   } catch (e) {
+  //     emit(EditFailure(error: e.toString()));
+  //   }
+  // }
 
   // // Language
   // Future<void> _onEditLanguage(

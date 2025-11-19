@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
-import 'package:ghorx_mobile_app_new/features/account/change_password/widget/commonTextfield.dart';
+import 'package:ghorx_mobile_app_new/features/account/drawer/change_password/widget/commonTextfield.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/custom_profile_appbar.dart';
 
 class ChangePassword extends StatelessWidget {
