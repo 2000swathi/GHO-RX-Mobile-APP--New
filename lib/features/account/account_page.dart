@@ -8,9 +8,7 @@ import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_event.
 import 'package:ghorx_mobile_app_new/features/account/widget/custom_appdrawer.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
-import 'package:ghorx_mobile_app_new/features/account/widget/group_container.dart';
-import 'package:ghorx_mobile_app_new/features/account/widget/single_container.dart';
-import 'package:ghorx_mobile_app_new/features/cases/cases_pages/widgets/case_appbar.dart';
+import 'package:ghorx_mobile_app_new/features/account/widget/draweritem_tile.dart';
 import 'package:ghorx_mobile_app_new/features/home/widget/profile_pic_dialogue.dart';
 
 class AccountPage extends StatefulWidget {
@@ -48,7 +46,18 @@ class _AccountPageState extends State<AccountPage> {
         ),
         drawerEnableOpenDragGesture: false,
 
-        appBar: CaseAppBar(title: "Account", color: AppColors.backgroundcolor),
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text("Profile", style: AppFonts.heading),
+          actions: [
+            IconButton(
+              onPressed: () {
+                scaffoldKey.currentState?.openDrawer();
+              },
+              icon: Icon(Icons.settings, color: AppColors.black,size: 35,),
+            ),
+          ],
+        ),
 
         body: SingleChildScrollView(
           child: Column(
@@ -184,118 +193,52 @@ class _AccountPageState extends State<AccountPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 49),
-                    Text(
-                      "Manage Account",
-                      style: AppFonts.header_5.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    Builder(
-                      builder: (context) {
-                        return SettingsGroupContainer(
-                          children: [
-                            SettingRow(
-                              title: "Profile Information",
-                              subTitle: "Manage your account details",
-                              svgPath: "assets/svg/account/accperson.svg",
-                              onTap: () {
-                                scaffoldKey.currentState?.openDrawer();
-                              },
-                            ),
-                          ],
+                    DrawerItemTile(
+                      imagePath: "assets/svg/account/user.png",
+                      title: "Personal Information",
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRouter.personalinformation,
                         );
                       },
                     ),
-
-                    const SizedBox(height: 36),
-                    Text(
-                      "Security & Privacy",
-                      style: AppFonts.header_5.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
+                    DrawerItemTile(
+                      imagePath: "assets/svg/account/translation.png",
+                      title: "Languages",
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRouter.languagescreen);
+                      },
                     ),
-                    const SizedBox(height: 20),
-
-                    SettingsGroupContainer(
-                      children: [
-                        SettingRow(
-                          title: "Change Password",
-                          subTitle: "Reset your password anytime for safety.",
-                          svgPath: "assets/svg/account/lock.svg",
-                          onTap: () {
-                            Navigator.pushNamed(context, AppRouter.changePW);
-                          },
-                        ),
-                        SettingRow(
-                          title: "Privacy Policy",
-                          subTitle: "Review our data protection practices.",
-                          svgPath: "assets/svg/account/locky.svg",
-                          onTap: () {},
-                        ),
-                        SettingRow(
-                          title: "Microphone Access",
-                          subTitle: "Allow app to use microphone.",
-                          svgPath: "assets/svg/account/mic.svg",
-                        ),
-                        SettingRow(
-                          title: "Notifications",
-                          subTitle: "Allow app to send alerts.",
-                          svgPath: "assets/svg/account/bell.svg",
-                        ),
-                      ],
+                    DrawerItemTile(
+                      imagePath: "assets/svg/account/accredited 1.png",
+                      title: "Accreditations",
                     ),
-
-                    const SizedBox(height: 36),
-                    Text(
-                      "Account Control",
-                      style: AppFonts.header_5.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
+                    DrawerItemTile(
+                      imagePath: "assets/svg/account/graduation-hat.png",
+                      title: "Education",
                     ),
-                    const SizedBox(height: 20),
-
-                    SettingsGroupContainer(
-                      children: [
-                        SettingRow(
-                          title: "Logout",
-                          subTitle: "Sign out from your account safely.",
-                          svgPath: "assets/svg/account/logout.svg",
-                        ),
-                        SettingRow(
-                          title: "Delete Account",
-                          subTitle: "Close your account permanently.",
-                          svgPath: "assets/svg/account/del.svg",
-                        ),
-                      ],
+                    DrawerItemTile(
+                      imagePath: "assets/svg/account/refer.png",
+                      title: "Professional References",
                     ),
-
-                    const SizedBox(height: 36),
-                    Text(
-                      "Information & Support",
-                      style: AppFonts.header_5.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
+                    DrawerItemTile(
+                      imagePath: "assets/svg/account/agreement.png",
+                      title: "Licenses",
                     ),
-                    const SizedBox(height: 20),
-
-                    SettingsGroupContainer(
-                      children: [
-                        SettingRow(
-                          title: "About",
-                          subTitle: "View app details.",
-                          svgPath: "assets/svg/account/about.svg",
-                        ),
-                        SettingRow(
-                          title: "Help",
-                          subTitle: "Contact us via email.",
-                          svgPath: "assets/svg/account/helpp.svg",
-                        ),
-                      ],
+                    DrawerItemTile(
+                      imagePath: "assets/svg/account/health-insurance.png",
+                      title: "Professional Indemnity Insurance",
                     ),
-
-                    const SizedBox(height: 50),
+                    DrawerItemTile(
+                      imagePath: "assets/svg/account/folders.png",
+                      title: "Documents",
+                    ),
+                    DrawerItemTile(
+                      imagePath: "assets/svg/account/question-mark.png",
+                      title: "Questionnaire",
+                    ),
+                    const SizedBox(height: 29),
                   ],
                 ),
               ),
