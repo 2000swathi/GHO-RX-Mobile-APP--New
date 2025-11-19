@@ -71,6 +71,9 @@ class CustomAppDrawer extends StatelessWidget {
                   DrawerItemTile(
                     imagePath: "assets/svg/account/translation.png",
                     title: "Languages",
+                    onTap: () {
+                      Navigator.pushNamed(context, AppRouter.languagescreen);
+                    },
                   ),
                   DrawerItemTile(
                     imagePath: "assets/svg/account/accredited 1.png",

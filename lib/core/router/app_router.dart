@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ghorx_mobile_app_new/features/account/languages/language_screen.dart';
+import 'package:ghorx_mobile_app_new/features/account/personal_information.dart';
 import 'package:ghorx_mobile_app_new/features/account/change_password/change_password.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/personal_information.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/otp_screen.dart';
@@ -31,6 +33,7 @@ class AppRouter {
   static const String casedetails = '/casedetails';
   static const String homePage = '/homepage';
   static const String Message = '/messages';
+  static const String languagescreen = '/languagescreen';
   //profile
   static const String changePW = '/changePW';
 
@@ -69,6 +72,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => HomePage());
       case personalinformation:
         return MaterialPageRoute(builder: (_) => PersonalInformationScreen());
+      case languagescreen:
+        return MaterialPageRoute(builder: (_) => LanguageScreen());
       //profile
       case changePW:
         return MaterialPageRoute(builder: (_) => ChangePassword());
