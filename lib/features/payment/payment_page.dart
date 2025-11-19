@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/cases/cases_pages/widgets/case_appbar.dart';
+import 'package:ghorx_mobile_app_new/features/cases/cases_pages/widgets/case_appbar.dart';
 import 'package:ghorx_mobile_app_new/features/payment/repository/bloc/earnings_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/payment/tab_sheets/repository/bloc/payment_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/payment/tab_sheets/pay_pending.dart';

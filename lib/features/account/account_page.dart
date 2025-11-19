@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:ghorx_mobile_app_new/features/account/widget/custom_appdrawer.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
-import 'package:ghorx_mobile_app_new/features/account/widget/common_container.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/cases/cases_pages/widgets/case_appbar.dart';
+import 'package:ghorx_mobile_app_new/features/account/widget/group_container.dart';
+import 'package:ghorx_mobile_app_new/features/account/widget/single_container.dart';
+import 'package:ghorx_mobile_app_new/features/cases/cases_pages/widgets/case_appbar.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -11,6 +13,11 @@ class AccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.9,
+        child: CustomAppDrawer(),
+      ),
+      drawerEnableOpenDragGesture: false,
       appBar: CaseAppBar(title: "Account", color: AppColors.backgroundcolor),
       body: SingleChildScrollView(
         child: Column(
@@ -46,7 +53,6 @@ class AccountPage extends StatelessWidget {
                 Text("data", style: AppFonts.textSecondary),
               ],
             ),
-            ///////////////////////
             Padding(
               padding: const EdgeInsets.only(left: 14, right: 14),
               child: Column(
@@ -60,10 +66,23 @@ class AccountPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20),
-                  commonInfoContainer(
-                    title: "Profile Information",
-                    subTitle: "Manage your account details",
-                    svgPath: "assets/svg/account/accperson.svg",
+                  Builder(
+                    builder: (context) {
+                      return SettingsGroupContainer(
+                        children: [
+                          SettingRow(
+                            title: "Profile Information",
+                            subTitle: "Manage your account details",
+                            svgPath: "assets/svg/account/accperson.svg",
+                            onTap: () {
+                              Scaffold.of(
+                                context,
+                              ).openDrawer(); 
+                            },
+                          ),
+                        ],
+                      );
+                    },
                   ),
                   SizedBox(height: 36),
                   Text(
@@ -73,25 +92,37 @@ class AccountPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20),
-                  commonInfoContainer(
-                    title: "Change Password",
-                    subTitle: "Reset your password anytime for safety.",
-                    svgPath: "assets/svg/account/lock.svg",
-                  ),
-                  commonInfoContainer(
-                    title: "Privacy Policy",
-                    subTitle: "Review our data protection practices.",
-                    svgPath: "assets/svg/account/locky.svg",
-                  ),
-                  commonInfoContainer(
-                    title: "Microphone Access",
-                    subTitle: "Allow app to use microphone.",
-                    svgPath: "assets/svg/account/mic.svg",
-                  ),
-                  commonInfoContainer(
-                    title: "Notifications",
-                    subTitle: "Allow app to send alerts.",
-                    svgPath: "assets/svg/account/bell.svg",
+                  SettingsGroupContainer(
+                    children: [
+                      SettingRow(
+                        title: "Change Password",
+                        subTitle: "Reset your password anytime for safety.",
+                        svgPath: "assets/svg/account/lock.svg",
+                        onTap: () {},
+                      ),
+                      SettingRow(
+                        title: "Privacy Policy",
+                        subTitle: "Review our data protection practices.",
+                        svgPath: "assets/svg/account/locky.svg",
+                        onTap: () {},
+                      ),
+                      SettingRow(
+                        title: "Microphone Access",
+                        subTitle: "Allow app to use microphone.",
+                        svgPath: "assets/svg/account/mic.svg",
+                        // actionBtn: Switch(
+                        //   value: state.pushNotification,           // toggle button
+                        //   activeColor: AppColors.white,
+                        //   activeTrackColor: AppColors.primarycolor,
+                        //   onChanged: () {},
+                        // ),
+                      ),
+                      SettingRow(
+                        title: "Notifications",
+                        subTitle: "Allow app to send alerts.",
+                        svgPath: "assets/svg/account/bell.svg",
+                      ),
+                    ],
                   ),
                   SizedBox(height: 36),
                   Text(
@@ -101,15 +132,19 @@ class AccountPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20),
-                  commonInfoContainer(
-                    title: "Logout",
-                    subTitle: "Sign out from your account safely.",
-                    svgPath: "assets/svg/account/logout.svg",
-                  ),
-                  commonInfoContainer(
-                    title: "Delete Account",
-                    subTitle: "Close your account permanently.",
-                    svgPath: "assets/svg/account/del.svg",
+                  SettingsGroupContainer(
+                    children: [
+                      SettingRow(
+                        title: "Logout",
+                        subTitle: "Sign out from your account safely.",
+                        svgPath: "assets/svg/account/logout.svg",
+                      ),
+                      SettingRow(
+                        title: "Delete Account",
+                        subTitle: "Close your account permanently.",
+                        svgPath: "assets/svg/account/del.svg",
+                      ),
+                    ],
                   ),
                   SizedBox(height: 36),
                   Text(
@@ -119,15 +154,19 @@ class AccountPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20),
-                  commonInfoContainer(
-                    title: "About",
-                    subTitle: "View app details.",
-                    svgPath: "assets/svg/account/about.svg",
-                  ),
-                  commonInfoContainer(
-                    title: "Help",
-                    subTitle: "Contact us via email.",
-                    svgPath: "assets/svg/account/helpp.svg",
+                  SettingsGroupContainer(
+                    children: [
+                      SettingRow(
+                        title: "About",
+                        subTitle: "View app details.",
+                        svgPath: "assets/svg/account/about.svg",
+                      ),
+                      SettingRow(
+                        title: "Help",
+                        subTitle: "Contact us via email.",
+                        svgPath: "assets/svg/account/helpp.svg",
+                      ),
+                    ],
                   ),
                   SizedBox(height: 50),
                 ],
