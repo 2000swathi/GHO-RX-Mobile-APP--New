@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/features/account/languages/language_screen.dart';
-import 'package:ghorx_mobile_app_new/features/account/personal_information.dart';
 import 'package:ghorx_mobile_app_new/features/account/change_password/change_password.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/personal_information.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/otp_screen.dart';
