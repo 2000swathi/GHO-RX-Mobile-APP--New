@@ -8,7 +8,7 @@ class EditBloc extends Bloc<EditEvent, EditState> {
   final EditprofileRepository repository;
 
   EditBloc({required this.repository}) : super(EditInitial()) {
-    on<EditInfoEvent>(_onEditInfo);
+    // on<EditInfoEvent>(_onEditInfo);
     on<EditLicenseEvent>(_onEditLicense);
     on<EditLanguageEvent>(_onEditLanguage);
     on<EditBankInfoEvent>(_onEditBankInfo);
@@ -18,39 +18,39 @@ class EditBloc extends Bloc<EditEvent, EditState> {
   }
 
   //profile Bloc
-  Future<void> _onEditInfo(EditInfoEvent event, Emitter<EditState> emit) async {
-    emit(EditLoading());
+  // Future<void> _onEditInfo(EditInfoEvent event, Emitter<EditState> emit) async {
+  //   emit(EditLoading());
 
-    try {
-      final response = await repository.editPersonalInfo(event.data);
+  //   try {
+  //     final response = await repository.editPersonalInfo(event.data);
 
-      if (response["Status"] == 1) {
-        String message = "Profile updated successfully";
+  //     if (response["Status"] == 1) {
+  //       String message = "Profile updated successfully";
 
-        // Safely extract nested message
-        final data = response["Data"];
-        if (data is List && data.isNotEmpty) {
-          final inner = data[0];
-          if (inner is List && inner.isNotEmpty) {
-            final msgObject = inner[0];
-            if (msgObject is Map && msgObject["msg"] != null) {
-              message = msgObject["msg"].toString();
-            }
-          }
-        }
+  //       // Safely extract nested message
+  //       final data = response["Data"];
+  //       if (data is List && data.isNotEmpty) {
+  //         final inner = data[0];
+  //         if (inner is List && inner.isNotEmpty) {
+  //           final msgObject = inner[0];
+  //           if (msgObject is Map && msgObject["msg"] != null) {
+  //             message = msgObject["msg"].toString();
+  //           }
+  //         }
+  //       }
 
-        emit(EditSuccess(message: message));
-      } else {
-        emit(
-          EditFailure(
-            error: response["Info"]?.toString() ?? "Something went wrong",
-          ),
-        );
-      }
-    } catch (e) {
-      emit(EditFailure(error: e.toString()));
-    }
-  }
+  //       emit(EditSuccess(message: message));
+  //     } else {
+  //       emit(
+  //         EditFailure(
+  //           error: response["Info"]?.toString() ?? "Something went wrong",
+  //         ),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     emit(EditFailure(error: e.toString()));
+  //   }
+  // }
 
   //Specialty
   Future<void> _editSpecialty(

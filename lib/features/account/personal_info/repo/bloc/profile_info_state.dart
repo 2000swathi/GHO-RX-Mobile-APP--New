@@ -20,6 +20,14 @@ class PersonalInfoState extends ProfileInfoState {
   @override
   List<Object> get props => [personalInfomodel];
 }
+final class EditSuccess extends ProfileInfoState {
+  final String message;
+
+  const EditSuccess({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
 
 // Error state
 class ProfileInfoError extends ProfileInfoState {

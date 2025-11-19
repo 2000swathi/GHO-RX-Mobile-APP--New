@@ -7,14 +7,14 @@ sealed class EditEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class EditInfoEvent extends EditEvent {
-  final Map<String, dynamic> data;
+// class EditInfoEvent extends EditEvent {
+//   final Map<String, dynamic> data;
 
-  const EditInfoEvent({required this.data});
+//   const EditInfoEvent({required this.data});
 
-  @override
-  List<Object> get props => [data];
-}
+//   @override
+//   List<Object> get props => [data];
+// }
 
 //specialty
 class EditSpecialtyEvent extends EditEvent {

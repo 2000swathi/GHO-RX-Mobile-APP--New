@@ -12,7 +12,7 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.da
 import 'package:ghorx_mobile_app_new/core/constants/date_input_formatter.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/bloc/profile_info_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/home/repository/bloc/home_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/profile_info_repo.dart';
 import 'package:ghorx_mobile_app_new/features/profile/edit/repository/edit_repository.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/country_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/model/personalinfo_model.dart';
@@ -220,7 +220,7 @@ class EditProfileSheet {
                     ),
                   };
 
-                  final repo = EditprofileRepository();
+                  final repo = ProfileInfoRepo();
                   final response = await repo.editPersonalInfo(data);
 
                   if (response["Status"] == 1) {
