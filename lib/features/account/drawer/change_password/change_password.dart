@@ -3,7 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
-import 'package:ghorx_mobile_app_new/features/account/change_password/widget/commonTextfield.dart';
+import 'package:ghorx_mobile_app_new/features/account/drawer/change_password/widget/commonTextfield.dart';
+import 'package:ghorx_mobile_app_new/features/account/widget/custom_profile_appbar.dart';
 
 class ChangePassword extends StatelessWidget {
   ChangePassword({super.key});
@@ -13,14 +14,8 @@ class ChangePassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            Icon(Icons.keyboard_arrow_left, color: AppColors.black),
-            Text("Change Password", style: TextStyle(color: AppColors.black)),
-          ],
-        ),
-      ),
+      backgroundColor: AppColors.backgroundcolor,
+      appBar: CustomAccountAppBar(title: "Change Password"),
 
       body: Padding(
         padding: const EdgeInsets.only(left: 22, right: 22),
@@ -29,9 +24,12 @@ class ChangePassword extends StatelessWidget {
           children: [
             SizedBox(height: 52.5),
             CircleAvatar(
-              backgroundColor: AppColors.primarycolor.withAlpha(8),
+              radius: 54,
+              backgroundColor: AppColors.primarycolor.withAlpha(15),
               child: Center(
                 child: SvgPicture.asset(
+                  width: 50,
+                  height: 50,
                   "assets/svg/account/lock.svg",
                   colorFilter: ColorFilter.mode(
                     AppColors.primarycolor,

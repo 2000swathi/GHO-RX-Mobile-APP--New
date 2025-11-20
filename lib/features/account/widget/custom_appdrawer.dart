@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/core/router/app_router.dart';
+import 'package:ghorx_mobile_app_new/features/account/drawer/delete_account.dart/delAcc.dart';
+import 'package:ghorx_mobile_app_new/features/account/logout/logout_scrn.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/group_container.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/single_container.dart';
 
@@ -27,7 +29,10 @@ class CustomAppDrawer extends StatelessWidget {
                     Navigator.of(context).pop(); // close drawer
                   },
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 4,
+                      horizontal: 4,
+                    ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: const [
@@ -103,11 +108,25 @@ class CustomAppDrawer extends StatelessWidget {
                         title: "Logout",
                         subTitle: "Sign out from your account safely.",
                         svgPath: "assets/svg/account/logout.svg",
+                        onTap: () {
+                          Navigator.pop(context); // close drawer first
+                          showDialog(
+                            context: context,
+                            builder: (context) => const LogoutScrn(),
+                          );
+                        },
                       ),
                       SettingRow(
                         title: "Delete Account",
                         subTitle: "Close your account permanently.",
                         svgPath: "assets/svg/account/del.svg",
+                        onTap: () {
+                          Navigator.pop(context); // close drawer first
+                          showDialog(
+                            context: context,
+                            builder: (context) => const Delacc(),
+                          );
+                        },
                       ),
                     ],
                   ),

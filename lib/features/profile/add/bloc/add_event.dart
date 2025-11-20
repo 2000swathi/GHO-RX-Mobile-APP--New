@@ -41,28 +41,28 @@ class AddInsurance extends AddEvent {
   });
 }
 
-//license
-class AddLicense extends AddEvent {
-  final String licenseNumber;
-  final String licenseType; 
-  final String issueDate;
-  final String expiryDate;
-  final String issuingAuthority;
-  AddLicense({
-    required this.licenseNumber,
-    required this.licenseType,
-    required this.issueDate,
-    required this.expiryDate,
-    required this.issuingAuthority,
-  });
-}
+// //license
+// class AddLicense extends AddEvent {
+//   final String licenseNumber;
+//   final String licenseType; 
+//   final String issueDate;
+//   final String expiryDate;
+//   final String issuingAuthority;
+//   AddLicense({
+//     required this.licenseNumber,
+//     required this.licenseType,
+//     required this.issueDate,
+//     required this.expiryDate,
+//     required this.issuingAuthority,
+//   });
+// }
 
-//language
-class AddLanguage extends AddEvent {
-  final String language;
-  final String proficiency;
-  AddLanguage({required this.language, required this.proficiency});
-}
+// //language
+// class AddLanguage extends AddEvent {
+//   final String language;
+//   final String proficiency;
+//   AddLanguage({required this.language, required this.proficiency});
+// }
 
 //Bank info
 class AddBankInfo extends AddEvent {

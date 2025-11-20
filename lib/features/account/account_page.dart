@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/router/app_router.dart';
+import 'package:ghorx_mobile_app_new/features/account/languages/repo/bloc/language_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/license/repo/bloc/license_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/bloc/profile_info_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_event.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/custom_appdrawer.dart';
@@ -10,6 +13,7 @@ import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/draweritem_tile.dart';
 import 'package:ghorx_mobile_app_new/features/home/widget/profile_pic_dialogue.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -25,6 +29,9 @@ class _AccountPageState extends State<AccountPage> {
   void initState() {
     super.initState();
     context.read<PicBloc>().add(FetchPicEvent());
+    context.read<ProfileInfoBloc>().add(FetchPersonalInfo());
+    context.read<LanguageBloc>().add(FetchLanguage());
+    context.read<LicenseBloc>().add(FetchLicense());
   }
 
   @override
@@ -54,7 +61,7 @@ class _AccountPageState extends State<AccountPage> {
               onPressed: () {
                 scaffoldKey.currentState?.openDrawer();
               },
-              icon: Icon(Icons.settings, color: AppColors.black,size: 35,),
+              icon: Icon(Icons.settings, color: AppColors.black, size: 35),
             ),
           ],
         ),

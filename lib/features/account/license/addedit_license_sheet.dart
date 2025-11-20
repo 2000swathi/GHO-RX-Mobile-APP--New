@@ -9,13 +9,13 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.da
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/custom_datepicker.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
-import 'package:ghorx_mobile_app_new/features/profile/License/bloc/license_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/license/repo/bloc/license_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/edit/bloc/edit_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/issueing_authority.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/repository/model/license_response_model.dart';
-import 'package:ghorx_mobile_app_new/features/profile/License/model/license_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/issueing_authority.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/license_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/license/repo/model/license_model.dart';
 
 class AddEditLicenseSheet {
   static void showSheet(
@@ -26,33 +26,32 @@ class AddEditLicenseSheet {
     bool isEdit, {
     required LicenseBloc licenseBloc,
   }) {
-    // ignore: no_leading_underscores_for_local_identifiers
     final _formKey = GlobalKey<FormState>();
 
     String? selectedLicenceType;
     if (isEdit && info?.licenseTypeID != null) {
-      try {
-        selectedLicenceType =
-            licList
-                .firstWhere((e) => e.licenseTypeID == info!.licenseTypeID)
-                .licenseTypeID
-                .toString();
-      } catch (e) {
-        selectedLicenceType = null;
-      }
+      selectedLicenceType =
+          licList
+              .firstWhere(
+                (e) => e.licenseTypeID == info!.licenseTypeID,
+                orElse: () => licList.first,
+              )
+              .licenseTypeID
+              .toString();
     }
+
     String? selectedIssueingType;
     if (isEdit && info?.issuingAuthority != null) {
-      try {
-        selectedIssueingType =
-            issueingList
-                .firstWhere((e) => e.IssueingTypeID == info!.issuingAuthority)
-                .IssueingTypeID
-                .toString();
-      } catch (e) {
-        selectedIssueingType = null;
-      }
+      selectedIssueingType =
+          issueingList
+              .firstWhere(
+                (e) => e.IssueingTypeID == info!.issuingAuthority,
+                orElse: () => issueingList.first,
+              )
+              .IssueingTypeID
+              .toString();
     }
+
     final numController = TextEditingController(
       text: isEdit ? info?.licenseNumber ?? '' : '',
     );
@@ -73,7 +72,6 @@ class AddEditLicenseSheet {
               key: _formKey,
               child: Column(
                 children: [
-                  /// License Number
                   CustomTextFormField(
                     controller: numController,
                     keyboardType: TextInputType.text,
@@ -96,16 +94,14 @@ class AddEditLicenseSheet {
                             .toList(),
                     value: selectedLicenceType,
                     onChanged: (id) {
-                      setState(() {
-                        selectedLicenceType = id;
-                      });
+                      setState(() => selectedLicenceType = id);
                     },
                     validator: Validation.validateLicenecType,
                   ),
                   const SizedBox(height: 20),
-                  //issueing athority
+
                   CustomDropdownFormField<String>(
-                    name: "issuing Authority",
+                    name: "Issuing Authority",
                     hintText: " -Select issuing Authority- ",
                     items:
                         issueingList
@@ -118,9 +114,7 @@ class AddEditLicenseSheet {
                             .toList(),
                     value: selectedIssueingType,
                     onChanged: (id) {
-                      setState(() {
-                        selectedIssueingType = id;
-                      });
+                      setState(() => selectedIssueingType = id);
                     },
                     validator:
                         (value) => Validation.field(
@@ -130,7 +124,6 @@ class AddEditLicenseSheet {
                   ),
                   const SizedBox(height: 20),
 
-                  // Issue Date
                   CustomTextFormField(
                     controller: issueDateController,
                     name: "Issue Date",
@@ -146,9 +139,9 @@ class AddEditLicenseSheet {
                           context: context,
                           controller: issueDateController,
                         ),
-                    validator: (value) => Validation.validateIssueDate(value),
+                    validator: Validation.validateIssueDate,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   CustomTextFormField(
                     controller: expDateController,
@@ -180,17 +173,16 @@ class AddEditLicenseSheet {
 
       actionButton: MultiBlocListener(
         listeners: [
-          BlocListener<AddBloc, AddState>(
+          /// ADD success/error
+          BlocListener<LicenseBloc, LicenseState>(
             listener: (context, state) {
-              if (state is AddSuccess) {
-                Navigator.pop(context);
+              if (state is LicSuccess) {
                 licenseBloc.add(FetchLicense());
                 CustomScaffoldMessenger.showSuccessMessage(
                   context,
-                  state.response["Data"][0][0]['msg'] ??
-                      "License Added Successfully",
+                  state.message,
                 );
-              } else if (state is AddError) {
+              } else if (state is LicenseError) {
                 CustomScaffoldMessenger.showErrorMessage(
                   context,
                   state.message,
@@ -198,30 +190,29 @@ class AddEditLicenseSheet {
               }
             },
           ),
+
+          /// EDIT success/error
           BlocListener<EditBloc, EditState>(
             listener: (context, state) {
               if (state is EditSuccess) {
-                Navigator.pop(context);
                 licenseBloc.add(FetchLicense());
                 CustomScaffoldMessenger.showSuccessMessage(
                   context,
-                  state.message ?? "License Updated Successfully",
+                  state.message,
                 );
               } else if (state is EditFailure) {
-                CustomScaffoldMessenger.showErrorMessage(
-                  context,
-                  state.error ?? "Failed to update license",
-                );
+                CustomScaffoldMessenger.showErrorMessage(context, state.error);
               }
             },
           ),
         ],
         child: BlocBuilder<AddBloc, AddState>(
           builder: (context, addState) {
-            final bool isAddLoading = addState is AddLoading;
+            final isAddLoading = addState is AddLoading;
+
             return BlocBuilder<EditBloc, EditState>(
               builder: (context, editState) {
-                final bool isEditLoading = editState is EditLoading;
+                final isEditLoading = editState is EditLoading;
                 final bool isLoading = isAddLoading || isEditLoading;
 
                 return CustomButton(
@@ -230,7 +221,7 @@ class AddEditLicenseSheet {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       if (isEdit) {
-                        context.read<EditBloc>().add(
+                        context.read<LicenseBloc>().add(
                           EditLicenseEvent(
                             id: info!.id.toString(),
                             licenseType: selectedLicenceType ?? '',
@@ -241,8 +232,8 @@ class AddEditLicenseSheet {
                           ),
                         );
                       } else {
-                        context.read<AddBloc>().add(
-                          AddLicense(
+                        context.read<LicenseBloc>().add(
+                          AddLicenseEvent(
                             licenseType: selectedLicenceType ?? '',
                             licenseNumber: numController.text,
                             issueDate: issueDateController.text,

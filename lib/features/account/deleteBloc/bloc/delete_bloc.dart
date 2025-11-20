@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/delete/repository/delete_repository.dart';
+import 'package:ghorx_mobile_app_new/features/account/deleteBloc/repository/delete_repository.dart';
 part 'delete_event.dart';
 part 'delete_state.dart';
 

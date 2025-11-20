@@ -8,34 +8,34 @@ class AddBloc extends Bloc<AddEvent, AddState> {
   final AddProfileRepository repository;
 
   AddBloc({required this.repository}) : super(AddInitial()) {
-    on<AddLicense>(_onAddLicense);
-    on<AddLanguage>(_onAddLanguage);
+    // on<AddLicense>(_onAddLicense);
+    // on<AddLanguage>(_onAddLanguage);
     on<AddBankInfo>(_onAddBankInfo);
     on<AddSpecialty>(_onAddSpecialty);
     on<AddAccrediation>(addaccrediation);
     on<AddInsurance>(addInsurance);
   }
   // License
-  Future<void> _onAddLicense(AddLicense event, Emitter<AddState> emit) async {
+  // Future<void> _onAddLicense(AddLicense event, Emitter<AddState> emit) async {
   
-    try {
-      final licenseResponse = await repository.addLicense(
-        licenseNumber: event.licenseNumber,
-        licenseType: event.licenseType.toString(),
-        issueDate: event.issueDate,
-        expiryDate: event.expiryDate,
-        issuingAuthority: event.issuingAuthority,
-      );
-      if (licenseResponse['Status'] == 1) {
-        emit(AddSuccess(response: licenseResponse));
-      } else {
-        emit(AddError(
-            message: licenseResponse['Error'] ?? "Failed to add license"));
-      }
-    } catch (e) {
-      emit(AddError(message: e.toString()));
-    }
-  }
+  //   try {
+  //     final licenseResponse = await repository.addLicense(
+  //       licenseNumber: event.licenseNumber,
+  //       licenseType: event.licenseType.toString(),
+  //       issueDate: event.issueDate,
+  //       expiryDate: event.expiryDate,
+  //       issuingAuthority: event.issuingAuthority,
+  //     );
+  //     if (licenseResponse['Status'] == 1) {
+  //       emit(AddSuccess(response: licenseResponse));
+  //     } else {
+  //       emit(AddError(
+  //           message: licenseResponse['Error'] ?? "Failed to add license"));
+  //     }
+  //   } catch (e) {
+  //     emit(AddError(message: e.toString()));
+  //   }
+  // }
 
   //specialty
   Future<void> _onAddSpecialty(
@@ -56,20 +56,20 @@ class AddBloc extends Bloc<AddEvent, AddState> {
     }
   }
 
-// Language
+// // Language
 
-  Future<void> _onAddLanguage(AddLanguage event, Emitter<AddState> emit) async {
-    emit(AddLoading());
-    try {
-      final languageResponse = await repository.addLanguage(
-        language: event.language,
-        proficiency: event.proficiency,
-      );
-      emit(AddSuccess(response: languageResponse));
-    } catch (e) {
-      emit(AddError(message: e.toString()));
-    }
-  }
+//   Future<void> _onAddLanguage(AddLanguage event, Emitter<AddState> emit) async {
+//     emit(AddLoading());
+//     try {
+//       final languageResponse = await repository.addLanguage(
+//         language: event.language,
+//         proficiency: event.proficiency,
+//       );
+//       emit(AddSuccess(response: languageResponse));
+//     } catch (e) {
+//       emit(AddError(message: e.toString()));
+//     }
+//   }
 
   // Bank Info
   Future<void> _onAddBankInfo(AddBankInfo event, Emitter<AddState> emit) async {

@@ -42,6 +42,7 @@ class LicenseListState extends ListState {
   @override
   List<Object> get props => [licenseResponse];
 }
+
 //License
 class AuthorityListState extends ListState {
   final IsuuingAuthResponseModel response;
@@ -84,4 +85,12 @@ class IssueingauthorityListState extends ListState {
   const IssueingauthorityListState({required this.issueingauthorityResponse});
   @override
   List<Object> get props => [issueingauthorityResponse];
+}
+
+// lang
+class LanguageLIstState extends ListState {
+  final Map<String, dynamic> response;
+  const LanguageLIstState({required this.response});
+  @override
+  List<Object> get props => [response];
 }

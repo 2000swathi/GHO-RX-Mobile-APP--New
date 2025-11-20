@@ -24,6 +24,7 @@ class commonTextfield extends StatelessWidget {
         TextFormField(
           controller: controller,
           decoration: InputDecoration(
+            fillColor: AppColors.white,
             contentPadding: EdgeInsets.only(
               top: 20,
               bottom: 20,

@@ -87,52 +87,52 @@ class EditInsuranceEvent extends EditEvent {
   ];
 }
 
-//Edit License Event
-class EditLicenseEvent extends EditEvent {
-  final String licenseNumber;
-  final String licenseType;
-  final String issueDate;
-  final String expiryDate;
-  final String id;
-  final String issuingAuthority;
+// //Edit License Event
+// class EditLicenseEvent extends EditEvent {
+//   final String licenseNumber;
+//   final String licenseType;
+//   final String issueDate;
+//   final String expiryDate;
+//   final String id;
+//   final String issuingAuthority;
 
 
-  const EditLicenseEvent({
-    required this.licenseNumber,
-    required this.licenseType,
-    required this.issueDate,
-    required this.expiryDate,
-    required this.id,
-    required this.issuingAuthority,
-  });
+//   const EditLicenseEvent({
+//     required this.licenseNumber,
+//     required this.licenseType,
+//     required this.issueDate,
+//     required this.expiryDate,
+//     required this.id,
+//     required this.issuingAuthority,
+//   });
 
-  @override
-  List<Object> get props => [
-        licenseNumber,
-        licenseType,
-        issueDate,
-        expiryDate,
-        id,
-        issuingAuthority,
-      ];
-}
+//   @override
+//   List<Object> get props => [
+//         licenseNumber,
+//         licenseType,
+//         issueDate,
+//         expiryDate,
+//         id,
+//         issuingAuthority,
+//       ];
+// }
 
 // Edit language event
 
-class EditLanguageEvent extends EditEvent {
-  final String language;
-  final String proficiency;
-  final String id;
+// class EditLanguageEvent extends EditEvent {
+//   final String language;
+//   final String proficiency;
+//   final String id;
 
-  const EditLanguageEvent({
-    required this.language,
-    required this.id,
-    required this.proficiency,
-  });
+//   const EditLanguageEvent({
+//     required this.language,
+//     required this.id,
+//     required this.proficiency,
+//   });
 
-  @override
-  List<Object> get props => [language, proficiency, id];
-}
+//   @override
+//   List<Object> get props => [language, proficiency, id];
+// }
 
 //Edit Bank Event
 class EditBankInfoEvent extends EditEvent {

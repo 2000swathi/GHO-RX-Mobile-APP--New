@@ -106,72 +106,72 @@ class AddProfileRepository {
     }
   }
 
-  //add License
-  Future addLicense({
-    required String licenseNumber,
-    required String licenseType,
-    required String issueDate,
-    required String expiryDate,
-    required String issuingAuthority,
-  }) async {
-    final reviewerId = await SharedPreference.getUserId();
-    final token = await SharedPreference.getToken();
-    if (token!.isEmpty || reviewerId!.isEmpty) {
-      throw Exception('Token or ReviewerId not found in SharedPreferences');
-    }
-    final c1data = jsonEncode({
-      "LicenseNumber": licenseNumber,
-      "LicenseType": licenseType,
-      "IssueDate": issueDate,
-      "ExpiryDate": expiryDate,
-      "IssuingAuthority": issuingAuthority,
-    });
-    final data = {
-      ...ApiUtils.getCommonParams(action: "reviewerlic", token: token),
-      "Tags": [
-        {"T": "dk1", "V": reviewerId},
-        {"T": "c1", "V": c1data},
-        {"T": "c10", "V": "1"},
-      ],
-    };
-    try {
-      final response = await _dioHandler.post('', data: data);
-      print(response);
-      return response;
-    } catch (e) {
-      throw Exception("Failed to add License: $e");
-    }
-  }
+  // //add License
+  // Future addLicense({
+  //   required String licenseNumber,
+  //   required String licenseType,
+  //   required String issueDate,
+  //   required String expiryDate,
+  //   required String issuingAuthority,
+  // }) async {
+  //   final reviewerId = await SharedPreference.getUserId();
+  //   final token = await SharedPreference.getToken();
+  //   if (token!.isEmpty || reviewerId!.isEmpty) {
+  //     throw Exception('Token or ReviewerId not found in SharedPreferences');
+  //   }
+  //   final c1data = jsonEncode({
+  //     "LicenseNumber": licenseNumber,
+  //     "LicenseType": licenseType,
+  //     "IssueDate": issueDate,
+  //     "ExpiryDate": expiryDate,
+  //     "IssuingAuthority": issuingAuthority,
+  //   });
+  //   final data = {
+  //     ...ApiUtils.getCommonParams(action: "reviewerlic", token: token),
+  //     "Tags": [
+  //       {"T": "dk1", "V": reviewerId},
+  //       {"T": "c1", "V": c1data},
+  //       {"T": "c10", "V": "1"},
+  //     ],
+  //   };
+  //   try {
+  //     final response = await _dioHandler.post('', data: data);
+  //     print(response);
+  //     return response;
+  //   } catch (e) {
+  //     throw Exception("Failed to add License: $e");
+  //   }
+  // }
 
-  //add language
-  Future addLanguage({
-    required String language,
-    required String proficiency,
-  }) async {
-    final token = await SharedPreference.getToken();
-    final userId = await SharedPreference.getUserId();
+  // //add language
+  // Future addLanguage({
+  //   required String language,
+  //   required String proficiency,
+  // }) async {
+  //   final token = await SharedPreference.getToken();
+  //   final userId = await SharedPreference.getUserId();
 
-    if (token!.isEmpty || userId!.isEmpty) {
-      throw Exception('Token or UserID not found in SharedPreferences');
-    }
-    final data = {
-      ...ApiUtils.getCommonParams(action: "reviewerlang", token: token),
-      "Tags": [
-        {"T": "dk1", "V": userId},
-        {"T": "c1", "V": language}, //language
-        {"T": "c2", "V": proficiency},
-        {"T": "c10", "V": "1"},
-      ],
-    };
+  //   if (token!.isEmpty || userId!.isEmpty) {
+  //     throw Exception('Token or UserID not found in SharedPreferences');
+  //   }
+  //   final data = {
+  //     ...ApiUtils.getCommonParams(action: "reviewerlang", token: token),
+  //     "Tags": [
+  //       {"T": "dk1", "V": userId},
+  //       {"T": "c1", "V": language}, 
+  //       {"T": "c2", "V": proficiency},
+  //       {"T": "c10", "V": "1"},
+  //     ],
+  //   };
 
-    try {
-      final response = await _dioHandler.post('', data: data);
+  //   try {
+  //     final response = await _dioHandler.post('', data: data);
 
-      return response;
-    } catch (e) {
-      throw Exception("Failed to add Language: $e");
-    }
-  }
+  //     return response;
+  //   } catch (e) {
+  //     throw Exception("Failed to add Language: $e");
+  //   }
+  // }
 
   //add banking
   Future addBankInfo({
