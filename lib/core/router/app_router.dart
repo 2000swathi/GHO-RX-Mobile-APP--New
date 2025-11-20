@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ghorx_mobile_app_new/features/account/drawer/aboutscrn/aboutScrn.dart';
+import 'package:ghorx_mobile_app_new/features/account/drawer/help/help.dart';
 import 'package:ghorx_mobile_app_new/features/account/education/education_screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/languages/language_screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/drawer/change_password/change_password.dart';
@@ -38,10 +40,12 @@ class AppRouter {
   static const String languagescreen = '/languagescreen';
   static const String licensescreen = '/licensescreen';
   static const String educationscreen = '/educationscreen';
-  //profile
+  //drawer
   static const String changePW = '/changePW';
   static const String logout = '/logout';
   static const String delAcc = '/delAcc';
+  static const String helpScrn = '/helpScrn';
+  static const String aboutScrn = '/aboutScrn';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -85,13 +89,17 @@ class AppRouter {
       case educationscreen:
         return MaterialPageRoute(builder: (_) => EducationScreen());
 
-      //profile
+      //drawer
       case changePW:
         return MaterialPageRoute(builder: (_) => ChangePassword());
       case logout:
         return MaterialPageRoute(builder: (_) => LogoutScrn());
       case delAcc:
         return MaterialPageRoute(builder: (_) => LogoutScrn());
+      case helpScrn:
+        return MaterialPageRoute(builder: (_) => HelpScrn());
+      case aboutScrn:
+        return MaterialPageRoute(builder: (_) => Aboutscrn());
       default:
         return MaterialPageRoute(
           builder:

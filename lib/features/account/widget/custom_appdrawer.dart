@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
+import 'package:ghorx_mobile_app_new/core/constants/links.dart';
 import 'package:ghorx_mobile_app_new/core/router/app_router.dart';
 import 'package:ghorx_mobile_app_new/features/account/drawer/delete_account.dart/delAcc.dart';
+import 'package:ghorx_mobile_app_new/features/account/drawer/help/help.dart';
 import 'package:ghorx_mobile_app_new/features/account/logout/logout_scrn.dart';
+import 'package:ghorx_mobile_app_new/features/account/widget/custom_toggleBtn.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/group_container.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/single_container.dart';
 
 class CustomAppDrawer extends StatelessWidget {
-  const CustomAppDrawer({super.key});
+  final ValueNotifier<bool> micToggle = ValueNotifier(false);
+  final ValueNotifier<bool> msgToggle = ValueNotifier(false);
+  CustomAppDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +74,7 @@ class CustomAppDrawer extends StatelessWidget {
                       SettingRow(
                         title: "Change Password",
                         subTitle: "Reset your password anytime for safety.",
-                        svgPath: "assets/svg/account/lock.svg",
+                        svgPath: "assets/svg/account/lockblack.svg",
                         onTap: () {
                           Navigator.pushNamed(context, AppRouter.changePW);
                         },
@@ -78,17 +83,21 @@ class CustomAppDrawer extends StatelessWidget {
                         title: "Privacy Policy",
                         subTitle: "Review our data protection practices.",
                         svgPath: "assets/svg/account/locky.svg",
-                        onTap: () {},
+                        onTap: () {
+                          Links().privacyPolicy();
+                        },
                       ),
                       SettingRow(
                         title: "Microphone Access",
                         subTitle: "Allow app to use microphone.",
                         svgPath: "assets/svg/account/mic.svg",
+                        pushBtn: CustomSwitch(notifier: micToggle),
                       ),
                       SettingRow(
                         title: "Notifications",
                         subTitle: "Allow app to send alerts.",
                         svgPath: "assets/svg/account/bell.svg",
+                        pushBtn: CustomSwitch(notifier: msgToggle),
                       ),
                     ],
                   ),
@@ -109,7 +118,6 @@ class CustomAppDrawer extends StatelessWidget {
                         subTitle: "Sign out from your account safely.",
                         svgPath: "assets/svg/account/logout.svg",
                         onTap: () {
-                          Navigator.pop(context); // close drawer first
                           showDialog(
                             context: context,
                             builder: (context) => const LogoutScrn(),
@@ -121,7 +129,6 @@ class CustomAppDrawer extends StatelessWidget {
                         subTitle: "Close your account permanently.",
                         svgPath: "assets/svg/account/del.svg",
                         onTap: () {
-                          Navigator.pop(context); // close drawer first
                           showDialog(
                             context: context,
                             builder: (context) => const Delacc(),
@@ -146,11 +153,20 @@ class CustomAppDrawer extends StatelessWidget {
                         title: "About",
                         subTitle: "View app details.",
                         svgPath: "assets/svg/account/about.svg",
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRouter.aboutScrn);
+                        },
                       ),
                       SettingRow(
                         title: "Help",
                         subTitle: "Contact us via email.",
                         svgPath: "assets/svg/account/helpp.svg",
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => const HelpScrn(),
+                          );
+                        },
                       ),
                     ],
                   ),
