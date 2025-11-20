@@ -8,8 +8,9 @@ class DocumentsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAccountAppBar(
-        title: "Documents"
+        title: "Upload Documents"
       ),
+      body: Container(),
     );
   }
 }
