@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/accreditation/accreditation_screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/documents/documents_screen.dart';
+import 'package:ghorx_mobile_app_new/features/account/drawer/aboutscrn/aboutScrn.dart';
+import 'package:ghorx_mobile_app_new/features/account/drawer/change_password/repo/bloc/change_password_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/drawer/change_password/repo/changePasswordrepo.dart';
+import 'package:ghorx_mobile_app_new/features/account/drawer/help/help.dart';
 import 'package:ghorx_mobile_app_new/features/account/education/education_screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/languages/language_screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/drawer/change_password/change_password.dart';
@@ -51,12 +56,13 @@ class AppRouter {
   static const String questionnaire = '/questionnaire';
   static const String specialty = '/specialty';
 
-
-
   //profile
+  //drawer
   static const String changePW = '/changePW';
   static const String logout = '/logout';
   static const String delAcc = '/delAcc';
+  static const String helpScrn = '/helpScrn';
+  static const String aboutScrn = '/aboutScrn';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -102,23 +108,39 @@ class AppRouter {
       case accreditationscreen:
         return MaterialPageRoute(builder: (_) => AccreditationScreen());
       case professionalreferences:
-        return MaterialPageRoute(builder: (_) => ProfessionalReferencesScreen());
+        return MaterialPageRoute(
+          builder: (_) => ProfessionalReferencesScreen(),
+        );
       case profesindInsurance:
         return MaterialPageRoute(builder: (_) => InsuranceScreen());
       case documents:
         return MaterialPageRoute(builder: (_) => DocumentsScreen());
       case questionnaire:
         return MaterialPageRoute(builder: (_) => QuestionnaireScreen());
+
+      //drawer
       case specialty:
         return MaterialPageRoute(builder: (_) => SpecialtyScreen());
 
       //profile
       case changePW:
-        return MaterialPageRoute(builder: (_) => ChangePassword());
+        return MaterialPageRoute(
+          builder:
+              (_) => BlocProvider(
+                create:
+                    (_) => ChangePasswordBloc(repository: Changepasswordrepo()),
+                child: ChangePassword(),
+              ),
+        );
+
       case logout:
         return MaterialPageRoute(builder: (_) => LogoutScrn());
       case delAcc:
         return MaterialPageRoute(builder: (_) => LogoutScrn());
+      case helpScrn:
+        return MaterialPageRoute(builder: (_) => HelpScrn());
+      case aboutScrn:
+        return MaterialPageRoute(builder: (_) => Aboutscrn());
       default:
         return MaterialPageRoute(
           builder:

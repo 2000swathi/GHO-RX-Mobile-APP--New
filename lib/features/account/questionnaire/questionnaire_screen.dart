@@ -9,27 +9,13 @@ import 'package:ghorx_mobile_app_new/features/account/questionnaire/widget/quest
 import 'package:ghorx_mobile_app_new/features/account/widget/custom_profile_appbar.dart';
 
 class QuestionnaireScreen extends StatefulWidget {
-  const QuestionnaireScreen({super.key});
+  QuestionnaireScreen({super.key});
 
   @override
   State<QuestionnaireScreen> createState() => _QuestionnaireScreenState();
 }
 
 class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
- 
-
-  final Map<String, bool> answers = {
-    "disciplinary": false,
-    "convicted": false,
-    "malpractice": false,
-  };
-
-  final Map<String, String> reasons = {
-    "disciplinary": "",
-    "convicted": "",
-    "malpractice": "",
-  };
-
   @override
   void initState() {
     super.initState();
@@ -40,37 +26,27 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAccountAppBar(title: "Questionnaire"),
-      bottomNavigationBar: BlocBuilder<ListBloc, ListState>(
-        builder: (context, state) {
-          if (state is QuestionsLIstState) {
-            return Padding(
-              padding: const EdgeInsets.only(left: 22, right: 22, bottom: 30),
-              child: CustomButton(
-                text: "Submit Questionnaire",
-                onPressed: () {
-                  // Handle submit action
-                  print("Answers: $answers");
-                },
-              ),
-            );
-          }
-          return SizedBox();
-        },
-      ),
+      // bottomNavigationBar: Padding(
+      //   padding: const EdgeInsets.only(left: 22, right: 22, bottom: 30),
+      //   child: CustomButton(text: "Submit Questionnaire", onPressed: () {}),
+      // ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: BlocBuilder<ListBloc, ListState>(
           builder: (context, state) {
             if (state is ListLoading) {
-              return const Center(child: LoadingAnimation());
+              return Center(child: LoadingAnimation());
             } else if (state is ListFailure) {
               return Center(child: Text(state.error));
             } else if (state is QuestionsLIstState) {
-              final info=state.response["Data"][0];
+              final info = state.response["Data"]?[0];
+              final List questions = info ?? [];
+
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 20),
+
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 12,
@@ -100,31 +76,21 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                       ],
                     ),
                   ),
+
                   const SizedBox(height: 20),
+
                   Expanded(
                     child: ListView.builder(
-                      itemCount: info.length,
+                      itemCount: questions.length,
                       itemBuilder: (context, index) {
-                        final q = info[index];
+                        final q = questions[index];
+
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 14),
                           child: QuestionCard(
+                            questionText: q["Question"] ?? "",
+                            questionId: q["ID"].toString(),
                             index: index + 1,
-                            questionText: q["text"],
-                            questionId: q["id"],
-                            value: answers[q["id"]]!,
-                            reason: reasons[q["id"]],
-                            onChanged: (val) {
-                              setState(() {
-                                answers[q["id"]] = val;
-                                if (!val)
-                                  reasons[q["id"]] =
-                                      ""; 
-                              });
-                            },
-                            onReasonChanged: (text) {
-                              reasons[q["id"]] = text;
-                            },
                           ),
                         );
                       },
@@ -133,7 +99,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                 ],
               );
             }
-            return const Center(child: Text("Invalid State"));
+            return Center(child: Text("Invalid State"));
           },
         ),
       ),

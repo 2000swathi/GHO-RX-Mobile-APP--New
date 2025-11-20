@@ -4,7 +4,7 @@ import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 
 class CustomAccountAppBar extends StatelessWidget
-  implements PreferredSizeWidget {
+    implements PreferredSizeWidget {
   final String title;
   final VoidCallback? onBack;
   final VoidCallback? onEdit;
@@ -24,19 +24,13 @@ class CustomAccountAppBar extends StatelessWidget
       backgroundColor: AppColors.white,
       elevation: 0,
       leading: IconButton(
-        icon: Icon(
-          Icons.arrow_back,
-          size: 24,
-          color: AppColors.black,
-        ),
+        icon: Icon(Icons.arrow_back, size: 24, color: AppColors.black),
         onPressed: onBack ?? () => Navigator.pop(context),
       ),
 
       title: Text(
         title,
-        style: AppFonts.heading.copyWith(
-          fontWeight: FontWeight.w500,
-        ),
+        style: AppFonts.heading.copyWith(fontWeight: FontWeight.w500),
       ),
 
       actions: [
@@ -56,10 +50,7 @@ class CustomAccountAppBar extends StatelessWidget
                       height: 20,
                     ),
                     const SizedBox(width: 6),
-                    Text(
-                      "Edit",
-                      style: AppFonts.textblue,
-                    ),
+                    Text("Edit", style: AppFonts.textblue),
                   ],
                 ),
               ),
@@ -75,10 +66,12 @@ class CustomAccountAppBar extends StatelessWidget
               borderRadius: BorderRadius.circular(50),
               child: Padding(
                 padding: const EdgeInsets.all(6),
-                child: Icon(
-                  Icons.add,
-                  size: 26,
-                  color: AppColors.primarycolor,
+                child: Row(
+                  children: [
+                    Icon(Icons.add, color: AppColors.primarycolor),
+                    const SizedBox(width: 6),
+                    Text("Add", style: AppFonts.textblue),
+                  ],
                 ),
               ),
             ),

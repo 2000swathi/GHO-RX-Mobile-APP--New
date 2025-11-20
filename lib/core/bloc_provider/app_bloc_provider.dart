@@ -51,6 +51,8 @@ import 'package:ghorx_mobile_app_new/features/profile/edit/repository/edit_repos
 import 'package:ghorx_mobile_app_new/features/profile/add/repository/add_profile_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/list_repository.dart';
+import 'package:ghorx_mobile_app_new/features/account/insurance/repo/bloc/insurance_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/insurance/repo/insurance_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/languages/repo/bloc/language_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/languages/repo/language_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/bloc/profile_info_bloc.dart';

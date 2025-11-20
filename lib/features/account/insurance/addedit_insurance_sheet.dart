@@ -13,6 +13,8 @@ import 'package:ghorx_mobile_app_new/features/account/insurance/repo/model/insur
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
 import 'package:ghorx_mobile_app_new/features/profile/edit/bloc/edit_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/insurance/repo/bloc/insurance_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/insurance/repo/model/insurance_model.dart';
 
 class AddEditInsuranceSheet {
   static void showSheet(
@@ -144,7 +146,7 @@ class AddEditInsuranceSheet {
         child: BlocBuilder<AddBloc, AddState>(
           builder: (context, addState) {
             final bool isAddLoading = addState is AddLoading;
-            return BlocBuilder<EditBloc, EditState>(
+            return BlocBuilder<InsuranceBloc, InsuranceState>(
               builder: (context, editState) {
                 final bool isEditLoading = editState is EditLoading;
                 final bool isLoading = isAddLoading || isEditLoading;
@@ -155,7 +157,7 @@ class AddEditInsuranceSheet {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       if (isEdit) {
-                        context.read<EditBloc>().add(
+                        context.read<InsuranceBloc>().add(
                           EditInsuranceEvent(
                             insuranceId: info!.id.toString(),
                             providerID: prIDController.text,

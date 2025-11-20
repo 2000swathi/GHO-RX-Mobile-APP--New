@@ -10,6 +10,7 @@ class InsuranceBloc extends Bloc<InsuranceEvent, InsuranceState> {
 
   InsuranceBloc({required this.repository}) : super(InsuranceInitial()) {
     on<FetchInsurance>(_onFetchInsurance);
+    on<EditInsuranceEvent>(_editInsurance);
   }
   Future<void> _onFetchInsurance(
     FetchInsurance event,
@@ -19,7 +20,47 @@ class InsuranceBloc extends Bloc<InsuranceEvent, InsuranceState> {
 
     try {
       final insurance = await repository.fetchInsuranceInfo();
-      emit(Insurance(insuranceModel: insurance));
+      emit(InsuranceGetState(insuranceModel: insurance));
+    } catch (e) {
+      emit(InsuranceError(message: e.toString()));
+    }
+  }
+
+  //Insurance
+  Future<void> _editInsurance(
+    EditInsuranceEvent event,
+    Emitter<InsuranceState> emit,
+  ) async {
+    emit(InsuranceEditLoading());
+
+    try {
+      final response = await repository.editInsurance(
+        insuranceId: event.insuranceId,
+        providerID: event.providerID,
+        providerName: event.providerName,
+        issueDate: event.issueDate,
+        expiryDate: event.expiryDate,
+      );
+      if (response["Status"] == 1) {
+        String message = "Insurance updated successfully";
+
+        final data = response["Data"];
+        if (data is List && data.isNotEmpty) {
+          final level1 = data[0];
+          if (level1 is List && level1.isNotEmpty) {
+            final msgObj = level1[0];
+            if (msgObj is Map && msgObj["msg"] != null) {
+              message = msgObj["msg"].toString();
+            }
+          }
+        }
+
+        emit(InsuranceSuccess(message: message));
+      } else {
+        final error =
+            response["Error"]?.toString() ?? "Failed to update license";
+        emit(InsuranceError(message: error));
+      }
     } catch (e) {
       emit(InsuranceError(message: e.toString()));
     }

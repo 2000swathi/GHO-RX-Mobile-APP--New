@@ -14,7 +14,7 @@ class EditBloc extends Bloc<EditEvent, EditState> {
     on<EditBankInfoEvent>(_onEditBankInfo);
     on<EditSpecialtyEvent>(_editSpecialty);
     // on<EditAcreditationEvent>(_editAccreditation);
-    on<EditInsuranceEvent>(_editInsurance);
+    // on<EditInsuranceEvent>(_editInsurance);
   }
 
   //profile Bloc
@@ -128,33 +128,33 @@ class EditBloc extends Bloc<EditEvent, EditState> {
   //   }
   // }
 
-  //Insurance
-  Future<void> _editInsurance(
-    EditInsuranceEvent event,
-    Emitter<EditState> emit,
-  ) async {
-    emit(EditLoading());
+  // //Insurance
+  // Future<void> _editInsurance(
+  //   EditInsuranceEvent event,
+  //   Emitter<EditState> emit,
+  // ) async {
+  //   emit(EditLoading());
 
-    try {
-      final response = await repository.editInsurance(
-        insuranceId: event.insuranceId,
-        providerID: event.providerID,
-        providerName: event.providerName,
-        issueDate: event.issueDate,
-        expiryDate: event.expiryDate,
-      );
-      if (response["Status"] == 1) {
-        final message =
-            response["Data"][0][0]["message"] ?? "Updated Successfully";
-        emit(EditSuccess(message: message));
-      } else {
-        final error = response["Error"] ?? "Failed to update insurance";
-        emit(EditFailure(error: error));
-      }
-    } catch (e) {
-      emit(EditFailure(error: e.toString()));
-    }
-  }
+  //   try {
+  //     final response = await repository.editInsurance(
+  //       insuranceId: event.insuranceId,
+  //       providerID: event.providerID,
+  //       providerName: event.providerName,
+  //       issueDate: event.issueDate,
+  //       expiryDate: event.expiryDate,
+  //     );
+  //     if (response["Status"] == 1) {
+  //       final message =
+  //           response["Data"][0][0]["message"] ?? "Updated Successfully";
+  //       emit(EditSuccess(message: message));
+  //     } else {
+  //       final error = response["Error"] ?? "Failed to update insurance";
+  //       emit(EditFailure(error: error));
+  //     }
+  //   } catch (e) {
+  //     emit(EditFailure(error: e.toString()));
+  //   }
+  // }
 
   //Edit license
   // Edit license

@@ -33,9 +33,8 @@ class _AccreditationScreenState extends State<AccreditationScreen> {
     final listBloc = context.read<ListBloc>();
     return Scaffold(
       backgroundColor: AppColors.backgroundcolor,
-      appBar: CustomAccountAppBar(title: "Accreditation"),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: CustomFAB(
+      appBar: CustomAccountAppBar(
+        title: "Accreditation",
         onAdd: () async {
           listBloc.add(FetchAccrediationList());
           showDialog(
@@ -62,6 +61,8 @@ class _AccreditationScreenState extends State<AccreditationScreen> {
           }
         },
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+
       body: BlocListener<DeleteBloc, DeleteState>(
         listener: (context, state) {
           if (state is DeleteLoading) {

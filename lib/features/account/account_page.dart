@@ -83,7 +83,7 @@ class AccountPage extends StatelessWidget {
         key: scaffoldKey,
         drawer: SizedBox(
           width: MediaQuery.of(context).size.width * 0.9,
-          child: const CustomAppDrawer(),
+          child: CustomAppDrawer(),
         ),
         drawerEnableOpenDragGesture: false,
         appBar: AppBar(

@@ -207,42 +207,42 @@ class EditprofileRepository {
   //   }
   // }
 
-  //Insurance
-  Future<Map<String, dynamic>> editInsurance({
-    required String insuranceId,
-    required String providerID,
-    required String providerName,
-    required String issueDate,
-    required String expiryDate,
-  }) async {
-    final token = await SharedPreference.getToken();
-    final reviewerId = await SharedPreference.getUserId();
+  // //Insurance
+  // Future<Map<String, dynamic>> editInsurance({
+  //   required String insuranceId,
+  //   required String providerID,
+  //   required String providerName,
+  //   required String issueDate,
+  //   required String expiryDate,
+  // }) async {
+  //   final token = await SharedPreference.getToken();
+  //   final reviewerId = await SharedPreference.getUserId();
 
-    if (token!.isEmpty || reviewerId!.isEmpty) {
-      throw Exception('Token or ReviewerId not found in SharedPreferences');
-    }
+  //   if (token!.isEmpty || reviewerId!.isEmpty) {
+  //     throw Exception('Token or ReviewerId not found in SharedPreferences');
+  //   }
 
-    final c1data = jsonEncode({
-      "ProviderID": providerID,
-      "ProviderName": providerName,
-      "IssueDate": issueDate,
-      "ExpiryDate": expiryDate,
-    });
+  //   final c1data = jsonEncode({
+  //     "ProviderID": providerID,
+  //     "ProviderName": providerName,
+  //     "IssueDate": issueDate,
+  //     "ExpiryDate": expiryDate,
+  //   });
 
-    final requestData = {
-      ...ApiUtils.getCommonParams(action: "reviewerins", token: token),
-      "Tags": [
-        {"T": "dk1", "V": reviewerId},
-        {"T": "dk2", "V": insuranceId},
-        {"T": "c1", "V": c1data},
-        {"T": "c10", "V": "2"},
-      ],
-    };
-    try {
-      final response = await _dioHandler.post('', data: requestData);
-      return response;
-    } catch (e) {
-      throw (e.toString());
-    }
-  }
+  //   final requestData = {
+  //     ...ApiUtils.getCommonParams(action: "reviewerins", token: token),
+  //     "Tags": [
+  //       {"T": "dk1", "V": reviewerId},
+  //       {"T": "dk2", "V": insuranceId},
+  //       {"T": "c1", "V": c1data},
+  //       {"T": "c10", "V": "2"},
+  //     ],
+  //   };
+  //   try {
+  //     final response = await _dioHandler.post('', data: requestData);
+  //     return response;
+  //   } catch (e) {
+  //     throw (e.toString());
+  //   }
+  // }
 }
