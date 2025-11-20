@@ -23,7 +23,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ListBloc>().add(fetchLangList());
+      context.read<ListBloc>().add(FetchLangList());
       context.read<LanguageBloc>().add(FetchLanguage());
     });
   }

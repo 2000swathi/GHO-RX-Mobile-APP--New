@@ -43,14 +43,6 @@ class LicenseListState extends ListState {
   List<Object> get props => [licenseResponse];
 }
 
-//License
-class AuthorityListState extends ListState {
-  final IsuuingAuthResponseModel response;
-  const AuthorityListState({required this.response});
-  @override
-  List<Object> get props => [response];
-}
-
 //List Failure
 class ListFailure extends ListState {
   final String error;
@@ -91,6 +83,14 @@ class IssueingauthorityListState extends ListState {
 class LanguageLIstState extends ListState {
   final Map<String, dynamic> response;
   const LanguageLIstState({required this.response});
+  @override
+  List<Object> get props => [response];
+}
+
+// questions
+class QuestionsLIstState extends ListState {
+  final Map<String, dynamic> response;
+  const QuestionsLIstState({required this.response});
   @override
   List<Object> get props => [response];
 }

@@ -2,7 +2,6 @@ import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/acc
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/certified_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/country_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/issueing_authority.dart';
-import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/issuing_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/license_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/specialty%20type_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/specialty_response_model.dart';
@@ -79,23 +78,6 @@ class ListRepository {
       throw Exception("Failed to fetch license: $e");
     }
   }
-  //authority
-  Future<IsuuingAuthResponseModel> fetchAuthorityList() async {
-    final data = {
-      ...ApiUtils.getCommonParams(action: "lists", token: ""),
-      "Tags": [
-        {"T":"dk1","V":"ISSUINGAUTHORITY"},
-        {"T":"c10","V":"3"}
-      ],
-    };
-
-    try {
-      final response = await _dioHandler.post('', data: data);
-      return IsuuingAuthResponseModel.fromJson(response);
-    } catch (e) {
-      throw Exception("Failed to fetch issuing Authority: $e");
-    }
-  }
 
   //Certified
   Future<CertifiedResponseModel> fetchCertifiedList() async {
@@ -131,13 +113,14 @@ class ListRepository {
       throw Exception("Failed to fetch specialties type: $e");
     }
   }
+
   //Issueing Authority
   Future<IssueingAuthorityResponseModel> fetchIssueingAuthorityList() async {
     final data = {
       ...ApiUtils.getCommonParams(action: "lists", token: ""),
       "Tags": [
-       {"T":"dk1","V":"ISSUINGAUTHORITY"},
-        {"T":"c10","V":"3"}  
+        {"T": "dk1", "V": "ISSUINGAUTHORITY"},
+        {"T": "c10", "V": "3"},
       ],
     };
 
@@ -148,12 +131,13 @@ class ListRepository {
       throw Exception("Failed to fetch issueing authority: $e");
     }
   }
-  Future<Map<String,dynamic>> fetchLangList() async {
+
+  Future<Map<String, dynamic>> fetchLangList() async {
     final data = {
       ...ApiUtils.getCommonParams(action: "lists", token: ""),
       "Tags": [
-       {"T":"dk1","V":"LANGUAGE"},
-        {"T":"c10","V":"3"}  
+        {"T": "dk1", "V": "LANGUAGE"},
+        {"T": "c10", "V": "3"},
       ],
     };
 
@@ -162,6 +146,23 @@ class ListRepository {
       return response;
     } catch (e) {
       throw Exception("Failed to fetch language list: $e");
+    }
+  }
+  //fetch questions
+
+  Future<Map<String, dynamic>> fetchQuestionsList() async {
+    final data = {
+      ...ApiUtils.getCommonParams(action: "lists", token: ""),
+      "Tags": [
+        {"T": "c10", "V": "96"},
+      ],
+    };
+
+    try {
+      final response = await _dioHandler.post('', data: data);
+      return response;
+    } catch (e) {
+      throw Exception("Failed to fetch questions list: $e");
     }
   }
 }
