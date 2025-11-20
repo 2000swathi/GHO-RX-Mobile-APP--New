@@ -29,6 +29,7 @@ class AccountPage extends StatelessWidget {
     _DrawerItem(
       title: "Accreditations",
       imagePath: "assets/svg/account/accredited 1.png",
+      routeName: AppRouter.accreditationscreen,
     ),
     _DrawerItem(
       title: "Education",
@@ -38,6 +39,7 @@ class AccountPage extends StatelessWidget {
     _DrawerItem(
       title: "Professional References",
       imagePath: "assets/svg/account/refer.png",
+      routeName: AppRouter.professionalreferences,
     ),
     _DrawerItem(
       title: "Licenses",
@@ -47,10 +49,12 @@ class AccountPage extends StatelessWidget {
     _DrawerItem(
       title: "Professional Indemnity Insurance",
       imagePath: "assets/svg/account/health-insurance.png",
+      routeName: AppRouter.profesindInsurance,
     ),
     _DrawerItem(
       title: "Documents",
       imagePath: "assets/svg/account/folders.png",
+      routeName: AppRouter.documents,
     ),
     _DrawerItem(
       title: "Questionnaire",
