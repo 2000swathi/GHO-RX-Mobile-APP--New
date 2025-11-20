@@ -32,8 +32,12 @@ class AddEditAccreditationBottomSheet {
     }
 
     // Controllers
-    final accBodyController = TextEditingController(text: isEdit ? info?.accreditationBody ?? '' : '');
-    final accNumController = TextEditingController(text: isEdit ? info?.accreditationNumber ?? '' : '');
+    final accBodyController = TextEditingController(
+      text: isEdit ? info?.accreditationBody ?? '' : '',
+    );
+    final accNumController = TextEditingController(
+      text: isEdit ? info?.accreditationNumber ?? '' : '',
+    );
 
     // Uppercase input formatter
     final uppercaseFormatter = UpperCaseTextFormatter();
@@ -60,12 +64,15 @@ class AddEditAccreditationBottomSheet {
                   CustomDropdownFormField<String>(
                     name: "Accreditation Type",
                     hintText: " -Select Accreditation Type- ",
-                    items: accreList
-                        .map((e) => DropdownItem<String>(
-                              label: e.name,
-                              value: e.accreditationTypeID.toString(),
-                            ))
-                        .toList(),
+                    items:
+                        accreList
+                            .map(
+                              (e) => DropdownItem<String>(
+                                label: e.name,
+                                value: e.accreditationTypeID.toString(),
+                              ),
+                            )
+                            .toList(),
                     value: accreTypeID,
                     onChanged: (id) => setState(() => accreTypeID = id),
                   ),
@@ -95,25 +102,28 @@ class AddEditAccreditationBottomSheet {
         },
         child: BlocBuilder<AccreditationBloc, AccreditationState>(
           builder: (context, state) {
-            final bool isLoading = state is AccrediationAddLoading || state is AccrediationeditLoading;
+            final bool isLoading =
+                state is AccrediationAddLoading ||
+                state is AccrediationeditLoading;
 
             return CustomButton(
               text: isEdit ? "Update Accreditation" : "Add Accreditation",
               isLoading: isLoading,
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  final event = isEdit
-                      ? EditAcreditationEvent(
-                          accreditationId: info!.id.toString(),
-                          accreditationtype: accreTypeID ?? '',
-                          accreditationbody: accBodyController.text,
-                          accreditationnumber: accNumController.text,
-                        )
-                      : AddAccrediation(
-                          accreditationtype: accreTypeID ?? '',
-                          accreditationbody: accBodyController.text,
-                          accreditationnumber: accNumController.text,
-                        );
+                  final event =
+                      isEdit
+                          ? EditAcreditationEvent(
+                            accreditationId: info!.id.toString(),
+                            accreditationtype: accreTypeID ?? '',
+                            accreditationbody: accBodyController.text,
+                            accreditationnumber: accNumController.text,
+                          )
+                          : AddAccrediation(
+                            accreditationtype: accreTypeID ?? '',
+                            accreditationbody: accBodyController.text,
+                            accreditationnumber: accNumController.text,
+                          );
                   context.read<AccreditationBloc>().add(event);
                 }
               },
@@ -128,7 +138,10 @@ class AddEditAccreditationBottomSheet {
 // Uppercase input formatter
 class UpperCaseTextFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     return newValue.copyWith(text: newValue.text.toUpperCase());
   }
 }
