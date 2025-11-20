@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ghorx_mobile_app_new/features/account/professional%20indemnity%20insurance/professionalinsurance_card.dart';
+import 'package:ghorx_mobile_app_new/features/account/insurance/insurance_card.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/customFAB.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/custom_profile_appbar.dart';
 
-class ProfessionalIndemnityInsuranceScreen extends StatelessWidget {
-  ProfessionalIndemnityInsuranceScreen({super.key});
+class InsuranceScreen extends StatelessWidget {
+  InsuranceScreen({super.key});
 
   final List<Map<String, dynamic>> insuranceData = [
     {
@@ -40,7 +40,7 @@ class ProfessionalIndemnityInsuranceScreen extends StatelessWidget {
             
             return Padding(
               padding: EdgeInsets.only(bottom: 16),
-              child: ProfessionalinsuranceCard(
+              child: InsuranceCard(
                 index: index, 
                 providerId: insurance["providerId"], 
                 providerName: insurance["providerName"], 

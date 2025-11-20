@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/reusable_infocard.dart';
 
-class ProfessionalinsuranceCard extends StatelessWidget {
+class InsuranceCard extends StatelessWidget {
   final int index;
   final String providerId;
   final String providerName;
@@ -10,7 +10,7 @@ class ProfessionalinsuranceCard extends StatelessWidget {
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
 
-  const ProfessionalinsuranceCard({
+  const InsuranceCard({
     super.key,
     required this.index,
     required this.providerId,

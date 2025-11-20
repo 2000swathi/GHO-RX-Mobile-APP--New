@@ -16,20 +16,7 @@ class QuestionnaireScreen extends StatefulWidget {
 }
 
 class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
-  final List<Map<String, dynamic>> questions = [
-    {
-      "id": "disciplinary",
-      "text": "Have you ever had any disciplinary actions taken against you?",
-    },
-    {
-      "id": "convicted",
-      "text": "Have you ever been convicted of a felony or misdemeanor?",
-    },
-    {
-      "id": "malpractice",
-      "text": "Have you ever been involved in any malpractice claims?",
-    },
-  ];
+ 
 
   final Map<String, bool> answers = {
     "disciplinary": false,
@@ -79,6 +66,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
             } else if (state is ListFailure) {
               return Center(child: Text(state.error));
             } else if (state is QuestionsLIstState) {
+              final info=state.response["Data"][0];
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -115,9 +103,9 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                   const SizedBox(height: 20),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: questions.length,
+                      itemCount: info.length,
                       itemBuilder: (context, index) {
-                        final q = questions[index];
+                        final q = info[index];
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 14),
                           child: QuestionCard(
@@ -131,7 +119,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                                 answers[q["id"]] = val;
                                 if (!val)
                                   reasons[q["id"]] =
-                                      ""; // clear reason if unchecked
+                                      ""; 
                               });
                             },
                             onReasonChanged: (text) {

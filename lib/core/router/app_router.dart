@@ -7,7 +7,7 @@ import 'package:ghorx_mobile_app_new/features/account/drawer/change_password/cha
 import 'package:ghorx_mobile_app_new/features/account/logout/logout_scrn.dart';
 import 'package:ghorx_mobile_app_new/features/account/license/licensescreen.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/personal_information.dart';
-import 'package:ghorx_mobile_app_new/features/account/professional%20indemnity%20insurance/professional_indemnity_insurance.dart';
+import 'package:ghorx_mobile_app_new/features/account/insurance/insurance.dart';
 import 'package:ghorx_mobile_app_new/features/account/professional%20references/professional_references.dart';
 import 'package:ghorx_mobile_app_new/features/account/questionnaire/questionnaire_screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/specialty/specialty_screen.dart';
@@ -104,7 +104,7 @@ class AppRouter {
       case professionalreferences:
         return MaterialPageRoute(builder: (_) => ProfessionalReferencesScreen());
       case profesindInsurance:
-        return MaterialPageRoute(builder: (_) => ProfessionalIndemnityInsuranceScreen());
+        return MaterialPageRoute(builder: (_) => InsuranceScreen());
       case documents:
         return MaterialPageRoute(builder: (_) => DocumentsScreen());
       case questionnaire:

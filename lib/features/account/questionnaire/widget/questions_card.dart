@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 
-class QuestionCard extends StatelessWidget {
+class QuestionCard extends StatefulWidget {
   final String questionText;
   final String questionId;
   final int index;
@@ -20,6 +20,33 @@ class QuestionCard extends StatelessWidget {
     this.onReasonChanged,
     this.reason,
   });
+
+  @override
+  State<QuestionCard> createState() => _QuestionCardState();
+}
+
+class _QuestionCardState extends State<QuestionCard> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.reason ?? "");
+  }
+
+  @override
+  void didUpdateWidget(covariant QuestionCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.reason != oldWidget.reason) {
+      _controller.text = widget.reason ?? "";
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +80,7 @@ class QuestionCard extends StatelessWidget {
                   ),
                   alignment: Alignment.center,
                   child: Text(
-                    '$index',
+                    '${widget.index}',
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.grey[700],
@@ -66,7 +93,7 @@ class QuestionCard extends StatelessWidget {
                 /// Question Text
                 Expanded(
                   child: Text(
-                    questionText,
+                    widget.questionText,
                     style: const TextStyle(
                       fontSize: 15,
                       color: Colors.black87,
@@ -80,8 +107,8 @@ class QuestionCard extends StatelessWidget {
                 Transform.scale(
                   scale: 1.1,
                   child: Checkbox(
-                    value: value,
-                    onChanged: (v) => onChanged(v ?? false),
+                    value: widget.value,
+                    onChanged: (v) => widget.onChanged(v ?? false),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4),
                     ),
@@ -92,10 +119,11 @@ class QuestionCard extends StatelessWidget {
             ),
 
             /// Reason TextField if 'Yes' checked
-            if (value) ...[
+            if (widget.value) ...[
               const SizedBox(height: 12),
               TextField(
-                onChanged: onReasonChanged,
+                controller: _controller,
+                onChanged: widget.onReasonChanged,
                 maxLines: 3,
                 decoration: InputDecoration(
                   hintText: 'Please explain...',

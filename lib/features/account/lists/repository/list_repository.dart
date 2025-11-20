@@ -154,7 +154,7 @@ class ListRepository {
     final data = {
       ...ApiUtils.getCommonParams(action: "lists", token: ""),
       "Tags": [
-        {"T": "c10", "V": "96"},
+        {"T": "c10", "V": "85"},
       ],
     };
 
