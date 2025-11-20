@@ -1,12 +1,13 @@
-import 'package:ghorx_mobile_app_new/features/account/insurance/repo/model/insurance_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/education/repo/model/educationmodel.dart';
 import 'package:ghorx_mobile_app_new/utilities/network/api_utils.dart';
 import 'package:ghorx_mobile_app_new/utilities/network/dio_handler.dart';
 import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
 
-class InsuranceRepo {
+class EducationRepo {
   final DioHandler _dioHandler = DioHandler();
-  // insurance
-  Future<InsuranceModel> fetchInsuranceInfo() async {
+
+  // fetch education
+  Future<EducationResponse> fetchEducationInfo() async {
     final token = await SharedPreference.getToken();
     final reviewerId = await SharedPreference.getUserId();
     if (token!.isEmpty || reviewerId!.isEmpty) {
@@ -14,17 +15,17 @@ class InsuranceRepo {
     }
 
     final data = {
-      ...ApiUtils.getCommonParams(action: "reviewerins", token: token),
+      ...ApiUtils.getCommonParams(action: "revieweredu", token: token),
       "Tags": [
         {"T": "dk1", "V": reviewerId},
-        {"T": "dk2", "V": "0"},
         {"T": "c10", "V": "3"},
       ],
     };
 
     try {
       final response = await _dioHandler.post('', data: data);
-      return InsuranceModel.fromJson(response);
+      print(response);
+      return EducationResponse.fromJson(response);
     } catch (e) {
       throw (e.toString());
     }

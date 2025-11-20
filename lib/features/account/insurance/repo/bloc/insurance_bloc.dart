@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:ghorx_mobile_app_new/features/profile/insurances/insurance_repo.dart';
-import 'package:ghorx_mobile_app_new/features/profile/insurances/model/insurance_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/insurance/repo/insurance_repo.dart';
+import 'package:ghorx_mobile_app_new/features/account/insurance/repo/model/insurance_model.dart';
 part 'insurance_event.dart';
 part 'insurance_state.dart';
 

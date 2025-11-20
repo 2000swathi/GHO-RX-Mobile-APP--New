@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/education/repo/bloc/education_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/education/repo/education_repo.dart';
+import 'package:ghorx_mobile_app_new/features/account/insurance/repo/bloc/insurance_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/insurance/repo/insurance_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_event.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/profile_pic_repo.dart';
@@ -47,8 +51,6 @@ import 'package:ghorx_mobile_app_new/features/profile/edit/repository/edit_repos
 import 'package:ghorx_mobile_app_new/features/profile/add/repository/add_profile_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/list_repository.dart';
-import 'package:ghorx_mobile_app_new/features/profile/insurances/bloc/insurance_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/insurances/insurance_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/languages/repo/bloc/language_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/languages/repo/language_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/bloc/profile_info_bloc.dart';
@@ -146,6 +148,7 @@ class AppBlocProvider extends StatelessWidget {
               (_) =>
                   PicBloc(repository: ProfilePicRepo())..add(FetchPicEvent()),
         ),
+         BlocProvider(create: (_) => EducationBloc(repository: EducationRepo())),
       ],
       child: child,
     );
