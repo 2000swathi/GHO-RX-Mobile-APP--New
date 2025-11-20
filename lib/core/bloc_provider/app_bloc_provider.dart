@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/education/repo/bloc/education_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/education/repo/education_repo.dart';
+import 'package:ghorx_mobile_app_new/features/account/insurance/repo/bloc/insurance_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/insurance/repo/insurance_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_event.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/profile_pic_repo.dart';
@@ -146,6 +150,7 @@ class AppBlocProvider extends StatelessWidget {
               (_) =>
                   PicBloc(repository: ProfilePicRepo())..add(FetchPicEvent()),
         ),
+         BlocProvider(create: (_) => EducationBloc(repository: EducationRepo())),
       ],
       child: child,
     );
