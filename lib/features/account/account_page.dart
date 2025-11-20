@@ -114,12 +114,13 @@ class AccountPage extends StatelessWidget {
                       (item) => DrawerItemTile(
                         imagePath: item.imagePath,
                         title: item.title,
-                        onTap: item.routeName != null
-                            ? () => Navigator.pushNamed(
+                        onTap:
+                            item.routeName != null
+                                ? () => Navigator.pushNamed(
                                   context,
                                   item.routeName!,
                                 )
-                            : null,
+                                : null,
                       ),
                     ),
                     const SizedBox(height: 29),
@@ -135,7 +136,8 @@ class AccountPage extends StatelessWidget {
 
   Widget _buildProfile(BuildContext context, PicSuccess state) {
     final data = state.response["Data"];
-    if (data == null || data.isEmpty || data[0].isEmpty) return const SizedBox.shrink();
+    if (data == null || data.isEmpty || data[0].isEmpty)
+      return const SizedBox.shrink();
 
     final info = data[0][0];
     final imageUrl = info["_Url"] ?? '';
@@ -155,46 +157,51 @@ class AccountPage extends StatelessWidget {
                   radius: 55,
                   backgroundColor: AppColors.primarycolor.withAlpha(13),
                   child: ClipOval(
-                    child: imageUrl.isNotEmpty
-                        ? Image.network(
-                            imageUrl,
-                            width: double.infinity,
-                            height: double.infinity,
-                            fit: BoxFit.cover,
-                            loadingBuilder: (context, child, progress) {
-                              if (progress == null) return child;
-                              return Center(
-                                child: SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    valueColor: AlwaysStoppedAnimation(AppColors.primarycolor),
+                    child:
+                        imageUrl.isNotEmpty
+                            ? Image.network(
+                              imageUrl,
+                              width: double.infinity,
+                              height: double.infinity,
+                              fit: BoxFit.cover,
+                              loadingBuilder: (context, child, progress) {
+                                if (progress == null) return child;
+                                return Center(
+                                  child: SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation(
+                                        AppColors.primarycolor,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                            errorBuilder: (_, __, ___) => SvgPicture.asset(
+                                );
+                              },
+                              errorBuilder:
+                                  (_, __, ___) => SvgPicture.asset(
+                                    "assets/svg/person.svg",
+                                    width: 110,
+                                    height: 110,
+                                  ),
+                            )
+                            : SvgPicture.asset(
                               "assets/svg/person.svg",
                               width: 110,
                               height: 110,
                             ),
-                          )
-                        : SvgPicture.asset(
-                            "assets/svg/person.svg",
-                            width: 110,
-                            height: 110,
-                          ),
                   ),
                 ),
                 Positioned(
                   right: 4,
                   bottom: 4,
                   child: InkWell(
-                    onTap: () => showDialog(
-                      context: context,
-                      builder: (_) => ProfileDialog(url: imageUrl),
-                    ),
+                    onTap:
+                        () => showDialog(
+                          context: context,
+                          builder: (_) => ProfileDialog(url: imageUrl),
+                        ),
                     child: CircleAvatar(
                       radius: 16,
                       backgroundColor: AppColors.white,
@@ -224,9 +231,5 @@ class _DrawerItem {
   final String imagePath;
   final String? routeName;
 
-  _DrawerItem({
-    required this.title,
-    required this.imagePath,
-    this.routeName,
-  });
+  _DrawerItem({required this.title, required this.imagePath, this.routeName});
 }
