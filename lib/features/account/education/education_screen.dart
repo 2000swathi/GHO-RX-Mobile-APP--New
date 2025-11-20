@@ -29,7 +29,7 @@ class _EducationScreenState extends State<EducationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundcolor,
-      appBar: CustomAccountAppBar(title: "Edcuation"),
+      appBar: CustomAccountAppBar(title: "Education"),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: CustomFAB(onAdd: () {}),
       body: BlocListener<DeleteBloc, DeleteState>(

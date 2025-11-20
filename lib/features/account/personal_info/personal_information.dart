@@ -7,6 +7,7 @@ import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/edit_person_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/bloc/profile_info_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/model/personalinfo_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/widget/custom_profile_appbar.dart';
 import 'package:ghorx_mobile_app_new/features/home/widget/profile_pic_dialogue.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart';
 
@@ -41,12 +42,16 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
       },
       child: Scaffold(
         backgroundColor: AppColors.backgroundcolor,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, size: 24, color: AppColors.black),
-            onPressed: () => Navigator.pop(context),
-          ),
-          title: const Text("Personal Information", style: AppFonts.heading),
+        appBar: CustomAccountAppBar(
+          title: "Personal Information",
+          onEdit: () {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (_) => const Center(child: LoadingAnimation()),
+            );
+            context.read<ListBloc>().add(FetchCountryList());
+          },
         ),
         body: BlocBuilder<ProfileInfoBloc, ProfileInfoState>(
           builder: (context, state) {
@@ -156,19 +161,6 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
             }
 
             return const Center(child: Text("Invalid State"));
-          },
-        ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: AppColors.white,
-          child: SvgPicture.asset("assets/svg/account/pencil.svg", height: 20),
-          onPressed: () {
-            // Show loading dialog
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (_) => const Center(child: LoadingAnimation()),
-            );
-            context.read<ListBloc>().add(FetchCountryList());
           },
         ),
       ),

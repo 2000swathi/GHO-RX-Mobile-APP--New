@@ -24,11 +24,8 @@ class Licensescreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.backgroundcolor,
-      appBar: CustomAccountAppBar(title: "Licence"),
-
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-
-      floatingActionButton: CustomFAB(
+      appBar: CustomAccountAppBar(
+        title: "Licence",
         onAdd: () {
           listBloc.add(FetchLicenseList());
           listBloc.add(FetchIssueingAuthorityList());
@@ -50,7 +47,7 @@ class Licensescreen extends StatelessWidget {
                 .take(1),
           ]).listen((values) {
             if (!context.mounted) return;
-            Navigator.pop(context); 
+            Navigator.pop(context);
 
             final licenseState = values[0];
             final issueingState = values[1];
@@ -76,6 +73,8 @@ class Licensescreen extends StatelessWidget {
           });
         },
       ),
+
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
 
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),

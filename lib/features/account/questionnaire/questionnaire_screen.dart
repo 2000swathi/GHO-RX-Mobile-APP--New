@@ -26,10 +26,10 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAccountAppBar(title: "Questionnaire"),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(left: 22, right: 22, bottom: 30),
-        child: CustomButton(text: "Submit Questionnaire", onPressed: () {}),
-      ),
+      // bottomNavigationBar: Padding(
+      //   padding: const EdgeInsets.only(left: 22, right: 22, bottom: 30),
+      //   child: CustomButton(text: "Submit Questionnaire", onPressed: () {}),
+      // ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: BlocBuilder<ListBloc, ListState>(
