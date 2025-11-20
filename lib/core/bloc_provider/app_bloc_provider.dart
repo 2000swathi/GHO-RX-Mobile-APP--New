@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_event.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/profile_pic_repo.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/repository/auth_repository.dart';
@@ -114,7 +115,10 @@ class AppBlocProvider extends StatelessWidget {
           create: (_) => KeyPerformanceBloc(repository: KeyPerRepo()),
         ),
         BlocProvider(
-          create: (_) => ProfileInfoBloc(repository: ProfileInfoRepo()),
+          create:
+              (_) =>
+                  ProfileInfoBloc(repository: ProfileInfoRepo())
+                    ..add(FetchPersonalInfo()),
         ),
         BlocProvider(create: (_) => PaymentBloc(repository: PaymentRepo())),
         BlocProvider(create: (_) => EarningsBloc(repository: EarningsRepo())),
@@ -125,10 +129,23 @@ class AppBlocProvider extends StatelessWidget {
         BlocProvider(create: (_) => SpecialtyBloc(repository: SpecialtyRepo())),
         BlocProvider(create: (_) => AccreditationBloc(repository: AccRepo())),
         BlocProvider(create: (_) => InsuranceBloc(repository: InsuranceRepo())),
-        BlocProvider(create: (_) => LicenseBloc(repository: LicenseRepo())),
-        BlocProvider(create: (_) => LanguageBloc(repository: LanguageRepo())),
+        BlocProvider(
+          create:
+              (_) =>
+                  LicenseBloc(repository: LicenseRepo())..add(FetchLicense()),
+        ),
+        BlocProvider(
+          create:
+              (_) =>
+                  LanguageBloc(repository: LanguageRepo())
+                    ..add(FetchLanguage()),
+        ),
         BlocProvider(create: (_) => BankInfoBloc(repository: Bankinforepo())),
-        BlocProvider(create: (_) => PicBloc(repository: ProfilePicRepo())),
+        BlocProvider(
+          create:
+              (_) =>
+                  PicBloc(repository: ProfilePicRepo())..add(FetchPicEvent()),
+        ),
       ],
       child: child,
     );

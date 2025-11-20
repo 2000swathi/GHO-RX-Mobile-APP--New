@@ -20,11 +20,11 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   late int _currentIndex;
 
-  final List<Widget> _pages = const [
-    HomePage(),
-    CasesPage(),
-    PaymentPage(),
-    ProfileDr(),
+  final List<Widget> _pages = [
+    const HomePage(),
+    const CasesPage(),
+    const PaymentPage(),
+    const ProfileDr(),
     AccountPage()
   ];
 
