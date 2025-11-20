@@ -8,3 +8,21 @@ sealed class EducationEvent extends Equatable {
 }
 
 class FetchEducation extends EducationEvent {}
+
+//add education
+class AddEducation extends EducationEvent {
+  final String institution;
+  final String degree;
+  final String duration;
+  final String year;
+  final String comments;
+
+  AddEducation({
+    required this.institution,
+    required this.degree,
+    required this.duration,
+    required this.year,
+    required this.comments,
+  });
+
+}

@@ -8,9 +8,9 @@ part 'education_state.dart';
 
 class EducationBloc extends Bloc<EducationEvent, EducationState> {
   final EducationRepo repository;
-  EducationBloc({required this.repository}) 
-    : super(EducationInitial()) {
+  EducationBloc({required this.repository}) : super(EducationInitial()) {
     on<FetchEducation>(fetchEducationInfo);
+    on<AddEducation>(addEducation);
   }
 
   Future<void> fetchEducationInfo(
@@ -24,6 +24,40 @@ class EducationBloc extends Bloc<EducationEvent, EducationState> {
       emit(EducationListState(educationResponse: education));
     } catch (e) {
       emit(EducationError(message: e.toString()));
+    }
   }
-}
+
+  Future<void> addEducation(
+    AddEducation event,
+    Emitter<EducationState> emit,
+  ) async {
+    emit(EducationAddLoading());
+
+    try {
+      final response = await repository.addeducation(
+        institution: event.institution,
+        degree: event.degree,
+        duration: event.duration,
+        year: event.year,
+        comments: event.comments,
+      );
+      if (response["Status"] == 1) {
+        String message = "Suucessfully added education";
+
+        final data = response["Data"];
+        if (data is List && data.isNotEmpty) {
+          final firstItem = data[0];
+          if (firstItem is List && firstItem.isNotEmpty) {
+            final firstElement = firstItem[0];
+            if (firstElement is Map && firstElement["msg"] != null) {
+              message = firstElement["msg"].toString();
+            }
+          }
+        }
+        emit(EduSuccess(message: message));
+      }
+    } catch (e) {
+      emit(EducationError(message: "An Error occured: ${e.toString()}"));
+    }
+  }
 }
