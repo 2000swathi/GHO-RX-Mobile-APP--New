@@ -32,6 +32,11 @@ class AccountPage extends StatelessWidget {
       routeName: AppRouter.accreditationscreen,
     ),
     _DrawerItem(
+      title: "Specialty",
+      imagePath: "assets/svg/account/treatment.png",
+      routeName: AppRouter.specialty,
+    ),
+    _DrawerItem(
       title: "Education",
       imagePath: "assets/svg/account/graduation-hat.png",
       routeName: AppRouter.educationscreen,
