@@ -38,28 +38,28 @@ class EditSpecialtyEvent extends EditEvent {
       ];
 }
 
-// accreditation
-class EditAcreditationEvent extends EditEvent {
-  final String accreditationId;
-  final String accreditationtype;
-  final String accreditationbody;
-  final String accreditationnumber;
+// // accreditation
+// class EditAcreditationEvent extends EditEvent {
+//   final String accreditationId;
+//   final String accreditationtype;
+//   final String accreditationbody;
+//   final String accreditationnumber;
 
-  const EditAcreditationEvent({
-    required this.accreditationId,
-    required this.accreditationtype,
-    required this.accreditationbody,
-    required this.accreditationnumber,
-  });
+//   const EditAcreditationEvent({
+//     required this.accreditationId,
+//     required this.accreditationtype,
+//     required this.accreditationbody,
+//     required this.accreditationnumber,
+//   });
 
-  @override
-  List<Object> get props => [
-    accreditationId,
-    accreditationtype,
-    accreditationbody,
-    accreditationnumber,
-  ];
-}
+//   @override
+//   List<Object> get props => [
+//     accreditationId,
+//     accreditationtype,
+//     accreditationbody,
+//     accreditationnumber,
+//   ];
+// }
 
 //insurance
 class EditInsuranceEvent extends EditEvent {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
@@ -10,9 +9,6 @@ import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/custom_datepicker.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
 import 'package:ghorx_mobile_app_new/features/account/license/repo/bloc/license_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
-import 'package:ghorx_mobile_app_new/features/profile/edit/bloc/edit_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/issueing_authority.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/license_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/license/repo/model/license_model.dart';
@@ -173,10 +169,10 @@ class AddEditLicenseSheet {
 
       actionButton: MultiBlocListener(
         listeners: [
-          /// ADD success/error
           BlocListener<LicenseBloc, LicenseState>(
             listener: (context, state) {
               if (state is LicSuccess) {
+                Navigator.pop(context);
                 licenseBloc.add(FetchLicense());
                 CustomScaffoldMessenger.showSuccessMessage(
                   context,
@@ -190,61 +186,37 @@ class AddEditLicenseSheet {
               }
             },
           ),
-
-          /// EDIT success/error
-          BlocListener<EditBloc, EditState>(
-            listener: (context, state) {
-              if (state is EditSuccess) {
-                licenseBloc.add(FetchLicense());
-                CustomScaffoldMessenger.showSuccessMessage(
-                  context,
-                  state.message,
-                );
-              } else if (state is EditFailure) {
-                CustomScaffoldMessenger.showErrorMessage(context, state.error);
-              }
-            },
-          ),
         ],
-        child: BlocBuilder<AddBloc, AddState>(
-          builder: (context, addState) {
-            final isAddLoading = addState is AddLoading;
+        child: BlocBuilder<LicenseBloc, LicenseState>(
+          builder: (context, state) {
+            final isLoading =
+                state is LicenseaddLoading || state is LicenseeditLoading;
 
-            return BlocBuilder<EditBloc, EditState>(
-              builder: (context, editState) {
-                final isEditLoading = editState is EditLoading;
-                final bool isLoading = isAddLoading || isEditLoading;
-
-                return CustomButton(
-                  text: isEdit ? "Update License" : "Add License",
-                  isLoading: isLoading,
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      if (isEdit) {
-                        context.read<LicenseBloc>().add(
-                          EditLicenseEvent(
+            return CustomButton(
+              text: isEdit ? "Update License" : "Add License",
+              isLoading: isLoading,
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  final event =
+                      isEdit
+                          ? EditLicenseEvent(
                             id: info!.id.toString(),
-                            licenseType: selectedLicenceType ?? '',
+                            licenseType: selectedLicenceType!,
                             licenseNumber: numController.text,
                             issueDate: issueDateController.text,
                             expiryDate: expDateController.text,
-                            issuingAuthority: selectedIssueingType ?? '',
-                          ),
-                        );
-                      } else {
-                        context.read<LicenseBloc>().add(
-                          AddLicenseEvent(
-                            licenseType: selectedLicenceType ?? '',
+                            issuingAuthority: selectedIssueingType!,
+                          )
+                          : AddLicenseEvent(
+                            licenseType: selectedLicenceType!,
                             licenseNumber: numController.text,
                             issueDate: issueDateController.text,
                             expiryDate: expDateController.text,
-                            issuingAuthority: selectedIssueingType ?? '',
-                          ),
-                        );
-                      }
-                    }
-                  },
-                );
+                            issuingAuthority: selectedIssueingType!,
+                          );
+
+                  context.read<LicenseBloc>().add(event);
+                }
               },
             );
           },

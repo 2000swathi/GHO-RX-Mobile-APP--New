@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ghorx_mobile_app_new/features/account/accreditation/accreditation_screen.dart';
+import 'package:ghorx_mobile_app_new/features/account/documents/documents_screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/drawer/aboutscrn/aboutScrn.dart';
 import 'package:ghorx_mobile_app_new/features/account/drawer/help/help.dart';
 import 'package:ghorx_mobile_app_new/features/account/education/education_screen.dart';
@@ -7,6 +9,9 @@ import 'package:ghorx_mobile_app_new/features/account/drawer/change_password/cha
 import 'package:ghorx_mobile_app_new/features/account/logout/logout_scrn.dart';
 import 'package:ghorx_mobile_app_new/features/account/license/licensescreen.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/personal_information.dart';
+import 'package:ghorx_mobile_app_new/features/account/professional%20indemnity%20insurance/professional_indemnity_insurance.dart';
+import 'package:ghorx_mobile_app_new/features/account/professional%20references/professional_references.dart';
+import 'package:ghorx_mobile_app_new/features/account/questionnaire/questionnaire_screen.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/otp_screen.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/repository/model/login_model.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/add_page.dart';
@@ -40,6 +45,13 @@ class AppRouter {
   static const String languagescreen = '/languagescreen';
   static const String licensescreen = '/licensescreen';
   static const String educationscreen = '/educationscreen';
+  static const String accreditationscreen = '/accreditationscreen';
+  static const String professionalreferences = '/professionalreferences';
+  static const String profesindInsurance = '/professionalindemnityinsurance';
+  static const String documents = '/documents';
+  static const String questionnaire = '/questionnaire';
+
+  //profile
   //drawer
   static const String changePW = '/changePW';
   static const String logout = '/logout';
@@ -88,6 +100,20 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => Licensescreen());
       case educationscreen:
         return MaterialPageRoute(builder: (_) => EducationScreen());
+      case accreditationscreen:
+        return MaterialPageRoute(builder: (_) => AccreditationScreen());
+      case professionalreferences:
+        return MaterialPageRoute(
+          builder: (_) => ProfessionalReferencesScreen(),
+        );
+      case profesindInsurance:
+        return MaterialPageRoute(
+          builder: (_) => ProfessionalIndemnityInsuranceScreen(),
+        );
+      case documents:
+        return MaterialPageRoute(builder: (_) => DocumentsScreen());
+      case questionnaire:
+        return MaterialPageRoute(builder: (_) => QuestionnaireScreen());
 
       //drawer
       case changePW:

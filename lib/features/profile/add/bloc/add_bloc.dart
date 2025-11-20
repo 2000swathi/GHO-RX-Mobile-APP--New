@@ -12,7 +12,7 @@ class AddBloc extends Bloc<AddEvent, AddState> {
     // on<AddLanguage>(_onAddLanguage);
     on<AddBankInfo>(_onAddBankInfo);
     on<AddSpecialty>(_onAddSpecialty);
-    on<AddAccrediation>(addaccrediation);
+    // on<AddAccrediation>(addaccrediation);
     on<AddInsurance>(addInsurance);
   }
   // License
@@ -87,24 +87,24 @@ class AddBloc extends Bloc<AddEvent, AddState> {
     }
   }
 
-  //accreditation
-  Future<void> addaccrediation(
-    AddAccrediation event,
-    Emitter<AddState> emit,
-  ) async {
-    emit(AddLoading());
+  // //accreditation
+  // Future<void> addaccrediation(
+  //   AddAccrediation event,
+  //   Emitter<AddState> emit,
+  // ) async {
+  //   emit(AddLoading());
 
-    try {
-      final response = await repository.addaccrediation(
-        accreditationtype: event.accreditationtype,
-        accreditationbody: event.accreditationbody,
-        accreditationnumber: event.accreditationnumber,
-      );
-      emit(AddSuccess(response: response));
-    } catch (e) {
-      emit(AddError(message: "An error occurred: ${e.toString()}"));
-    }
-  }
+  //   try {
+  //     final response = await repository.addaccrediation(
+  //       accreditationtype: event.accreditationtype,
+  //       accreditationbody: event.accreditationbody,
+  //       accreditationnumber: event.accreditationnumber,
+  //     );
+  //     emit(AddSuccess(response: response));
+  //   } catch (e) {
+  //     emit(AddError(message: "An error occurred: ${e.toString()}"));
+  //   }
+  // }
 
   //insurance
   Future<void> addInsurance(AddInsurance event, Emitter<AddState> emit) async {

@@ -61,7 +61,7 @@ class LicenseBloc extends Bloc<LicenseEvent, LicenseState> {
     emit(LicenseeditLoading());
 
     try {
-      final licenseresponse = await repository.editLicense(
+      final response = await repository.editLicense(
         licenseNumber: editevent.licenseNumber,
         licenseType: editevent.licenseType.toString(),
         issueDate: editevent.issueDate,
@@ -70,10 +70,10 @@ class LicenseBloc extends Bloc<LicenseEvent, LicenseState> {
         issuingAuthority: editevent.issuingAuthority,
       );
 
-      if (licenseresponse["Status"] == 1) {
+      if (response["Status"] == 1) {
         String message = "License updated successfully";
 
-        final data = licenseresponse["Data"];
+        final data = response["Data"];
         if (data is List && data.isNotEmpty) {
           final level1 = data[0];
           if (level1 is List && level1.isNotEmpty) {
@@ -87,7 +87,7 @@ class LicenseBloc extends Bloc<LicenseEvent, LicenseState> {
         emit(LicSuccess(message: message));
       } else {
         final error =
-            licenseresponse["Error"]?.toString() ?? "Failed to update license";
+            response["Error"]?.toString() ?? "Failed to update license";
         emit(LicenseError(message: error));
       }
     } catch (e) {

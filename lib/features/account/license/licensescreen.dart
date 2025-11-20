@@ -1,13 +1,13 @@
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/commondelete_dialogbox.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/features/account/deleteBloc/bloc/delete_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/license/addedit_license_sheet.dart';
-import 'package:ghorx_mobile_app_new/features/account/license/license_card.dart';
+import 'package:ghorx_mobile_app_new/features/account/license/widget/license_card.dart';
 import 'package:ghorx_mobile_app_new/features/account/license/repo/bloc/license_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/customFAB.dart';
@@ -28,9 +28,8 @@ class Licensescreen extends StatelessWidget {
 
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
 
-      /// ------------------ ADD LICENSE BUTTON -------------------
       floatingActionButton: CustomFAB(
-        onAdd: () async {
+        onAdd: () {
           listBloc.add(FetchLicenseList());
           listBloc.add(FetchIssueingAuthorityList());
 
@@ -40,33 +39,44 @@ class Licensescreen extends StatelessWidget {
             builder: (_) => const Center(child: LoadingAnimation()),
           );
 
-          final licenseState = await listBloc.stream.firstWhere(
-            (s) => s is LicenseListState || s is ListFailure,
-          );
-          final issueingState = await listBloc.stream.firstWhere(
-            (s) => s is IssueingauthorityListState || s is ListFailure,
-          );
+          StreamZip([
+            listBloc.stream
+                .where((s) => s is LicenseListState || s is ListFailure)
+                .take(1),
+            listBloc.stream
+                .where(
+                  (s) => s is IssueingauthorityListState || s is ListFailure,
+                )
+                .take(1),
+          ]).listen((values) {
+            if (!context.mounted) return;
+            Navigator.pop(context); 
 
-          Navigator.pop(context);
+            final licenseState = values[0];
+            final issueingState = values[1];
 
-          if (licenseState is LicenseListState &&
-              issueingState is IssueingauthorityListState) {
-            final licList = licenseState.licenseResponse.data.expand((e) => e).toList();
-            final issuingList = issueingState.issueingauthorityResponse.data.expand((e) => e).toList();
+            if (licenseState is LicenseListState &&
+                issueingState is IssueingauthorityListState) {
+              final licList =
+                  licenseState.licenseResponse.data.expand((e) => e).toList();
+              final issuingList =
+                  issueingState.issueingauthorityResponse.data
+                      .expand((e) => e)
+                      .toList();
 
-            AddEditLicenseSheet.showSheet(
-              context,
-              null,
-              licList,
-              issuingList,
-              false,
-              licenseBloc: licenseBloc,
-            );
-          }
+              AddEditLicenseSheet.showSheet(
+                context,
+                null,
+                licList,
+                issuingList,
+                false,
+                licenseBloc: licenseBloc,
+              );
+            }
+          });
         },
       ),
 
-      /// ---------------------- LICENSE LIST -----------------------
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: BlocListener<DeleteBloc, DeleteState>(
@@ -81,15 +91,12 @@ class Licensescreen extends StatelessWidget {
               Navigator.pop(context);
               CustomScaffoldMessenger.showSuccessMessage(
                 context,
-                "License deleted successfully",
+                state.message,
               );
               licenseBloc.add(FetchLicense());
             } else if (state is DeleteFailure) {
               Navigator.pop(context);
-              CustomScaffoldMessenger.showErrorMessage(
-                context,
-                "Failed to delete license",
-              );
+              CustomScaffoldMessenger.showErrorMessage(context, state.error);
             }
           },
           child: BlocBuilder<LicenseBloc, LicenseState>(
@@ -106,9 +113,7 @@ class Licensescreen extends StatelessWidget {
                 final licenses = state.licenseModel.data;
 
                 if (licenses.isEmpty) {
-                  return const Center(
-                    child: Text("No licenses found"),
-                  );
+                  return const Center(child: Text("No licenses found"));
                 }
 
                 return ListView.builder(
@@ -145,39 +150,59 @@ class Licensescreen extends StatelessWidget {
                         },
 
                         /// ------------ EDIT CLICK ----------------
-                        onEdit: () async {
+                        onEdit: () {
                           showDialog(
                             context: context,
                             barrierDismissible: false,
-                            builder: (_) => const Center(child: LoadingAnimation()),
+                            builder:
+                                (_) => const Center(child: LoadingAnimation()),
                           );
 
                           listBloc.add(FetchLicenseList());
                           listBloc.add(FetchIssueingAuthorityList());
 
-                          final listState = await listBloc.stream.firstWhere(
-                            (s) => s is LicenseListState || s is ListFailure,
-                          );
-                          final issueingState = await listBloc.stream.firstWhere(
-                            (s) => s is IssueingauthorityListState || s is ListFailure,
-                          );
+                          StreamZip([
+                            listBloc.stream
+                                .where(
+                                  (s) =>
+                                      s is LicenseListState || s is ListFailure,
+                                )
+                                .take(1),
+                            listBloc.stream
+                                .where(
+                                  (s) =>
+                                      s is IssueingauthorityListState ||
+                                      s is ListFailure,
+                                )
+                                .take(1),
+                          ]).listen((values) {
+                            if (!context.mounted) return;
+                            Navigator.pop(context); // close loader
 
-                          Navigator.pop(context);
+                            final listState = values[0];
+                            final issueingState = values[1];
 
-                          if (listState is LicenseListState &&
-                              issueingState is IssueingauthorityListState) {
-                            final licList = listState.licenseResponse.data.expand((e) => e).toList();
-                            final issuingList = issueingState.issueingauthorityResponse.data.expand((e) => e).toList();
+                            if (listState is LicenseListState &&
+                                issueingState is IssueingauthorityListState) {
+                              final licList =
+                                  listState.licenseResponse.data
+                                      .expand((e) => e)
+                                      .toList();
+                              final issuingList =
+                                  issueingState.issueingauthorityResponse.data
+                                      .expand((e) => e)
+                                      .toList();
 
-                            AddEditLicenseSheet.showSheet(
-                              context,
-                              license,
-                              licList,
-                              issuingList,
-                              true,
-                              licenseBloc: licenseBloc,
-                            );
-                          }
+                              AddEditLicenseSheet.showSheet(
+                                context,
+                                license,
+                                licList,
+                                issuingList,
+                                true,
+                                licenseBloc: licenseBloc,
+                              );
+                            }
+                          });
                         },
                       ),
                     );
