@@ -59,6 +59,7 @@ class AccountPage extends StatelessWidget {
     _DrawerItem(
       title: "Questionnaire",
       imagePath: "assets/svg/account/question-mark.png",
+      routeName: AppRouter.questionnaire,
     ),
   ];
 
