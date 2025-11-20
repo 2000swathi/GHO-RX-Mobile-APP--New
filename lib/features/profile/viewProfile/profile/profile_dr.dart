@@ -12,12 +12,12 @@ import 'package:ghorx_mobile_app_new/features/cases/cases_pages/widgets/case_app
 import 'package:ghorx_mobile_app_new/features/home/widget/profile_pic_dialogue.dart';
 import 'package:ghorx_mobile_app_new/features/profile/Bank_info/bloc/bank_info_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/license/repo/bloc/license_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/accreditation/bloc/accreditation_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/accreditation/repo/bloc/accreditation_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/deleteBloc/bloc/delete_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/languages/addedit_language.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_specialty_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_accreditation_sheet.dart';
+import 'package:ghorx_mobile_app_new/features/account/accreditation/addedit_accreditation_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_bankinfo.dart';
 import 'package:ghorx_mobile_app_new/features/profile/insurances/bloc/insurance_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/languages/repo/bloc/language_bloc.dart';
@@ -585,229 +585,229 @@ class _ProfileDrState extends State<ProfileDr> {
             ),
           ),
           //////////////////////////////////////////////////////accreditation
-          _buildSection(
-            index: 1,
-            heading: "Accreditation",
-            subheading: "Verify your qualifications and area of expertise.",
-            content: BlocListener<DeleteBloc, DeleteState>(
-              listener: (context, state) {
-                if (state is DeleteLoading) {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (_) => const Center(child: LoadingAnimation()),
-                  );
-                } else if (state is DeleteSuccess) {
-                  Navigator.pop(context);
-                  CustomScaffoldMessenger.showSuccessMessage(
-                    context,
-                    "Accreditation deleted successfully",
-                  );
-                  context.read<AccreditationBloc>().add(FetchAccreditation());
-                } else if (state is DeleteFailure) {
-                  Navigator.pop(context);
-                  CustomScaffoldMessenger.showSuccessMessage(
-                    context,
-                    "Failed to delete accreditation",
-                  );
-                }
-              },
-              child: BlocBuilder<AccreditationBloc, AccreditationState>(
-                builder: (context, state) {
-                  if (state is AccrediationLoading) {
-                    return const Center(child: LoadingAnimation());
-                  } else if (state is Accreditation) {
-                    final accreditationList = state.accreditationModel.data;
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (accreditationList.isEmpty)
-                          const Center(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 10),
-                              child: Text("No accreditations found"),
-                            ),
-                          ),
+          // _buildSection(
+          //   index: 1,
+          //   heading: "Accreditation",
+          //   subheading: "Verify your qualifications and area of expertise.",
+          //   content: BlocListener<DeleteBloc, DeleteState>(
+          //     listener: (context, state) {
+          //       if (state is DeleteLoading) {
+          //         showDialog(
+          //           context: context,
+          //           barrierDismissible: false,
+          //           builder: (_) => const Center(child: LoadingAnimation()),
+          //         );
+          //       } else if (state is DeleteSuccess) {
+          //         Navigator.pop(context);
+          //         CustomScaffoldMessenger.showSuccessMessage(
+          //           context,
+          //           "Accreditation deleted successfully",
+          //         );
+          //         context.read<AccreditationBloc>().add(FetchAccreditation());
+          //       } else if (state is DeleteFailure) {
+          //         Navigator.pop(context);
+          //         CustomScaffoldMessenger.showSuccessMessage(
+          //           context,
+          //           "Failed to delete accreditation",
+          //         );
+          //       }
+          //     },
+          //     child: BlocBuilder<AccreditationBloc, AccreditationState>(
+          //       builder: (context, state) {
+          //         if (state is AccrediationLoading) {
+          //           return const Center(child: LoadingAnimation());
+          //         } else if (state is AccreditationgetState) {
+          //           final accreditationList = state.accreditationModel.data;
+          //           return Column(
+          //             crossAxisAlignment: CrossAxisAlignment.start,
+          //             children: [
+          //               if (accreditationList.isEmpty)
+          //                 const Center(
+          //                   child: Padding(
+          //                     padding: EdgeInsets.symmetric(vertical: 10),
+          //                     child: Text("No accreditations found"),
+          //                   ),
+          //                 ),
 
-                        ...accreditationList.map((accreditation) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _buildRow(
-                                "Accreditation number",
-                                accreditation.accreditationNumber,
-                              ),
-                              _buildRow(
-                                "Accreditation Type",
-                                accreditation.accreditationType,
-                              ),
-                              _buildRow(
-                                "Accreditation Body",
-                                accreditation.accreditationBody,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: InkWell(
-                                      onTap: () async {
-                                        final confirmed =
-                                            await showDeleteConfirmationDialog(
-                                              context: context,
-                                              title: "Delete Accreditation",
-                                              content:
-                                                  "Are you sure want to delete",
-                                            );
-                                        if (confirmed == true &&
-                                            context.mounted) {
-                                          context.read<DeleteBloc>().add(
-                                            DeleteProfileItem(
-                                              id: accreditation.id.toString(),
-                                              action: "revieweraccred",
-                                              isLang: false,
-                                            ),
-                                          );
-                                        }
-                                      },
-                                      child: SvgPicture.asset(
-                                        "assets/svg/trash.svg",
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                  ),
+          //               ...accreditationList.map((accreditation) {
+          //                 return Column(
+          //                   crossAxisAlignment: CrossAxisAlignment.start,
+          //                   children: [
+          //                     _buildRow(
+          //                       "Accreditation number",
+          //                       accreditation.accreditationNumber,
+          //                     ),
+          //                     _buildRow(
+          //                       "Accreditation Type",
+          //                       accreditation.accreditationType,
+          //                     ),
+          //                     _buildRow(
+          //                       "Accreditation Body",
+          //                       accreditation.accreditationBody,
+          //                     ),
+          //                     Row(
+          //                       mainAxisAlignment: MainAxisAlignment.end,
+          //                       children: [
+          //                         Align(
+          //                           alignment: Alignment.centerRight,
+          //                           child: InkWell(
+          //                             onTap: () async {
+          //                               final confirmed =
+          //                                   await showDeleteConfirmationDialog(
+          //                                     context: context,
+          //                                     title: "Delete Accreditation",
+          //                                     content:
+          //                                         "Are you sure want to delete",
+          //                                   );
+          //                               if (confirmed == true &&
+          //                                   context.mounted) {
+          //                                 context.read<DeleteBloc>().add(
+          //                                   DeleteProfileItem(
+          //                                     id: accreditation.id.toString(),
+          //                                     action: "revieweraccred",
+          //                                     isLang: false,
+          //                                   ),
+          //                                 );
+          //                               }
+          //                             },
+          //                             child: SvgPicture.asset(
+          //                               "assets/svg/trash.svg",
+          //                               color: Colors.red,
+          //                             ),
+          //                           ),
+          //                         ),
 
-                                  const SizedBox(width: 15),
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: InkWell(
-                                      onTap: () async {
-                                        final listBloc =
-                                            context.read<ListBloc>();
-                                        listBloc.add(FetchAccrediationList());
+          //                         const SizedBox(width: 15),
+          //                         Align(
+          //                           alignment: Alignment.centerRight,
+          //                           child: InkWell(
+          //                             onTap: () async {
+          //                               final listBloc =
+          //                                   context.read<ListBloc>();
+          //                               listBloc.add(FetchAccrediationList());
 
-                                        showDialog(
-                                          context: context,
-                                          barrierDismissible: false,
-                                          builder:
-                                              (_) => const Center(
-                                                child: LoadingAnimation(),
-                                              ),
-                                        );
+          //                               showDialog(
+          //                                 context: context,
+          //                                 barrierDismissible: false,
+          //                                 builder:
+          //                                     (_) => const Center(
+          //                                       child: LoadingAnimation(),
+          //                                     ),
+          //                               );
 
-                                        final listState = await listBloc.stream
-                                            .firstWhere(
-                                              (s) =>
-                                                  s is AccreditationTypeListState ||
-                                                  s is ListFailure,
-                                            );
+          //                               final listState = await listBloc.stream
+          //                                   .firstWhere(
+          //                                     (s) =>
+          //                                         s is AccreditationTypeListState ||
+          //                                         s is ListFailure,
+          //                                   );
 
-                                        Navigator.pop(context);
+          //                               Navigator.pop(context);
 
-                                        if (listState
-                                            is AccreditationTypeListState) {
-                                          final accreditationTypeList =
-                                              listState
-                                                  .accreditationTypeResponse
-                                                  .data;
+          //                               if (listState
+          //                                   is AccreditationTypeListState) {
+          //                                 final accreditationTypeList =
+          //                                     listState
+          //                                         .accreditationTypeResponse
+          //                                         .data;
 
-                                          AddEditAccrediationBottomSheet.showSheet(
-                                            context,
-                                            accreditation,
-                                            true,
-                                            accrBloc:
-                                                context
-                                                    .read<AccreditationBloc>(),
-                                            accreList: accreditationTypeList,
-                                          );
-                                        } else if (listState is ListFailure) {
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).showSnackBar(
-                                            SnackBar(
-                                              content: Text(listState.error),
-                                            ),
-                                          );
-                                        }
-                                      },
-                                      child: SvgPicture.asset(
-                                        "assets/svg/edit_svg.svg",
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Divider(color: AppColors.hint2color),
-                            ],
-                          );
-                        }),
+          //                                 AddEditAccrediationBottomSheet.showSheet(
+          //                                   context,
+          //                                   accreditation,
+          //                                   true,
+          //                                   accrBloc:
+          //                                       context
+          //                                           .read<AccreditationBloc>(),
+          //                                   accreList: accreditationTypeList,
+          //                                 );
+          //                               } else if (listState is ListFailure) {
+          //                                 ScaffoldMessenger.of(
+          //                                   context,
+          //                                 ).showSnackBar(
+          //                                   SnackBar(
+          //                                     content: Text(listState.error),
+          //                                   ),
+          //                                 );
+          //                               }
+          //                             },
+          //                             child: SvgPicture.asset(
+          //                               "assets/svg/edit_svg.svg",
+          //                             ),
+          //                           ),
+          //                         ),
+          //                       ],
+          //                     ),
+          //                     Divider(color: AppColors.hint2color),
+          //                   ],
+          //                 );
+          //               }),
 
-                        const SizedBox(height: 10),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: InkWell(
-                            onTap: () async {
-                              final listBloc = context.read<ListBloc>();
-                              listBloc.add(FetchAccrediationList());
+          //               const SizedBox(height: 10),
+          //               Align(
+          //                 alignment: Alignment.centerRight,
+          //                 child: InkWell(
+          //                   onTap: () async {
+          //                     final listBloc = context.read<ListBloc>();
+          //                     listBloc.add(FetchAccrediationList());
 
-                              showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder:
-                                    (_) =>
-                                        const Center(child: LoadingAnimation()),
-                              );
+          //                     showDialog(
+          //                       context: context,
+          //                       barrierDismissible: false,
+          //                       builder:
+          //                           (_) =>
+          //                               const Center(child: LoadingAnimation()),
+          //                     );
 
-                              final listState = await listBloc.stream
-                                  .firstWhere(
-                                    (s) =>
-                                        s is AccreditationTypeListState ||
-                                        s is ListFailure,
-                                  );
+          //                     final listState = await listBloc.stream
+          //                         .firstWhere(
+          //                           (s) =>
+          //                               s is AccreditationTypeListState ||
+          //                               s is ListFailure,
+          //                         );
 
-                              Navigator.pop(context);
+          //                     Navigator.pop(context);
 
-                              if (listState is AccreditationTypeListState) {
-                                final accreditationTypeList =
-                                    listState.accreditationTypeResponse.data;
+          //                     if (listState is AccreditationTypeListState) {
+          //                       final accreditationTypeList =
+          //                           listState.accreditationTypeResponse.data;
 
-                                AddEditAccrediationBottomSheet.showSheet(
-                                  context,
-                                  null,
-                                  false,
-                                  accrBloc: context.read<AccreditationBloc>(),
-                                  accreList: accreditationTypeList,
-                                );
-                              } else if (listState is ListFailure) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(listState.error)),
-                                );
-                              }
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Add Accreditation",
-                                  style: AppFonts.textprogressbar.copyWith(
-                                    color: AppColors.primarycolor,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  } else if (state is AccrediationError) {
-                    return Center(child: Text(state.message));
-                  }
-                  return Container();
-                },
-              ),
-            ),
-          ),
+          //                       AddEditAccrediationBottomSheet.showSheet(
+          //                         context,
+          //                         null,
+          //                         false,
+          //                         accrBloc: context.read<AccreditationBloc>(),
+          //                         accreList: accreditationTypeList,
+          //                       );
+          //                     } else if (listState is ListFailure) {
+          //                       ScaffoldMessenger.of(context).showSnackBar(
+          //                         SnackBar(content: Text(listState.error)),
+          //                       );
+          //                     }
+          //                   },
+          //                   child: Row(
+          //                     mainAxisAlignment: MainAxisAlignment.center,
+          //                     children: [
+          //                       Text(
+          //                         "Add Accreditation",
+          //                         style: AppFonts.textprogressbar.copyWith(
+          //                           color: AppColors.primarycolor,
+          //                           fontWeight: FontWeight.w600,
+          //                         ),
+          //                       ),
+          //                     ],
+          //                   ),
+          //                 ),
+          //               ),
+          //             ],
+          //           );
+          //         } else if (state is AccrediationError) {
+          //           return Center(child: Text(state.message));
+          //         }
+          //         return Container();
+          //       },
+          //     ),
+          //   ),
+          // ),
           _buildSection(
             index: 3,
             heading: "Insurance",

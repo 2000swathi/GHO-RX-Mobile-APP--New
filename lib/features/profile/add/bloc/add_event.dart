@@ -13,18 +13,18 @@ class AddSpecialty extends AddEvent {
   });
 }
 
-//Accreditation
-class AddAccrediation extends AddEvent {
-  final String accreditationtype;
-  final String accreditationbody;
-  final String accreditationnumber;
+// //Accreditation
+// class AddAccrediation extends AddEvent {
+//   final String accreditationtype;
+//   final String accreditationbody;
+//   final String accreditationnumber;
 
-  AddAccrediation({
-    required this.accreditationtype,
-    required this.accreditationbody,
-    required this.accreditationnumber,
-  });
-}
+//   AddAccrediation({
+//     required this.accreditationtype,
+//     required this.accreditationbody,
+//     required this.accreditationnumber,
+//   });
+// }
 
 //insurance
 class AddInsurance extends AddEvent {

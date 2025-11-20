@@ -37,8 +37,8 @@ import 'package:ghorx_mobile_app_new/features/profile/Bank_info/bankinforepo.dar
 import 'package:ghorx_mobile_app_new/features/profile/Bank_info/bloc/bank_info_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/license/repo/bloc/license_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/license/repo/license_repo.dart';
-import 'package:ghorx_mobile_app_new/features/profile/accreditation/acc_repo.dart';
-import 'package:ghorx_mobile_app_new/features/profile/accreditation/bloc/accreditation_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/accreditation/repo/acc_repo.dart';
+import 'package:ghorx_mobile_app_new/features/account/accreditation/repo/bloc/accreditation_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/deleteBloc/bloc/delete_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/deleteBloc/repository/delete_repository.dart';

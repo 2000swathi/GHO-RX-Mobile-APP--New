@@ -24,7 +24,7 @@ class DeleteBloc extends Bloc<DeleteEvent, DeleteState> {
       );
 
       if (response["Status"] == 1) {
-        final message = response["Data"][0][0]["msg"] ?? "Deleted Successfully";
+        final message = response["Data"]?[0]?[0]?["msg"] ?? "Deleted Successfully";
         emit(DeleteSuccess(message: message));
       }else {
         emit(DeleteFailure(error: "Failed to delete"));
