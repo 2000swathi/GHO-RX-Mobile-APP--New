@@ -15,6 +15,8 @@ class customDialog extends StatelessWidget {
   final Color? btnTextClr;
   final Color? btnbg1;
   final Color? btnbg2;
+  // final VoidCallback? btn1pressed;
+  final VoidCallback? btn2pressed;
 
   const customDialog({
     super.key,
@@ -28,6 +30,8 @@ class customDialog extends StatelessWidget {
     this.btnTextClr,
     this.btnbg1,
     this.btnbg2,
+    // this.btn1pressed,
+    this.btn2pressed,
   });
 
   @override
@@ -42,7 +46,14 @@ class customDialog extends StatelessWidget {
             padding: const EdgeInsets.only(top: 17, right: 22),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [SvgPicture.asset("assets/svg/close_svg_button.svg")],
+              children: [
+                InkWell(
+                  child: SvgPicture.asset("assets/svg/close_svg_button.svg"),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
             ),
           ),
           Center(
@@ -93,10 +104,19 @@ class customDialog extends StatelessWidget {
                     text: btnTxt1,
                     colortext: btnTextClr,
                     color: btnbg1,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
                 ),
                 SizedBox(width: 10),
-                Expanded(child: CustomButton(text: btnTxt2, color: btnbg2)),
+                Expanded(
+                  child: CustomButton(
+                    text: btnTxt2,
+                    color: btnbg2,
+                    onPressed: btn2pressed,
+                  ),
+                ),
               ],
             ),
           ),

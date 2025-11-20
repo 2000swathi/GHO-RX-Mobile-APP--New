@@ -12,7 +12,7 @@ class SettingsGroupContainer extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.black.withOpacity(0.05)),
+        // border: Border.all(color: AppColors.black.withOpacity(0.05)),
       ),
       child: Column(
         children: [
@@ -22,12 +22,12 @@ class SettingsGroupContainer extends StatelessWidget {
               child: children[i],
             ),
 
-            if (i != children.length - 1)
-              Divider(
-                thickness: 1,
-                height: 1,
-                color: AppColors.black.withOpacity(0.06),
-              ),
+            // if (i != children.length - 1)
+            // Divider(
+            //   thickness: 1,
+            //   height: 1,
+            //   color: AppColors.black.withOpacity(0.06),
+            // ),
           ],
         ],
       ),
