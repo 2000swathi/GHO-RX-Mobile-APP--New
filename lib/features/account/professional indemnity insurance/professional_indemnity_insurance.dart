@@ -41,7 +41,7 @@ class ProfessionalIndemnityInsuranceScreen extends StatelessWidget {
             return Padding(
               padding: EdgeInsets.only(bottom: 16),
               child: ProfessionalinsuranceCard(
-                index: index, 
+                index: index + 1, 
                 providerId: insurance["providerId"], 
                 providerName: insurance["providerName"], 
                 issueDate: insurance["issueDate"], 
