@@ -56,8 +56,6 @@ class AppRouter {
   static const String questionnaire = '/questionnaire';
   static const String specialty = '/specialty';
 
-
-
   //profile
   //drawer
   static const String changePW = '/changePW';
@@ -114,9 +112,6 @@ class AppRouter {
           builder: (_) => ProfessionalReferencesScreen(),
         );
       case profesindInsurance:
-        return MaterialPageRoute(
-          builder: (_) => ProfessionalIndemnityInsuranceScreen(),
-        );
         return MaterialPageRoute(builder: (_) => InsuranceScreen());
       case documents:
         return MaterialPageRoute(builder: (_) => DocumentsScreen());
