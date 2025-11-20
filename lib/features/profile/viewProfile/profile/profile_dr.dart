@@ -802,154 +802,154 @@ class _ProfileDrState extends State<ProfileDr> {
           //     ),
           //   ),
           // ),
-          _buildSection(
-            index: 3,
-            heading: "Insurance",
-            subheading: "Review your professional coverage details.",
-            content: BlocListener<DeleteBloc, DeleteState>(
-              listener: (context, state) {
-                if (state is DeleteLoading) {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (_) => const Center(child: LoadingAnimation()),
-                  );
-                } else if (state is DeleteSuccess) {
-                  Navigator.pop(context);
-                  CustomScaffoldMessenger.showSuccessMessage(
-                    context,
-                    "Insurance deleted successfully",
-                  );
-                  context.read<InsuranceBloc>().add(FetchInsurance());
-                } else if (state is DeleteFailure) {
-                  Navigator.pop(context);
-                  CustomScaffoldMessenger.showSuccessMessage(
-                    context,
-                    "Failed to delete insurance",
-                  );
-                }
-              },
-              child: BlocBuilder<InsuranceBloc, InsuranceState>(
-                builder: (context, state) {
-                  if (state is InsuranceLoading) {
-                    return const Center(child: LoadingAnimation());
-                  } else if (state is InsuranceGetState) {
-                    final insuranceList = state.insuranceModel.data;
-                    return Column(
-                      children: [
-                        if (insuranceList.isEmpty)
-                          Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("No Insurance found"),
-                            ),
-                          )
-                        else
-                          ...insuranceList.map(
-                            (insurance) => Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _buildRow(
-                                  "ProviderID",
-                                  insurance.providerID.toString(),
-                                ),
-                                _buildRow(
-                                  "ProviderName",
-                                  insurance.providerName.toString(),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: InkWell(
-                                        onTap: () async {
-                                          final confirmed =
-                                              await showDeleteConfirmationDialog(
-                                                context: context,
-                                                title: "Delete Insurance",
-                                                content:
-                                                    "Are you sure want to delete",
-                                              );
-                                          if (confirmed == true &&
-                                              context.mounted) {
-                                            context.read<DeleteBloc>().add(
-                                              DeleteProfileItem(
-                                                id: insurance.id.toString(),
-                                                action: "reviewerins",
-                                                isLang: false,
-                                              ),
-                                            );
-                                          }
-                                        },
-                                        child: SvgPicture.asset(
-                                          "assets/svg/trash.svg",
-                                          color: Colors.red,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 15),
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: InkWell(
-                                        onTap: () async {
-                                          AddEditInsuranceSheet.showSheet(
-                                            context,
-                                            insurance,
-                                            true,
-                                            insuranceBloc:
-                                                context.read<InsuranceBloc>(),
-                                          );
-                                        },
-                                        child: SvgPicture.asset(
-                                          "assets/svg/edit_svg.svg",
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Divider(color: AppColors.hint2color),
-                              ],
-                            ),
-                          ),
-                        const SizedBox(height: 12),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: InkWell(
-                            onTap: () {
-                              AddEditInsuranceSheet.showSheet(
-                                context,
-                                null,
-                                false,
-                                insuranceBloc: context.read<InsuranceBloc>(),
-                              );
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Add Insurance",
-                                  style: AppFonts.textprogressbar.copyWith(
-                                    color: AppColors.primarycolor,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }
+          // _buildSection(
+          //   index: 3,
+          //   heading: "Insurance",
+          //   subheading: "Review your professional coverage details.",
+          //   content: BlocListener<DeleteBloc, DeleteState>(
+          //     listener: (context, state) {
+          //       if (state is DeleteLoading) {
+          //         showDialog(
+          //           context: context,
+          //           barrierDismissible: false,
+          //           builder: (_) => const Center(child: LoadingAnimation()),
+          //         );
+          //       } else if (state is DeleteSuccess) {
+          //         Navigator.pop(context);
+          //         CustomScaffoldMessenger.showSuccessMessage(
+          //           context,
+          //           "Insurance deleted successfully",
+          //         );
+          //         context.read<InsuranceBloc>().add(FetchInsurance());
+          //       } else if (state is DeleteFailure) {
+          //         Navigator.pop(context);
+          //         CustomScaffoldMessenger.showSuccessMessage(
+          //           context,
+          //           "Failed to delete insurance",
+          //         );
+          //       }
+          //     },
+          //     child: BlocBuilder<InsuranceBloc, InsuranceState>(
+          //       builder: (context, state) {
+          //         if (state is InsuranceLoading) {
+          //           return const Center(child: LoadingAnimation());
+          //         } else if (state is InsuranceGetState) {
+          //           final insuranceList = state.insuranceModel.data;
+          //           return Column(
+          //             children: [
+          //               if (insuranceList.isEmpty)
+          //                 Center(
+          //                   child: Padding(
+          //                     padding: const EdgeInsets.all(8.0),
+          //                     child: Text("No Insurance found"),
+          //                   ),
+          //                 )
+          //               else
+          //                 ...insuranceList.map(
+          //                   (insurance) => Column(
+          //                     crossAxisAlignment: CrossAxisAlignment.start,
+          //                     children: [
+          //                       _buildRow(
+          //                         "ProviderID",
+          //                         insurance.providerID.toString(),
+          //                       ),
+          //                       _buildRow(
+          //                         "ProviderName",
+          //                         insurance.providerName.toString(),
+          //                       ),
+          //                       Row(
+          //                         mainAxisAlignment: MainAxisAlignment.end,
+          //                         children: [
+          //                           Align(
+          //                             alignment: Alignment.centerRight,
+          //                             child: InkWell(
+          //                               onTap: () async {
+          //                                 final confirmed =
+          //                                     await showDeleteConfirmationDialog(
+          //                                       context: context,
+          //                                       title: "Delete Insurance",
+          //                                       content:
+          //                                           "Are you sure want to delete",
+          //                                     );
+          //                                 if (confirmed == true &&
+          //                                     context.mounted) {
+          //                                   context.read<DeleteBloc>().add(
+          //                                     DeleteProfileItem(
+          //                                       id: insurance.id.toString(),
+          //                                       action: "reviewerins",
+          //                                       isLang: false,
+          //                                     ),
+          //                                   );
+          //                                 }
+          //                               },
+          //                               child: SvgPicture.asset(
+          //                                 "assets/svg/trash.svg",
+          //                                 color: Colors.red,
+          //                               ),
+          //                             ),
+          //                           ),
+          //                           const SizedBox(width: 15),
+          //                           Align(
+          //                             alignment: Alignment.centerRight,
+          //                             child: InkWell(
+          //                               onTap: () async {
+          //                                 AddEditInsuranceSheet.showSheet(
+          //                                   context,
+          //                                   insurance,
+          //                                   true,
+          //                                   insuranceBloc:
+          //                                       context.read<InsuranceBloc>(),
+          //                                 );
+          //                               },
+          //                               child: SvgPicture.asset(
+          //                                 "assets/svg/edit_svg.svg",
+          //                               ),
+          //                             ),
+          //                           ),
+          //                         ],
+          //                       ),
+          //                       Divider(color: AppColors.hint2color),
+          //                     ],
+          //                   ),
+          //                 ),
+          //               const SizedBox(height: 12),
+          //               Align(
+          //                 alignment: Alignment.centerRight,
+          //                 child: InkWell(
+          //                   onTap: () {
+          //                     AddEditInsuranceSheet.showSheet(
+          //                       context,
+          //                       null,
+          //                       false,
+          //                       insuranceBloc: context.read<InsuranceBloc>(),
+          //                     );
+          //                   },
+          //                   child: Row(
+          //                     mainAxisAlignment: MainAxisAlignment.center,
+          //                     children: [
+          //                       Text(
+          //                         "Add Insurance",
+          //                         style: AppFonts.textprogressbar.copyWith(
+          //                           color: AppColors.primarycolor,
+          //                           fontWeight: FontWeight.w600,
+          //                         ),
+          //                       ),
+          //                     ],
+          //                   ),
+          //                 ),
+          //               ),
+          //             ],
+          //           );
+          //         }
 
-                  if (state is InsuranceError) {
-                    return Center(child: Text(state.message));
-                  }
-                  return Container();
-                },
-              ),
-            ),
-          ),
+          //         if (state is InsuranceError) {
+          //           return Center(child: Text(state.message));
+          //         }
+          //         return Container();
+          //       },
+          //     ),
+          //   ),
+          // ),
           // _buildSection(
           //   index: 4,
           //   heading: "License",
