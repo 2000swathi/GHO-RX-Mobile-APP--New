@@ -10,6 +10,7 @@ import 'package:ghorx_mobile_app_new/features/account/personal_info/personal_inf
 import 'package:ghorx_mobile_app_new/features/account/professional%20indemnity%20insurance/professional_indemnity_insurance.dart';
 import 'package:ghorx_mobile_app_new/features/account/professional%20references/professional_references.dart';
 import 'package:ghorx_mobile_app_new/features/account/questionnaire/questionnaire_screen.dart';
+import 'package:ghorx_mobile_app_new/features/account/specialty/specialty_screen.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/otp_screen.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/repository/model/login_model.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/add_page.dart';
@@ -48,6 +49,8 @@ class AppRouter {
   static const String profesindInsurance = '/professionalindemnityinsurance';
   static const String documents = '/documents';
   static const String questionnaire = '/questionnaire';
+  static const String specialty = '/specialty';
+
 
 
   //profile
@@ -106,7 +109,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => DocumentsScreen());
       case questionnaire:
         return MaterialPageRoute(builder: (_) => QuestionnaireScreen());
-
+      case specialty:
+        return MaterialPageRoute(builder: (_) => SpecialtyScreen());
 
       //profile
       case changePW:
