@@ -19,12 +19,12 @@ import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_specia
 import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/accreditation/addedit_accreditation_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_bankinfo.dart';
-import 'package:ghorx_mobile_app_new/features/profile/insurances/bloc/insurance_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/insurance/repo/bloc/insurance_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/languages/repo/bloc/language_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/bloc/profile_info_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/specialty/bloc/specialty_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/profile/widget/profile_appbar_shimmer.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_insurance_sheet.dart';
+import 'package:ghorx_mobile_app_new/features/account/insurance/addedit_insurance_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/account/license/addedit_license_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/edit_person_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/widget/profiledetails.dart';
@@ -55,9 +55,6 @@ class _ProfileDrState extends State<ProfileDr> {
     // contextBloc<ProfileInfoBloc>().add(FetchPersonalInfo());
     contextBloc<SpecialtyBloc>().add(FetchSpecialty());
     contextBloc<InsuranceBloc>().add(FetchInsurance());
-    contextBloc<AccreditationBloc>().add(FetchAccreditation());
-    contextBloc<LicenseBloc>().add(FetchLicense());
-    contextBloc<LanguageBloc>().add(FetchLanguage());
     contextBloc<BankInfoBloc>().add(FetchBankInfo());
   }
 
@@ -839,7 +836,7 @@ class _ProfileDrState extends State<ProfileDr> {
                 builder: (context, state) {
                   if (state is InsuranceLoading) {
                     return const Center(child: LoadingAnimation());
-                  } else if (state is Insurance) {
+                  } else if (state is InsuranceGetState) {
                     final insuranceList = state.insuranceModel.data;
                     return Column(
                       children: [

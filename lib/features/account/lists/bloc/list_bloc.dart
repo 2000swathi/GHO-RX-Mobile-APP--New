@@ -169,8 +169,9 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     emit(ListLoading());
 
     try {
-      final response = await repository.fetchLangList();
+      final response = await repository.fetchQuestionsList();
       if (response["Status"] == 1) {
+        print(response);
         return emit(QuestionsLIstState(response: response));
       } else {
         return emit(ListFailure(error: response["Info"]));

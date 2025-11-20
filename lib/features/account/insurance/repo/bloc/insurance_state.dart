@@ -11,15 +11,25 @@ final class InsuranceInitial extends InsuranceState {}
 
 // Loading state
 class InsuranceLoading extends InsuranceState {}
+class InsuranceAddLoading extends InsuranceState {}
+class InsuranceEditLoading extends InsuranceState {}
 
-//   insurance list
-class Insurance extends InsuranceState {
+//   insurance get list
+class InsuranceGetState extends InsuranceState {
   final InsuranceModel insuranceModel;
 
-  const Insurance({required this.insuranceModel});
+  const InsuranceGetState({required this.insuranceModel});
 
   @override
   List<Object> get props => [insuranceModel];
+}
+final class InsuranceSuccess extends InsuranceState {
+  final String message;
+
+  const InsuranceSuccess({required this.message});
+
+  @override
+  List<Object> get props => [message];
 }
 
 class InsuranceError extends InsuranceState {

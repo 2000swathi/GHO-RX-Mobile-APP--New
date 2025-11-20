@@ -61,31 +61,31 @@ class EditSpecialtyEvent extends EditEvent {
 //   ];
 // }
 
-//insurance
-class EditInsuranceEvent extends EditEvent {
-  final String insuranceId;
-  final String providerID;
-  final String providerName;
-  final String issueDate;
-  final String expiryDate;
+// //insurance
+// class EditInsuranceEvent extends EditEvent {
+//   final String insuranceId;
+//   final String providerID;
+//   final String providerName;
+//   final String issueDate;
+//   final String expiryDate;
 
-  const EditInsuranceEvent({
-    required this.insuranceId,
-    required this.providerID,
-    required this.providerName,
-    required this.issueDate,
-    required this.expiryDate,
-  });
+//   const EditInsuranceEvent({
+//     required this.insuranceId,
+//     required this.providerID,
+//     required this.providerName,
+//     required this.issueDate,
+//     required this.expiryDate,
+//   });
 
-  @override
-  List<Object> get props => [
-    insuranceId,
-    providerID,
-    providerName,
-    issueDate,
-    expiryDate,
-  ];
-}
+//   @override
+//   List<Object> get props => [
+//     insuranceId,
+//     providerID,
+//     providerName,
+//     issueDate,
+//     expiryDate,
+//   ];
+// }
 
 // //Edit License Event
 // class EditLicenseEvent extends EditEvent {
