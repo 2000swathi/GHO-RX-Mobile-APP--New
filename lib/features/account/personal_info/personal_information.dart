@@ -10,150 +10,164 @@ import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/model/p
 import 'package:ghorx_mobile_app_new/features/home/widget/profile_pic_dialogue.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart';
 
-class PersonalInformationScreen extends StatelessWidget {
-   PersonalInformationScreen({super.key});
+class PersonalInformationScreen extends StatefulWidget {
+  const PersonalInformationScreen({super.key});
 
+  @override
+  State<PersonalInformationScreen> createState() =>
+      _PersonalInformationScreenState();
+}
+
+class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
   PersonalInfoModel? personalInfo;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundcolor,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, size: 24, color: AppColors.black),
-          onPressed: () => Navigator.pop(context),
+    return BlocListener<ListBloc, ListState>(
+      listener: (context, listState) {
+        if (listState is CountryState && personalInfo != null) {
+          Navigator.pop(context);
+
+          final countries =
+              listState.countryResponse.data.expand((e) => e).toList();
+
+          EditProfileSheetWidget.show(context, personalInfo!, countries);
+        } else if (listState is ListFailure) {
+          Navigator.pop(context);
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(listState.error)));
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundcolor,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, size: 24, color: AppColors.black),
+            onPressed: () => Navigator.pop(context),
+          ),
+          title: const Text("Personal Information", style: AppFonts.heading),
         ),
-        title: const Text("Personal Information", style: AppFonts.heading),
-      ),
+        body: BlocBuilder<ProfileInfoBloc, ProfileInfoState>(
+          builder: (context, state) {
+            if (state is ProfileInfoLoading) {
+              return const Center(child: LoadingAnimation());
+            } else if (state is ProfileInfoError) {
+              return Center(child: Text(state.message));
+            } else if (state is PersonalInfoState) {
+              personalInfo = state.personalInfomodel;
+              final info = personalInfo!;
 
-      body: BlocBuilder<ProfileInfoBloc, ProfileInfoState>(
-        builder: (context, state) {
-          if (state is ProfileInfoLoading) {
-            return Center(child: LoadingAnimation());
-          } else if (state is ProfileInfoError) {
-            return Center(child: Text(state.message));
-          } else if (state is PersonalInfoState) {
-            personalInfo = state.personalInfomodel;
-            final info = personalInfo!;
+              final infoList = [
+                {
+                  "label": "Full Name",
+                  "value": "${info.firstName} ${info.lastName}",
+                },
+                {"label": "Date of Birth", "value": info.birthDate},
+                {"label": "Email", "value": info.email},
+                {"label": "Mobile Number", "value": info.phone},
+                {"label": "Address 1", "value": info.address1},
+                {"label": "Address 2", "value": info.address2},
+                {"label": "Country", "value": info.countryName},
+                {"label": "State", "value": info.state},
+                {"label": "City", "value": info.city},
+                {"label": "Zip/Postal Code", "value": info.zipCode},
+              ];
 
-            return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              return ListView(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                  vertical: 20,
+                ),
                 children: [
-                  Stack(
-                    children: [
-                      CircleAvatar(
-                        radius: 47,
-                        backgroundColor: AppColors.primarycolor.withAlpha(13),
-                        child:
-                            (info.imageUrl.isNotEmpty)
-                                ? ClipOval(
-                                  child: Image.network(
-                                    info.imageUrl,
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                    loadingBuilder: (context, child, prog) {
-                                      if (prog == null) return child;
-                                      return Center(
-                                        child: SizedBox(
-                                          height: 15,
-                                          width: 15,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                            valueColor: AlwaysStoppedAnimation(
-                                              AppColors.primarycolor,
+                  Center(
+                    child: Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: 47,
+                          backgroundColor: AppColors.primarycolor.withAlpha(13),
+                          child: ClipOval(
+                            child:
+                                (info.imageUrl.isNotEmpty)
+                                    ? Image.network(
+                                      info.imageUrl,
+                                      width: 94,
+                                      height: 94,
+                                      fit: BoxFit.cover,
+                                      loadingBuilder: (context, child, prog) {
+                                        if (prog == null) return child;
+                                        return const Center(
+                                          child: SizedBox(
+                                            height: 15,
+                                            width: 15,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                              color: AppColors.primarycolor,
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                    errorBuilder:
-                                        (context, error, stack) =>
-                                            SvgPicture.asset(
-                                              "assets/svg/person.svg",
-                                            ),
-                                  ),
-                                )
-                                : SvgPicture.asset("assets/svg/person.svg"),
-                      ),
-
-                      Positioned(
-                        right: 4,
-                        bottom: 4,
-                        child: InkWell(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (_) => ProfileDialog(url: info.imageUrl),
-                            );
-                          },
-                          child: CircleAvatar(
-                            radius: 16,
-                            backgroundColor: AppColors.white,
-                            child: SvgPicture.asset(
-                              "assets/svg/account/edit.svg",
-                              height: 16,
+                                        );
+                                      },
+                                      errorBuilder:
+                                          (context, error, stack) =>
+                                              SvgPicture.asset(
+                                                "assets/svg/person.svg",
+                                                width: 94,
+                                                height: 94,
+                                              ),
+                                    )
+                                    : SvgPicture.asset(
+                                      "assets/svg/person.svg",
+                                      width: 94,
+                                      height: 94,
+                                    ),
+                          ),
+                        ),
+                        Positioned(
+                          right: 4,
+                          bottom: 4,
+                          child: InkWell(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder:
+                                    (_) => ProfileDialog(url: info.imageUrl),
+                              );
+                            },
+                            child: CircleAvatar(
+                              radius: 16,
+                              backgroundColor: AppColors.white,
+                              child: SvgPicture.asset(
+                                "assets/svg/account/edit.svg",
+                                height: 16,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-
                   const SizedBox(height: 32),
-
-                  buildInfo("Full Name", "${info.firstName} ${info.lastName}"),
-                  buildInfo("Date of Birth", info.birthDate),
-                  buildInfo("Email", info.email),
-                  buildInfo("Mobile Number", info.phone),
-                  buildInfo("Address 1", info.address1),
-                  buildInfo("Address 2", info.address2),
-                  buildInfo("Country", info.countryName),
-                  buildInfo("State", info.state),
-                  buildInfo("City", info.city),
-                  buildInfo("Zip/Postal Code", info.zipCode),
-
+                  ...infoList
+                      .map((item) => buildInfo(item['label']!, item['value']!))
+                      .toList(),
                   const SizedBox(height: 20),
                 ],
-              ),
-            );
-          }
+              );
+            }
 
-          return Center(child: Text("Invalid State"));
-        },
-      ),
-
-      floatingActionButton: BlocListener<ListBloc, ListState>(
-        listener: (context, listState) async {
-          if (listState is CountryState) {
-            Navigator.pop(context); // Close loader
-
-            final countries =
-                listState.countryResponse.data.expand((e) => e).toList();
-
-            Future.microtask(() {
-              EditProfileSheet.showSheet(context, personalInfo!, countries);
-            });
-          } else if (listState is ListFailure) {
-            Navigator.pop(context);
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(listState.error)));
-          }
-        },
-        child: FloatingActionButton(
+            return const Center(child: Text("Invalid State"));
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
           backgroundColor: AppColors.white,
           child: SvgPicture.asset("assets/svg/account/pencil.svg", height: 20),
           onPressed: () {
+            // Show loading dialog
             showDialog(
               context: context,
               barrierDismissible: false,
               builder: (_) => const Center(child: LoadingAnimation()),
             );
-
             context.read<ListBloc>().add(FetchCountryList());
           },
         ),
