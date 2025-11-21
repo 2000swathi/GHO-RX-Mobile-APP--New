@@ -9,11 +9,60 @@ import 'package:ghorx_mobile_app_new/features/account/logout/logout_scrn.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/custom_toggleBtn.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/group_container.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/single_container.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class CustomAppDrawer extends StatelessWidget {
+class AppDrawer extends StatelessWidget {
   final ValueNotifier<bool> micToggle = ValueNotifier(false);
   final ValueNotifier<bool> msgToggle = ValueNotifier(false);
-  CustomAppDrawer({super.key});
+  AppDrawer({super.key});
+  Future<void> toggleMicrophoneSwitch(ValueNotifier<bool> micToggle) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    if (micToggle.value) {
+      // Turn OFF microphone
+      micToggle.value = false;
+      await prefs.setBool('isMicOn', false);
+    } else {
+      // Request microphone permission
+      PermissionStatus status = await Permission.microphone.request();
+
+      if (status.isGranted) {
+        micToggle.value = true;
+        await prefs.setBool('isMicOn', true);
+      } else if (status.isPermanentlyDenied) {
+        micToggle.value = true;
+        await prefs.setBool('isMicOn', true);
+        openAppSettings();
+      } else {
+        micToggle.value = false;
+        await prefs.setBool('isMicOn', false);
+      }
+    }
+  }
+
+  Future<void> toggleNotificationSwitch(ValueNotifier<bool> msgToggle) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    if (msgToggle.value) {
+      msgToggle.value = false;
+      await prefs.setBool('isNotificationOn', false);
+    } else {
+      PermissionStatus status = await Permission.notification.request();
+
+      if (status.isGranted) {
+        msgToggle.value = true;
+        await prefs.setBool('isNotificationOn', true);
+      } else if (status.isPermanentlyDenied) {
+        msgToggle.value = true;
+        await prefs.setBool('isNotificationOn', true);
+        openAppSettings();
+      } else {
+        msgToggle.value = false;
+        await prefs.setBool('isNotificationOn', false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,13 +140,19 @@ class CustomAppDrawer extends StatelessWidget {
                         title: "Microphone Access",
                         subTitle: "Allow app to use microphone.",
                         svgPath: "assets/svg/account/mic.svg",
-                        pushBtn: CustomSwitch(notifier: micToggle),
+                        pushBtn: CustomSwitch(
+                          notifier: micToggle,
+                          onToggle: () => toggleMicrophoneSwitch(micToggle),
+                        ),
                       ),
                       SettingRow(
                         title: "Notifications",
                         subTitle: "Allow app to send alerts.",
                         svgPath: "assets/svg/account/bell.svg",
-                        pushBtn: CustomSwitch(notifier: msgToggle),
+                        pushBtn: CustomSwitch(
+                          notifier: msgToggle,
+                          onToggle: () => toggleNotificationSwitch(msgToggle),
+                        ),
                       ),
                     ],
                   ),
