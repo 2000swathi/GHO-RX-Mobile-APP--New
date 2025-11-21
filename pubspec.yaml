@@ -61,6 +61,7 @@ dependencies:
   image_editor_plus: ^1.0.8
   fl_chart: ^1.1.1
   async: ^2.13.0
+  cached_network_image: ^3.4.1
 
 
 dev_dependencies:

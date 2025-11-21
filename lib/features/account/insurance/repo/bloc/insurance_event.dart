@@ -8,6 +8,20 @@ sealed class InsuranceEvent extends Equatable {
 }
 
 class FetchInsurance extends InsuranceEvent {}
+//insurance
+class AddInsurance extends InsuranceEvent {
+  final String providerID;
+  final String providerName;
+  final String issueDate;
+  final String expiryDate;
+
+  AddInsurance({
+    required this.providerID,
+    required this.providerName,
+    required this.issueDate,
+    required this.expiryDate,
+  });
+}
 
 //edit insurance
 class EditInsuranceEvent extends InsuranceEvent {

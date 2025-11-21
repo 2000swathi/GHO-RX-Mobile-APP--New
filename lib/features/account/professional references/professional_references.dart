@@ -11,12 +11,14 @@ class ProfessionalReferencesScreen extends StatelessWidget {
     {
       "fullnameRefe": "Marco",
       "designationRefe": "Surgeon",
-      "departRefe": "ABCD",
+      "accountType": "ABCD",
       "emailRefe": "abcd@gmail.com",
+      "departRefe": "abcd@gmail.com",
     },
     {
       "fullnameRefe": "Marco",
       "designationRefe": "Surgeon",
+      "accountType": "ABCD",
       "departRefe": "ABCD",
       "emailRefe": "abcd@gmail.com",
     },
@@ -26,35 +28,31 @@ class ProfessionalReferencesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundcolor,
-      appBar: CustomAccountAppBar(
-        title: "Professional References",
-      ),
+      appBar: CustomAccountAppBar(title: "Professional References"),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: CustomFAB(
-        onAdd: () {}
-      ),
+      floatingActionButton: CustomFAB(onAdd: () {}),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: ListView.builder(
           itemCount: referenceData.length,
           itemBuilder: (context, index) {
             final reference = referenceData[index];
-            
+
             return Padding(
               padding: EdgeInsets.only(bottom: 16),
               child: ProfessionalRefeCard(
-                index: index + 1, 
-                fullnameRefe: reference["fullnameRefe"], 
-                designationRefe: reference["designationRefe"], 
-                departRefe: reference["departRefe"], 
-                emailRefe: reference["emailRefe"], 
+                index: index + 1,
+                fullnameRefe: reference["fullnameRefe"],
+                designationRefe: reference["designationRefe"],
+                departRefe: reference["departRefe"],
+                emailRefe: reference["emailRefe"],
                 onEdit: () {},
                 onDelete: () {},
-              )
+              ),
             );
-          }
+          },
         ),
-      )
+      ),
     );
   }
 }

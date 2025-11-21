@@ -6,7 +6,6 @@ import 'package:ghorx_mobile_app_new/features/account/account_page.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/cases_page.dart';
 import 'package:ghorx_mobile_app_new/features/home/home_page.dart';
 import 'package:ghorx_mobile_app_new/features/payment/payment_page.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/profile/profile_dr.dart';
 import 'package:new_version_plus/new_version_plus.dart';
 
 class MainPage extends StatefulWidget {
@@ -24,8 +23,7 @@ class _MainPageState extends State<MainPage> {
     const HomePage(),
     const CasesPage(),
     const PaymentPage(),
-    const ProfileDr(),
-    AccountPage()
+    AccountPage(),
   ];
 
   @override
@@ -126,13 +124,6 @@ class _MainPageState extends State<MainPage> {
                       ? SvgPicture.asset("assets/svg/profile_clik.svg")
                       : SvgPicture.asset("assets/svg/profile_svg.svg"),
               label: "Profile",
-            ),
-            BottomNavigationBarItem(
-              icon:
-                  _currentIndex == 4
-                      ? SvgPicture.asset("assets/svg/profile_clik.svg")
-                      : SvgPicture.asset("assets/svg/profile_svg.svg"),
-              label: "Account",
             ),
           ],
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/accreditation/accreditation_screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/documents/documents_screen.dart';
+import 'package:ghorx_mobile_app_new/features/account/bank_Info/bankInfoScrn.dart';
 import 'package:ghorx_mobile_app_new/features/account/drawer/aboutscrn/aboutScrn.dart';
 import 'package:ghorx_mobile_app_new/features/account/drawer/change_password/repo/bloc/change_password_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/drawer/change_password/repo/changePasswordrepo.dart';
@@ -9,7 +10,7 @@ import 'package:ghorx_mobile_app_new/features/account/drawer/help/help.dart';
 import 'package:ghorx_mobile_app_new/features/account/education/education_screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/languages/language_screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/drawer/change_password/change_password.dart';
-import 'package:ghorx_mobile_app_new/features/account/logout/logout_scrn.dart';
+import 'package:ghorx_mobile_app_new/features/account/drawer/logout/logout_scrn.dart';
 import 'package:ghorx_mobile_app_new/features/account/license/licensescreen.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/personal_information.dart';
 import 'package:ghorx_mobile_app_new/features/account/insurance/insurance.dart';
@@ -55,6 +56,7 @@ class AppRouter {
   static const String documents = '/documents';
   static const String questionnaire = '/questionnaire';
   static const String specialty = '/specialty';
+  static const String bankInfo = '/bankInfo';
 
   //profile
   //drawer
@@ -141,6 +143,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => HelpScrn());
       case aboutScrn:
         return MaterialPageRoute(builder: (_) => Aboutscrn());
+      case bankInfo:
+        return MaterialPageRoute(builder: (_) => Bankinfoscrn());
       default:
         return MaterialPageRoute(
           builder:

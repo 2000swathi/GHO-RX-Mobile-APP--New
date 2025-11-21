@@ -10,11 +10,6 @@ import 'package:ghorx_mobile_app_new/core/constants/custom_datepicker.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
 import 'package:ghorx_mobile_app_new/features/account/insurance/repo/bloc/insurance_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/insurance/repo/model/insurance_model.dart';
-import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
-import 'package:ghorx_mobile_app_new/features/profile/edit/bloc/edit_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/account/insurance/repo/bloc/insurance_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/account/insurance/repo/model/insurance_model.dart';
 
 class AddEditInsuranceSheet {
   static void showSheet(
@@ -107,48 +102,23 @@ class AddEditInsuranceSheet {
         ),
       ],
 
-      actionButton: MultiBlocListener(
-        listeners: [
-          BlocListener<AddBloc, AddState>(
-            listener: (context, state) {
-              if (state is AddSuccess) {
-                Navigator.pop(context);
-                insuranceBloc.add(FetchInsurance());
-                CustomScaffoldMessenger.showSuccessMessage(
-                  context,
-                  state.response["Data"][0][0]['msg'],
-                );
-              } else if (state is AddError) {
-                CustomScaffoldMessenger.showErrorMessage(
-                  context,
-                  state.message,
-                );
-              }
-            },
-          ),
+      actionButton: BlocListener<InsuranceBloc, InsuranceState>(
+        listener: (context, state) {
+          if (state is InsuranceSuccess) {
+            Navigator.pop(context);
+            insuranceBloc.add(FetchInsurance());
+            CustomScaffoldMessenger.showSuccessMessage(context, state.message);
+          } else if (state is InsuranceError) {
+            CustomScaffoldMessenger.showErrorMessage(context, state.message);
+          }
+        },
 
-          BlocListener<EditBloc, EditState>(
-            listener: (context, state) {
-              if (state is EditSuccess) {
-                Navigator.pop(context);
-                insuranceBloc.add(FetchInsurance());
-                CustomScaffoldMessenger.showSuccessMessage(
-                  context,
-                  state.message,
-                );
-              } else if (state is EditFailure) {
-                CustomScaffoldMessenger.showErrorMessage(context, state.error);
-              }
-            },
-          ),
-        ],
-
-        child: BlocBuilder<AddBloc, AddState>(
+        child: BlocBuilder<InsuranceBloc, InsuranceState>(
           builder: (context, addState) {
-            final bool isAddLoading = addState is AddLoading;
+            final bool isAddLoading = addState is InsuranceAddLoading;
             return BlocBuilder<InsuranceBloc, InsuranceState>(
               builder: (context, editState) {
-                final bool isEditLoading = editState is EditLoading;
+                final bool isEditLoading = editState is InsuranceEditLoading;
                 final bool isLoading = isAddLoading || isEditLoading;
 
                 return CustomButton(
@@ -167,7 +137,7 @@ class AddEditInsuranceSheet {
                           ),
                         );
                       } else {
-                        context.read<AddBloc>().add(
+                        context.read<InsuranceBloc>().add(
                           AddInsurance(
                             providerID: prIDController.text,
                             providerName: pNameController.text,

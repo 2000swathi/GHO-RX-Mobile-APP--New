@@ -1,14 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/router/app_router.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/account/widget/custom_appdrawer.dart';
+import 'package:ghorx_mobile_app_new/features/account/drawer/appdrawer.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/draweritem_tile.dart';
 import 'package:ghorx_mobile_app_new/features/home/widget/profile_pic_dialogue.dart';
+import 'package:ghorx_mobile_app_new/features/shimmer/widget/shapes.dart';
 
 class AccountPage extends StatelessWidget {
   AccountPage({Key? key}) : super(key: key);
@@ -66,6 +68,11 @@ class AccountPage extends StatelessWidget {
       imagePath: "assets/svg/account/question-mark.png",
       routeName: AppRouter.questionnaire,
     ),
+    _DrawerItem(
+      title: "Bank Information",
+      imagePath: "assets/svg/account/courthouse 1.png",
+      routeName: AppRouter.bankInfo,
+    ),
   ];
 
   @override
@@ -83,7 +90,7 @@ class AccountPage extends StatelessWidget {
         key: scaffoldKey,
         drawer: SizedBox(
           width: MediaQuery.of(context).size.width * 0.9,
-          child: CustomAppDrawer(),
+          child: AppDrawer(),
         ),
         drawerEnableOpenDragGesture: false,
         appBar: AppBar(
@@ -92,7 +99,7 @@ class AccountPage extends StatelessWidget {
           actions: [
             IconButton(
               onPressed: () => scaffoldKey.currentState?.openDrawer(),
-              icon: Icon(Icons.settings, color: AppColors.black, size: 35),
+              icon: SvgPicture.asset("assets/svg/account/setting.svg"),
             ),
           ],
         ),
@@ -101,16 +108,25 @@ class AccountPage extends StatelessWidget {
             children: [
               BlocBuilder<PicBloc, PicState>(
                 builder: (context, state) {
-                  if (state is PicLoading) {
-                    return const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 40),
-                      child: Center(child: LoadingAnimation()),
+                  if (state is PicInitial || state is PicLoading) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 40),
+                      child: Column(
+                        children: [
+                          ShimmerShapes.circle(110),
+                          const SizedBox(height: 10),
+                          ShimmerShapes.line(width: 140, height: 16),
+                          const SizedBox(height: 6),
+                          ShimmerShapes.line(width: 180, height: 14),
+                        ],
+                      ),
                     );
-                  } else if (state is PicFailure) {
-                    return const SizedBox.shrink();
-                  } else if (state is PicSuccess) {
+                  }
+
+                  if (state is PicSuccess) {
                     return _buildProfile(context, state);
                   }
+
                   return const SizedBox.shrink();
                 },
               ),
@@ -119,7 +135,7 @@ class AccountPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 49),
+                    const SizedBox(height: 25),
                     ..._drawerItems.map(
                       (item) => DrawerItemTile(
                         imagePath: item.imagePath,
@@ -147,10 +163,23 @@ class AccountPage extends StatelessWidget {
   Widget _buildProfile(BuildContext context, PicSuccess state) {
     final data = state.response["Data"];
     if (data == null || data.isEmpty || data[0].isEmpty)
-      return const SizedBox.shrink();
-
+      return Column(
+        children: [
+          const SizedBox(height: 20),
+          Center(child: ShimmerShapes.circle(110)),
+          const SizedBox(height: 10),
+          ShimmerShapes.line(width: 140, height: 16),
+          const SizedBox(height: 6),
+          ShimmerShapes.line(width: 180, height: 14),
+          const SizedBox(height: 20),
+        ],
+      );
     final info = data[0][0];
-    final imageUrl = info["_Url"] ?? '';
+    final imageUrl =
+        info["_Url"] != null && info["_Url"].toString().isNotEmpty
+            ? "${info["_Url"]}?v=${DateTime.now().millisecondsSinceEpoch}"
+            : '';
+
     final fullName = info["FullName"] ?? '';
     final email = info["email"] ?? '';
 
@@ -169,28 +198,21 @@ class AccountPage extends StatelessWidget {
                   child: ClipOval(
                     child:
                         imageUrl.isNotEmpty
-                            ? Image.network(
-                              imageUrl,
+                            ? CachedNetworkImage(
+                              imageUrl: imageUrl,
                               width: double.infinity,
                               height: double.infinity,
                               fit: BoxFit.cover,
-                              loadingBuilder: (context, child, progress) {
-                                if (progress == null) return child;
-                                return Center(
-                                  child: SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      valueColor: AlwaysStoppedAnimation(
-                                        AppColors.primarycolor,
-                                      ),
-                                    ),
+                              fadeInDuration: Duration.zero,
+                              fadeOutDuration: Duration.zero,
+                              placeholder:
+                                  (context, url) => SvgPicture.asset(
+                                    "assets/svg/person.svg",
+                                    width: 110,
+                                    height: 110,
                                   ),
-                                );
-                              },
-                              errorBuilder:
-                                  (_, __, ___) => SvgPicture.asset(
+                              errorWidget:
+                                  (context, url, error) => SvgPicture.asset(
                                     "assets/svg/person.svg",
                                     width: 110,
                                     height: 110,
@@ -230,7 +252,6 @@ class AccountPage extends StatelessWidget {
         const SizedBox(height: 5),
         Text(fullName, style: AppFonts.heading),
         Text(email, style: AppFonts.textSecondary),
-        const SizedBox(height: 20),
       ],
     );
   }
