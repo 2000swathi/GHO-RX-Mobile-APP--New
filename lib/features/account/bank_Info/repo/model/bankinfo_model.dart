@@ -46,6 +46,7 @@ class BankInfoModel {
   final String routingNumber;
   final String accountNumber;
   final String accountHolderName;
+  final String bankName;
 
   BankInfoModel({
     required this.id,
@@ -54,6 +55,7 @@ class BankInfoModel {
     required this.routingNumber,
     required this.accountNumber,
     required this.accountHolderName,
+    required this.bankName,
   });
 
   factory BankInfoModel.fromJson(Map<String, dynamic> json) {
@@ -64,6 +66,7 @@ class BankInfoModel {
       routingNumber: json['RoutingNumber'] ?? '',
       accountNumber: json['AccountNumber'] ?? '',
       accountHolderName: json['AccountHolderName'] ?? '',
+      bankName: json['BankName'] ?? '',
     );
   }
 
@@ -75,6 +78,7 @@ class BankInfoModel {
       'RoutingNumber': routingNumber,
       'AccountNumber': accountNumber,
       'AccountHolderName': accountHolderName,
+      'BankName': bankName,
     };
   }
 

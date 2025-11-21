@@ -31,7 +31,42 @@ class InsuranceRepo {
       throw (e.toString());
     }
   }
-  //Insurance
+  //add insurance
+  Future addInsurance({
+    required String providerID,
+    required String providerName,
+    required String issueDate,
+    required String expiryDate,
+  }) async {
+    final token = await SharedPreference.getToken();
+    final reviewerId = await SharedPreference.getUserId();
+
+    final c1data = jsonEncode({
+      "ProviderID": providerID,
+      "ProviderName": providerName,
+      "IssueDate": issueDate,
+      "ExpiryDate": expiryDate,
+    });
+
+    if (token!.isEmpty || reviewerId!.isEmpty) {
+      throw Exception('Token or ReviewerId not found in SharedPreferences');
+    }
+    final data = {
+      ...ApiUtils.getCommonParams(action: "reviewerins", token: token),
+      "Tags": [
+        {"T": "dk1", "V": reviewerId},
+        {"T": "c1", "V": c1data},
+        {"T": "c10", "V": "1"},
+      ],
+    };
+    try {
+      final response = await _dioHandler.post('', data: data);
+      return response;
+    } catch (e) {
+      throw Exception("$e");
+    }
+  }
+  //edit Insurance
   Future<Map<String, dynamic>> editInsurance({
     required String insuranceId,
     required String providerID,
