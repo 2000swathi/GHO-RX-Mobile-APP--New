@@ -43,6 +43,7 @@ class BankInfoBloc extends Bloc<BankInfoEvent, BankInfoState> {
         routingNumber: event.routingNumber,
         accountNumber: event.accountNumber,
         holderName: event.holderName,
+        bankName: event.bankName
       );
       if (response["Status"] == 1) {
         String message = "Insurance added successfully";
@@ -83,6 +84,7 @@ class BankInfoBloc extends Bloc<BankInfoEvent, BankInfoState> {
         accountNumber: event.accountNumber,
         holderName: event.holderName,
         id: event.id,
+        bankName: event.bankName
       );
 
       if (response["Status"] == 1) {

@@ -34,8 +34,10 @@ class PayReceived extends StatelessWidget {
                 }
 
                 if (state is PaymentSuccess) {
-                  final list = state.response["Data"][0] ?? [];
-
+                  final list = state.response["Data"][0];
+                  if (list.isEmpty) {
+                    return Text("(No transactions in this time period)");
+                  }
                   return ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
@@ -45,7 +47,10 @@ class PayReceived extends StatelessWidget {
                       return ListTile(
                         title: Text("${pay["Name"]}"),
                         subtitle: Text("Case ID : ${pay["CaseID"]}"),
-                        leading: Icon(Icons.verified, color: AppColors.successcolor),
+                        leading: Icon(
+                          Icons.verified,
+                          color: AppColors.successcolor,
+                        ),
                         trailing: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
