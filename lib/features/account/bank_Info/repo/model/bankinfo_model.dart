@@ -41,7 +41,7 @@ class BankInfoResponseModel {
 
 class BankInfoModel {
   final int id;
-  final int reviewerId;
+  final String reviewerId;
   final String accountType;
   final String routingNumber;
   final String accountNumber;
@@ -61,7 +61,7 @@ class BankInfoModel {
   factory BankInfoModel.fromJson(Map<String, dynamic> json) {
     return BankInfoModel(
       id: json['id'] ?? 0,
-      reviewerId: json['ReviewerID'] ?? 0,
+      reviewerId: json['ReviewerID'] ?? '',
       accountType: json['AccountType'] ?? '',
       routingNumber: json['RoutingNumber'] ?? '',
       accountNumber: json['AccountNumber'] ?? '',

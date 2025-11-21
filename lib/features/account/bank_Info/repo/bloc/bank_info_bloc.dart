@@ -2,8 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:ghorx_mobile_app_new/features/account/bank_Info/repo/bankinforepo.dart';
 import 'package:ghorx_mobile_app_new/features/account/bank_Info/repo/model/bankinfo_model.dart';
-import 'package:ghorx_mobile_app_new/features/account/insurance/repo/bloc/insurance_bloc.dart';
-
 part 'bank_info_event.dart';
 part 'bank_info_state.dart';
 
