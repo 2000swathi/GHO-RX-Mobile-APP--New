@@ -11,6 +11,7 @@ final class EducationInitial extends EducationState {}
 
 final class EducationLoading extends EducationState {}
 final class EducationAddLoading extends EducationState {}
+final class EducationEditLoading extends EducationState {}
 
 
 class EducationListState extends EducationState {

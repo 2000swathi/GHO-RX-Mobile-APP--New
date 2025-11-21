@@ -6,7 +6,7 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart'
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/features/account/deleteBloc/bloc/delete_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/education/addedit_educationsheet.dart';
-import 'package:ghorx_mobile_app_new/features/account/education/education_card.dart';
+import 'package:ghorx_mobile_app_new/features/account/education/widget/education_card.dart';
 import 'package:ghorx_mobile_app_new/features/account/education/repo/bloc/education_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/custom_profile_appbar.dart';
@@ -93,7 +93,8 @@ class _EducationScreenState extends State<EducationScreen> {
               } else if (state is EducationError) {
                 return Center(child: Text(state.message));
               } else if (state is EducationListState) {
-                final info = state.educationResponse.data[0];
+                final info =
+                    state.educationResponse.data.expand((e) => e).toList();
                 return ListView.builder(
                   itemCount: info.length,
                   itemBuilder: (context, index) {
@@ -106,9 +107,34 @@ class _EducationScreenState extends State<EducationScreen> {
                         institute: education.institution,
                         degree: education.degree,
                         duration: education.duration,
-                        year: education.completedYear.toString(),
+                        year: education.completedYear?.toString() ?? "",
                         comments: education.comments,
-                        onEdit: () {},
+                        onEdit: () async {
+                          listBloc.add(FetchEducationList());
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false, 
+                            builder: (_) => const Center(child: LoadingAnimation()),
+                          );
+                          final listState = await listBloc.stream.firstWhere(
+                            (s) => s is EductionTypeListState || s is ListFailure,
+                          );
+
+                          Navigator.pop(context);
+
+                          if (listState is EductionTypeListState) {
+                            final degreeTypeList = 
+                                  listState.educationTypeResponse.data;
+
+                            AddeditEducationBottomSheet.showSheet(
+                              context,
+                              education,
+                              true,
+                              educationBloc: context.read<EducationBloc>(),
+                              educationList: degreeTypeList,
+                            );
+                          }
+                        },
                         onDelete: () async {
                           final confirmed = await showDeleteConfirmationDialog(
                             context: context,

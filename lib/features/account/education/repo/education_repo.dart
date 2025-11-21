@@ -51,11 +51,11 @@ class EducationRepo {
     "Institution": institution,
     "Degree": degree,
     "Duration": duration,
-    "Completed Year": year,
+    "CompletedYear": year,
     "Comments": comments,
   });
   final data = {
-      ...ApiUtils.getCommonParams(action: "revieweraccred", token: token),
+      ...ApiUtils.getCommonParams(action: "revieweredu", token: token),
       "Tags": [
         {"T": "dk1", "V": reviewerId},
         {"T": "c1", "V": educationJson},
@@ -69,4 +69,46 @@ class EducationRepo {
       throw (e.toString());
     }
   }   
+
+  //edit education
+  Future<Map<String, dynamic>> editEducation({
+    required String id,
+    required String institution,
+    required String degree,
+    required String duration,
+    required String year,
+    required String comments,
+  }) async {
+    final token = await SharedPreference.getToken();
+    final reviewerId = await SharedPreference.getUserId();
+
+    if(token!.isEmpty || reviewerId!.isEmpty) {
+      throw Exception('Token or reviewerId is empty');
+    }
+
+    final editEduJson = jsonEncode({
+    "Institution": institution,
+    "Degree": degree,
+    "Duration": duration,
+    "CompletedYear": year,
+    "Comments": comments,
+    });
+
+    final requestData = {
+      ...ApiUtils.getCommonParams(action: "revieweredu", token: token),
+      "Tags": [
+        {"T": "dk1", "V": reviewerId},
+        {"T": "dk2", "V": id},
+        {"T": "c1", "V": editEduJson},
+        {"T": "c10", "V": "2"},
+      ],
+    };
+    try {
+      final response = await _dioHandler.post('', data: requestData);
+      return response;
+    } catch (e) {
+      throw (e.toString());
+    }
+
+}
 }

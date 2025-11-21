@@ -31,7 +31,7 @@ class EducationData {
   final String institution;
   final String degree;
   final String duration;
-  final int completedYear;
+  final int? completedYear;
   final String comments;
 
   EducationData({
@@ -49,7 +49,10 @@ class EducationData {
       institution: json['Institution'] ?? '',
       degree: json['Degree'] ?? '',
       duration: json['Duration'] ?? '',
-      completedYear: json['CompletedYear'] ?? 0,
+      completedYear: (json['CompletedYear'] == null ||
+            json['CompletedYear'].toString().isEmpty)
+        ? null
+        : int.tryParse(json['CompletedYear'].toString()),
       comments: json['Comments'] ?? '',
     );
   }

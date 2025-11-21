@@ -11,6 +11,7 @@ class EducationBloc extends Bloc<EducationEvent, EducationState> {
   EducationBloc({required this.repository}) : super(EducationInitial()) {
     on<FetchEducation>(fetchEducationInfo);
     on<AddEducation>(addEducation);
+    on<EditEducation>(editEducation);
   }
 
   Future<void> fetchEducationInfo(
@@ -27,6 +28,7 @@ class EducationBloc extends Bloc<EducationEvent, EducationState> {
     }
   }
 
+  // add education
   Future<void> addEducation(
     AddEducation event,
     Emitter<EducationState> emit,
@@ -58,6 +60,47 @@ class EducationBloc extends Bloc<EducationEvent, EducationState> {
       }
     } catch (e) {
       emit(EducationError(message: "An Error occured: ${e.toString()}"));
+    }
+  }
+
+  //edit education
+  Future<void> editEducation(
+    EditEducation event,
+    Emitter<EducationState> emit,
+  ) async {
+    emit(EducationEditLoading());
+
+    try {
+      final response = await repository.editEducation(
+        id: event.id,
+        institution: event.institution,
+        degree: event.degree,
+        duration: event.duration,
+        year: event.year,
+        comments: event.comments,
+      );
+
+      if (response["Status"] == 1) {
+        String message = "Suucessfully edited education";
+
+        final data = response["Data"];
+        if (data is List && data.isNotEmpty) {
+          final firstItem = data[0];
+          if (firstItem is List && firstItem.isNotEmpty) {
+            final firstElement = firstItem[0];
+            if (firstElement is Map && firstElement["msg"] != null) {
+              message = firstElement["msg"].toString();
+            }
+          }
+        }
+        emit(EduSuccess(message: message));
+      } else {
+        final error =
+            response["Error"]?.toString() ?? "Failed to update education";
+        emit(EducationError(message: error));
+      }
+    } catch (e) {
+      emit(EducationError(message: e.toString()));
     }
   }
 }

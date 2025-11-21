@@ -16,14 +16,12 @@ class AddeditEducationBottomSheet {
     EducationData? info,
     bool isEdit, {
     required EducationBloc educationBloc,
-
-    // FIX 1: Accept EducationData instead of EducationTypeItem
     required List<List<EducationTypeItem>> educationList,
   }) {
     final flattenedList = educationList.expand((e) => e).toList();
     final _formKey = GlobalKey<FormState>();
 
-    String? degreeID;
+    String? degreeID = isEdit ? info?.degree : null;
 
     final instController = TextEditingController(
       text: isEdit ? info?.institution ?? '' : '',
@@ -32,7 +30,10 @@ class AddeditEducationBottomSheet {
       text: isEdit ? info?.duration ?? '' : '',
     );
     final yearController = TextEditingController(
-      text: isEdit ? info?.completedYear.toString() ?? '' : '',
+      text:
+          isEdit && info?.completedYear != null
+              ? info!.completedYear.toString()
+              : '',
     );
     final commentsController = TextEditingController(
       text: isEdit ? info?.comments ?? '' : '',
@@ -64,17 +65,19 @@ class AddeditEducationBottomSheet {
                     // FIX 1: Pass degreeID to dropdown
                     value: degreeID,
 
-                    items: flattenedList
-                        .map(
-                          (e) => DropdownItem(
-                            value: e.dataValue,
-                            label: (e.displayText == null ||
-                                    e.displayText!.trim().isEmpty)
-                                ? e.dataValue
-                                : e.displayText!,
-                          ),
-                        )
-                        .toList(),
+                    items:
+                        flattenedList
+                            .map(
+                              (e) => DropdownItem(
+                                value: e.dataValue,
+                                label:
+                                    (e.displayText == null ||
+                                            e.displayText!.trim().isEmpty)
+                                        ? e.dataValue
+                                        : e.displayText!,
+                              ),
+                            )
+                            .toList(),
 
                     // FIX 2: UPDATE degreeID on selection
                     onChanged: (value) {
@@ -121,22 +124,36 @@ class AddeditEducationBottomSheet {
         },
         child: BlocBuilder<EducationBloc, EducationState>(
           builder: (context, state) {
-            final bool isLoading = state is EducationAddLoading;
+            final bool isLoading =
+                state is EducationAddLoading || state is EducationEditLoading;
 
             return CustomButton(
               text: isEdit ? "Update Education" : "Add Education",
               isLoading: isLoading,
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  educationBloc.add(
-                    AddEducation(
-                      institution: instController.text,
-                      degree: degreeID ?? '',
-                      duration: durationController.text,
-                      year: yearController.text,
-                      comments: commentsController.text,
-                    ),
-                  );
+                  if (isEdit) {
+                    educationBloc.add(
+                      EditEducation(
+                        id: info!.id.toString(),
+                        institution: instController.text,
+                        degree: degreeID ?? '',
+                        duration: durationController.text,
+                        year: yearController.text,
+                        comments: commentsController.text,
+                      ),
+                    );
+                  } else {
+                    educationBloc.add(
+                      AddEducation(
+                        institution: instController.text,
+                        degree: degreeID ?? '',
+                        duration: durationController.text,
+                        year: yearController.text,
+                        comments: commentsController.text,
+                      ),
+                    );
+                  }
                 }
               },
             );
