@@ -10,7 +10,7 @@ import 'package:ghorx_mobile_app_new/features/account/drawer/help/help.dart';
 import 'package:ghorx_mobile_app_new/features/account/education/education_screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/languages/language_screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/drawer/change_password/change_password.dart';
-import 'package:ghorx_mobile_app_new/features/account/logout/logout_scrn.dart';
+import 'package:ghorx_mobile_app_new/features/account/drawer/logout/logout_scrn.dart';
 import 'package:ghorx_mobile_app_new/features/account/license/licensescreen.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/personal_information.dart';
 import 'package:ghorx_mobile_app_new/features/account/insurance/insurance.dart';
