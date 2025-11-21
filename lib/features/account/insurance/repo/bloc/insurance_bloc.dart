@@ -26,6 +26,46 @@ class InsuranceBloc extends Bloc<InsuranceEvent, InsuranceState> {
     }
   }
 
+  //add insurance
+  Future<void> addInsurance(
+    AddInsurance event,
+    Emitter<InsuranceState> emit,
+  ) async {
+    print("add insurance");
+    emit(InsuranceAddLoading());
+
+    try {
+      final response = await repository.addInsurance(
+        providerID: event.providerID,
+        providerName: event.providerName,
+        issueDate: event.issueDate,
+        expiryDate: event.expiryDate,
+      );
+      if (response["Status"] == 1) {
+        String message = "Insurance added successfully";
+
+        final data = response["Data"];
+        if (data is List && data.isNotEmpty) {
+          final level1 = data[0];
+          if (level1 is List && level1.isNotEmpty) {
+            final msgObj = level1[0];
+            if (msgObj is Map && msgObj["msg"] != null) {
+              message = msgObj["msg"].toString();
+            }
+          }
+        }
+
+        emit(InsuranceSuccess(message: message));
+      } else {
+        final error =
+            response["Error"]?.toString() ?? "Failed to add insurance";
+        emit(InsuranceError(message: error));
+      }
+    } catch (e) {
+      emit(InsuranceSuccess(message: "An error occurred: ${e.toString()}"));
+    }
+  }
+
   //Insurance
   Future<void> _editInsurance(
     EditInsuranceEvent event,

@@ -28,9 +28,8 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
   Widget build(BuildContext context) {
     final insuranceBloc = context.read<InsuranceBloc>();
     return Scaffold(
-      appBar: CustomAccountAppBar(title: "Insurance"),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: CustomFAB(
+      appBar: CustomAccountAppBar(
+        title: "Insurance",
         onAdd: () {
           AddEditInsuranceSheet.showSheet(
             context,
@@ -40,6 +39,7 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
           );
         },
       ),
+
       body: BlocListener<DeleteBloc, DeleteState>(
         listener: (context, state) {
           if (state is DeleteLoading) {

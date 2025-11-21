@@ -13,10 +13,12 @@ class ProfessionalReferencesScreen extends StatelessWidget {
       "designationRefe": "Surgeon",
       "accountType": "ABCD",
       "emailRefe": "abcd@gmail.com",
+      "departRefe": "abcd@gmail.com",
     },
     {
       "fullnameRefe": "Marco",
       "designationRefe": "Surgeon",
+      "accountType": "ABCD",
       "departRefe": "ABCD",
       "emailRefe": "abcd@gmail.com",
     },
