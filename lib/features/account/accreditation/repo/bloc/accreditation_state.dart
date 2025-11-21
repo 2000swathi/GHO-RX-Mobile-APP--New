@@ -10,7 +10,9 @@ sealed class AccreditationState extends Equatable {
 final class AccreditationInitial extends AccreditationState {}
 
 class AccrediationLoading extends AccreditationState {}
+
 class AccrediationAddLoading extends AccreditationState {}
+
 class AccrediationeditLoading extends AccreditationState {}
 
 //Acreditation
@@ -22,6 +24,7 @@ class AccreditationgetState extends AccreditationState {
   @override
   List<Object> get props => [AccreditationModel];
 }
+
 //add/edit success
 class AccSuccess extends AccreditationState {
   final String message;
@@ -31,6 +34,7 @@ class AccSuccess extends AccreditationState {
   @override
   List<Object> get props => [message];
 }
+
 class AccrediationError extends AccreditationState {
   final String message;
 

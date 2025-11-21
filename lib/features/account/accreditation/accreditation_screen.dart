@@ -9,7 +9,6 @@ import 'package:ghorx_mobile_app_new/features/account/accreditation/widget/accre
 import 'package:ghorx_mobile_app_new/features/account/accreditation/repo/bloc/accreditation_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/deleteBloc/bloc/delete_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/account/widget/customFAB.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/custom_profile_appbar.dart';
 
 class AccreditationScreen extends StatefulWidget {
@@ -93,8 +92,8 @@ class _AccreditationScreenState extends State<AccreditationScreen> {
               }
               if (state is AccreditationgetState) {
                 final info = state.accreditationModel.data;
-                if (info.isEmpty ) {
-                return  Center(child: Text("No Accreditation Added"));
+                if (info.isEmpty) {
+                  return Center(child: Text("No Accreditation Added"));
                 }
                 return ListView.builder(
                   itemCount: info.length,
