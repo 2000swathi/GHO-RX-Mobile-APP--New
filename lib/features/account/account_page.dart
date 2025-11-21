@@ -97,7 +97,7 @@ class AccountPage extends StatelessWidget {
           actions: [
             IconButton(
               onPressed: () => scaffoldKey.currentState?.openDrawer(),
-              icon: Icon(Icons.settings, color: AppColors.black, size: 35),
+              icon: SvgPicture.asset("assets/svg/account/setting.svg"),
             ),
           ],
         ),
