@@ -17,6 +17,10 @@ class AddEditBankInfoBottonSheet {
   }) {
     final bool editing = isEdit == true && info != null;
     final _formKey = GlobalKey<FormState>();
+
+    final TextEditingController bankNameController = TextEditingController(
+      text: editing ? info.data[0].bankName : "",
+    );
     final TextEditingController bankTypeController = TextEditingController(
       text: editing ? info.data[0].accountType : "",
     );
@@ -38,9 +42,17 @@ class AddEditBankInfoBottonSheet {
           child: Column(
             children: [
               CustomTextFormField(
+                controller: bankNameController,
+                name: "Bank Name",
+                hintText: "Enter Bank Name",
+                validator:
+                    (value) =>
+                        Validation.field(value, fieldName: "Bank Name"),
+              ),
+              CustomTextFormField(
                 controller: bankTypeController,
                 name: "Bank Type",
-                hintText: "Enter Bank Type",
+                hintText: "Enter Account Type",
                 validator:
                     (value) =>
                         Validation.field(value, fieldName: "Account type"),
@@ -98,19 +110,21 @@ class AddEditBankInfoBottonSheet {
                         context.read<BankInfoBloc>().add(
                           EditBankInfoEvent(
                             id: info!.data[0].id.toString(),
-                            accountNumber: accountNameController.text,
-                            accountType: bankTypeController.text,
-                            holderName: accountNameController.text,
-                            routingNumber: routingNumberController.text,
+                            accountNumber: accountNameController.text.trim(),
+                            accountType: bankTypeController.text.trim(),
+                            holderName: accountNameController.text.trim(),
+                            routingNumber: routingNumberController.text.trim(),
+                            bankName: bankNameController.text.trim()
                           ),
                         );
                       } else {
                         context.read<BankInfoBloc>().add(
                           AddBankInfo(
-                            accountNumber: accountNameController.text,
-                            accountType: bankTypeController.text,
-                            holderName: accountNameController.text,
-                            routingNumber: routingNumberController.text,
+                            accountNumber: accountNameController.text.trim(),
+                            accountType: bankTypeController.text.trim(),
+                            holderName: accountNameController.text.trim(),
+                            routingNumber: routingNumberController.text.trim(),
+                            bankName: bankNameController.text.trim()
                           ),
                         );
                       }

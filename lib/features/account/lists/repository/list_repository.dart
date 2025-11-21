@@ -1,6 +1,8 @@
+import 'package:ghorx_mobile_app_new/features/account/education/repo/model/educationmodel.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/accreditationtype_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/certified_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/country_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/education_typemodel.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/issueing_authority.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/license_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/specialty%20type_response_model.dart';
@@ -165,4 +167,22 @@ class ListRepository {
       throw Exception("Failed to fetch questions list: $e");
     }
   }
+
+  //degree type
+  Future<EducationTypeModel> fetchDegreeList() async {
+    final data = {
+      ...ApiUtils.getCommonParams(action: "lists", token: ""),
+      "Tags": [
+        {"T": "dk1", "V": "DEGREE"},
+        {"T": "c10", "V": "3"},
+      ],
+    };
+    try {
+      final response = await _dioHandler.post('', data: data);
+      print(response);
+      return EducationTypeModel.fromJson(response);
+    } catch (e) {
+      throw Exception("Failed to fetch degree list: $e");
+    }
+}
 }

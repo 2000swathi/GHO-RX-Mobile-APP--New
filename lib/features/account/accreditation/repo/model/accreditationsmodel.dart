@@ -47,6 +47,7 @@ class AccreditationData {
   final String accreditationType;
   final String accreditationBody;
   final String accreditationNumber;
+  final String accreditationTypeID;
 
   AccreditationData({
     required this.id,
@@ -54,6 +55,7 @@ class AccreditationData {
     required this.accreditationType,
     required this.accreditationBody,
     required this.accreditationNumber,
+    required this.accreditationTypeID,
   });
 
   factory AccreditationData.fromJson(Map<String, dynamic> json) {
@@ -63,6 +65,7 @@ class AccreditationData {
       accreditationType: json['AccreditationType'] ?? '',
       accreditationBody: json['AccreditationBody'] ?? '',
       accreditationNumber: json['AccreditationNumber'] ?? '',
+      accreditationTypeID: json['AccreditationTypeID'] ?? '',
     );
   }
 
@@ -73,6 +76,7 @@ class AccreditationData {
       'AccreditationType': accreditationType,
       'AccreditationBody': accreditationBody,
       'AccreditationNumber': accreditationNumber,
+      'AccreditationTypeID': accreditationTypeID,
     };
   }
 }

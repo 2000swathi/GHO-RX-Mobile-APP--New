@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,6 +11,7 @@ import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/model/p
 import 'package:ghorx_mobile_app_new/features/account/widget/custom_profile_appbar.dart';
 import 'package:ghorx_mobile_app_new/features/home/widget/profile_pic_dialogue.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/shimmer/widget/shapes.dart';
 
 class PersonalInformationScreen extends StatefulWidget {
   const PersonalInformationScreen({super.key});
@@ -21,6 +23,15 @@ class PersonalInformationScreen extends StatefulWidget {
 
 class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
   PersonalInfoModel? personalInfo;
+  Widget _avatarShimmer() {
+    return ShimmerShapes.circle(110);
+  }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   context.read<ProfileInfoBloc>().add(FetchPersonalInfo());
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -86,69 +97,61 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                 ),
                 children: [
                   Center(
-                    child: Stack(
-                      children: [
-                        CircleAvatar(
-                          radius: 47,
-                          backgroundColor: AppColors.primarycolor.withAlpha(13),
-                          child: ClipOval(
-                            child:
-                                (info.imageUrl.isNotEmpty)
-                                    ? Image.network(
-                                      info.imageUrl,
-                                      width: 94,
-                                      height: 94,
-                                      fit: BoxFit.cover,
-                                      loadingBuilder: (context, child, prog) {
-                                        if (prog == null) return child;
-                                        return const Center(
-                                          child: SizedBox(
-                                            height: 15,
-                                            width: 15,
-                                            child: CircularProgressIndicator(
-                                              strokeWidth: 2,
-                                              color: AppColors.primarycolor,
+                    child: SizedBox(
+                      height: 110,
+                      width: 110,
+                      child: Stack(
+                        children: [
+                          CircleAvatar(
+                            radius: 55,
+                            backgroundColor: AppColors.primarycolor.withAlpha(
+                              13,
+                            ),
+                            child: ClipOval(
+                              child:
+                                  info.imageUrl.toString().isNotEmpty
+                                      ? CachedNetworkImage(
+                                        imageUrl: info.imageUrl,
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                        placeholder:
+                                            (_, __) => _avatarShimmer(),
+                                        errorWidget:
+                                            (_, __, ___) => SvgPicture.asset(
+                                              "assets/svg/person.svg",
                                             ),
-                                          ),
-                                        );
-                                      },
-                                      errorBuilder:
-                                          (context, error, stack) =>
-                                              SvgPicture.asset(
-                                                "assets/svg/person.svg",
-                                                width: 94,
-                                                height: 94,
-                                              ),
-                                    )
-                                    : SvgPicture.asset(
-                                      "assets/svg/person.svg",
-                                      width: 94,
-                                      height: 94,
-                                    ),
+                                      )
+                                      : SvgPicture.asset(
+                                        "assets/svg/person.svg",
+                                      ),
+                            ),
                           ),
-                        ),
-                        Positioned(
-                          right: 4,
-                          bottom: 4,
-                          child: InkWell(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder:
-                                    (_) => ProfileDialog(url: info.imageUrl),
-                              );
-                            },
-                            child: CircleAvatar(
-                              radius: 16,
-                              backgroundColor: AppColors.white,
-                              child: SvgPicture.asset(
-                                "assets/svg/account/edit.svg",
-                                height: 16,
+                          Positioned(
+                            right: 4,
+                            bottom: 4,
+                            child: InkWell(
+                              onTap:
+                                  () => showDialog(
+                                    context: context,
+                                    builder:
+                                        (_) => ProfileDialog(
+                                          url: info.imageUrl,
+                                          fileID: info.fileID,
+                                        ),
+                                  ),
+                              child: CircleAvatar(
+                                radius: 16,
+                                backgroundColor: AppColors.white,
+                                child: SvgPicture.asset(
+                                  "assets/svg/account/edit.svg",
+                                  height: 16,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 32),

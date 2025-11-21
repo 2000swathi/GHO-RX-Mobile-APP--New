@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/commondelete_dialogbox.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_dotted_container.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
@@ -18,7 +19,8 @@ import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_pag
 // ignore: must_be_immutable
 class ProfileDialog extends StatefulWidget {
   String url;
-  ProfileDialog({super.key, required this.url});
+  int fileID;
+  ProfileDialog({super.key, required this.url, required this.fileID});
 
   @override
   State<ProfileDialog> createState() => _ProfileDialogState();
@@ -30,78 +32,142 @@ class _ProfileDialogState extends State<ProfileDialog> {
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       contentPadding: EdgeInsets.zero,
-      content: Container(
-        color: AppColors.profilepink.withAlpha(13),
-        height: 250,
-        width: 200,
-        child: Stack(
-          children: [
-            Center(
-              child:
-                  widget.url.isNotEmpty
-                      ? ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: CachedNetworkImage(
-                          imageUrl: widget.url,
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
-                          fadeInDuration: Duration.zero,
-                          fadeOutDuration: Duration.zero,
-                          placeholder:
-                              (context, url) => SvgPicture.asset(
-                                "assets/svg/person.svg",
-                                width: 60,
-                                height: 60,
-                              ),
-                          errorWidget:
-                              (context, url, error) => SvgPicture.asset(
-                                "assets/svg/person.svg",
-                                height: 24,
-                                width: 24,
-                              ),
+      content: BlocListener<GetFileIdBloc, GetFileIdState>(
+        listener: (context, state) async {
+          if (state is DeleteFileSuccess) {
+            await CachedNetworkImage.evictFromCache(widget.url);
+
+            setState(() {
+              widget.url = "";
+              widget.fileID = 0;
+            });
+
+            context.read<PicBloc>().add(FetchPicEvent());
+            context.read<ProfileInfoBloc>().add(FetchPersonalInfo());
+            Navigator.pop(context);
+          }
+        },
+        child: Container(
+          color: AppColors.profilepink.withAlpha(13),
+          height: 250,
+          width: 200,
+          child: Stack(
+            children: [
+              Center(
+                child:
+                    (widget.url.isNotEmpty && widget.fileID != 0)
+                        ? ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: CachedNetworkImage(
+                            imageUrl: widget.url,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: double.infinity,
+                            placeholder:
+                                (_, __) => SvgPicture.asset(
+                                  "assets/svg/person.svg",
+                                  width: 60,
+                                  height: 60,
+                                ),
+                            errorWidget:
+                                (_, __, ___) => SvgPicture.asset(
+                                  "assets/svg/person.svg",
+                                  width: 60,
+                                  height: 60,
+                                ),
+                          ),
+                        )
+                        : SvgPicture.asset(
+                          "assets/svg/person.svg",
+                          width: 60,
+                          height: 60,
                         ),
-                      )
-                      : SvgPicture.asset(
-                        "assets/svg/person.svg",
-                        width: 60,
-                        height: 60,
-                      ),
-            ),
-            Positioned(
-              bottom: 10,
-              right: 10,
-              child: InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                  _showEditDialog(context);
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: AppColors.primarycolor),
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 4,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  padding: const EdgeInsets.all(6),
-                  child: SvgPicture.asset(
-                    "assets/svg/edit_svg.svg",
-                    width: 20,
-                    height: 20,
+              ),
+
+              Positioned(
+                bottom: 10,
+                right: 50,
+                child: InkWell(
+                  onTap: () {
+                    _showDeleteDialog(context, widget.fileID);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: AppColors.warningred),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 4,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    padding: const EdgeInsets.all(6),
+                    child: SvgPicture.asset(
+                      "assets/svg/trash.svg",
+                      width: 20,
+                      height: 20,
+                      color: AppColors.warningred,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+              Positioned(
+                bottom: 10,
+                right: 10,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                    _showEditDialog(context);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: AppColors.primarycolor),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 4,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    padding: const EdgeInsets.all(6),
+                    child: SvgPicture.asset(
+                      "assets/svg/edit_svg.svg",
+                      width: 20,
+                      height: 20,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void _showDeleteDialog(BuildContext context, int fileID) async {
+    final confirmed = await showDeleteConfirmationDialog(
+      context: context,
+      title: "Delete Profile Image",
+      content: "Are you sure want to delete",
+    );
+    if (confirmed == true && context.mounted) {
+      context.read<GetFileIdBloc>().add(
+        DeleteFileEvent(
+          saltID: "",
+          docTypeId: 9,
+          fileUploadedID: fileID,
+          filePath: "",
+          context: context,
+        ),
+      );
+    }
   }
 
   void _showEditDialog(BuildContext context) {
@@ -127,6 +193,7 @@ class _ProfileDialogState extends State<ProfileDialog> {
           child: StatefulBuilder(
             builder: (context, setStateDialog) {
               return AlertDialog(
+                backgroundColor: AppColors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),

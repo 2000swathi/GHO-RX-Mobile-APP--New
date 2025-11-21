@@ -13,6 +13,7 @@ class PersonalInfoModel {
   final String birthDate;
   final String countryName;
   final String imageUrl;
+  final int fileID;
 
   PersonalInfoModel({
     required this.firstName,
@@ -28,6 +29,7 @@ class PersonalInfoModel {
     required this.birthDate,
     required this.countryName,
     required this.imageUrl,
+    required this.fileID,
   });
 
   factory PersonalInfoModel.fromJson(Map<String, dynamic> json) {
@@ -45,6 +47,7 @@ class PersonalInfoModel {
       birthDate: json['BirthDate'] ?? "",
       countryName: json['CountryName'] ?? "",
       imageUrl: json['_Url'] ?? "",
+      fileID: json['FileUploadID'] ?? "",
     );
   }
 }
