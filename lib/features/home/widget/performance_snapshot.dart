@@ -228,7 +228,7 @@ class PerformanceSnapshotWidget extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 6),
                                       const Text(
-                                        "\$0.00",
+                                        "\$0.0",
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
