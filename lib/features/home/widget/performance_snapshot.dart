@@ -92,14 +92,14 @@ class PerformanceSnapshotWidget extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    "You have 3 Pending Cases",
+                                    "You have 0 Pending Cases",
                                     style: AppFonts.textred,
                                   ),
                                   const SizedBox(height: 12),
                                   const CustomRateChart(),
     
                                   const Text(
-                                    "Keep it up! You're ahead of 75% of doctors.",
+                                    "Keep it up! You're ahead of 0% of doctors.",
                                     style: TextStyle(
                                       fontSize: 11,
                                       color: Colors.black54,
@@ -167,7 +167,7 @@ class PerformanceSnapshotWidget extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 6),
                                       const Text(
-                                        "1h 15m",
+                                        "0h 0m",
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
@@ -228,7 +228,7 @@ class PerformanceSnapshotWidget extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 6),
                                       const Text(
-                                        "\$150.31",
+                                        "\$0.00",
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
