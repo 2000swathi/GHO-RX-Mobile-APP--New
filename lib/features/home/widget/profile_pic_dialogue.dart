@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,7 +14,6 @@ import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_event.
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_event.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/widget/pick_file_dialogue_box.dart';
-
 
 // ignore: must_be_immutable
 class ProfileDialog extends StatefulWidget {
@@ -40,38 +40,26 @@ class _ProfileDialogState extends State<ProfileDialog> {
               child:
                   widget.url.isNotEmpty
                       ? ClipRRect(
-                        borderRadius: BorderRadiusGeometry.circular(10),
-                        child: Image.network(
-                          widget.url,
+                        borderRadius: BorderRadius.circular(10),
+                        child: CachedNetworkImage(
+                          imageUrl: widget.url,
                           fit: BoxFit.cover,
                           width: double.infinity,
                           height: double.infinity,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) {
-                              return child;
-                            }
-
-                            return Center(
-                              child: SizedBox(
-                                height: 15,
-                                width: 15,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    AppColors.profilepink,
-                                  ),
-                                ),
+                          fadeInDuration: Duration.zero,
+                          fadeOutDuration: Duration.zero,
+                          placeholder:
+                              (context, url) => SvgPicture.asset(
+                                "assets/svg/person.svg",
+                                width: 60,
+                                height: 60,
                               ),
-                            );
-                          },
-                          errorBuilder: (context, error, stackTrace) {
-                            // Fallback if image fails to load
-                            return SvgPicture.asset(
-                              "assets/svg/person.svg",
-                              height: 24,
-                              width: 24,
-                            );
-                          },
+                          errorWidget:
+                              (context, url, error) => SvgPicture.asset(
+                                "assets/svg/person.svg",
+                                height: 24,
+                                width: 24,
+                              ),
                         ),
                       )
                       : SvgPicture.asset(
@@ -121,10 +109,12 @@ class _ProfileDialogState extends State<ProfileDialog> {
       context: context,
       builder: (BuildContext context) {
         return BlocListener<GetFileIdBloc, GetFileIdState>(
-          listener: (context, state) {
+          listener: (context, state) async {
             if (state is SuccessAPI) {
+              await CachedNetworkImage.evictFromCache(widget.url);
+
               context.read<PicBloc>().add(FetchPicEvent());
-              context.read<ProfileInfoBloc>().add(FetchPersonalInfo());
+
               Navigator.pop(context);
             } else if (state is GetFileIdFailure) {
               Navigator.pop(context);
