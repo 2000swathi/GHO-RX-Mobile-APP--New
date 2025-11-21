@@ -57,8 +57,8 @@ import 'package:ghorx_mobile_app_new/features/account/languages/repo/bloc/langua
 import 'package:ghorx_mobile_app_new/features/account/languages/repo/language_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/bloc/profile_info_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/profile_info_repo.dart';
-import 'package:ghorx_mobile_app_new/features/profile/specialty/bloc/specialty_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/specialty/specialty_repo.dart';
+import 'package:ghorx_mobile_app_new/features/account/specialty/repo/bloc/specialty_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/specialty/repo/specialty_repo.dart';
 import 'package:ghorx_mobile_app_new/features/send%20mail/repository/bloc/sendmail_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/send%20mail/repository/sendmail_repo.dart';
 import 'package:ghorx_mobile_app_new/features/splash/bloc/spalsh_event.dart';

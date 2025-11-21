@@ -12,7 +12,7 @@ class EditBloc extends Bloc<EditEvent, EditState> {
     // on<EditLicenseEvent>(_onEditLicense);
     // on<EditLanguageEvent>(_onEditLanguage);
     on<EditBankInfoEvent>(_onEditBankInfo);
-    on<EditSpecialtyEvent>(_editSpecialty);
+    // on<EditSpecialtyEvent>(_editSpecialty);
     // on<EditAcreditationEvent>(_editAccreditation);
     // on<EditInsuranceEvent>(_editInsurance);
   }
@@ -52,43 +52,43 @@ class EditBloc extends Bloc<EditEvent, EditState> {
   //   }
   // }
 
-  //Specialty
-  Future<void> _editSpecialty(
-    EditSpecialtyEvent event,
-    Emitter<EditState> emit,
-  ) async {
-    emit(EditLoading());
+  // //Specialty
+  // Future<void> _editSpecialty(
+  //   EditSpecialtyEvent event,
+  //   Emitter<EditState> emit,
+  // ) async {
+  //   emit(EditLoading());
 
-    try {
-      final response = await repository.editSpecialty(
-        specialtyId: event.specialtyId,
-        id: event.id,
-        certifiedBoard: event.certifiedBoard,
-        specialtyType: event.specialtyType,
-      );
+  //   try {
+  //     final response = await repository.editSpecialty(
+  //       specialtyId: event.specialtyId,
+  //       id: event.id,
+  //       certifiedBoard: event.certifiedBoard,
+  //       specialtyType: event.specialtyType,
+  //     );
 
-      if (response["Status"] == 1) {
-        String message = "Updated Successfully";
-        final data = response["Data"];
-        if (data is List && data.isNotEmpty) {
-          final firstLevel = data[0];
-          if (firstLevel is List && firstLevel.isNotEmpty) {
-            final msgObject = firstLevel[0];
-            if (msgObject is Map && msgObject["msg"] != null) {
-              message = msgObject["msg"].toString();
-            }
-          }
-        }
-        emit(EditSuccess(message: message));
-      } else {
-        final error =
-            response["Error"]?.toString() ?? "Failed to update specialty";
-        emit(EditFailure(error: error));
-      }
-    } catch (e) {
-      emit(EditFailure(error: e.toString()));
-    }
-  }
+  //     if (response["Status"] == 1) {
+  //       String message = "Updated Successfully";
+  //       final data = response["Data"];
+  //       if (data is List && data.isNotEmpty) {
+  //         final firstLevel = data[0];
+  //         if (firstLevel is List && firstLevel.isNotEmpty) {
+  //           final msgObject = firstLevel[0];
+  //           if (msgObject is Map && msgObject["msg"] != null) {
+  //             message = msgObject["msg"].toString();
+  //           }
+  //         }
+  //       }
+  //       emit(EditSuccess(message: message));
+  //     } else {
+  //       final error =
+  //           response["Error"]?.toString() ?? "Failed to update specialty";
+  //       emit(EditFailure(error: error));
+  //     }
+  //   } catch (e) {
+  //     emit(EditFailure(error: e.toString()));
+  //   }
+  // }
 
   // // Accreditation
   // Future<void> _editAccreditation(

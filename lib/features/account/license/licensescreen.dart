@@ -10,7 +10,6 @@ import 'package:ghorx_mobile_app_new/features/account/license/addedit_license_sh
 import 'package:ghorx_mobile_app_new/features/account/license/widget/license_card.dart';
 import 'package:ghorx_mobile_app_new/features/account/license/repo/bloc/license_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/account/widget/customFAB.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/custom_profile_appbar.dart';
 
 class Licensescreen extends StatelessWidget {
@@ -25,8 +24,9 @@ class Licensescreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.backgroundcolor,
       appBar: CustomAccountAppBar(
-        title: "Licence",
-        onAdd: () {
+        title: "License",
+        onAdd: () async {
+          final listBloc = context.read<ListBloc>();
           listBloc.add(FetchLicenseList());
           listBloc.add(FetchIssueingAuthorityList());
 
@@ -36,45 +36,41 @@ class Licensescreen extends StatelessWidget {
             builder: (_) => const Center(child: LoadingAnimation()),
           );
 
-          StreamZip([
-            listBloc.stream
-                .where((s) => s is LicenseListState || s is ListFailure)
-                .take(1),
-            listBloc.stream
-                .where(
-                  (s) => s is IssueingauthorityListState || s is ListFailure,
-                )
-                .take(1),
-          ]).listen((values) {
-            if (!context.mounted) return;
-            Navigator.pop(context);
+          final licenseState = await listBloc.stream.firstWhere(
+            (s) => s is LicenseListState || s is ListFailure,
+          );
+          final issueingstate = await listBloc.stream.firstWhere(
+            (s) => s is IssueingauthorityListState || s is ListFailure,
+          );
 
-            final licenseState = values[0];
-            final issueingState = values[1];
+          Navigator.pop(context);
 
-            if (licenseState is LicenseListState &&
-                issueingState is IssueingauthorityListState) {
-              final licList =
-                  licenseState.licenseResponse.data.expand((e) => e).toList();
-              final issuingList =
-                  issueingState.issueingauthorityResponse.data
-                      .expand((e) => e)
-                      .toList();
+          if (licenseState is LicenseListState &&
+              issueingstate is IssueingauthorityListState) {
+            final licenses =
+                licenseState.licenseResponse.data
+                    .expand((inner) => inner)
+                    .toList();
+            final issueingList =
+                issueingstate.issueingauthorityResponse.data
+                    .expand((inner) => inner)
+                    .toList();
 
-              AddEditLicenseSheet.showSheet(
-                context,
-                null,
-                licList,
-                issuingList,
-                false,
-                licenseBloc: licenseBloc,
-              );
-            }
-          });
+            AddEditLicenseSheet.showSheet(
+              context,
+              null,
+              licenses,
+              issueingList,
+              false,
+              licenseBloc: context.read<LicenseBloc>(),
+            );
+          } else if (licenseState is ListFailure) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(licenseState.error)));
+          }
         },
       ),
-
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
 
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -148,8 +144,7 @@ class Licensescreen extends StatelessWidget {
                           }
                         },
 
-                        /// ------------ EDIT CLICK ----------------
-                        onEdit: () {
+                        onEdit: () async {
                           showDialog(
                             context: context,
                             barrierDismissible: false,
@@ -157,51 +152,58 @@ class Licensescreen extends StatelessWidget {
                                 (_) => const Center(child: LoadingAnimation()),
                           );
 
+                          final listBloc = context.read<ListBloc>();
                           listBloc.add(FetchLicenseList());
                           listBloc.add(FetchIssueingAuthorityList());
 
-                          StreamZip([
-                            listBloc.stream
-                                .where(
-                                  (s) =>
-                                      s is LicenseListState || s is ListFailure,
-                                )
-                                .take(1),
-                            listBloc.stream
-                                .where(
-                                  (s) =>
-                                      s is IssueingauthorityListState ||
-                                      s is ListFailure,
-                                )
-                                .take(1),
-                          ]).listen((values) {
-                            if (!context.mounted) return;
-                            Navigator.pop(context); // close loader
+                          final results = await Future.wait([
+                            listBloc.stream.firstWhere(
+                              (s) => s is LicenseListState || s is ListFailure,
+                            ),
+                            listBloc.stream.firstWhere(
+                              (s) =>
+                                  s is IssueingauthorityListState ||
+                                  s is ListFailure,
+                            ),
+                          ]);
 
-                            final listState = values[0];
-                            final issueingState = values[1];
+                          // final listState = await listBloc
+                          //     .stream
+                          //     .firstWhere(
+                          //       (s) =>
+                          //           s is LicenseListState ||
+                          //           s is ListFailure,
+                          //     );
 
-                            if (listState is LicenseListState &&
-                                issueingState is IssueingauthorityListState) {
-                              final licList =
-                                  listState.licenseResponse.data
-                                      .expand((e) => e)
-                                      .toList();
-                              final issuingList =
-                                  issueingState.issueingauthorityResponse.data
-                                      .expand((e) => e)
-                                      .toList();
+                          Navigator.of(context, rootNavigator: true).pop();
 
-                              AddEditLicenseSheet.showSheet(
-                                context,
-                                license,
-                                licList,
-                                issuingList,
-                                true,
-                                licenseBloc: licenseBloc,
-                              );
-                            }
-                          });
+                          final listState = results[0];
+                          final issueingstate = results[1];
+
+                          if (listState is LicenseListState &&
+                              issueingstate is IssueingauthorityListState) {
+                            final licenses =
+                                listState.licenseResponse.data
+                                    .expand((inner) => inner)
+                                    .toList();
+                            final issueingList =
+                                issueingstate.issueingauthorityResponse.data
+                                    .expand((inner) => inner)
+                                    .toList();
+
+                            AddEditLicenseSheet.showSheet(
+                              context,
+                              license,
+                              licenses,
+                              issueingList,
+                              true,
+                              licenseBloc: context.read<LicenseBloc>(),
+                            );
+                          } else if (listState is ListFailure) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(listState.error)),
+                            );
+                          }
                         },
                       ),
                     );

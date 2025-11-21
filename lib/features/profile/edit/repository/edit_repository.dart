@@ -136,43 +136,43 @@ class EditprofileRepository {
     }
   }
 
-  //Specialty
-  Future<Map<String, dynamic>> editSpecialty({
-    required String specialtyId,
-    required String id,
-    required String certifiedBoard,
-    required String specialtyType,
-  }) async {
-    final token = await SharedPreference.getToken();
-    final reviewerId = await SharedPreference.getUserId();
+  // //Specialty
+  // Future<Map<String, dynamic>> editSpecialty({
+  //   required String specialtyId,
+  //   required String id,
+  //   required String certifiedBoard,
+  //   required String specialtyType,
+  // }) async {
+  //   final token = await SharedPreference.getToken();
+  //   final reviewerId = await SharedPreference.getUserId();
 
-    if (token!.isEmpty || reviewerId!.isEmpty) {
-      throw Exception('Token or ReviewerId not found in SharedPreferences');
-    }
+  //   if (token!.isEmpty || reviewerId!.isEmpty) {
+  //     throw Exception('Token or ReviewerId not found in SharedPreferences');
+  //   }
 
-    final c1data = jsonEncode({
-      "SpecialtyID": specialtyId,
-      "CertifiedBoard": certifiedBoard,
-      "SpecialtyType": specialtyType,
-    });
+  //   final c1data = jsonEncode({
+  //     "SpecialtyID": specialtyId,
+  //     "CertifiedBoard": certifiedBoard,
+  //     "SpecialtyType": specialtyType,
+  //   });
 
-    final requestData = {
-      ...ApiUtils.getCommonParams(action: "reviewerspl", token: token),
-      "Tags": [
-        {"T": "dk1", "V": reviewerId},
-        {"T": "dk2", "V": id},
-        {"T": "c1", "V": c1data},
-        {"T": "c2", "V": certifiedBoard},
-        {"T": "c10", "V": "2"},
-      ],
-    };
-    try {
-      final response = await _dioHandler.post('', data: requestData);
-      return response;
-    } catch (e) {
-      throw (e.toString());
-    }
-  }
+  //   final requestData = {
+  //     ...ApiUtils.getCommonParams(action: "reviewerspl", token: token),
+  //     "Tags": [
+  //       {"T": "dk1", "V": reviewerId},
+  //       {"T": "dk2", "V": id},
+  //       {"T": "c1", "V": c1data},
+  //       {"T": "c2", "V": certifiedBoard},
+  //       {"T": "c10", "V": "2"},
+  //     ],
+  //   };
+  //   try {
+  //     final response = await _dioHandler.post('', data: requestData);
+  //     return response;
+  //   } catch (e) {
+  //     throw (e.toString());
+  //   }
+  // }
 
   // //Accreditation
   // Future<Map<String, dynamic>> editAccreditation({

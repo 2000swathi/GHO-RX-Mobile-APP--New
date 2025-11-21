@@ -11,7 +11,7 @@ class AddBloc extends Bloc<AddEvent, AddState> {
     // on<AddLicense>(_onAddLicense);
     // on<AddLanguage>(_onAddLanguage);
     on<AddBankInfo>(_onAddBankInfo);
-    on<AddSpecialty>(_onAddSpecialty);
+    // on<AddSpecialty>(_onAddSpecialty);
     // on<AddAccrediation>(addaccrediation);
     on<AddInsurance>(addInsurance);
   }
@@ -37,24 +37,24 @@ class AddBloc extends Bloc<AddEvent, AddState> {
   //   }
   // }
 
-  //specialty
-  Future<void> _onAddSpecialty(
-    AddSpecialty event,
-    Emitter<AddState> emit,
-  ) async {
-    emit(AddLoading());
+  // //specialty
+  // Future<void> _onAddSpecialty(
+  //   AddSpecialty event,
+  //   Emitter<AddState> emit,
+  // ) async {
+  //   emit(AddLoading());
 
-    try {
-      final response = await repository.addSpecialty(
-        specialty: event.specialty,
-        certifiedBoard: event.certifiedBoard,
-        specialtyType: event.specialtyType,
-      );
-      emit(AddSuccess(response: response));
-    } catch (e) {
-      emit(AddError(message: "An error occurred: ${e.toString()}"));
-    }
-  }
+  //   try {
+  //     final response = await repository.addSpecialty(
+  //       specialty: event.specialty,
+  //       certifiedBoard: event.certifiedBoard,
+  //       specialtyType: event.specialtyType,
+  //     );
+  //     emit(AddSuccess(response: response));
+  //   } catch (e) {
+  //     emit(AddError(message: "An error occurred: ${e.toString()}"));
+  //   }
+  // }
 
 // // Language
 

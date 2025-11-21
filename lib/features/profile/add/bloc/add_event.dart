@@ -1,17 +1,17 @@
 abstract class AddEvent {}
 
-//specialty
-class AddSpecialty extends AddEvent {
-  final String specialty;
-  final String certifiedBoard;
-  final String specialtyType;
+// //specialty
+// class AddSpecialty extends AddEvent {
+//   final String specialty;
+//   final String certifiedBoard;
+//   final String specialtyType;
 
-  AddSpecialty({
-    required this.specialty,
-    required this.certifiedBoard,
-    required this.specialtyType,
-  });
-}
+//   AddSpecialty({
+//     required this.specialty,
+//     required this.certifiedBoard,
+//     required this.specialtyType,
+//   });
+// }
 
 // //Accreditation
 // class AddAccrediation extends AddEvent {

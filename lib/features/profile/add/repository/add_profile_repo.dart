@@ -6,39 +6,39 @@ import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
 class AddProfileRepository {
   final DioHandler _dioHandler = DioHandler();
 
-  //add specialty
-  Future addSpecialty({
-    required String specialty,
-    required String certifiedBoard,
-    required String specialtyType,
-  }) async {
-    final token = await SharedPreference.getToken();
-    final reviewerId = await SharedPreference.getUserId();
+  // //add specialty
+  // Future addSpecialty({
+  //   required String specialty,
+  //   required String certifiedBoard,
+  //   required String specialtyType,
+  // }) async {
+  //   final token = await SharedPreference.getToken();
+  //   final reviewerId = await SharedPreference.getUserId();
 
-    final c1data = jsonEncode({
-      "SpecialtyID": specialty,
-      "CertifiedBoard": certifiedBoard,
-      "SpecialtyType": specialtyType,
-    });
-    if (token!.isEmpty || reviewerId!.isEmpty) {
-      throw Exception('Token or ReviewerId not found in SharedPreferences');
-    }
-    final data = {
-      ...ApiUtils.getCommonParams(action: "reviewerspl", token: token),
-      "Tags": [
-        {"T": "dk1", "V": reviewerId},
-        {"T": "c1", "V": c1data},
-        {"T": "c10", "V": "1"},
-      ],
-    };
-    try {
-      final response = await _dioHandler.post('', data: data);
-      print(response);
-      return response;
-    } catch (e) {
-      throw Exception("Failed to add specialty: $e");
-    }
-  }
+  //   final c1data = jsonEncode({
+  //     "SpecialtyID": specialty,
+  //     "CertifiedBoard": certifiedBoard,
+  //     "SpecialtyType": specialtyType,
+  //   });
+  //   if (token!.isEmpty || reviewerId!.isEmpty) {
+  //     throw Exception('Token or ReviewerId not found in SharedPreferences');
+  //   }
+  //   final data = {
+  //     ...ApiUtils.getCommonParams(action: "reviewerspl", token: token),
+  //     "Tags": [
+  //       {"T": "dk1", "V": reviewerId},
+  //       {"T": "c1", "V": c1data},
+  //       {"T": "c10", "V": "1"},
+  //     ],
+  //   };
+  //   try {
+  //     final response = await _dioHandler.post('', data: data);
+  //     print(response);
+  //     return response;
+  //   } catch (e) {
+  //     throw Exception("Failed to add specialty: $e");
+  //   }
+  // }
 
   // //add accreditation
   // Future addaccrediation({

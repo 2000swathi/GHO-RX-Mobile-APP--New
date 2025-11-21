@@ -14,12 +14,12 @@ import 'package:ghorx_mobile_app_new/features/profile/Bank_info/bloc/bank_info_b
 import 'package:ghorx_mobile_app_new/features/account/license/repo/bloc/license_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/accreditation/repo/bloc/accreditation_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/deleteBloc/bloc/delete_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_specialty_sheet.dart';
+import 'package:ghorx_mobile_app_new/features/account/specialty/addedit_specialty_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/editProfile/addedit_bankinfo.dart';
 import 'package:ghorx_mobile_app_new/features/account/insurance/repo/bloc/insurance_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/languages/repo/bloc/language_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/specialty/bloc/specialty_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/specialty/repo/bloc/specialty_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/profile/viewProfile/profile/widget/profile_appbar_shimmer.dart';
 import 'package:ghorx_mobile_app_new/features/account/insurance/addedit_insurance_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/account/license/addedit_license_sheet.dart';
@@ -50,8 +50,8 @@ class _ProfileDrState extends State<ProfileDr> {
     final contextBloc = context.read;
 
     // contextBloc<ProfileInfoBloc>().add(FetchPersonalInfo());
-    contextBloc<SpecialtyBloc>().add(FetchSpecialty());
-    contextBloc<InsuranceBloc>().add(FetchInsurance());
+    // contextBloc<SpecialtyBloc>().add(FetchSpecialty());
+    // contextBloc<InsuranceBloc>().add(FetchInsurance());
     contextBloc<BankInfoBloc>().add(FetchBankInfo());
   }
 
@@ -270,314 +270,314 @@ class _ProfileDrState extends State<ProfileDr> {
           // ),
 
           //////////////////////////////////////////////spl
-          _buildSection(
-            index: 2,
-            heading: "Specialty",
-            subheading: "Verify your qualifications and area of expertise.",
-            content: BlocListener<DeleteBloc, DeleteState>(
-              listener: (context, state) {
-                if (state is DeleteLoading) {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (_) => const Center(child: LoadingAnimation()),
-                  );
-                } else if (state is DeleteSuccess) {
-                  Navigator.pop(context);
-                  CustomScaffoldMessenger.showSuccessMessage(
-                    context,
-                    "Specialty deleted successfully",
-                  );
-                  context.read<SpecialtyBloc>().add(FetchSpecialty());
-                } else if (state is DeleteFailure) {
-                  Navigator.pop(context);
-                  CustomScaffoldMessenger.showSuccessMessage(
-                    context,
-                    "Failed to delete specialty",
-                  );
-                }
-              },
-              child: BlocBuilder<SpecialtyBloc, SpecialtyState>(
-                builder: (context, state) {
-                  if (state is SpecialityLoading) {
-                    return const Center(child: LoadingAnimation());
-                  } else if (state is Specialty) {
-                    final specialtyList = state.specialtyModel.data;
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (specialtyList.isEmpty)
-                          const Center(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 10.0),
-                              child: Text("No specialties found"),
-                            ),
-                          )
-                        else
-                          ...specialtyList.map(
-                            (specialty) => Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _buildRow("Specialty", specialty.specialty),
-                                _buildRow(
-                                  "Certified Board",
-                                  specialty.certifiedBoard,
-                                ),
-                                _buildRow(
-                                  "Specialty Type",
-                                  specialty.specialtyType,
-                                ),
-                                const SizedBox(height: 5),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    // delete
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: InkWell(
-                                        onTap: () async {
-                                          final confirmed =
-                                              await showDeleteConfirmationDialog(
-                                                context: context,
-                                                title: "Delete Specialty",
-                                                content:
-                                                    "Are you sure want to delete",
-                                              );
-                                          if (confirmed == true &&
-                                              context.mounted) {
-                                            context.read<DeleteBloc>().add(
-                                              DeleteProfileItem(
-                                                id: specialty.id.toString(),
-                                                action: "reviewerspl",
-                                                isLang: false,
-                                              ),
-                                            );
-                                          }
-                                        },
-                                        child: SvgPicture.asset(
-                                          "assets/svg/trash.svg",
-                                          // ignore: deprecated_member_use
-                                          color: Colors.red,
-                                        ),
-                                      ),
-                                    ),
-                                    //edit
-                                    const SizedBox(width: 15),
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: InkWell(
-                                        onTap: () async {
-                                          showDialog(
-                                            context: context,
-                                            barrierDismissible: false,
-                                            builder:
-                                                (_) => const Center(
-                                                  child: LoadingAnimation(),
-                                                ),
-                                          );
+          // _buildSection(
+          //   index: 2,
+          //   heading: "Specialty",
+          //   subheading: "Verify your qualifications and area of expertise.",
+          //   content: BlocListener<DeleteBloc, DeleteState>(
+          //     listener: (context, state) {
+          //       if (state is DeleteLoading) {
+          //         showDialog(
+          //           context: context,
+          //           barrierDismissible: false,
+          //           builder: (_) => const Center(child: LoadingAnimation()),
+          //         );
+          //       } else if (state is DeleteSuccess) {
+          //         Navigator.pop(context);
+          //         CustomScaffoldMessenger.showSuccessMessage(
+          //           context,
+          //           "Specialty deleted successfully",
+          //         );
+          //         context.read<SpecialtyBloc>().add(FetchSpecialty());
+          //       } else if (state is DeleteFailure) {
+          //         Navigator.pop(context);
+          //         CustomScaffoldMessenger.showSuccessMessage(
+          //           context,
+          //           "Failed to delete specialty",
+          //         );
+          //       }
+          //     },
+          //     child: BlocBuilder<SpecialtyBloc, SpecialtyState>(
+          //       builder: (context, state) {
+          //         if (state is SpecialityLoading) {
+          //           return const Center(child: LoadingAnimation());
+          //         } else if (state is SpecialtyGetState) {
+          //           final specialtyList = state.specialtyModel.data;
+          //           return Column(
+          //             crossAxisAlignment: CrossAxisAlignment.start,
+          //             children: [
+          //               if (specialtyList.isEmpty)
+          //                 const Center(
+          //                   child: Padding(
+          //                     padding: EdgeInsets.symmetric(vertical: 10.0),
+          //                     child: Text("No specialties found"),
+          //                   ),
+          //                 )
+          //               else
+          //                 ...specialtyList.map(
+          //                   (specialty) => Column(
+          //                     crossAxisAlignment: CrossAxisAlignment.start,
+          //                     children: [
+          //                       _buildRow("Specialty", specialty.specialty),
+          //                       _buildRow(
+          //                         "Certified Board",
+          //                         specialty.certifiedBoard,
+          //                       ),
+          //                       _buildRow(
+          //                         "Specialty Type",
+          //                         specialty.specialtyType,
+          //                       ),
+          //                       const SizedBox(height: 5),
+          //                       Row(
+          //                         mainAxisAlignment: MainAxisAlignment.end,
+          //                         children: [
+          //                           // delete
+          //                           Align(
+          //                             alignment: Alignment.centerRight,
+          //                             child: InkWell(
+          //                               onTap: () async {
+          //                                 final confirmed =
+          //                                     await showDeleteConfirmationDialog(
+          //                                       context: context,
+          //                                       title: "Delete Specialty",
+          //                                       content:
+          //                                           "Are you sure want to delete",
+          //                                     );
+          //                                 if (confirmed == true &&
+          //                                     context.mounted) {
+          //                                   context.read<DeleteBloc>().add(
+          //                                     DeleteProfileItem(
+          //                                       id: specialty.id.toString(),
+          //                                       action: "reviewerspl",
+          //                                       isLang: false,
+          //                                     ),
+          //                                   );
+          //                                 }
+          //                               },
+          //                               child: SvgPicture.asset(
+          //                                 "assets/svg/trash.svg",
+          //                                 // ignore: deprecated_member_use
+          //                                 color: Colors.red,
+          //                               ),
+          //                             ),
+          //                           ),
+          //                           //edit
+          //                           const SizedBox(width: 15),
+          //                           Align(
+          //                             alignment: Alignment.centerRight,
+          //                             child: InkWell(
+          //                               onTap: () async {
+          //                                 showDialog(
+          //                                   context: context,
+          //                                   barrierDismissible: false,
+          //                                   builder:
+          //                                       (_) => const Center(
+          //                                         child: LoadingAnimation(),
+          //                                       ),
+          //                                 );
 
-                                          final listBloc =
-                                              context.read<ListBloc>();
-                                          listBloc.add(FetchSpecialtyList());
-                                          listBloc.add(FetchCertifiedList());
-                                          listBloc.add(
-                                            FetchSpecialtyTypeList(),
-                                          );
+          //                                 final listBloc =
+          //                                     context.read<ListBloc>();
+          //                                 listBloc.add(FetchSpecialtyList());
+          //                                 listBloc.add(FetchCertifiedList());
+          //                                 listBloc.add(
+          //                                   FetchSpecialtyTypeList(),
+          //                                 );
 
-                                          final results = await Future.wait([
-                                            listBloc.stream.firstWhere(
-                                              (s) =>
-                                                  s is SpecialtyListState ||
-                                                  s is ListFailure,
-                                            ),
-                                            listBloc.stream.firstWhere(
-                                              (s) =>
-                                                  s is CertifiedListState ||
-                                                  s is ListFailure,
-                                            ),
-                                            listBloc.stream.firstWhere(
-                                              (s) =>
-                                                  s is SpecialtyTypeListState ||
-                                                  s is ListFailure,
-                                            ),
-                                          ]);
+          //                                 final results = await Future.wait([
+          //                                   listBloc.stream.firstWhere(
+          //                                     (s) =>
+          //                                         s is SpecialtyListState ||
+          //                                         s is ListFailure,
+          //                                   ),
+          //                                   listBloc.stream.firstWhere(
+          //                                     (s) =>
+          //                                         s is CertifiedListState ||
+          //                                         s is ListFailure,
+          //                                   ),
+          //                                   listBloc.stream.firstWhere(
+          //                                     (s) =>
+          //                                         s is SpecialtyTypeListState ||
+          //                                         s is ListFailure,
+          //                                   ),
+          //                                 ]);
 
-                                          Navigator.of(
-                                            context,
-                                            rootNavigator: true,
-                                          ).pop();
+          //                                 Navigator.of(
+          //                                   context,
+          //                                   rootNavigator: true,
+          //                                 ).pop();
 
-                                          final listState = results[0];
-                                          final certifiedState = results[1];
-                                          final typeState = results[2];
+          //                                 final listState = results[0];
+          //                                 final certifiedState = results[1];
+          //                                 final typeState = results[2];
 
-                                          if (listState is SpecialtyListState &&
-                                              certifiedState
-                                                  is CertifiedListState &&
-                                              typeState
-                                                  is SpecialtyTypeListState) {
-                                            final specialties =
-                                                listState.specialtyResponse.data
-                                                    .expand((inner) => inner)
-                                                    .toList();
+          //                                 if (listState is SpecialtyListState &&
+          //                                     certifiedState
+          //                                         is CertifiedListState &&
+          //                                     typeState
+          //                                         is SpecialtyTypeListState) {
+          //                                   final specialties =
+          //                                       listState.specialtyResponse.data
+          //                                           .expand((inner) => inner)
+          //                                           .toList();
 
-                                            final certifiedBoards =
-                                                certifiedState
-                                                    .certifiedResponse
-                                                    .data
-                                                    .expand((inner) => inner)
-                                                    .toList();
+          //                                   final certifiedBoards =
+          //                                       certifiedState
+          //                                           .certifiedResponse
+          //                                           .data
+          //                                           .expand((inner) => inner)
+          //                                           .toList();
 
-                                            final specialtyTypes =
-                                                typeState
-                                                    .specialtyTypeResponse
-                                                    .data
-                                                    .expand((inner) => inner)
-                                                    .toList();
+          //                                   final specialtyTypes =
+          //                                       typeState
+          //                                           .specialtyTypeResponse
+          //                                           .data
+          //                                           .expand((inner) => inner)
+          //                                           .toList();
 
-                                            AddEditSpecialtySheet.showSheet(
-                                              context,
-                                              specialty,
-                                              specialties,
-                                              certifiedBoards,
-                                              specialtyTypes,
-                                              true,
-                                              specBloc:
-                                                  context.read<SpecialtyBloc>(),
-                                            );
-                                          } else {
-                                            String errorMessage =
-                                                "Failed to load data.";
-                                            if (listState is ListFailure) {
-                                              errorMessage = listState.error;
-                                            } else if (certifiedState
-                                                is ListFailure) {
-                                              errorMessage =
-                                                  certifiedState.error;
-                                            }
-                                            ScaffoldMessenger.of(
-                                              context,
-                                            ).showSnackBar(
-                                              SnackBar(
-                                                content: Text(errorMessage),
-                                              ),
-                                            );
-                                          }
-                                        },
-                                        child: SvgPicture.asset(
-                                          "assets/svg/edit_svg.svg",
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Divider(color: AppColors.hint2color),
-                              ],
-                            ),
-                          ),
-                        const SizedBox(height: 10),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: InkWell(
-                            onTap: () async {
-                              final listBloc = context.read<ListBloc>();
-                              listBloc.add(FetchSpecialtyList());
-                              listBloc.add(FetchCertifiedList());
-                              listBloc.add(FetchSpecialtyTypeList());
-                              showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder:
-                                    (_) =>
-                                        const Center(child: LoadingAnimation()),
-                              );
+          //                                   AddEditSpecialtySheet.showSheet(
+          //                                     context,
+          //                                     specialty,
+          //                                     specialties,
+          //                                     certifiedBoards,
+          //                                     specialtyTypes,
+          //                                     true,
+          //                                     specBloc:
+          //                                         context.read<SpecialtyBloc>(),
+          //                                   );
+          //                                 } else {
+          //                                   String errorMessage =
+          //                                       "Failed to load data.";
+          //                                   if (listState is ListFailure) {
+          //                                     errorMessage = listState.error;
+          //                                   } else if (certifiedState
+          //                                       is ListFailure) {
+          //                                     errorMessage =
+          //                                         certifiedState.error;
+          //                                   }
+          //                                   ScaffoldMessenger.of(
+          //                                     context,
+          //                                   ).showSnackBar(
+          //                                     SnackBar(
+          //                                       content: Text(errorMessage),
+          //                                     ),
+          //                                   );
+          //                                 }
+          //                               },
+          //                               child: SvgPicture.asset(
+          //                                 "assets/svg/edit_svg.svg",
+          //                               ),
+          //                             ),
+          //                           ),
+          //                         ],
+          //                       ),
+          //                       Divider(color: AppColors.hint2color),
+          //                     ],
+          //                   ),
+          //                 ),
+          //               const SizedBox(height: 10),
+          //               Align(
+          //                 alignment: Alignment.centerRight,
+          //                 child: InkWell(
+          //                   onTap: () async {
+          //                     final listBloc = context.read<ListBloc>();
+          //                     listBloc.add(FetchSpecialtyList());
+          //                     listBloc.add(FetchCertifiedList());
+          //                     listBloc.add(FetchSpecialtyTypeList());
+          //                     showDialog(
+          //                       context: context,
+          //                       barrierDismissible: false,
+          //                       builder:
+          //                           (_) =>
+          //                               const Center(child: LoadingAnimation()),
+          //                     );
 
-                              final results = await Future.wait([
-                                listBloc.stream.firstWhere(
-                                  (s) =>
-                                      s is SpecialtyListState ||
-                                      s is ListFailure,
-                                ),
-                                listBloc.stream.firstWhere(
-                                  (s) =>
-                                      s is CertifiedListState ||
-                                      s is ListFailure,
-                                ),
-                                listBloc.stream.firstWhere(
-                                  (s) =>
-                                      s is SpecialtyTypeListState ||
-                                      s is ListFailure,
-                                ),
-                              ]);
+          //                     final results = await Future.wait([
+          //                       listBloc.stream.firstWhere(
+          //                         (s) =>
+          //                             s is SpecialtyListState ||
+          //                             s is ListFailure,
+          //                       ),
+          //                       listBloc.stream.firstWhere(
+          //                         (s) =>
+          //                             s is CertifiedListState ||
+          //                             s is ListFailure,
+          //                       ),
+          //                       listBloc.stream.firstWhere(
+          //                         (s) =>
+          //                             s is SpecialtyTypeListState ||
+          //                             s is ListFailure,
+          //                       ),
+          //                     ]);
 
-                              Navigator.of(context, rootNavigator: true).pop();
+          //                     Navigator.of(context, rootNavigator: true).pop();
 
-                              final listState = results[0];
-                              final certifiedState = results[1];
-                              final typeState = results[2];
+          //                     final listState = results[0];
+          //                     final certifiedState = results[1];
+          //                     final typeState = results[2];
 
-                              if (listState is SpecialtyListState &&
-                                  certifiedState is CertifiedListState &&
-                                  typeState is SpecialtyTypeListState) {
-                                final specialties =
-                                    listState.specialtyResponse.data
-                                        .expand((inner) => inner)
-                                        .toList();
-                                final certifiedBoards =
-                                    certifiedState.certifiedResponse.data
-                                        .expand((inner) => inner)
-                                        .toList();
-                                final specialtyTypes =
-                                    typeState.specialtyTypeResponse.data
-                                        .expand((inner) => inner)
-                                        .toList();
+          //                     if (listState is SpecialtyListState &&
+          //                         certifiedState is CertifiedListState &&
+          //                         typeState is SpecialtyTypeListState) {
+          //                       final specialties =
+          //                           listState.specialtyResponse.data
+          //                               .expand((inner) => inner)
+          //                               .toList();
+          //                       final certifiedBoards =
+          //                           certifiedState.certifiedResponse.data
+          //                               .expand((inner) => inner)
+          //                               .toList();
+          //                       final specialtyTypes =
+          //                           typeState.specialtyTypeResponse.data
+          //                               .expand((inner) => inner)
+          //                               .toList();
 
-                                AddEditSpecialtySheet.showSheet(
-                                  context,
-                                  null,
-                                  specialties,
-                                  certifiedBoards,
-                                  specialtyTypes,
-                                  false,
-                                  specBloc: context.read<SpecialtyBloc>(),
-                                );
-                              } else {
-                                String errorMessage = "Failed to load data.";
-                                if (listState is ListFailure) {
-                                  errorMessage = listState.error;
-                                } else if (certifiedState is ListFailure) {
-                                  errorMessage = certifiedState.error;
-                                }
+          //                       AddEditSpecialtySheet.showSheet(
+          //                         context,
+          //                         null,
+          //                         specialties,
+          //                         certifiedBoards,
+          //                         specialtyTypes,
+          //                         false,
+          //                         specBloc: context.read<SpecialtyBloc>(),
+          //                       );
+          //                     } else {
+          //                       String errorMessage = "Failed to load data.";
+          //                       if (listState is ListFailure) {
+          //                         errorMessage = listState.error;
+          //                       } else if (certifiedState is ListFailure) {
+          //                         errorMessage = certifiedState.error;
+          //                       }
 
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(errorMessage)),
-                                );
-                              }
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Add Specialty",
-                                  style: AppFonts.textprogressbar.copyWith(
-                                    color: AppColors.primarycolor,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  } else if (state is SpecialityError) {
-                    return Center(child: Text(state.message));
-                  }
-                  return Container();
-                },
-              ),
-            ),
-          ),
+          //                       ScaffoldMessenger.of(context).showSnackBar(
+          //                         SnackBar(content: Text(errorMessage)),
+          //                       );
+          //                     }
+          //                   },
+          //                   child: Row(
+          //                     mainAxisAlignment: MainAxisAlignment.center,
+          //                     children: [
+          //                       Text(
+          //                         "Add Specialty",
+          //                         style: AppFonts.textprogressbar.copyWith(
+          //                           color: AppColors.primarycolor,
+          //                           fontWeight: FontWeight.w600,
+          //                         ),
+          //                       ),
+          //                     ],
+          //                   ),
+          //                 ),
+          //               ),
+          //             ],
+          //           );
+          //         } else if (state is SpecialtyError) {
+          //           return Center(child: Text(state.message));
+          //         }
+          //         return Container();
+          //       },
+          //     ),
+          //   ),
+          // ),
           //////////////////////////////////////////////////////accreditation
           // _buildSection(
           //   index: 1,

@@ -16,27 +16,27 @@ sealed class EditEvent extends Equatable {
 //   List<Object> get props => [data];
 // }
 
-//specialty
-class EditSpecialtyEvent extends EditEvent {
-  final String id;
-  final String specialtyId;
-  final String certifiedBoard;
-  final String specialtyType;
-  const EditSpecialtyEvent({
-    required this.id,
-    required this.specialtyId,
-    required this.certifiedBoard,
-    required this.specialtyType,
-  });
+// //specialty
+// class EditSpecialtyEvent extends EditEvent {
+//   final String id;
+//   final String specialtyId;
+//   final String certifiedBoard;
+//   final String specialtyType;
+//   const EditSpecialtyEvent({
+//     required this.id,
+//     required this.specialtyId,
+//     required this.certifiedBoard,
+//     required this.specialtyType,
+//   });
 
-  @override
-  List<Object> get props => [
-        id,
-        specialtyId,
-        certifiedBoard,
-        specialtyType,
-      ];
-}
+//   @override
+//   List<Object> get props => [
+//         id,
+//         specialtyId,
+//         certifiedBoard,
+//         specialtyType,
+//       ];
+// }
 
 // // accreditation
 // class EditAcreditationEvent extends EditEvent {

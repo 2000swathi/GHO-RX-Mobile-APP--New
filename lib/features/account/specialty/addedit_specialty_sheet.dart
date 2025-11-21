@@ -5,13 +5,10 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_drop_down_field.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
-import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/add/bloc/add_event.dart';
-import 'package:ghorx_mobile_app_new/features/profile/edit/bloc/edit_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/certified_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/specialty%20type_response_model.dart';
-import 'package:ghorx_mobile_app_new/features/profile/specialty/bloc/specialty_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/profile/specialty/model/specialty_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/specialty/repo/bloc/specialty_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/specialty/repo/model/specialty_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/specialty_response_model.dart';
 
 class AddEditSpecialtySheet {
@@ -135,94 +132,48 @@ class AddEditSpecialtySheet {
           },
         ),
       ],
-      actionButton: MultiBlocListener(
-        listeners: [
-          BlocListener<AddBloc, AddState>(
-            listener: (context, state) {
-              if (state is AddSuccess) {
-                Navigator.pop(context);
-                context.read<SpecialtyBloc>().add(FetchSpecialty());
-                CustomScaffoldMessenger.showSuccessMessage(
-                  context,
-                  state.response["Data"][0][0]['msg'],
-                );
-              } else if (state is AddError) {
-                CustomScaffoldMessenger.showErrorMessage(
-                  context,
-                  state.message,
-                );
-              }
-            },
-          ),
-          BlocListener<EditBloc, EditState>(
-            listener: (context, state) {
-              if (state is EditSuccess) {
-                Navigator.pop(context);
-                context.read<SpecialtyBloc>().add(FetchSpecialty());
-                CustomScaffoldMessenger.showSuccessMessage(
-                  context,
-                  state.message,
-                );
-              } else if (state is EditFailure) {
-                CustomScaffoldMessenger.showErrorMessage(context, state.error);
-              }
-            },
-          ),
-        ],
+      actionButton: BlocListener<SpecialtyBloc, SpecialtyState>(
+        listener: (context, state) {
+          if (state is SpecialtySuccess) {
+             Navigator.pop(context);
+            context.read<SpecialtyBloc>().add(FetchSpecialty());
+            CustomScaffoldMessenger.showSuccessMessage(context, state.message);
+          } else if (state is SpecialtyError) {
+            CustomScaffoldMessenger.showErrorMessage(context, state.message);
+          }
+        },
+        child: BlocBuilder<SpecialtyBloc, SpecialtyState>(
+          builder: (context, state) {
+            final isLoading =
+                state is SpecialityAddLoading || state is SpecialityEditLoading;
 
-        child: BlocBuilder<AddBloc, AddState>(
-          builder: (context, addState) {
-            final isAddLoading = addState is AddLoading;
-
-            return BlocBuilder<EditBloc, EditState>(
-              builder: (context, editState) {
-                final isEditLoading = editState is EditLoading;
-                final isLoading = isAddLoading || isEditLoading;
-
-                return CustomButton(
-                  text:
-                      isEdit
-                          ? (isLoading ? "Updating..." : "Update Specialty")
-                          : (isLoading ? "Adding..." : "Add Specialty"),
-                  isLoading: isLoading,
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      if (isEdit) {
-                        String certifiedBoardName = '';
-                        if (selectedCertifiedBoard != null) {
-                          try {
-                            certifiedBoardName =
-                                certList
-                                    .firstWhere(
-                                      (b) =>
-                                          b.certifiedID.toString() ==
-                                          selectedCertifiedBoard,
-                                    )
-                                    .certifiedName;
-                          } catch (e) {
-                            // Handle case where ID is not found, though unlikely if dropdown is populated correctly
-                          }
-                        }
-                        context.read<EditBloc>().add(
-                          EditSpecialtyEvent(
-                            id: info!.id.toString(),
-                            specialtyId: selectedSpecialtyID ?? '',
-                            certifiedBoard: selectedCertifiedBoard ?? '',
-                            specialtyType: selectedSpecialtyType ?? '',
-                          ),
-                        );
-                      } else {
-                        context.read<AddBloc>().add(
-                          AddSpecialty(
-                            specialty: selectedSpecialtyID ?? '',
-                            certifiedBoard: selectedCertifiedBoard ?? '',
-                            specialtyType: selectedSpecialtyType ?? '',
-                          ),
-                        );
-                      }
-                    }
-                  },
-                );
+            return CustomButton(
+              text:
+                  isEdit
+                      ? (isLoading ? "Updating..." : "Update Specialty")
+                      : (isLoading ? "Adding..." : "Add Specialty"),
+              isLoading: isLoading,
+              onPressed: () {
+                if (formKey.currentState!.validate()) {
+                  if (isEdit) {
+                    context.read<SpecialtyBloc>().add(
+                      EditSpecialtyEvent(
+                        id: info!.id.toString(),
+                        specialtyId: selectedSpecialtyID ?? '',
+                        certifiedBoard: selectedCertifiedBoard ?? '',
+                        specialtyType: selectedSpecialtyType ?? '',
+                      ),
+                    );
+                  } else {
+                    context.read<SpecialtyBloc>().add(
+                      AddSpecialty(
+                        specialty: selectedSpecialtyID ?? '',
+                        certifiedBoard: selectedCertifiedBoard ?? '',
+                        specialtyType: selectedSpecialtyType ?? '',
+                      ),
+                    );
+                  }
+                }
               },
             );
           },
