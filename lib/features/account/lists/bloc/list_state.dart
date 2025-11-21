@@ -94,3 +94,11 @@ class QuestionsLIstState extends ListState {
   @override
   List<Object> get props => [response];
 }
+
+//degree type
+class EductionTypeListState extends ListState {
+  final EducationTypeModel educationTypeResponse;
+  const EductionTypeListState({required this.educationTypeResponse});
+  @override
+  List<Object> get props => [educationTypeResponse];
+}

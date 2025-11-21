@@ -1,9 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/education/repo/model/educationmodel.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/list_repository.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/accreditationtype_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/certified_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/country_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/education_typemodel.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/issueing_authority.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/license_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/specialty%20type_response_model.dart';
@@ -25,6 +27,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     on<FetchIssueingAuthorityList>(_onFetchIssueingAuthority);
     on<FetchLangList>(_onFetchLaunguageList);
     on<FetchQuestList>(_onFetchQuestList);
+    on<FetchEducationList>(_onFetchDegreeType);
   }
 
   //country list
@@ -176,6 +179,25 @@ class ListBloc extends Bloc<ListEvent, ListState> {
       } else {
         return emit(ListFailure(error: response["Info"]));
       }
+    } catch (e) {
+      emit(ListFailure(error: e.toString()));
+    }
+  }
+
+  //degree type
+  Future<void> _onFetchDegreeType(
+    FetchEducationList event,
+    Emitter<ListState> emit,
+  ) async {
+   emit(ListLoading());
+
+    try {
+      final response = await repository.fetchDegreeList();
+      emit(
+        EductionTypeListState(
+          educationTypeResponse: response,
+        ),
+      );
     } catch (e) {
       emit(ListFailure(error: e.toString()));
     }
