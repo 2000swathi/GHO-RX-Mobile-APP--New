@@ -68,7 +68,7 @@ class AccountPage extends StatelessWidget {
     ),
     _DrawerItem(
       title: "Bank Information",
-      imagePath: "imagePath",
+      imagePath: "assets/svg/account/courthouse 1.png",
       routeName: AppRouter.bankInfo,
     ),
   ];
