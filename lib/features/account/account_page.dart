@@ -66,6 +66,11 @@ class AccountPage extends StatelessWidget {
       imagePath: "assets/svg/account/question-mark.png",
       routeName: AppRouter.questionnaire,
     ),
+    _DrawerItem(
+      title: "Bank Information",
+      imagePath: "imagePath",
+      routeName: AppRouter.bankInfo,
+    ),
   ];
 
   @override
