@@ -20,5 +20,21 @@ class OTPResend extends AuthEvent {
   OTPResend({required this.email});
 }
 
+//forgot email
+class ForgotEmail extends AuthEvent {
+  final String email;
+
+  ForgotEmail({required this.email});
+}
+
+//forgot otp
+class ForgotOtp extends AuthEvent {
+  final String email;
+  final String otp;
+
+  ForgotOtp({required this.email, required this.otp});
+}
+
+
 //logout
 class Logout extends AuthEvent {}

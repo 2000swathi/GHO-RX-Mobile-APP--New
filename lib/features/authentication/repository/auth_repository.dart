@@ -54,10 +54,9 @@ class AuthRepository {
       rethrow;
     }
   }
+
   //otp resend
-  Future<OtpResponse> otpResend({
-    required String email,
-  }) async {
+  Future<OtpResponse> otpResend({required String email}) async {
     final data = {
       ...ApiUtils.getCommonParams(action: "reviewer", token: ""),
       "Tags": [
@@ -73,6 +72,46 @@ class AuthRepository {
       throw Exception("${e.message}");
     } catch (e) {
       rethrow;
+    }
+  }
+
+  //forgot email
+  Future<OtpResponse> forgotEmail({required String email}) async {
+    final data = {
+      ...ApiUtils.getCommonParams(action: "reviewer", token: ""),
+      "Tags": [
+        {"T": "dk1", "V": email},
+        {"T": "c10", "V": "4"},
+      ],
+    };
+
+    try {
+      final response = await _dioHandler.post('', data: data);
+      return OtpResponse.fromJson(response);
+    } catch (e) {
+      throw Exception("${e}");
+    }
+  }
+
+  //validate otp
+  Future<Map<String, dynamic>> otpValidate({
+    required String email,
+    required String otp,
+  }) async {
+    final data = {
+      ...ApiUtils.getCommonParams(action: "reviewer", token: ""),
+      "Tags": [
+        {"T": "dk1", "V": email},
+        {"T": "dk2", "V": otp},
+        {"T": "c10", "V": "5"},
+      ],
+    };
+
+    try {
+      final response = await _dioHandler.post('', data: data);
+      return response;
+    } catch (e) {
+      throw Exception("${e}");
     }
   }
 }
