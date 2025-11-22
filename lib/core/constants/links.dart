@@ -5,4 +5,8 @@ class Links {
     const String link = "https://globalhealthopinion.com/privacy-policy";
     await launchUrl(Uri.parse(link), mode: LaunchMode.externalApplication);
   }
+  Future<void> termsAndConditions() async {
+    const String link = "https://globalhealthopinion.com/terms-and-conditions";
+    await launchUrl(Uri.parse(link), mode: LaunchMode.externalApplication);
+  }
 }

@@ -27,12 +27,6 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
     return ShimmerShapes.circle(110);
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   context.read<ProfileInfoBloc>().add(FetchPersonalInfo());
-  // }
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<ListBloc, ListState>(
