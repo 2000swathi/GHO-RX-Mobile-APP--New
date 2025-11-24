@@ -53,18 +53,10 @@ class LogoutSuccess extends AuthState {
 
 //forgot email
 class ForgotEmailSuccess extends AuthState {
-  final OtpResponse response;
-  const ForgotEmailSuccess({required this.response});
+  final String message;
+  const ForgotEmailSuccess(this.message);
   @override
-  List<Object?> get props => [response];
-}
-
-//forgot otp
-class ForgotOtpSuccess extends AuthState {
-  final OtpResponse otpResponse;  
-  const ForgotOtpSuccess(this.otpResponse);
-  @override
-  List<Object?> get props => [otpResponse];
+  List<Object?> get props => [message];
 }
 
 

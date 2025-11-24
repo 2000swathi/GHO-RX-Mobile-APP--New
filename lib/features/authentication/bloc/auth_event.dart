@@ -27,14 +27,6 @@ class ForgotEmail extends AuthEvent {
   ForgotEmail({required this.email});
 }
 
-//forgot otp
-class ForgotOtp extends AuthEvent {
-  final String email;
-  final String otp;
-
-  ForgotOtp({required this.email, required this.otp});
-}
-
 
 //logout
 class Logout extends AuthEvent {}

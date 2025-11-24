@@ -47,6 +47,7 @@ class AuthRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
+      print(response);
       return OtpVerifyResponse.fromJson(response);
     } on DioException catch (e) {
       throw Exception("${e.message}");
@@ -67,6 +68,7 @@ class AuthRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
+      print(response);
       return OtpResponse.fromJson(response);
     } on DioException catch (e) {
       throw Exception("${e.message}");
@@ -76,40 +78,24 @@ class AuthRepository {
   }
 
   //forgot email
-  Future<OtpResponse> forgotEmail({required String email}) async {
+  Future<String> forgotEmail({required String email}) async {
     final data = {
       ...ApiUtils.getCommonParams(action: "reviewer", token: ""),
       "Tags": [
         {"T": "dk1", "V": email},
-        {"T": "c10", "V": "4"},
+        {"T": "c10", "V": "94"},
       ],
     };
 
     try {
       final response = await _dioHandler.post('', data: data);
-      return OtpResponse.fromJson(response);
-    } catch (e) {
-      throw Exception("${e}");
-    }
-  }
-
-  //validate otp
-  Future<Map<String, dynamic>> otpValidate({
-    required String email,
-    required String otp,
-  }) async {
-    final data = {
-      ...ApiUtils.getCommonParams(action: "reviewer", token: ""),
-      "Tags": [
-        {"T": "dk1", "V": email},
-        {"T": "dk2", "V": otp},
-        {"T": "c10", "V": "5"},
-      ],
-    };
-
-    try {
-      final response = await _dioHandler.post('', data: data);
-      return response;
+      print("FORGOT EMAIL RESPONSE:");
+      print(response);
+      if(response["Status"] == 1) {
+        return response["Data"][0][0]["msg"];
+      } else {
+        throw Exception(response["Error"] ?? "Something went wrong");
+      }
     } catch (e) {
       throw Exception("${e}");
     }

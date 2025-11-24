@@ -8,10 +8,10 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/logo_widget.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
-import 'package:ghorx_mobile_app_new/core/router/app_router.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_event.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_state.dart';
+import 'package:ghorx_mobile_app_new/features/authentication/forgot_password/widget/bottom_sheet.dart';
 
 class ForgotEmailScreen extends StatelessWidget {
   ForgotEmailScreen({super.key});
@@ -25,16 +25,7 @@ class ForgotEmailScreen extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) async {
         if (state is ForgotEmailSuccess) {
-         CustomSnackbar.show(
-            context,
-            "Email verified successfully",
-            true,
-          );
-        await Navigator.pushNamed(
-            context,
-            AppRouter.forgotOtp,
-            arguments: state.response,
-          );
+          showEmailSentBottomSheet(context);
         } else if (state is AuthFailure) {
           CustomSnackbar.show(context, state.error, false);
         }
@@ -74,13 +65,12 @@ class ForgotEmailScreen extends StatelessWidget {
                         return LoadingAnimation();
                       }
                       return CustomButton(
-                        text: "Sent OTP",
+                        text: "Verify",
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             context.read<AuthBloc>().add(
                               ForgotEmail(email: emailController.text.trim()),
                             );
-                            
                           }
                         },
                       );

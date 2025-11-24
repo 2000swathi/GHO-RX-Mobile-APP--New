@@ -93,58 +93,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
+    //forgot email
     on<ForgotEmail>((event, emit) async {
       emit(AuthLoading());
-      try {
-        final otpResponse = await authRepository.forgotEmail(
+      try { 
+        final message = await authRepository.forgotEmail(
           email: event.email,
         );
-
-        if (otpResponse.status == 1) {
-          emit(AuthSuccess(otpResponse));
-        } else {
-          emit(
-            AuthFailure(
-              otpResponse.info.isNotEmpty
-                  ? otpResponse.info
-                  : "Invalid email...",
-            ),
-          );
-        }
+        emit(ForgotEmailSuccess(message));
       } catch (e) {
         emit(AuthFailure(e.toString()));
       }
     });
 
-    on<ForgotOtp>((event, emit) async {
-      emit(AuthLoading());
-
-      try {
-        final otpVerifyResponse = await authRepository.otpValidate(
-          email: event.email,
-          otp: event.otp,
-        );
-
-        final int status =
-            otpVerifyResponse["Status"] is int
-                ? otpVerifyResponse["Status"]
-                : int.tryParse(
-                      otpVerifyResponse["Status"]?.toString() ?? "0",
-                    ) ??
-                    0;
-
-        final String error = otpVerifyResponse["Error"]?.toString() ?? "";
-
-        if (status == 1) {
-          emit(ForgotOtpSuccess(OtpResponse.fromJson(otpVerifyResponse)));
-        } else {
-          emit(AuthFailure(error.isNotEmpty ? error : "Invalid otp"));
-        }
-      } catch (e) {
-        emit(AuthFailure("Something went wrong: $e"));
-      }
-    });
-
+    //logout
     on<Logout>((event, emit) async {
       emit(AuthLoading());
       try {

@@ -18,11 +18,9 @@ import 'package:ghorx_mobile_app_new/features/account/professional%20references/
 import 'package:ghorx_mobile_app_new/features/account/questionnaire/questionnaire_screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/specialty/specialty_screen.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/forgot_password/forgot_email.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/forgot_password/forgot_otp.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/otp_screen.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/repository/model/login_model.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/add_page.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/forgot_password/reset_password.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/casedetails.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/cases_page.dart';
 import 'package:ghorx_mobile_app_new/features/send%20mail/send_message.dart';
@@ -59,8 +57,6 @@ class AppRouter {
   static const String specialty = '/specialty';
   static const String bankInfo = '/bankInfo';
   static const String forgotEmail = '/forgotEmail';
-  static const String forgotOtp = '/forgotOtp';
-  static const String forgot_password = '/forgot_password';
 
   //profile
   //drawer
@@ -84,8 +80,6 @@ class AppRouter {
         );
       case addPage:
         return MaterialPageRoute(builder: (_) => AddPage());
-      case forgot_password:
-        return MaterialPageRoute(builder: (_) => ForgotConfirmPasswordScreen());
       case mainPage:
         return MaterialPageRoute(builder: (_) => MainPage());
       case casepage:
@@ -151,12 +145,6 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => Bankinfoscrn());
       case forgotEmail:
         return MaterialPageRoute(builder: (_) => ForgotEmailScreen());
-      case forgotOtp:
-        final otpResponse = settings.arguments as OtpResponse;
-        return MaterialPageRoute(
-          builder: (_) => ForgotOtpScreen(otpResponse: otpResponse),
-          settings: settings
-        );
       default:
         return MaterialPageRoute(
           builder:
