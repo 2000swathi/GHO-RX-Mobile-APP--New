@@ -38,9 +38,20 @@ class _HomePageState extends State<HomePage> {
     return BlocListener<HomeBloc, HomeState>(
       listener: (context, state) {
         if (state is HomePageInfoState) {
-          final info = state.response["Data"][0][0];
-          final email = info["Email"];
-          _saveEmailToPrefs(email);
+          final data = state.response["Data"];
+
+          if (data != null &&
+              data is List &&
+              data.isNotEmpty &&
+              data[0] != null &&
+              data[0] is List &&
+              data[0].isNotEmpty &&
+              data[0][0] != null) {
+            final info = data[0][0];
+            final email = info["Email"] ?? "";
+
+            _saveEmailToPrefs(email);
+          }
         }
       },
       child: BlocBuilder<HomeBloc, HomeState>(
@@ -48,8 +59,16 @@ class _HomePageState extends State<HomePage> {
           if (state is HomeInitial || state is HomePageLoading) {
             return const HomePageShimmerWidget();
           } else if (state is HomePageInfoState) {
-            final info = state.response["Data"][0][0];
-            final cases = state.response["Data"][1];
+            final data = state.response["Data"];
+
+            if (data == null ||
+                data.isEmpty ||
+                data[0] == null ||
+                data[0].isEmpty ||
+                data[0][0] == null) {
+              return Scaffold(body: const Center(child: Text("No data available")));
+            }
+            final cases = (data.length > 1 ? data[1] : []);
 
             return Scaffold(
               backgroundColor: Colors.white,

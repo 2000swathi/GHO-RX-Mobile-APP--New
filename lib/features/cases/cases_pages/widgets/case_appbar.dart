@@ -144,11 +144,11 @@ class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 ),
 
-                const SizedBox(width: 15),
-                CircleAvatar(
-                  backgroundColor: AppColors.primarycolor.withAlpha(8),
-                  child: SvgPicture.asset("assets/svg/notification_svg.svg"),
-                ),
+                // const SizedBox(width: 15),
+                // CircleAvatar(
+                //   backgroundColor: AppColors.primarycolor.withAlpha(8),
+                //   child: SvgPicture.asset("assets/svg/notification_svg.svg"),
+                // ),
                 const SizedBox(width: 15),
               ],
     );

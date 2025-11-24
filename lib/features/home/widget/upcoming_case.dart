@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
+import 'package:ghorx_mobile_app_new/core/router/app_router.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/open_cases.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/repository/model/open_case_model.dart';
 import 'package:ghorx_mobile_app_new/main_page.dart';
@@ -32,13 +33,17 @@ class UpcomingCase extends StatelessWidget {
         InkWell(
           onTap: () {
             final openCase = OpenCaseModel.fromJson(cases);
-            Navigator.pushNamed(context, '/casedetails', arguments: openCase);
+            Navigator.pushNamed(
+              context,
+              AppRouter.casedetails,
+              arguments: openCase,
+            );
           },
           child: OpenCaseCard(
             caseId: cases["id"].toString(),
 
-            dueDate: cases["DueDate"],
-            description: cases["MedicalSummary"],
+            dueDate: cases["DueDate"] ?? "",
+            description: cases["MedicalSummary"]??"",
           ),
         ),
         SizedBox(height: 15),

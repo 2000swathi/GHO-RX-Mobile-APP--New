@@ -139,7 +139,7 @@ class ImagePickerService {
     );
 
     if (image == null) {
-      CustomScaffoldMessenger.showErrorMessage(
+      CustomScaffoldMessenger.showCommonMessage(
         context,
         "Please capture an image.",
       );
@@ -191,25 +191,36 @@ class ImagePickerService {
 
   /// Pick an image from the camera
   Future<void> pickImageFromCamera(BuildContext context) async {
-    final XFile? image = await _imagePicker.pickImage(
-      source: ImageSource.camera,
+  PermissionStatus status = await Permission.camera.request();
+
+  if (!status.isGranted) {
+    CustomScaffoldMessenger.showErrorMessage(
+      context,
+      "Camera permission is required to take photos",
     );
-
-    if (image != null) {
-      Directory tempDir = await getApplicationDocumentsDirectory();
-      String newPath =
-          "${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg";
-      File newFile = await File(image.path).copy(newPath);
-
-      imageFileList.insert(0, XFile(newFile.path));
-      fileList.insert(0, newFile);
-    } else {
-      CustomScaffoldMessenger.showSuccessMessage(
-        context,
-        "Please capture an image.",
-      );
-    }
+    return;
   }
+
+  final XFile? image = await _imagePicker.pickImage(
+    source: ImageSource.camera,
+    imageQuality: 80,
+  );
+
+  if (image != null) {
+    Directory tempDir = await getApplicationDocumentsDirectory();
+    String newPath =
+        "${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg";
+    File newFile = await File(image.path).copy(newPath);
+
+    imageFileList.insert(0, XFile(newFile.path));
+    fileList.insert(0, newFile);
+  } else {
+    CustomScaffoldMessenger.showCommonMessage(
+      context,
+      "Please capture an image.",
+    );
+  }
+}
 
   /// Handle permission requests for storage or photos
   Future<bool> requestStoragePermission(BuildContext context) async {

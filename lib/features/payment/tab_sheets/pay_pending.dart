@@ -17,7 +17,6 @@ class PayPending extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: 20),
-
           Text(
             "Pending Payments",
             style: AppFonts.subtext.copyWith(

@@ -6,7 +6,6 @@ import 'package:ghorx_mobile_app_new/features/account/account_page.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/cases_page.dart';
 import 'package:ghorx_mobile_app_new/features/home/home_page.dart';
 import 'package:ghorx_mobile_app_new/features/payment/payment_page.dart';
-import 'package:ghorx_mobile_app_new/features/profile/viewProfile/profile/profile_dr.dart';
 import 'package:new_version_plus/new_version_plus.dart';
 
 class MainPage extends StatefulWidget {
@@ -20,12 +19,11 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   late int _currentIndex;
 
-  final List<Widget> _pages = const [
-    HomePage(),
-    CasesPage(),
-    PaymentPage(),
-    ProfileDr(),
-    AccountPage()
+  final List<Widget> _pages = [
+    const HomePage(),
+    const CasesPage(),
+    const PaymentPage(),
+    AccountPage(),
   ];
 
   @override
@@ -91,50 +89,46 @@ class _MainPageState extends State<MainPage> {
       },
       child: Scaffold(
         body: IndexedStack(index: _currentIndex, children: _pages),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          backgroundColor: AppColors.primarycolor,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white70,
-          type: BottomNavigationBarType.fixed,
-          onTap: (index) => setState(() => _currentIndex = index),
-          items: [
-            BottomNavigationBarItem(
-              icon:
-                  _currentIndex == 0
-                      ? SvgPicture.asset("assets/svg/homeclick.svg")
-                      : SvgPicture.asset("assets/svg/home_svg.svg"),
-              label: "Home",
-            ),
-            BottomNavigationBarItem(
-              icon:
-                  _currentIndex == 1
-                      ? SvgPicture.asset("assets/svg/caseclick.svg")
-                      : SvgPicture.asset("assets/svg/cases_svg.svg"),
-              label: "Cases",
-            ),
-            BottomNavigationBarItem(
-              icon:
-                  _currentIndex == 2
-                      ? SvgPicture.asset("assets/svg/payment_click_icon.svg")
-                      : SvgPicture.asset("assets/svg/payment_icon.svg"),
-              label: "Earnings",
-            ),
-            BottomNavigationBarItem(
-              icon:
-                  _currentIndex == 3
-                      ? SvgPicture.asset("assets/svg/profile_clik.svg")
-                      : SvgPicture.asset("assets/svg/profile_svg.svg"),
-              label: "Profile",
-            ),
-            BottomNavigationBarItem(
-              icon:
-                  _currentIndex == 4
-                      ? SvgPicture.asset("assets/svg/profile_clik.svg")
-                      : SvgPicture.asset("assets/svg/profile_svg.svg"),
-              label: "Account",
-            ),
-          ],
+        bottomNavigationBar: SizedBox(
+          height: 80,
+          child: BottomNavigationBar(
+            currentIndex: _currentIndex,
+            backgroundColor: AppColors.primarycolor,
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.white70,
+            type: BottomNavigationBarType.fixed,
+            onTap: (index) => setState(() => _currentIndex = index),
+            items: [
+              BottomNavigationBarItem(
+                icon:
+                    _currentIndex == 0
+                        ? SvgPicture.asset("assets/svg/homeclick.svg")
+                        : SvgPicture.asset("assets/svg/home_svg.svg"),
+                label: "Home",
+              ),
+              BottomNavigationBarItem(
+                icon:
+                    _currentIndex == 1
+                        ? SvgPicture.asset("assets/svg/caseclick.svg")
+                        : SvgPicture.asset("assets/svg/cases_svg.svg"),
+                label: "Cases",
+              ),
+              BottomNavigationBarItem(
+                icon:
+                    _currentIndex == 2
+                        ? SvgPicture.asset("assets/svg/payment_click_icon.svg")
+                        : SvgPicture.asset("assets/svg/payment_icon.svg"),
+                label: "Earnings",
+              ),
+              BottomNavigationBarItem(
+                icon:
+                    _currentIndex == 3
+                        ? SvgPicture.asset("assets/svg/profile_clik.svg")
+                        : SvgPicture.asset("assets/svg/profile_svg.svg"),
+                label: "Profile",
+              ),
+            ],
+          ),
         ),
       ),
     );
