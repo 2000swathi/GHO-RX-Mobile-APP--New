@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
+import 'package:ghorx_mobile_app_new/features/authentication/forgot_password/widget/open_email.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 
@@ -7,68 +8,126 @@ void showEmailSentBottomSheet(BuildContext context) {
   showModalBottomSheet(
     context: context,
     isDismissible: false,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-    ),
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
     builder: (context) {
-      return Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.check_circle, color: Colors.green, size: 55),
-
-            SizedBox(height: 18),
-
-            Text(
-              "Email Sent!",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            SizedBox(height: 10),
-
-            Text(
-              "A password reset link has been sent to your registered email address.",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 15, color: Colors.black54),
-            ),
-
-            SizedBox(height: 30),
-
-            ElevatedButton(
-              onPressed: () async {
-                const gmailUrl = "mailto:";
-                await launchUrl(Uri.parse(gmailUrl));
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primarycolor,
-                minimumSize: Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+      return Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Drag handle
+              Container(
+                width: 40,
+                height: 4,
+                margin: EdgeInsets.only(bottom: 24),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              child: Text("Open Gmail",
-                  style: AppFonts.textwhite,
+
+              // Success icon with animation container
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: Colors.green.withOpacity(0.1),
+                  shape: BoxShape.circle,
                 ),
-            ),
-
-            SizedBox(height: 10),
-
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text(
-                "Close",
-                style: AppFonts.textblue.copyWith(
-                 fontWeight: FontWeight.w400,
+                child: Icon(
+                  Icons.mark_email_read_rounded,
+                  color: Colors.green,
+                  size: 40,
                 ),
               ),
-            ),
-          ],
+
+              SizedBox(height: 24),
+
+              // Title
+              Text(
+                "Check Your Email",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                  letterSpacing: -0.5,
+                ),
+              ),
+
+              SizedBox(height: 12),
+
+              // Description
+              Text(
+                "We've sent a password reset link to your registered email address. Please check your inbox and follow the instructions.",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.black54,
+                  height: 1.5,
+                ),
+              ),
+
+              SizedBox(height: 32),
+
+              // Primary button
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton.icon(
+                  onPressed: () async {
+                    openEmailInbox();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primarycolor,
+                    foregroundColor: Colors.white,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    shadowColor: AppColors.primarycolor.withOpacity(0.3),
+                  ),
+                  icon: Icon(Icons.mail_outline, size: 20),
+                  label: Text(
+                    "Open Email",
+                    style: AppFonts.textwhite.copyWith(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 12),
+
+              // Secondary button
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: TextButton.styleFrom(
+                  minimumSize: Size(double.infinity, 48),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                ),
+                child: Text(
+                  "I'll check later",
+                  style: AppFonts.textblue.copyWith(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 8),
+            ],
+          ),
         ),
       );
     },

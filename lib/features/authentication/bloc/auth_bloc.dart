@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/repository/model/login_model.dart';
 import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
 import '../repository/auth_repository.dart';
 import 'auth_event.dart';

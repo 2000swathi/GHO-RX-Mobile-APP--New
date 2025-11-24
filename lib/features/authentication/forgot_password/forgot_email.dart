@@ -13,9 +13,14 @@ import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_event.dar
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_state.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/forgot_password/widget/bottom_sheet.dart';
 
-class ForgotEmailScreen extends StatelessWidget {
+class ForgotEmailScreen extends StatefulWidget {
   ForgotEmailScreen({super.key});
 
+  @override
+  State<ForgotEmailScreen> createState() => _ForgotEmailScreenState();
+}
+
+class _ForgotEmailScreenState extends State<ForgotEmailScreen> {
   final TextEditingController emailController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -31,6 +36,7 @@ class ForgotEmailScreen extends StatelessWidget {
         }
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 40),
@@ -56,6 +62,8 @@ class ForgotEmailScreen extends StatelessWidget {
                     hintText: "Enter your email address",
                     controller: emailController,
                     validator: Validation.validateEmail,
+                    textCapitalization: TextCapitalization.none,
+                    keyboardType: TextInputType.emailAddress,
                   ),
 
                   SizedBox(height: 85),
