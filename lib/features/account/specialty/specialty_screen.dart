@@ -8,7 +8,6 @@ import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart'
 import 'package:ghorx_mobile_app_new/features/account/specialty/addedit_specialty_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/account/specialty/repo/bloc/specialty_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/specialty/widget/specialty_card.dart';
-import 'package:ghorx_mobile_app_new/features/account/widget/customFAB.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/custom_profile_appbar.dart';
 
 class SpecialtyScreen extends StatefulWidget {
