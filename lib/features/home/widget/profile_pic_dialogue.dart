@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/commondelete_dialogbox.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_dotted_container.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
@@ -14,11 +17,13 @@ import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_event.
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_event.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/widget/pick_file_dialogue_box.dart';
+import 'package:ghorx_mobile_app_new/utilities/image_compress.dart';
 
 // ignore: must_be_immutable
 class ProfileDialog extends StatefulWidget {
   String url;
-  ProfileDialog({super.key, required this.url});
+  int fileID;
+  ProfileDialog({super.key, required this.url, required this.fileID});
 
   @override
   State<ProfileDialog> createState() => _ProfileDialogState();
@@ -30,78 +35,148 @@ class _ProfileDialogState extends State<ProfileDialog> {
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       contentPadding: EdgeInsets.zero,
-      content: Container(
-        color: AppColors.profilepink.withAlpha(13),
-        height: 250,
-        width: 200,
-        child: Stack(
-          children: [
-            Center(
-              child:
-                  widget.url.isNotEmpty
-                      ? ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: CachedNetworkImage(
-                          imageUrl: widget.url,
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
-                          fadeInDuration: Duration.zero,
-                          fadeOutDuration: Duration.zero,
-                          placeholder:
-                              (context, url) => SvgPicture.asset(
-                                "assets/svg/person.svg",
-                                width: 60,
-                                height: 60,
-                              ),
-                          errorWidget:
-                              (context, url, error) => SvgPicture.asset(
-                                "assets/svg/person.svg",
-                                height: 24,
-                                width: 24,
-                              ),
+      content: BlocListener<GetFileIdBloc, GetFileIdState>(
+        listener: (context, state) async {
+          if (state is DeleteFileSuccess) {
+            await CachedNetworkImage.evictFromCache(widget.url);
+
+            setState(() {
+              widget.url = "";
+              widget.fileID = 0;
+            });
+
+            context.read<PicBloc>().add(FetchPicEvent());
+            context.read<ProfileInfoBloc>().add(FetchPersonalInfo());
+            Navigator.pop(context);
+          }else if (state is GetFileIdFailure) {
+            Navigator.pop(context);
+            CustomScaffoldMessenger.showErrorMessage(
+              context,
+              state.message,
+            );
+          }
+        },
+        child: Container(
+          color: AppColors.profilepink.withAlpha(13),
+          height: 250,
+          width: 200,
+          child: Stack(
+            children: [
+              Center(
+                child:
+                    (widget.url.isNotEmpty && widget.fileID != 0)
+                        ? ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: CachedNetworkImage(
+                            imageUrl: widget.url,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: double.infinity,
+                            placeholder:
+                                (_, __) => SvgPicture.asset(
+                                  "assets/svg/person.svg",
+                                  width: 60,
+                                  height: 60,
+                                ),
+                            errorWidget:
+                                (_, __, ___) => SvgPicture.asset(
+                                  "assets/svg/person.svg",
+                                  width: 60,
+                                  height: 60,
+                                ),
+                          ),
+                        )
+                        : SvgPicture.asset(
+                          "assets/svg/person.svg",
+                          width: 60,
+                          height: 60,
                         ),
-                      )
-                      : SvgPicture.asset(
-                        "assets/svg/person.svg",
-                        width: 60,
-                        height: 60,
-                      ),
-            ),
-            Positioned(
-              bottom: 10,
-              right: 10,
-              child: InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                  _showEditDialog(context);
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: AppColors.primarycolor),
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 4,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  padding: const EdgeInsets.all(6),
-                  child: SvgPicture.asset(
-                    "assets/svg/edit_svg.svg",
-                    width: 20,
-                    height: 20,
+              ),
+
+              Positioned(
+                bottom: 10,
+                right: 50,
+                child: InkWell(
+                  onTap: () {
+                    _showDeleteDialog(context, widget.fileID);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: AppColors.warningred),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 4,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    padding: const EdgeInsets.all(6),
+                    child: SvgPicture.asset(
+                      "assets/svg/trash.svg",
+                      width: 20,
+                      height: 20,
+                      color: AppColors.warningred,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+              Positioned(
+                bottom: 10,
+                right: 10,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                    _showEditDialog(context);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: AppColors.primarycolor),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 4,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    padding: const EdgeInsets.all(6),
+                    child: SvgPicture.asset(
+                      "assets/svg/edit_svg.svg",
+                      width: 20,
+                      height: 20,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void _showDeleteDialog(BuildContext context, int fileID) async {
+    final confirmed = await showDeleteConfirmationDialog(
+      context: context,
+      title: "Delete Profile Image",
+      content: "Are you sure want to delete",
+    );
+    if (confirmed == true && context.mounted) {
+      context.read<GetFileIdBloc>().add(
+        DeleteFileEvent(
+          saltID: "",
+          docTypeId: 9,
+          fileUploadedID: fileID,
+          filePath: "",
+          context: context,
+        ),
+      );
+    }
   }
 
   void _showEditDialog(BuildContext context) {
@@ -127,9 +202,11 @@ class _ProfileDialogState extends State<ProfileDialog> {
           child: StatefulBuilder(
             builder: (context, setStateDialog) {
               return AlertDialog(
+                backgroundColor: AppColors.white,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(10),
                 ),
+                titlePadding: EdgeInsets.only(left: 20),
                 title: Row(
                   children: [
                     Text("Edit Profile", style: AppFonts.subheading),
@@ -140,10 +217,7 @@ class _ProfileDialogState extends State<ProfileDialog> {
                     ),
                   ],
                 ),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 10,
-                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                 content: BlocBuilder<GetFileIdBloc, GetFileIdState>(
                   builder: (context, state) {
                     if (state is GetFileIdLoading) {
@@ -153,106 +227,119 @@ class _ProfileDialogState extends State<ProfileDialog> {
                       );
                     }
 
-                    return SizedBox(
-                      width: 400,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: SizedBox(
-                                  height: 70,
-                                  child: CustomDottedBorderContainer(
-                                    color: AppColors.textPrimary,
-                                    strokeWidth: 1,
-                                    dashWidth: 3,
-                                    dashSpace: 3,
-                                    borderRadius: BorderRadius.circular(8),
-                                    padding: EdgeInsets.zero,
-                                    child: PickFileDialogueBox(
-                                      icon: Icons.file_upload_outlined,
-                                      label: "Upload Image",
-                                      onTap: () async {
-                                        final picker = ImagePickerService();
-                                        await picker.pickSingleImageFromGallery(
-                                          context,
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                height: 70,
+                                child: CustomDottedBorderContainer(
+                                  color: AppColors.textPrimary,
+                                  strokeWidth: 1,
+                                  dashWidth: 3,
+                                  dashSpace: 3,
+                                  borderRadius: BorderRadius.circular(8),
+                                  padding: EdgeInsets.zero,
+                                  child: PickFileDialogueBox(
+                                    icon: Icons.file_upload_outlined,
+                                    label: "Upload Image",
+                                    onTap: () async {
+                                      final picker = ImagePickerService();
+                                      await picker.pickSingleImageFromGallery(
+                                        context,
+                                      );
+
+                                      if (picker.fileList.isNotEmpty) {
+                                        final file = picker.fileList.first;
+
+                                        File compressedFile =
+                                            await FileCompressor.compressImage(
+                                              file,
+                                            );
+
+                                        final fileSize =
+                                            (await compressedFile.length())
+                                                .toString();
+                                        final fileName =
+                                            compressedFile.path.split('/').last;
+                                        final filePath = compressedFile.path;
+
+                                        context.read<GetFileIdBloc>().add(
+                                          GetFileIdEvent(
+                                            filePath: filePath,
+                                            caseID: "",
+                                            docTypeID: 9,
+                                            filename: fileName,
+                                            fileSize: fileSize,
+                                            saltKey: "",
+                                            context: context,
+                                          ),
                                         );
-
-                                        if (picker.fileList.isNotEmpty) {
-                                          final file = picker.fileList.first;
-                                          final fileSize =
-                                              (await file.length()).toString();
-                                          final fileName =
-                                              file.path.split('/').last;
-                                          final filePath = file.path;
-
-                                          context.read<GetFileIdBloc>().add(
-                                            GetFileIdEvent(
-                                              filePath: filePath,
-                                              caseID: "",
-                                              docTypeID: 9,
-                                              filename: fileName,
-                                              fileSize: fileSize,
-                                              saltKey: "",
-                                              context: context,
-                                            ),
-                                          );
-                                        }
-                                      },
-                                    ),
+                                      }
+                                    },
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: SizedBox(
-                                  height: 70,
-                                  child: CustomDottedBorderContainer(
-                                    color: AppColors.textPrimary,
-                                    strokeWidth: 1,
-                                    dashWidth: 3,
-                                    dashSpace: 3,
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: PickFileDialogueBox(
-                                      icon: Icons.camera_alt_outlined,
-                                      label: "Scan",
-                                      onTap: () async {
-                                        final picker = ImagePickerService();
-                                        await picker.picksingleImageFromCamera(
-                                          context,
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: SizedBox(
+                                height: 70,
+                                child: CustomDottedBorderContainer(
+                                  color: AppColors.textPrimary,
+                                  strokeWidth: 1,
+                                  dashWidth: 3,
+                                  dashSpace: 3,
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: PickFileDialogueBox(
+                                    icon: Icons.camera_alt_outlined,
+                                    label: "Scan",
+                                    onTap: () async {
+                                      final picker = ImagePickerService();
+                                      await picker.picksingleImageFromCamera(
+                                        context,
+                                      );
+
+                                      if (picker.fileList.isNotEmpty) {
+                                        final file = picker.fileList.first;
+
+                                        // Compress camera image
+                                        File compressedFile =
+                                            await FileCompressor.compressImage(
+                                              file,
+                                            );
+
+                                        final fileSize =
+                                            (await compressedFile.length())
+                                                .toString();
+                                        final fileName =
+                                            compressedFile.path.split('/').last;
+                                        final filePath = compressedFile.path;
+
+                                        context.read<GetFileIdBloc>().add(
+                                          GetFileIdEvent(
+                                            filePath: filePath,
+                                            caseID: "",
+                                            docTypeID: 9,
+                                            filename: fileName,
+                                            fileSize: fileSize,
+                                            saltKey: "",
+                                            context: context,
+                                          ),
                                         );
-
-                                        if (picker.fileList.isNotEmpty) {
-                                          final file = picker.fileList.first;
-                                          final fileSize =
-                                              (await file.length()).toString();
-                                          final fileName =
-                                              file.path.split('/').last;
-                                          final filePath = file.path;
-
-                                          context.read<GetFileIdBloc>().add(
-                                            GetFileIdEvent(
-                                              filePath: filePath,
-                                              caseID: "",
-                                              docTypeID: 9,
-                                              filename: fileName,
-                                              fileSize: fileSize,
-                                              saltKey: "",
-                                              context: context,
-                                            ),
-                                          );
-                                        }
-                                      },
-                                    ),
+                                      }
+                                    },
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
-                          const SizedBox(height: 15),
-                        ],
-                      ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 15),
+                      ],
                     );
                   },
                 ),

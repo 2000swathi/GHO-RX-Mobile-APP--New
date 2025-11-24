@@ -24,3 +24,6 @@ class FetchIssueingAuthorityList extends ListEvent {}
 class FetchLangList extends ListEvent {}
 
 class FetchQuestList extends ListEvent {}
+
+class FetchEducationList extends ListEvent {}
+class FetchDocTypeList extends ListEvent {}

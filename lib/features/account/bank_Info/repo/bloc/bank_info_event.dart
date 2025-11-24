@@ -13,12 +13,14 @@ class AddBankInfo extends BankInfoEvent {
   final String routingNumber;
   final String accountNumber;
   final String holderName;
+  final String bankName;
 
   AddBankInfo({
     required this.accountNumber,
     required this.accountType,
     required this.holderName,
     required this.routingNumber,
+    required this.bankName,
   });
 }
 //Edit Bank Event
@@ -28,6 +30,7 @@ class EditBankInfoEvent extends BankInfoEvent {
   final String id;
   final String accountNumber;
   final String holderName;
+  final String bankName;
 
   const EditBankInfoEvent({
     required this.accountType,
@@ -35,6 +38,7 @@ class EditBankInfoEvent extends BankInfoEvent {
     required this.routingNumber,
     required this.accountNumber,
     required this.holderName,
+    required this.bankName,
   });
 
   @override

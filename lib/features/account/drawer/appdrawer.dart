@@ -41,28 +41,28 @@ class AppDrawer extends StatelessWidget {
     }
   }
 
-  Future<void> toggleNotificationSwitch(ValueNotifier<bool> msgToggle) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  // Future<void> toggleNotificationSwitch(ValueNotifier<bool> msgToggle) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    if (msgToggle.value) {
-      msgToggle.value = false;
-      await prefs.setBool('isNotificationOn', false);
-    } else {
-      PermissionStatus status = await Permission.notification.request();
+  //   if (msgToggle.value) {
+  //     msgToggle.value = false;
+  //     await prefs.setBool('isNotificationOn', false);
+  //   } else {
+  //     PermissionStatus status = await Permission.notification.request();
 
-      if (status.isGranted) {
-        msgToggle.value = true;
-        await prefs.setBool('isNotificationOn', true);
-      } else if (status.isPermanentlyDenied) {
-        msgToggle.value = true;
-        await prefs.setBool('isNotificationOn', true);
-        openAppSettings();
-      } else {
-        msgToggle.value = false;
-        await prefs.setBool('isNotificationOn', false);
-      }
-    }
-  }
+  //     if (status.isGranted) {
+  //       msgToggle.value = true;
+  //       await prefs.setBool('isNotificationOn', true);
+  //     } else if (status.isPermanentlyDenied) {
+  //       msgToggle.value = true;
+  //       await prefs.setBool('isNotificationOn', true);
+  //       openAppSettings();
+  //     } else {
+  //       msgToggle.value = false;
+  //       await prefs.setBool('isNotificationOn', false);
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -145,15 +145,15 @@ class AppDrawer extends StatelessWidget {
                           onToggle: () => toggleMicrophoneSwitch(micToggle),
                         ),
                       ),
-                      SettingRow(
-                        title: "Notifications",
-                        subTitle: "Allow app to send alerts.",
-                        svgPath: "assets/svg/account/bell.svg",
-                        pushBtn: CustomSwitch(
-                          notifier: msgToggle,
-                          onToggle: () => toggleNotificationSwitch(msgToggle),
-                        ),
-                      ),
+                      // SettingRow(
+                      //   title: "Notifications",
+                      //   subTitle: "Allow app to send alerts.",
+                      //   svgPath: "assets/svg/account/bell.svg",
+                      //   pushBtn: CustomSwitch(
+                      //     notifier: msgToggle,
+                      //     onToggle: () => toggleNotificationSwitch(msgToggle),
+                      //   ),
+                      // ),
                     ],
                   ),
 

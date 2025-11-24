@@ -1,6 +1,7 @@
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/accreditationtype_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/certified_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/country_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/education_typemodel.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/issueing_authority.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/license_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/specialty%20type_response_model.dart';
@@ -10,10 +11,11 @@ import 'package:ghorx_mobile_app_new/utilities/network/dio_handler.dart';
 
 class ListRepository {
   final DioHandler _dioHandler = DioHandler();
+  final String action = "lists";
   //countrylist
   Future<CountryResponseModel> fetchCountryList() async {
     final data = {
-      ...ApiUtils.getCommonParams(action: "lists", token: ""),
+      ...ApiUtils.getCommonParams(action: action, token: ""),
       "Tags": [
         {"T": "c10", "V": "99"},
       ],
@@ -30,7 +32,7 @@ class ListRepository {
   // specialty
   Future<SpecialtyResponseModel> fetchSpecialtyList() async {
     final data = {
-      ...ApiUtils.getCommonParams(action: "lists", token: ""),
+      ...ApiUtils.getCommonParams(action: action, token: ""),
       "Tags": [
         {"T": "c10", "V": "98"},
       ],
@@ -47,7 +49,7 @@ class ListRepository {
   // accreditation_type
   Future<AccreditationTypeModel> fetchAccreditationTypeList() async {
     final data = {
-      ...ApiUtils.getCommonParams(action: "lists", token: ""),
+      ...ApiUtils.getCommonParams(action: action, token: ""),
       "Tags": [
         {"T": "c10", "V": "90"},
       ],
@@ -64,7 +66,7 @@ class ListRepository {
   // license
   Future<LicenseListResponseModel> fetchLicenseList() async {
     final data = {
-      ...ApiUtils.getCommonParams(action: "lists", token: ""),
+      ...ApiUtils.getCommonParams(action: action, token: ""),
       "Tags": [
         {"T": "dk1", "V": "LICENSETYPE"},
         {"T": "c10", "V": "3"},
@@ -82,7 +84,7 @@ class ListRepository {
   //Certified
   Future<CertifiedResponseModel> fetchCertifiedList() async {
     final data = {
-      ...ApiUtils.getCommonParams(action: "lists", token: ""),
+      ...ApiUtils.getCommonParams(action: action, token: ""),
       "Tags": [
         {"T": "c10", "V": "89"},
       ],
@@ -100,7 +102,7 @@ class ListRepository {
 
   Future<SpecialtyTypeResponseModel> fetchSpecialtyTypeList() async {
     final data = {
-      ...ApiUtils.getCommonParams(action: "lists", token: ""),
+      ...ApiUtils.getCommonParams(action: action, token: ""),
       "Tags": [
         {"T": "c10", "V": "88"},
       ],
@@ -117,7 +119,7 @@ class ListRepository {
   //Issueing Authority
   Future<IssueingAuthorityResponseModel> fetchIssueingAuthorityList() async {
     final data = {
-      ...ApiUtils.getCommonParams(action: "lists", token: ""),
+      ...ApiUtils.getCommonParams(action: action, token: ""),
       "Tags": [
         {"T": "dk1", "V": "ISSUINGAUTHORITY"},
         {"T": "c10", "V": "3"},
@@ -134,7 +136,7 @@ class ListRepository {
 
   Future<Map<String, dynamic>> fetchLangList() async {
     final data = {
-      ...ApiUtils.getCommonParams(action: "lists", token: ""),
+      ...ApiUtils.getCommonParams(action: action, token: ""),
       "Tags": [
         {"T": "dk1", "V": "LANGUAGE"},
         {"T": "c10", "V": "3"},
@@ -152,7 +154,7 @@ class ListRepository {
 
   Future<Map<String, dynamic>> fetchQuestionsList() async {
     final data = {
-      ...ApiUtils.getCommonParams(action: "lists", token: ""),
+      ...ApiUtils.getCommonParams(action: action, token: ""),
       "Tags": [
         {"T": "c10", "V": "85"},
       ],
@@ -165,4 +167,37 @@ class ListRepository {
       throw Exception("Failed to fetch questions list: $e");
     }
   }
+
+  //degree type
+  Future<EducationTypeModel> fetchDegreeList() async {
+    final data = {
+      ...ApiUtils.getCommonParams(action: action, token: ""),
+      "Tags": [
+        {"T": "dk1", "V": "DEGREE"},
+        {"T": "c10", "V": "3"},
+      ],
+    };
+    try {
+      final response = await _dioHandler.post('', data: data);
+      return EducationTypeModel.fromJson(response);
+    } catch (e) {
+      throw Exception("Failed to fetch degree list: $e");
+    }
+}
+// doctype lists
+  Future<Map<String, dynamic>> fetchDocTypeList() async {
+    final data = {
+      ...ApiUtils.getCommonParams(action: action, token: ""),
+      "Tags": [
+        {"T": "dk1", "V": "REVIEWERFILE"},
+        {"T": "c10", "V": "3"},
+      ],
+    };
+    try {
+      final response = await _dioHandler.post('', data: data);
+      return response;
+    } catch (e) {
+      throw Exception("Failed to fetch doc type list: $e");
+    }
+}
 }

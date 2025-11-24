@@ -2,19 +2,24 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/router/app_router.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/drawer/appdrawer.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
+import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_event.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/draweritem_tile.dart';
 import 'package:ghorx_mobile_app_new/features/home/widget/profile_pic_dialogue.dart';
 import 'package:ghorx_mobile_app_new/features/shimmer/widget/shapes.dart';
 
-class AccountPage extends StatelessWidget {
+class AccountPage extends StatefulWidget {
   AccountPage({Key? key}) : super(key: key);
 
+  @override
+  State<AccountPage> createState() => _AccountPageState();
+}
+
+class _AccountPageState extends State<AccountPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   final List<_DrawerItem> _drawerItems = [
@@ -74,10 +79,14 @@ class AccountPage extends StatelessWidget {
       routeName: AppRouter.bankInfo,
     ),
   ];
+  @override
+  void initState() {
+    super.initState();
+    context.read<PicBloc>().add(FetchPicEvent());
+  }
 
   @override
   Widget build(BuildContext context) {
-    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
         if (scaffoldKey.currentState?.isDrawerOpen ?? false) {
@@ -103,24 +112,14 @@ class AccountPage extends StatelessWidget {
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
+        body: SafeArea(
+          child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 14),
             children: [
               BlocBuilder<PicBloc, PicState>(
                 builder: (context, state) {
                   if (state is PicInitial || state is PicLoading) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 40),
-                      child: Column(
-                        children: [
-                          ShimmerShapes.circle(110),
-                          const SizedBox(height: 10),
-                          ShimmerShapes.line(width: 140, height: 16),
-                          const SizedBox(height: 6),
-                          ShimmerShapes.line(width: 180, height: 14),
-                        ],
-                      ),
-                    );
+                    return _profileShimmer();
                   }
 
                   if (state is PicSuccess) {
@@ -130,29 +129,21 @@ class AccountPage extends StatelessWidget {
                   return const SizedBox.shrink();
                 },
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 25),
-                    ..._drawerItems.map(
-                      (item) => DrawerItemTile(
-                        imagePath: item.imagePath,
-                        title: item.title,
-                        onTap:
-                            item.routeName != null
-                                ? () => Navigator.pushNamed(
-                                  context,
-                                  item.routeName!,
-                                )
-                                : null,
-                      ),
-                    ),
-                    const SizedBox(height: 29),
-                  ],
+
+              const SizedBox(height: 25),
+
+              ..._drawerItems.map(
+                (item) => DrawerItemTile(
+                  imagePath: item.imagePath,
+                  title: item.title,
+                  onTap:
+                      item.routeName != null
+                          ? () => Navigator.pushNamed(context, item.routeName!)
+                          : null,
                 ),
               ),
+
+              const SizedBox(height: 30),
             ],
           ),
         ),
@@ -160,28 +151,39 @@ class AccountPage extends StatelessWidget {
     );
   }
 
+  Widget _profileShimmer() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 30),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ShimmerShapes.circle(110),
+            const SizedBox(height: 10),
+            ShimmerShapes.line(width: 140, height: 16),
+            const SizedBox(height: 6),
+            ShimmerShapes.line(width: 180, height: 14),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildProfile(BuildContext context, PicSuccess state) {
     final data = state.response["Data"];
-    if (data == null || data.isEmpty || data[0].isEmpty)
-      return Column(
-        children: [
-          const SizedBox(height: 20),
-          Center(child: ShimmerShapes.circle(110)),
-          const SizedBox(height: 10),
-          ShimmerShapes.line(width: 140, height: 16),
-          const SizedBox(height: 6),
-          ShimmerShapes.line(width: 180, height: 14),
-          const SizedBox(height: 20),
-        ],
-      );
-    final info = data[0][0];
-    final imageUrl =
-        info["_Url"] != null && info["_Url"].toString().isNotEmpty
-            ? "${info["_Url"]}?v=${DateTime.now().millisecondsSinceEpoch}"
-            : '';
 
+    if (data == null || data.isEmpty || data[0].isEmpty) {
+      return _profileShimmer();
+    }
+
+    final info = data[0][0];
+    final imageUrl = info["_Url"] ?? '';
     final fullName = info["FullName"] ?? '';
     final email = info["email"] ?? '';
+    final fileID = info["FileUploadID"] ?? 0;
+    Widget _avatarShimmer() {
+      return ShimmerShapes.circle(110);
+    }
 
     return Column(
       children: [
@@ -197,32 +199,18 @@ class AccountPage extends StatelessWidget {
                   backgroundColor: AppColors.primarycolor.withAlpha(13),
                   child: ClipOval(
                     child:
-                        imageUrl.isNotEmpty
+                        imageUrl.toString().isNotEmpty
                             ? CachedNetworkImage(
                               imageUrl: imageUrl,
+                              fit: BoxFit.cover,
                               width: double.infinity,
                               height: double.infinity,
-                              fit: BoxFit.cover,
-                              fadeInDuration: Duration.zero,
-                              fadeOutDuration: Duration.zero,
-                              placeholder:
-                                  (context, url) => SvgPicture.asset(
-                                    "assets/svg/person.svg",
-                                    width: 110,
-                                    height: 110,
-                                  ),
+                              placeholder: (_, __) => _avatarShimmer(),
                               errorWidget:
-                                  (context, url, error) => SvgPicture.asset(
-                                    "assets/svg/person.svg",
-                                    width: 110,
-                                    height: 110,
-                                  ),
+                                  (_, __, ___) =>
+                                      SvgPicture.asset("assets/svg/person.svg"),
                             )
-                            : SvgPicture.asset(
-                              "assets/svg/person.svg",
-                              width: 110,
-                              height: 110,
-                            ),
+                            : SvgPicture.asset("assets/svg/person.svg"),
                   ),
                 ),
                 Positioned(
@@ -232,7 +220,9 @@ class AccountPage extends StatelessWidget {
                     onTap:
                         () => showDialog(
                           context: context,
-                          builder: (_) => ProfileDialog(url: imageUrl),
+                          builder:
+                              (_) =>
+                                  ProfileDialog(url: imageUrl, fileID: fileID),
                         ),
                     child: CircleAvatar(
                       radius: 16,
@@ -240,7 +230,6 @@ class AccountPage extends StatelessWidget {
                       child: SvgPicture.asset(
                         "assets/svg/account/edit.svg",
                         height: 16,
-                        width: 16,
                       ),
                     ),
                   ),
@@ -249,7 +238,7 @@ class AccountPage extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 5),
+        const SizedBox(height: 8),
         Text(fullName, style: AppFonts.heading),
         Text(email, style: AppFonts.textSecondary),
       ],

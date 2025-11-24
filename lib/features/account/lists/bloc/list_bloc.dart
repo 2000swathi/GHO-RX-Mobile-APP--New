@@ -4,6 +4,7 @@ import 'package:ghorx_mobile_app_new/features/account/lists/repository/list_repo
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/accreditationtype_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/certified_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/country_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/education_typemodel.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/issueing_authority.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/license_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/specialty%20type_response_model.dart';
@@ -25,6 +26,8 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     on<FetchIssueingAuthorityList>(_onFetchIssueingAuthority);
     on<FetchLangList>(_onFetchLaunguageList);
     on<FetchQuestList>(_onFetchQuestList);
+    on<FetchEducationList>(_onFetchDegreeType);
+    on<FetchDocTypeList>(_onFetchDocTypeList);
   }
 
   //country list
@@ -91,6 +94,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
       emit(ListFailure(error: e.toString()));
     }
   }
+
   //Certified
   Future<void> _onFetchCertified(
     FetchCertifiedList event,
@@ -153,7 +157,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     try {
       final response = await repository.fetchLangList();
       if (response["Status"] == 1) {
-        return emit(LanguageLIstState(response: response));
+        return emit(CommonListState(response: response));
       } else {
         return emit(ListFailure(error: response["Info"]));
       }
@@ -161,6 +165,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
       emit(ListFailure(error: e.toString()));
     }
   }
+
   //questions list
   Future<void> _onFetchQuestList(
     FetchQuestList event,
@@ -173,6 +178,40 @@ class ListBloc extends Bloc<ListEvent, ListState> {
       if (response["Status"] == 1) {
         print(response);
         return emit(QuestionsLIstState(response: response));
+      } else {
+        return emit(ListFailure(error: response["Info"]));
+      }
+    } catch (e) {
+      emit(ListFailure(error: e.toString()));
+    }
+  }
+
+  //degree type
+  Future<void> _onFetchDegreeType(
+    FetchEducationList event,
+    Emitter<ListState> emit,
+  ) async {
+    emit(ListLoading());
+
+    try {
+      final response = await repository.fetchDegreeList();
+      emit(EductionTypeListState(educationTypeResponse: response));
+    } catch (e) {
+      emit(ListFailure(error: e.toString()));
+    }
+  }
+
+  //doctype list
+  Future<void> _onFetchDocTypeList(
+    FetchDocTypeList event,
+    Emitter<ListState> emit,
+  ) async {
+    emit(ListLoading());
+
+    try {
+      final response = await repository.fetchDocTypeList();
+      if (response["Status"] == 1) {
+        return emit(CommonListState(response: response));
       } else {
         return emit(ListFailure(error: response["Info"]));
       }

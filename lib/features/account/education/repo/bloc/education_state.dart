@@ -10,6 +10,9 @@ sealed class EducationState extends Equatable {
 final class EducationInitial extends EducationState {}
 
 final class EducationLoading extends EducationState {}
+final class EducationAddLoading extends EducationState {}
+final class EducationEditLoading extends EducationState {}
+
 
 class EducationListState extends EducationState {
   final EducationResponse educationResponse;
@@ -18,7 +21,6 @@ class EducationListState extends EducationState {
 
   @override
   List<Object> get props => [educationResponse];
-
 }
 
 class EduSuccess extends EducationState {

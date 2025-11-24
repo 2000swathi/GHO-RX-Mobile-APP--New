@@ -79,10 +79,10 @@ class IssueingauthorityListState extends ListState {
   List<Object> get props => [issueingauthorityResponse];
 }
 
-// lang
-class LanguageLIstState extends ListState {
+// lang // doctype
+class CommonListState extends ListState {
   final Map<String, dynamic> response;
-  const LanguageLIstState({required this.response});
+  const CommonListState({required this.response});
   @override
   List<Object> get props => [response];
 }
@@ -93,4 +93,12 @@ class QuestionsLIstState extends ListState {
   const QuestionsLIstState({required this.response});
   @override
   List<Object> get props => [response];
+}
+
+//degree type
+class EductionTypeListState extends ListState {
+  final EducationTypeModel educationTypeResponse;
+  const EductionTypeListState({required this.educationTypeResponse});
+  @override
+  List<Object> get props => [educationTypeResponse];
 }

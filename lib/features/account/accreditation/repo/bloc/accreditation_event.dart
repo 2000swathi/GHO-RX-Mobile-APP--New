@@ -21,7 +21,7 @@ class AddAccrediation extends AccreditationEvent {
     required this.accreditationnumber,
   });
 }
-// accreditation
+//edit accreditation
 class EditAcreditationEvent extends AccreditationEvent {
   final String accreditationId;
   final String accreditationtype;

@@ -6,6 +6,7 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart'
 import 'package:ghorx_mobile_app_new/core/common_widgets/logo_widget.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
+import 'package:ghorx_mobile_app_new/core/router/app_router.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_event.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_state.dart';
@@ -87,7 +88,11 @@ class _OtpScreenState extends State<OtpScreen> {
             state.otpVerifyResponse.data[0][0].msg,
             true,
           );
-          Navigator.pushNamed(context, '/mainpage');
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            AppRouter.mainPage,
+            (route) => false, 
+          );
         } else if (state is ResendOTPSuccess) {
           CustomSnackbar.show(context, "OTP resent successfully", true);
           setState(() {

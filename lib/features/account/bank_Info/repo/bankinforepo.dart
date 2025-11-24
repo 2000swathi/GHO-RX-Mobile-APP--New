@@ -36,6 +36,7 @@ class Bankinforepo {
     required String routingNumber,
     required String accountNumber,
     required String holderName,
+    required String bankName,
   }) async {
     final token = await SharedPreference.getToken();
     final userId = await SharedPreference.getUserId();
@@ -51,6 +52,7 @@ class Bankinforepo {
         {"T": "c2", "V": routingNumber},
         {"T": "c3", "V": accountNumber},
         {"T": "c4", "V": holderName},
+        {"T": "c5", "V": bankName},
         {"T": "c10", "V": "1"},
       ],
     };
@@ -69,6 +71,7 @@ class Bankinforepo {
     required String accountNumber,
     required String holderName,
     required String id,
+    required String bankName,
   }) async {
     final token = await SharedPreference.getToken();
     final userID = await SharedPreference.getUserId();
@@ -84,6 +87,7 @@ class Bankinforepo {
         {"T": "c2", "V": routingNumber},
         {"T": "c3", "V": accountNumber},
         {"T": "c4", "V": holderName},
+        {"T": "c4", "V": bankName},
         {"T": "c10", "V": "2"},
       ],
     };

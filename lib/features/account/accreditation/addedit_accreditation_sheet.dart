@@ -22,14 +22,7 @@ class AddEditAccreditationBottomSheet {
     final _formKey = GlobalKey<FormState>();
 
     // Initialize accreditation type
-    String? accreTypeID;
-    if (isEdit && info != null && accreList.isNotEmpty) {
-      final matched = accreList.firstWhere(
-        (e) => e.name == info.accreditationType,
-        orElse: () => accreList.first,
-      );
-      accreTypeID = matched.accreditationTypeID.toString();
-    }
+    var accreTypeID = isEdit ? info?.accreditationTypeID : "";
 
     // Controllers
     final accBodyController = TextEditingController(
