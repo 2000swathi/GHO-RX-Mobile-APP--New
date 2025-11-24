@@ -27,7 +27,6 @@ class ChangePassword extends StatelessWidget {
         }
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: true,
         backgroundColor: AppColors.backgroundcolor,
         appBar: CustomAccountAppBar(title: "Change Password"),
 
@@ -79,25 +78,22 @@ class ChangePassword extends StatelessWidget {
                 controller: confirmPWcontroller,
               ),
               SizedBox(height: 54),
+              BlocBuilder<ChangePasswordBloc, ChangePasswordState>(
+                builder: (context, state) {
+                  return CustomButton(
+                    text: "Change Password",
+                    onPressed: () {
+                      context.read<ChangePasswordBloc>().add(
+                        FetchChangePassword(
+                          currentPw: currentPWcontroller.text.trim(),
+                          newPw: newPWcontroller.text.trim(),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
             ],
-          ),
-        ),
-        bottomNavigationBar: Padding(
-          padding: EdgeInsets.only(
-            left: 22,
-            right: 22,
-            bottom: MediaQuery.of(context).viewInsets.bottom + 10,
-          ),
-          child: CustomButton(
-            text: "Change Password",
-            onPressed: () {
-              context.read<ChangePasswordBloc>().add(
-                FetchChangePassword(
-                  currentPw: currentPWcontroller.text.trim(),
-                  newPw: newPWcontroller.text.trim(),
-                ),
-              );
-            },
           ),
         ),
       ),

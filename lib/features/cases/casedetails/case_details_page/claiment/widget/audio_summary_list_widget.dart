@@ -59,51 +59,109 @@ class _AudioSummaryListWidgetState extends State<AudioSummaryListWidget> {
     super.dispose();
   }
 
+  // Future<void> _playAudio(String url, int index) async {
+  //   try {
+  //     if (_playingIndex == index && _player.playing) {
+  //       await _player.pause();
+  //       setState(() {});
+  //       return;
+  //     }
+
+  //     if (_playingIndex == index && !_player.playing) {
+  //       await _player.play();
+  //       setState(() {});
+  //       return;
+  //     }
+
+  //     setState(() {
+  //       _isLoading = true;
+  //       _playingIndex = index;
+  //       _total = Duration.zero;
+  //     });
+
+  //     await _player.stop();
+  //     await _player.setUrl(url);
+      
+
+  //     Duration? totalDuration;
+  //     int tries = 0;
+  //     while (totalDuration == null && tries < 10) {
+  //       await Future.delayed(const Duration(milliseconds: 100));
+  //       totalDuration = _player.duration;
+  //       tries++;
+  //     }
+
+  //     setState(() {
+  //       _total = totalDuration ?? Duration.zero;
+  //       _isLoading = false;
+  //     });
+
+  //     await _player.play();
+  //   } catch (e) {
+  //     debugPrint("Audio error: $e");
+  //     setState(() {
+  //       _isLoading = false;
+  //       _playingIndex = null;
+  //     });
+  //   }
+  // }
   Future<void> _playAudio(String url, int index) async {
-    try {
-      if (_playingIndex == index && _player.playing) {
-        await _player.pause();
-        setState(() {});
-        return;
-      }
-
-      if (_playingIndex == index && !_player.playing) {
-        await _player.play();
-        setState(() {});
-        return;
-      }
-
-      setState(() {
-        _isLoading = true;
-        _playingIndex = index;
-        _total = Duration.zero;
-      });
-
-      await _player.stop();
-      await _player.setUrl(url);
-
-      Duration? totalDuration;
-      int tries = 0;
-      while (totalDuration == null && tries < 10) {
-        await Future.delayed(const Duration(milliseconds: 100));
-        totalDuration = _player.duration;
-        tries++;
-      }
-
-      setState(() {
-        _total = totalDuration ?? Duration.zero;
-        _isLoading = false;
-      });
-
-      await _player.play();
-    } catch (e) {
-      debugPrint("Audio error: $e");
-      setState(() {
-        _isLoading = false;
-        _playingIndex = null;
-      });
+  try {
+    if (_playingIndex == index && _player.playing) {
+      await _player.pause();
+      setState(() {});
+      return;
     }
+
+    if (_playingIndex == index && !_player.playing) {
+      await _player.play();
+      setState(() {});
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+      _playingIndex = index;
+      _total = Duration.zero;
+    });
+
+    await _player.stop();
+
+    String finalUrl = url;
+
+    // ✅ Only fix URL for iOS when extension is not at the end
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      if (!finalUrl.toLowerCase().endsWith('.m4a')) {
+        final separator = finalUrl.contains('?') ? '&' : '?';
+        finalUrl = "$finalUrl${separator}response-content-type=audio/mp4";
+      }
+    }
+
+    await _player.setUrl(finalUrl);
+
+    Duration? totalDuration;
+    int tries = 0;
+    while (totalDuration == null && tries < 10) {
+      await Future.delayed(const Duration(milliseconds: 100));
+      totalDuration = _player.duration;
+      tries++;
+    }
+
+    setState(() {
+      _total = totalDuration ?? Duration.zero;
+      _isLoading = false;
+    });
+
+    await _player.play();
+  } catch (e, st) {
+    debugPrint("Audio error: $e\n$st");
+    setState(() {
+      _isLoading = false;
+      _playingIndex = null;
+    });
   }
+}
+
 
   String _format(Duration d) {
     final minutes = d.inMinutes.remainder(60).toString().padLeft(2, '0');

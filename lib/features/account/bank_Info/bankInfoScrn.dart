@@ -104,7 +104,7 @@ class _BankinfoscrnState extends State<Bankinfoscrn> {
                           Navigator.of(context, rootNavigator: true).pop();
                           AddEditBankInfoBottonSheet.showSheet(
                             context,
-                            state.bankListModel,
+                            bankinfo,
                             true,
                             bankinfobloc: context.read<BankInfoBloc>(),
                           );
