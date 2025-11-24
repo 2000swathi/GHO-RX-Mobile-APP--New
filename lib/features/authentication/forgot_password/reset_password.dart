@@ -6,14 +6,14 @@ import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
 
-class ResetPassword extends StatefulWidget {
-  const ResetPassword({super.key});
+class ForgotConfirmPasswordScreen extends StatefulWidget {
+  const ForgotConfirmPasswordScreen({super.key});
 
   @override
-  State<ResetPassword> createState() => _ResetPasswordState();
+  State<ForgotConfirmPasswordScreen> createState() => _ForgotConfirmPasswordScreenState();
 }
 
-class _ResetPasswordState extends State<ResetPassword> {
+class _ForgotConfirmPasswordScreenState extends State<ForgotConfirmPasswordScreen> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmpasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -41,7 +41,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                 Text("OTP has been sent on your registered mobile number and email.",
                 style: AppFonts.subtext,
                 textAlign: TextAlign.center,
-                ),
+                ),  
                 SizedBox(height: 40),
                 CustomTextFormField(
                   name: "New Password",
