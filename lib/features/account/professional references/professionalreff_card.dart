@@ -5,8 +5,9 @@ class ProfessionalRefeCard extends StatelessWidget {
   final int index;
   final String fullnameRefe;
   final String designationRefe;
-  final String departRefe;
-  final String emailRefe;
+  // final String designation1Refe;
+  final String relationshipRefe;
+  final String phoneRefe;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
 
@@ -15,11 +16,12 @@ class ProfessionalRefeCard extends StatelessWidget {
     required this.index,
     required this.fullnameRefe,
     required this.designationRefe,
-    required this.departRefe,
-    required this.emailRefe,
+    // required this.designation1Refe,
+    required this.relationshipRefe,
+    required this.phoneRefe,
     this.onEdit,
     this.onDelete,
-    });
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +30,11 @@ class ProfessionalRefeCard extends StatelessWidget {
       onEdit: onEdit ?? () {},
       onDelete: onDelete ?? () {},
       fields: [
-        { "label": "Full Name:", "value": fullnameRefe },
-        { "label": "Designation:", "value": designationRefe },
-        { "label": "Department:", "value": departRefe },
-        { "label": "Email:", "value": emailRefe },
+        {"label": "Full Name:", "value": fullnameRefe},
+        {"label": "Designation:", "value": designationRefe},
+        // {"label": "Designation1:", "value": designation1Refe},
+        {"label": "Relationship:", "value": relationshipRefe},
+        {"label": "phone:", "value": phoneRefe},
       ],
     );
   }

@@ -11,6 +11,57 @@ class ProfessionalrefBloc
   final ProfessionalrefRepo repository;
   ProfessionalrefBloc({required this.repository})
     : super(ProfessionalrefInitial()) {
-    on<ProfessionalrefEvent>((event, emit) {});
-  }(FetchProfessionalref event,Emitter<ProfessionalrefState>emit,)async{emit(ProfessionalrefLoading());}
+    on<FetchProfessionalref>(_onFetchProfessionalref);
+    on<AddProRef>(_addProfessionalRef);
+  }
+  Future<void> _onFetchProfessionalref(
+    FetchProfessionalref event,
+    Emitter<ProfessionalrefState> emit,
+  ) async {
+    emit(ProfessionalrefLoading());
+
+    try {
+      final professionalref = await repository.fetchProfessionalinfo();
+      emit(ProfessionalrefgetState(professionalerefModel: professionalref));
+    } catch (e) {
+      emit(ProfessionalrefError(message: e.toString()));
+    }
+  }
+
+  //add
+  Future<void> _addProfessionalRef(
+    AddProRef event,
+    Emitter<ProfessionalrefState> emit,
+  ) async {
+    emit(ProfessionalrefAddLoading());
+    try {
+      final response = await repository.addProRef(
+        fullName: event.fullName,
+        designation: event.designation,
+        relationship: event.relationship,
+        phone: event.phone,
+      );
+      if (response["Status"] == 1) {
+        String message = "License updated successfully";
+
+        final data = response["Data"];
+        if (data is List && data.isNotEmpty) {
+          final level1 = data[0];
+          if (level1 is List && level1.isNotEmpty) {
+            final msgObj = level1[0];
+            if (msgObj is Map && msgObj["msg"] != null) {
+              message = msgObj["msg"].toString();
+            }
+          }
+        }
+        // 🔥 RE-FETCH updated list after add
+        final updatedList = await repository.fetchProfessionalinfo();
+
+        emit(ProfessionalrefgetState(professionalerefModel: updatedList));
+        emit(ProRefSuccess(message: message));
+      }
+    } catch (e) {
+      emit(ProfessionalrefError(message: "An error occurred: ${e.toString()}"));
+    }
+  }
 }
