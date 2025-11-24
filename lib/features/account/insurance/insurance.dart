@@ -7,7 +7,6 @@ import 'package:ghorx_mobile_app_new/features/account/deleteBloc/bloc/delete_blo
 import 'package:ghorx_mobile_app_new/features/account/insurance/addedit_insurance_sheet.dart';
 import 'package:ghorx_mobile_app_new/features/account/insurance/widget/insurance_card.dart';
 import 'package:ghorx_mobile_app_new/features/account/insurance/repo/bloc/insurance_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/account/widget/customFAB.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/custom_profile_appbar.dart';
 
 class InsuranceScreen extends StatefulWidget {

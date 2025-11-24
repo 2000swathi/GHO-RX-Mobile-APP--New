@@ -3,9 +3,16 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/logo_widget.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AddPage extends StatelessWidget {
   const AddPage({super.key});
+  Future<void> openLink(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -194,7 +201,9 @@ class AddPage extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 25, right: 25),
                       child: CustomButton(
                         text: "Continue",
-                        onPressed: () {},
+                        onPressed: () {
+                           openLink("https://reviewer.g2ndopinion.com/auth/signup");
+                        },
                         iswhite: true,
                       ),
                     ),

@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/account/education/repo/model/educationmodel.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/list_repository.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/accreditationtype_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/certified_response_model.dart';
@@ -28,6 +27,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     on<FetchLangList>(_onFetchLaunguageList);
     on<FetchQuestList>(_onFetchQuestList);
     on<FetchEducationList>(_onFetchDegreeType);
+    on<FetchDocTypeList>(_onFetchDocTypeList);
   }
 
   //country list
@@ -94,6 +94,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
       emit(ListFailure(error: e.toString()));
     }
   }
+
   //Certified
   Future<void> _onFetchCertified(
     FetchCertifiedList event,
@@ -156,7 +157,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     try {
       final response = await repository.fetchLangList();
       if (response["Status"] == 1) {
-        return emit(LanguageLIstState(response: response));
+        return emit(CommonListState(response: response));
       } else {
         return emit(ListFailure(error: response["Info"]));
       }
@@ -164,6 +165,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
       emit(ListFailure(error: e.toString()));
     }
   }
+
   //questions list
   Future<void> _onFetchQuestList(
     FetchQuestList event,
@@ -189,15 +191,30 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     FetchEducationList event,
     Emitter<ListState> emit,
   ) async {
-   emit(ListLoading());
+    emit(ListLoading());
 
     try {
       final response = await repository.fetchDegreeList();
-      emit(
-        EductionTypeListState(
-          educationTypeResponse: response,
-        ),
-      );
+      emit(EductionTypeListState(educationTypeResponse: response));
+    } catch (e) {
+      emit(ListFailure(error: e.toString()));
+    }
+  }
+
+  //doctype list
+  Future<void> _onFetchDocTypeList(
+    FetchDocTypeList event,
+    Emitter<ListState> emit,
+  ) async {
+    emit(ListLoading());
+
+    try {
+      final response = await repository.fetchDocTypeList();
+      if (response["Status"] == 1) {
+        return emit(CommonListState(response: response));
+      } else {
+        return emit(ListFailure(error: response["Info"]));
+      }
     } catch (e) {
       emit(ListFailure(error: e.toString()));
     }

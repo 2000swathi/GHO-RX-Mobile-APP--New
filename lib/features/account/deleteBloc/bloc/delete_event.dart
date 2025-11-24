@@ -22,3 +22,4 @@ final class DeleteProfileItem extends DeleteEvent {
   List<Object> get props => [id, action, isLang];
 }
 
+class fetchDeleteAccount extends DeleteEvent {}

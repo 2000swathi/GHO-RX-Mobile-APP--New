@@ -32,4 +32,27 @@ class DeleteProfileRepository {
       throw Exception(e);
     }
   }
+
+  Future deleteAccount() async {
+    final token = await SharedPreference.getToken();
+    final reviewerId = await SharedPreference.getUserId();
+
+    if (token!.isEmpty || reviewerId!.isEmpty) {
+      throw Exception('Token or ReviewerId not found in SharedPreferences');
+    }
+    final data = {
+      ...ApiUtils.getCommonParams(action: "reviewer", token: token),
+      "Tags": [
+        {"T": "dk1", "V": reviewerId},
+
+        {"T": "c10", "V": "14"},
+      ],
+    };
+    try {
+      final response = await _dioHandler.post('', data: data);
+      return response;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }
