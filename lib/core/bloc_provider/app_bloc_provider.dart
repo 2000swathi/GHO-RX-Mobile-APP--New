@@ -22,6 +22,8 @@ import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/bloc/pr
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/profile_info_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/profile_pic_repo.dart';
+import 'package:ghorx_mobile_app_new/features/account/professional%20references/repo/bloc/professionalref_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/professional%20references/repo/professionalref_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/specialty/repo/bloc/specialty_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/specialty/repo/specialty_repo.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_bloc.dart';
@@ -182,6 +184,9 @@ class AppBlocProvider extends StatelessWidget {
 
         BlocProvider<DoctfileBloc>(
           create: (_) => DoctfileBloc(repository: DoctFileRepo()),
+        ),
+        BlocProvider<ProfessionalrefBloc>(
+          create: (_) => ProfessionalrefBloc(repository: ProfessionalrefRepo()),
         ),
       ],
       child: child,

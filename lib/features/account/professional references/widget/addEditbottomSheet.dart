@@ -12,10 +12,12 @@ import 'package:ghorx_mobile_app_new/features/account/professional%20references/
 class AddProfessionalRefBottomSheet {
   static void showSheet(
     BuildContext context,
-    ReferenceModel? info, {
+    ReferenceModel? info,
+    bool isEdit, {
     required ProfessionalrefBloc profRefBloc,
   }) {
     final _formKey = GlobalKey<FormState>();
+    // var refId = isEdit ? info?.id:"";
 
     // Controllers
     final nameController = TextEditingController();
@@ -23,9 +25,18 @@ class AddProfessionalRefBottomSheet {
     final phoneController = TextEditingController();
     final relationShipController = TextEditingController();
 
+    // ------------ PREFILL ON EDIT MODE -------------------
+    if (isEdit && info != null) {
+      nameController.text = info.fullName;
+      designationController.text = info.designation;
+      phoneController.text = info.phone;
+      relationShipController.text = info.relationship;
+    }
+
     CustomBottomSheet.show(
       context: context,
-      heading: "Add Professional Reference",
+      heading:
+          isEdit ? "Edit Professional Reference" : "Add Professional Reference",
       content: [
         Form(
           key: _formKey,
@@ -97,16 +108,28 @@ class AddProfessionalRefBottomSheet {
             final bool isLoading = state is ProfessionalrefAddLoading;
 
             return CustomButton(
-              text: "Add Reference",
+              text:
+                  isEdit
+                      ? "Update Professional Reference"
+                      : "Add Professional Reference",
               isLoading: isLoading,
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  final event = AddProRef(
-                    fullName: nameController.text,
-                    designation: designationController.text,
-                    relationship: relationShipController.text,
-                    phone: phoneController.text,
-                  );
+                  final event =
+                      isEdit
+                          ? EditProRef(
+                            refId: info!.id.toString(),
+                            fullName: nameController.text,
+                            designation: designationController.text,
+                            relationship: relationShipController.text,
+                            phone: phoneController.text,
+                          )
+                          : AddProRef(
+                            fullName: nameController.text,
+                            designation: designationController.text,
+                            relationship: relationShipController.text,
+                            phone: phoneController.text,
+                          );
 
                   profRefBloc.add(event);
                 }

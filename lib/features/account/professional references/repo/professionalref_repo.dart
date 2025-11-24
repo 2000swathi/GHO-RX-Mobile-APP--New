@@ -63,10 +63,51 @@ class ProfessionalrefRepo {
     };
     try {
       final response = await _dioHandler.post('', data: data);
-      print(response);
+
       return response;
     } catch (e) {
       throw Exception("Failed to add professional reference: $e");
     }
   }
+
+  //Edit professional reference
+  Future<Map<String, dynamic>> editProRef({
+    required String refId,
+    required String fullName,
+    required String designation,
+    required String relationship,
+    required String phone,
+  }) async {
+    final token = await SharedPreference.getToken();
+    final reviewerId = await SharedPreference.getUserId();
+
+    if (token!.isEmpty || reviewerId!.isEmpty) {
+      throw Exception('Token or ReviewerId not found in SharedPreferences');
+    }
+    final c1Value = jsonEncode({
+      "FullName": fullName,
+      "Designation": designation,
+      "Relationship": relationship,
+      "Phone": phone,
+    });
+    final data = {
+      ...ApiUtils.getCommonParams(action: "reviewerref", token: token),
+      "Tags": [
+        {"T": "dk1", "V": reviewerId}, //required to update
+        {"T": "dk2", "V": refId},
+        {"T": "c1", "V": c1Value},
+        {"T": "c10", "V": "2"},
+      ],
+    };
+
+    try {
+      final response = await _dioHandler.post('', data: data);
+      print(response);
+      return response;
+    } catch (e) {
+      throw (e.toString());
+    }
+  }
+
+  //delete
 }

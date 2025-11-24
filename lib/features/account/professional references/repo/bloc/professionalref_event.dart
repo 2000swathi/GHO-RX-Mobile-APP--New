@@ -23,3 +23,22 @@ class AddProRef extends ProfessionalrefEvent {
     required this.phone,
   });
 }
+
+//edit
+class EditProRef extends ProfessionalrefEvent {
+  final String refId;
+  final String fullName;
+  final String designation;
+  final String relationship;
+  final String phone;
+
+  const EditProRef({
+    required this.refId,
+    required this.fullName,
+    required this.designation,
+    required this.relationship,
+    required this.phone,
+  });
+  @override
+  List<Object> get props => [refId, fullName, designation, relationship, phone];
+}
