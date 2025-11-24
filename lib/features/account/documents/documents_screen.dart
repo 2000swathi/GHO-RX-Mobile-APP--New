@@ -32,10 +32,6 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
   Widget build(BuildContext context) {
     return BlocListener<ListBloc, ListState>(
       listener: (context, state) {
-        if (Navigator.canPop(context)) {
-          Navigator.pop(context);
-        }
-
         if (state is CommonListState) {
           final docTypes = state.response["Data"][0];
           showDialog(
@@ -59,13 +55,14 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
               builder: (_) => const Center(child: LoadingAnimation()),
             );
             context.read<ListBloc>().add(FetchDocTypeList());
+            Navigator.pop(context);
           },
         ),
         body: BlocListener<GetFileIdBloc, GetFileIdState>(
           listener: (context, state) async {
             if (state is DeleteFileSuccess) {
               if (Navigator.canPop(context)) {
-                Navigator.pop(context); 
+                Navigator.pop(context);
               }
             } else if (state is GetFileIdFailure) {
               Navigator.pop(context);
