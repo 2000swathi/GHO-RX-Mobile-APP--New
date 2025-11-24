@@ -92,6 +92,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
+    //forgot email
+    on<ForgotEmail>((event, emit) async {
+      emit(AuthLoading());
+      try { 
+        final message = await authRepository.forgotEmail(
+          email: event.email,
+        );
+        emit(ForgotEmailSuccess(message));
+      } catch (e) {
+        emit(AuthFailure(e.toString()));
+      }
+    });
+
+    //logout
     on<Logout>((event, emit) async {
       emit(AuthLoading());
       try {
