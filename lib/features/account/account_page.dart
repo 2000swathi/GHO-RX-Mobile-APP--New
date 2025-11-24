@@ -7,13 +7,19 @@ import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_bloc.d
 import 'package:ghorx_mobile_app_new/features/account/drawer/appdrawer.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
+import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_event.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/draweritem_tile.dart';
 import 'package:ghorx_mobile_app_new/features/home/widget/profile_pic_dialogue.dart';
 import 'package:ghorx_mobile_app_new/features/shimmer/widget/shapes.dart';
 
-class AccountPage extends StatelessWidget {
+class AccountPage extends StatefulWidget {
   AccountPage({Key? key}) : super(key: key);
 
+  @override
+  State<AccountPage> createState() => _AccountPageState();
+}
+
+class _AccountPageState extends State<AccountPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   final List<_DrawerItem> _drawerItems = [
@@ -73,6 +79,11 @@ class AccountPage extends StatelessWidget {
       routeName: AppRouter.bankInfo,
     ),
   ];
+  @override
+  void initState() {
+    super.initState();
+    context.read<PicBloc>().add(FetchPicEvent());
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -62,7 +62,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
               return Center(child: Text(state.error));
             }
 
-            if (state is LanguageLIstState) {
+            if (state is CommonListState) {
               final languages = state.response["Data"][0];
 
               final List<String> allLanguages =

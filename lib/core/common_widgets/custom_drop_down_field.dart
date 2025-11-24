@@ -10,6 +10,7 @@ class CustomDropdownFormField<T> extends StatefulWidget {
   final T? value;
   final String? Function(T?)? validator;
   final void Function(T?)? onChanged;
+  final Color borderColor;
 
   const CustomDropdownFormField({
     super.key,
@@ -19,6 +20,7 @@ class CustomDropdownFormField<T> extends StatefulWidget {
     this.value,
     this.validator,
     this.onChanged,
+    this.borderColor = AppColors.offgreycolor,
   });
 
   @override
@@ -28,7 +30,7 @@ class CustomDropdownFormField<T> extends StatefulWidget {
 class _CustomDropdownFormFieldState<T> extends State<CustomDropdownFormField<T>> {
   @override
   Widget build(BuildContext context) {
-    Color borderColor = AppColors.offgreycolor;
+    Color borderColor = widget.borderColor;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,6 +17,7 @@ import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_event.
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_event.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/widget/pick_file_dialogue_box.dart';
+import 'package:ghorx_mobile_app_new/utilities/image_compress.dart';
 
 // ignore: must_be_immutable
 class ProfileDialog extends StatefulWidget {
@@ -45,6 +48,12 @@ class _ProfileDialogState extends State<ProfileDialog> {
             context.read<PicBloc>().add(FetchPicEvent());
             context.read<ProfileInfoBloc>().add(FetchPersonalInfo());
             Navigator.pop(context);
+          }else if (state is GetFileIdFailure) {
+            Navigator.pop(context);
+            CustomScaffoldMessenger.showErrorMessage(
+              context,
+              state.message,
+            );
           }
         },
         child: Container(
@@ -195,8 +204,9 @@ class _ProfileDialogState extends State<ProfileDialog> {
               return AlertDialog(
                 backgroundColor: AppColors.white,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(10),
                 ),
+                titlePadding: EdgeInsets.only(left: 20),
                 title: Row(
                   children: [
                     Text("Edit Profile", style: AppFonts.subheading),
@@ -207,10 +217,7 @@ class _ProfileDialogState extends State<ProfileDialog> {
                     ),
                   ],
                 ),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 10,
-                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                 content: BlocBuilder<GetFileIdBloc, GetFileIdState>(
                   builder: (context, state) {
                     if (state is GetFileIdLoading) {
@@ -220,106 +227,119 @@ class _ProfileDialogState extends State<ProfileDialog> {
                       );
                     }
 
-                    return SizedBox(
-                      width: 400,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: SizedBox(
-                                  height: 70,
-                                  child: CustomDottedBorderContainer(
-                                    color: AppColors.textPrimary,
-                                    strokeWidth: 1,
-                                    dashWidth: 3,
-                                    dashSpace: 3,
-                                    borderRadius: BorderRadius.circular(8),
-                                    padding: EdgeInsets.zero,
-                                    child: PickFileDialogueBox(
-                                      icon: Icons.file_upload_outlined,
-                                      label: "Upload Image",
-                                      onTap: () async {
-                                        final picker = ImagePickerService();
-                                        await picker.pickSingleImageFromGallery(
-                                          context,
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                height: 70,
+                                child: CustomDottedBorderContainer(
+                                  color: AppColors.textPrimary,
+                                  strokeWidth: 1,
+                                  dashWidth: 3,
+                                  dashSpace: 3,
+                                  borderRadius: BorderRadius.circular(8),
+                                  padding: EdgeInsets.zero,
+                                  child: PickFileDialogueBox(
+                                    icon: Icons.file_upload_outlined,
+                                    label: "Upload Image",
+                                    onTap: () async {
+                                      final picker = ImagePickerService();
+                                      await picker.pickSingleImageFromGallery(
+                                        context,
+                                      );
+
+                                      if (picker.fileList.isNotEmpty) {
+                                        final file = picker.fileList.first;
+
+                                        File compressedFile =
+                                            await FileCompressor.compressImage(
+                                              file,
+                                            );
+
+                                        final fileSize =
+                                            (await compressedFile.length())
+                                                .toString();
+                                        final fileName =
+                                            compressedFile.path.split('/').last;
+                                        final filePath = compressedFile.path;
+
+                                        context.read<GetFileIdBloc>().add(
+                                          GetFileIdEvent(
+                                            filePath: filePath,
+                                            caseID: "",
+                                            docTypeID: 9,
+                                            filename: fileName,
+                                            fileSize: fileSize,
+                                            saltKey: "",
+                                            context: context,
+                                          ),
                                         );
-
-                                        if (picker.fileList.isNotEmpty) {
-                                          final file = picker.fileList.first;
-                                          final fileSize =
-                                              (await file.length()).toString();
-                                          final fileName =
-                                              file.path.split('/').last;
-                                          final filePath = file.path;
-
-                                          context.read<GetFileIdBloc>().add(
-                                            GetFileIdEvent(
-                                              filePath: filePath,
-                                              caseID: "",
-                                              docTypeID: 9,
-                                              filename: fileName,
-                                              fileSize: fileSize,
-                                              saltKey: "",
-                                              context: context,
-                                            ),
-                                          );
-                                        }
-                                      },
-                                    ),
+                                      }
+                                    },
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: SizedBox(
-                                  height: 70,
-                                  child: CustomDottedBorderContainer(
-                                    color: AppColors.textPrimary,
-                                    strokeWidth: 1,
-                                    dashWidth: 3,
-                                    dashSpace: 3,
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: PickFileDialogueBox(
-                                      icon: Icons.camera_alt_outlined,
-                                      label: "Scan",
-                                      onTap: () async {
-                                        final picker = ImagePickerService();
-                                        await picker.picksingleImageFromCamera(
-                                          context,
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: SizedBox(
+                                height: 70,
+                                child: CustomDottedBorderContainer(
+                                  color: AppColors.textPrimary,
+                                  strokeWidth: 1,
+                                  dashWidth: 3,
+                                  dashSpace: 3,
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: PickFileDialogueBox(
+                                    icon: Icons.camera_alt_outlined,
+                                    label: "Scan",
+                                    onTap: () async {
+                                      final picker = ImagePickerService();
+                                      await picker.picksingleImageFromCamera(
+                                        context,
+                                      );
+
+                                      if (picker.fileList.isNotEmpty) {
+                                        final file = picker.fileList.first;
+
+                                        // Compress camera image
+                                        File compressedFile =
+                                            await FileCompressor.compressImage(
+                                              file,
+                                            );
+
+                                        final fileSize =
+                                            (await compressedFile.length())
+                                                .toString();
+                                        final fileName =
+                                            compressedFile.path.split('/').last;
+                                        final filePath = compressedFile.path;
+
+                                        context.read<GetFileIdBloc>().add(
+                                          GetFileIdEvent(
+                                            filePath: filePath,
+                                            caseID: "",
+                                            docTypeID: 9,
+                                            filename: fileName,
+                                            fileSize: fileSize,
+                                            saltKey: "",
+                                            context: context,
+                                          ),
                                         );
-
-                                        if (picker.fileList.isNotEmpty) {
-                                          final file = picker.fileList.first;
-                                          final fileSize =
-                                              (await file.length()).toString();
-                                          final fileName =
-                                              file.path.split('/').last;
-                                          final filePath = file.path;
-
-                                          context.read<GetFileIdBloc>().add(
-                                            GetFileIdEvent(
-                                              filePath: filePath,
-                                              caseID: "",
-                                              docTypeID: 9,
-                                              filename: fileName,
-                                              fileSize: fileSize,
-                                              saltKey: "",
-                                              context: context,
-                                            ),
-                                          );
-                                        }
-                                      },
-                                    ),
+                                      }
+                                    },
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
-                          const SizedBox(height: 15),
-                        ],
-                      ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 15),
+                      ],
                     );
                   },
                 ),

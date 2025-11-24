@@ -12,14 +12,24 @@ import 'package:ghorx_mobile_app_new/features/account/license/repo/bloc/license_
 import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/custom_profile_appbar.dart';
 
-class Licensescreen extends StatelessWidget {
+class Licensescreen extends StatefulWidget {
   const Licensescreen({super.key});
+
+  @override
+  State<Licensescreen> createState() => _LicensescreenState();
+}
+
+class _LicensescreenState extends State<Licensescreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<LicenseBloc>().add(FetchLicense());
+  }
 
   @override
   Widget build(BuildContext context) {
     final licenseBloc = context.read<LicenseBloc>();
     final deleteBloc = context.read<DeleteBloc>();
-    final listBloc = context.read<ListBloc>();
 
     return Scaffold(
       backgroundColor: AppColors.backgroundcolor,

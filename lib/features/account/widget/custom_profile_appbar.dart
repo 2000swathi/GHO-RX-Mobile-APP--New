@@ -21,16 +21,16 @@ class CustomAccountAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: AppColors.white,
-      elevation: 0,
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back, size: 24, color: AppColors.black),
-        onPressed: onBack ?? () => Navigator.pop(context),
-      ),
+      backgroundColor: Colors.white,
+        elevation: 1,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
 
       title: Text(
         title,
-        style: AppFonts.heading.copyWith(fontWeight: FontWeight.w500),
+        style: AppFonts.subheading16,
       ),
 
       actions: [
