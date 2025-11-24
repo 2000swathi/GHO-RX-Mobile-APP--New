@@ -11,7 +11,7 @@ import 'package:ghorx_mobile_app_new/features/account/bank_Info/repo/model/banki
 class AddEditBankInfoBottonSheet {
   static void showSheet(
     BuildContext context,
-    BankInfoResponseModel? info,
+    BankInfoModel? info,
     bool? isEdit, {
     required BankInfoBloc bankinfobloc,
   }) {
@@ -19,19 +19,19 @@ class AddEditBankInfoBottonSheet {
     final _formKey = GlobalKey<FormState>();
 
     final TextEditingController bankNameController = TextEditingController(
-      text: editing ? info.data[0].bankName : "",
+      text: editing ? info.bankName : "",
     );
     final TextEditingController bankTypeController = TextEditingController(
-      text: editing ? info.data[0].accountType : "",
+      text: editing ? info.accountType : "",
     );
     final TextEditingController routingNumberController = TextEditingController(
-      text: editing ? info.data[0].routingNumber : "",
+      text: editing ? info.routingNumber : "",
     );
     final TextEditingController accountNumberController = TextEditingController(
-      text: editing ? info.data[0].accountNumber : "",
+      text: editing ? info.accountNumber : "",
     );
     final TextEditingController accountNameController = TextEditingController(
-      text: editing ? info.data[0].accountHolderName : "",
+      text: editing ? info.accountHolderName : "",
     );
     CustomBottomSheet.show(
       context: context,
@@ -109,7 +109,7 @@ class AddEditBankInfoBottonSheet {
                       if (isEdit) {
                         context.read<BankInfoBloc>().add(
                           EditBankInfoEvent(
-                            id: info!.data[0].id.toString(),
+                            id: info!.id.toString(),
                             accountNumber: accountNameController.text.trim(),
                             accountType: bankTypeController.text.trim(),
                             holderName: accountNameController.text.trim(),

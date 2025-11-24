@@ -66,8 +66,9 @@ class _RecordaudioState extends State<Recordaudio> {
         setState(() => _seconds++);
       });
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Microphone permission not granted.')),
+      CustomScaffoldMessenger.showErrorMessage(
+        context,
+        "Microphone permission denied.",
       );
     }
   }
