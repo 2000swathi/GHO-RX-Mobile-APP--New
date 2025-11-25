@@ -24,6 +24,7 @@ class ProfileInfoRepo {
       ],
     };
 
+
     try {
       final response = await _dioHandler.post('', data: data);
 
@@ -31,8 +32,7 @@ class ProfileInfoRepo {
       if (dataList == null || dataList.isEmpty) {
         throw "Data is null or empty";
       }
-
-      final innerList = dataList[0];
+  final innerList = dataList[0];
       if (innerList == null || innerList.isEmpty) {
         throw "Inner data is null or empty";
       }

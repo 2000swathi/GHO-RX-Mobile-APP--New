@@ -92,7 +92,7 @@ class _MainPageState extends State<MainPage> {
         bottomNavigationBar: SafeArea(
           top: false,
           child: SizedBox(
-            height: 70 + MediaQuery.of(context).padding.bottom,
+            height: 65 + MediaQuery.of(context).padding.bottom,
             child: BottomNavigationBar(
               currentIndex: _currentIndex,
               backgroundColor: AppColors.primarycolor,
