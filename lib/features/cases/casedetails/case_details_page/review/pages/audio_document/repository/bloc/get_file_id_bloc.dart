@@ -155,7 +155,7 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
           emit(SuccessAPI(filePath: event.filePath));
           CustomScaffoldMessenger.showSuccessMessage(
             event.context,
-            "File upload successfully",
+            "File uploaded successfully",
           );
         } else {
           emit(
