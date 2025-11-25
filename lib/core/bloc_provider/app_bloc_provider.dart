@@ -8,6 +8,8 @@ import 'package:ghorx_mobile_app_new/features/account/deleteBloc/bloc/delete_blo
 import 'package:ghorx_mobile_app_new/features/account/deleteBloc/repository/delete_repository.dart';
 import 'package:ghorx_mobile_app_new/features/account/documents/repo/bloc/doctfile_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/documents/repo/doct_file_repo.dart';
+import 'package:ghorx_mobile_app_new/features/account/drawer/change_password/repo/bloc/change_password_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/drawer/change_password/repo/changePasswordrepo.dart';
 import 'package:ghorx_mobile_app_new/features/account/education/repo/bloc/education_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/education/repo/education_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/insurance/repo/bloc/insurance_bloc.dart';
@@ -187,6 +189,9 @@ class AppBlocProvider extends StatelessWidget {
         ),
         BlocProvider<ProfessionalrefBloc>(
           create: (_) => ProfessionalrefBloc(repository: ProfessionalrefRepo()),
+        ),
+        BlocProvider<ChangePasswordBloc>(
+          create: (_) => ChangePasswordBloc(repository: Changepasswordrepo()),
         ),
       ],
       child: child,

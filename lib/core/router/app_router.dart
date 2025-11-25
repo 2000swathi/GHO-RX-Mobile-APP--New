@@ -124,14 +124,7 @@ class AppRouter {
 
       //profile
       case changePW:
-        return MaterialPageRoute(
-          builder:
-              (_) => BlocProvider(
-                create:
-                    (_) => ChangePasswordBloc(repository: Changepasswordrepo()),
-                child: ChangePassword(),
-              ),
-        );
+        return MaterialPageRoute(builder: (_) => ChangePassword());
 
       case logout:
         return MaterialPageRoute(builder: (_) => LogoutScrn());
