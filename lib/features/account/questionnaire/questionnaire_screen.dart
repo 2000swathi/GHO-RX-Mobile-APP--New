@@ -89,7 +89,6 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                           child: QuestionCard(
                             questionText: q["Question"] ?? "",
                             questionId: q["ID"].toString(),
-                            index: index + 1,
                           ),
                         );
                       },

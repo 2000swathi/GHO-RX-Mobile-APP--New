@@ -22,6 +22,8 @@ import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/bloc/pr
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/profile_info_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/profile_pic_repo.dart';
+import 'package:ghorx_mobile_app_new/features/account/questionnaire/repo/bloc/questions_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/questionnaire/repo/ques_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/specialty/repo/bloc/specialty_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/specialty/repo/specialty_repo.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/bloc/auth_bloc.dart';
@@ -68,7 +70,6 @@ class AppBlocProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-
         BlocProvider<SplashBloc>(
           create: (_) => SplashBloc()..add(SplashStarted()),
         ),
@@ -183,6 +184,10 @@ class AppBlocProvider extends StatelessWidget {
 
         BlocProvider<DoctfileBloc>(
           create: (_) => DoctfileBloc(repository: DoctFileRepo()),
+        ),
+
+        BlocProvider<QuestionsBloc>(
+          create: (_) => QuestionsBloc(repository: QuestionnaireRepo()),
         ),
       ],
       child: child,

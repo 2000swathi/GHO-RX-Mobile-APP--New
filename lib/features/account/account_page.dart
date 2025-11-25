@@ -54,7 +54,7 @@ class _AccountPageState extends State<AccountPage> {
       routeName: AppRouter.professionalreferences,
     ),
     _DrawerItem(
-      title: "Licenses",
+      title: "Professional License",
       imagePath: "assets/svg/account/agreement.png",
       routeName: AppRouter.licensescreen,
     ),
@@ -64,7 +64,7 @@ class _AccountPageState extends State<AccountPage> {
       routeName: AppRouter.profesindInsurance,
     ),
     _DrawerItem(
-      title: "Documents",
+      title: "Documents / Uploads",
       imagePath: "assets/svg/account/folders.png",
       routeName: AppRouter.documents,
     ),

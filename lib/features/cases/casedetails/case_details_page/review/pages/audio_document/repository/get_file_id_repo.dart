@@ -165,7 +165,6 @@ class GetFileIDReo {
   }
 
   //delete
-
   Future<Map<String, dynamic>> deleteFile(
     String saltID,
     int docTypeID,
