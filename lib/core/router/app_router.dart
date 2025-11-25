@@ -17,10 +17,10 @@ import 'package:ghorx_mobile_app_new/features/account/insurance/insurance.dart';
 import 'package:ghorx_mobile_app_new/features/account/professional%20references/professional_references.dart';
 import 'package:ghorx_mobile_app_new/features/account/questionnaire/questionnaire_screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/specialty/specialty_screen.dart';
+import 'package:ghorx_mobile_app_new/features/authentication/forgot_password/forgot_email.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/otp_screen.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/repository/model/login_model.dart';
 import 'package:ghorx_mobile_app_new/features/authentication/add_page.dart';
-import 'package:ghorx_mobile_app_new/features/authentication/reset_password.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/casedetails.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/cases_page.dart';
 import 'package:ghorx_mobile_app_new/features/send%20mail/send_message.dart';
@@ -36,7 +36,6 @@ class AppRouter {
   static const String personalinformation = '/personalinformation';
   static const String accreditation = '/accreditation';
   static const String otp = '/otp';
-  static const String reset = '/reset';
   static const String addPage = '/addPage';
   static const String mainPage = '/mainpage';
   static const String personalInfo = '/personalInfo';
@@ -57,6 +56,7 @@ class AppRouter {
   static const String questionnaire = '/questionnaire';
   static const String specialty = '/specialty';
   static const String bankInfo = '/bankInfo';
+  static const String forgotEmail = '/forgotEmail';
 
   //profile
   //drawer
@@ -80,8 +80,6 @@ class AppRouter {
         );
       case addPage:
         return MaterialPageRoute(builder: (_) => AddPage());
-      case reset:
-        return MaterialPageRoute(builder: (_) => ResetPassword());
       case mainPage:
         return MaterialPageRoute(builder: (_) => MainPage());
       case casepage:
@@ -145,6 +143,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => Aboutscrn());
       case bankInfo:
         return MaterialPageRoute(builder: (_) => Bankinfoscrn());
+      case forgotEmail:
+        return MaterialPageRoute(builder: (_) => ForgotEmailScreen());
       default:
         return MaterialPageRoute(
           builder:

@@ -106,7 +106,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             children: [
                               Spacer(),
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.pushNamed(context, '/forgotEmail');
+                                },
                                 child: Text(
                                   "Forget Password?",
                                   style: AppFonts.labelItalic,
