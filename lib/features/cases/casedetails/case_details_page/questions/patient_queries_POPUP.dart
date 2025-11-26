@@ -11,11 +11,7 @@ class QuestionansSheet {
     QuestionAnswerModel qAndA,
     String saltID,
   ) {
-    print(qAndA.id.toString());
-    print(qAndA.question.toString());
-    print(qAndA.answer.toString());
-    print(qAndA.support.toString());
-    print(saltID.toString());
+
     CustomQuerySheet.showsheet(
       context: context,
       heading: "Patient Queries",

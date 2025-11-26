@@ -152,9 +152,6 @@ class _LanguageScreenState extends State<LanguageScreen> {
     );
   }
 
-  /// ------------------------------------------------------------
-  /// LANGUAGE ITEM → IMMEDIATE API CALL ON SELECT / UNSELECT
-  /// ------------------------------------------------------------
   Widget languageItem(String name, int id, bool isSelected) {
     return InkWell(
       onTap: () {

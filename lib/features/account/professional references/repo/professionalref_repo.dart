@@ -27,7 +27,6 @@ class ProfessionalrefRepo {
 
     try {
       final response = await _dioHandler.post('', data: data);
-      print(response);
       return ProfessionalerefModel.fromJson(response);
     } catch (e) {
       throw (e.toString());
@@ -102,7 +101,6 @@ class ProfessionalrefRepo {
 
     try {
       final response = await _dioHandler.post('', data: data);
-      print(response);
       return response;
     } catch (e) {
       throw (e.toString());

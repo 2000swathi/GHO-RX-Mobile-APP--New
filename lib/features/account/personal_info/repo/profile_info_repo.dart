@@ -47,7 +47,6 @@ class ProfileInfoRepo {
       if (info.email.isNotEmpty) {
         await SharedPreference.setEmail(info.email);
       } else {
-        print("Email is null or empty — not saving to SharedPreferences");
       }
 
       return info;
