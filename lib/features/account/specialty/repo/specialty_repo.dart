@@ -59,7 +59,6 @@ class SpecialtyRepo {
     };
     try {
       final response = await _dioHandler.post('', data: data);
-      print(response);
       return response;
     } catch (e) {
       throw Exception("Failed to add specialty: $e");

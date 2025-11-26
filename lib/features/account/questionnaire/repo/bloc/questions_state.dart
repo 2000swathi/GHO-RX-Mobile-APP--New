@@ -1,10 +1,44 @@
 part of 'questions_bloc.dart';
 
-sealed class QuestionsState extends Equatable {
-  const QuestionsState();
-  
+abstract class QuestionsState extends Equatable {
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
-final class QuestionsInitial extends QuestionsState {}
+class QuestionsInitial extends QuestionsState {}
+
+class QuestionsLoading extends QuestionsState {
+  final String questionId;
+  QuestionsLoading(this.questionId);
+
+  @override
+  List<Object?> get props => [questionId];
+}
+
+class QuestionsLoaded extends QuestionsState {
+  final String message;
+  final String questionId;
+
+  QuestionsLoaded({required this.message, required this.questionId});
+
+  @override
+  List<Object?> get props => [message, questionId];
+}
+
+class Questionsgetting extends QuestionsState {
+  final Map<String, dynamic> response;
+  Questionsgetting(this.response);
+
+  @override
+  List<Object?> get props => [response];
+}
+
+class QuestionsError extends QuestionsState {
+  final String message;
+  final String questionId;
+
+  QuestionsError({required this.message, required this.questionId});
+
+  @override
+  List<Object?> get props => [message, questionId];
+}

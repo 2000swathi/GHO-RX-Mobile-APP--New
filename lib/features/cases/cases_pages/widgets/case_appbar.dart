@@ -127,7 +127,7 @@ class CaseAppBar extends StatelessWidget implements PreferredSizeWidget {
                 InkWell(
                   onTap: () async {
                     String? email = await SharedPreference.getEmail();
-                    print(email);
+                 
 
                     showDialog(
                       context: context,

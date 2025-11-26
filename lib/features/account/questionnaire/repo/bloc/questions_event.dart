@@ -1,8 +1,20 @@
 part of 'questions_bloc.dart';
 
-sealed class QuestionsEvent extends Equatable {
-  const QuestionsEvent();
+abstract class QuestionsEvent {}
+
+class CheckQuestionsEvent extends QuestionsEvent {
+  final String qID;
+  final bool answer;
+  final String comments;
+
+  CheckQuestionsEvent({
+    required this.qID,
+    required this.answer,
+    required this.comments,
+  });
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [qID, answer, comments];
 }
+
+class FetchQuestionsEvent extends QuestionsEvent {}

@@ -31,7 +31,6 @@ class InsuranceBloc extends Bloc<InsuranceEvent, InsuranceState> {
     AddInsurance event,
     Emitter<InsuranceState> emit,
   ) async {
-    print("add insurance");
     emit(InsuranceAddLoading());
 
     try {

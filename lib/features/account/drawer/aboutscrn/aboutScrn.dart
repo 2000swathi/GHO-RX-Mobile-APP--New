@@ -122,9 +122,9 @@ class _AboutscrnState extends State<Aboutscrn> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: AppFonts.subheading16),
+        Text(label, style: AppFonts.subtext),
         const SizedBox(height: 4),
-        Text(value, style: AppFonts.subtext),
+        Text(value, style: AppFonts.subheading16),
       ],
     );
   }

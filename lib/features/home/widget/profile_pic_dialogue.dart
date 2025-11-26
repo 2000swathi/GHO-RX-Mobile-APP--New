@@ -189,6 +189,7 @@ class _ProfileDialogState extends State<ProfileDialog> {
               await CachedNetworkImage.evictFromCache(widget.url);
 
               context.read<PicBloc>().add(FetchPicEvent());
+              context.read<ProfileInfoBloc>().add(FetchPersonalInfo());
 
               Navigator.pop(context);
             } else if (state is GetFileIdFailure) {

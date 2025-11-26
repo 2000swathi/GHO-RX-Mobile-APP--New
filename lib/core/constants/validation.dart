@@ -377,4 +377,65 @@ class Validation {
 
     return null;
   }
+
+  //from month year
+  static String? validateFromMonthYear(String? month, String? year) {
+  if (month == null || month.isEmpty) return "Please select from month";
+  if (year == null || year.isEmpty) return "Please select from year";
+
+  try {
+    final m = int.parse(month);
+    final y = int.parse(year);
+
+    final from = DateTime(y, m);
+    final now = DateTime.now();
+    final current = DateTime(now.year, now.month);
+
+    if (from.isAfter(current)) return "From date cannot be in future";
+  } catch (e) {
+    return "Invalid month/year";
+  }
+
+  return null;
+}
+
+static String? validateToMonthYear(
+  String? fromMonth,
+  String? fromYear,
+  String? toMonth,
+  String? toYear,
+) {
+  if (toMonth == null || toMonth.isEmpty) return "Please select to month";
+  if (toYear == null || toYear.isEmpty) return "Please select to year";
+
+  try {
+    final fm = int.parse(fromMonth ?? "0");
+    final fy = int.parse(fromYear ?? "0");
+    final tm = int.parse(toMonth);
+    final ty = int.parse(toYear);
+
+    final from = DateTime(fy, fm);
+    final to = DateTime(ty, tm);
+
+    final now = DateTime.now();
+    final current = DateTime(now.year, now.month);
+
+    if (to.isAfter(current)) return "To date cannot be in future";
+    if (to.isBefore(from) || to.isAtSameMomentAs(from)) {
+      return "To date must be after from date";
+    }
+  } catch (e) {
+    return "Invalid month/year";
+  }
+
+  return null;
+}
+
+
+  static DateTime _parseMonthYear(String value) {
+    final parts = value.split('-');
+    final month = int.parse(parts[0]);
+    final year = int.parse(parts[1]);
+    return DateTime(year, month);
+  }
 }
