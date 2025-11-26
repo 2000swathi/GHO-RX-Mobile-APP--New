@@ -8,6 +8,8 @@ import 'package:ghorx_mobile_app_new/features/account/deleteBloc/bloc/delete_blo
 import 'package:ghorx_mobile_app_new/features/account/deleteBloc/repository/delete_repository.dart';
 import 'package:ghorx_mobile_app_new/features/account/documents/repo/bloc/doctfile_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/documents/repo/doct_file_repo.dart';
+import 'package:ghorx_mobile_app_new/features/account/drawer/change_password/repo/bloc/change_password_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/drawer/change_password/repo/changePasswordrepo.dart';
 import 'package:ghorx_mobile_app_new/features/account/education/repo/bloc/education_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/education/repo/education_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/insurance/repo/bloc/insurance_bloc.dart';
@@ -22,6 +24,8 @@ import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/bloc/pr
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/profile_info_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/profile_pic_repo.dart';
+import 'package:ghorx_mobile_app_new/features/account/professional%20references/repo/bloc/professionalref_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/professional%20references/repo/professionalref_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/questionnaire/repo/bloc/questions_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/questionnaire/repo/ques_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/specialty/repo/bloc/specialty_bloc.dart';
@@ -184,6 +188,12 @@ class AppBlocProvider extends StatelessWidget {
 
         BlocProvider<DoctfileBloc>(
           create: (_) => DoctfileBloc(repository: DoctFileRepo()),
+        ),
+        BlocProvider<ProfessionalrefBloc>(
+          create: (_) => ProfessionalrefBloc(repository: ProfessionalrefRepo()),
+        ),
+        BlocProvider<ChangePasswordBloc>(
+          create: (_) => ChangePasswordBloc(repository: Changepasswordrepo()),
         ),
 
         BlocProvider<QuestionsBloc>(
