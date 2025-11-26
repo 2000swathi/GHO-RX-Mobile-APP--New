@@ -19,13 +19,13 @@ class ReportListWidget extends StatelessWidget {
   final String? saltID;
 
   const ReportListWidget({
-    Key? key,
+    super.key,
     required this.fileList,
     required this.itemCount,
     this.isDrUploaded = false,
     this.caseID,
     this.saltID,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

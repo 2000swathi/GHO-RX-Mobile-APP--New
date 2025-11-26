@@ -17,7 +17,7 @@ class AudioSummaryListWidget extends StatefulWidget {
   final String? caseID;
   final String? saltID;
 
-  AudioSummaryListWidget({
+  const AudioSummaryListWidget({
     super.key,
     required this.audioList,
     this.isDrUploaded = false,

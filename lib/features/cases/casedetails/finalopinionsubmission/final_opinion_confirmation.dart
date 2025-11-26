@@ -116,7 +116,7 @@ class _FinalOpinionConfirmationState extends State<FinalOpinionConfirmation> {
                   if (finalState is FinalSubmissionSuccess) {
                     CustomScaffoldMessenger.showSuccessMessage(
                       context,
-                      "${finalState.message}",
+                      finalState.message,
                     );
                     await Future.delayed(const Duration(seconds: 1));
 
@@ -128,7 +128,7 @@ class _FinalOpinionConfirmationState extends State<FinalOpinionConfirmation> {
                   if (finalState is FinalSubmissionFailed) {
                     CustomScaffoldMessenger.showErrorMessage(
                       context,
-                      "${finalState.error}",
+                      finalState.error,
                     );
                   }
                 },
@@ -194,7 +194,7 @@ class _FinalOpinionConfirmationState extends State<FinalOpinionConfirmation> {
                             ),
                             SizedBox(width: 4),
                             Text(
-                              "${caseDetails.caseInfo!.dueDate.toString()}",
+                              caseDetails.caseInfo!.dueDate.toString(),
                               style: AppFonts.textSecondary.copyWith(
                                 fontSize: 16,
                                 color: AppColors.red,
