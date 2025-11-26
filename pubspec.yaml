@@ -65,6 +65,7 @@ dependencies:
   package_info_plus: ^8.3.1
   image: ^4.5.4
   android_intent_plus: ^6.0.0
+  flutter_lints: ^6.0.0
 
 
 dev_dependencies:
@@ -137,5 +138,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
-dependency_overrides:
-  vector_math: ^2.2.0
+# dependency_overrides:
+#   vector_math: ^2.2.0

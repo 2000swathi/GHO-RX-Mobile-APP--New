@@ -1,5 +1,5 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/questionnaire/repo/ques_repo.dart';
 
 part 'questions_event.dart';
@@ -9,11 +9,12 @@ class QuestionsBloc extends Bloc<QuestionsEvent, QuestionsState> {
   final QuestionnaireRepo repository;
 
   QuestionsBloc({required this.repository}) : super(QuestionsInitial()) {
-    on<FetchQuestionsEvent>(_onFetchQuestions);
+    on<CheckQuestionsEvent>(_onFetchQuestions);
+    on<FetchQuestionsEvent>(_onLoadQuestions);
   }
 
   Future<void> _onFetchQuestions(
-    FetchQuestionsEvent event,
+    CheckQuestionsEvent event,
     Emitter<QuestionsState> emit,
   ) async {
     emit(QuestionsLoading(event.qID));
@@ -33,6 +34,20 @@ class QuestionsBloc extends Bloc<QuestionsEvent, QuestionsState> {
       );
     } catch (e) {
       emit(QuestionsError(message: e.toString(), questionId: event.qID));
+    }
+  }
+
+  Future<void> _onLoadQuestions(
+    FetchQuestionsEvent event,
+    Emitter<QuestionsState> emit,
+  ) async {
+    emit(QuestionsLoading(""));
+
+    try {
+      final response = await repository.fetchQuestionnaire();
+      emit(Questionsgetting(response));
+    } catch (e) {
+      emit(QuestionsError(message: e.toString(), questionId: ""));
     }
   }
 }

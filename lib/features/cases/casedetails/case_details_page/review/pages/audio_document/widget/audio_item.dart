@@ -90,7 +90,7 @@ class _AudioItemState extends State<AudioItem> {
     setState(() => _isUploading = true);
 
     try {
-      debugPrint("Submitting file: ${widget.filePath}");
+    
 
       context.read<GetFileIdBloc>().add(
         GetFileIdEvent(

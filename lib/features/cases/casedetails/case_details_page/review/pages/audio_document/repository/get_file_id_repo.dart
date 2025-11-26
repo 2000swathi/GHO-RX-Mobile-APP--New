@@ -68,11 +68,11 @@ class GetFileIDReo {
         var data = jsonDecode(response.body);
         return {"UploadUrl": data['Url']};
       } else {
-        debugPrint("❌ Failed to get upload URL: ${response.body}");
+      
         return null;
       }
     } catch (e) {
-      debugPrint("❌ Exception in getUploadUrl: $e");
+     
       return null;
     }
   }

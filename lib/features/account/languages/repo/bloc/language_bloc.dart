@@ -1,5 +1,5 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/languages/repo/language_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/languages/repo/model/language_model.dart';
 
