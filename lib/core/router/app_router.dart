@@ -8,6 +8,7 @@ import 'package:ghorx_mobile_app_new/features/account/drawer/change_password/rep
 import 'package:ghorx_mobile_app_new/features/account/drawer/change_password/repo/changePasswordrepo.dart';
 import 'package:ghorx_mobile_app_new/features/account/drawer/help/help.dart';
 import 'package:ghorx_mobile_app_new/features/account/education/education_screen.dart';
+import 'package:ghorx_mobile_app_new/features/account/experience/experience_screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/languages/language_screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/drawer/change_password/change_password.dart';
 import 'package:ghorx_mobile_app_new/features/account/drawer/logout/logout_scrn.dart';
@@ -57,6 +58,7 @@ class AppRouter {
   static const String specialty = '/specialty';
   static const String bankInfo = '/bankInfo';
   static const String forgotEmail = '/forgotEmail';
+  static const String experience = '/experience';
 
   //profile
   //drawer
@@ -138,6 +140,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => Bankinfoscrn());
       case forgotEmail:
         return MaterialPageRoute(builder: (_) => ForgotEmailScreen());
+      case experience:
+        return MaterialPageRoute(builder: (_) => ProfessionalExperienceScreen());
       default:
         return MaterialPageRoute(
           builder:

@@ -12,6 +12,8 @@ import 'package:ghorx_mobile_app_new/features/account/drawer/change_password/rep
 import 'package:ghorx_mobile_app_new/features/account/drawer/change_password/repo/changePasswordrepo.dart';
 import 'package:ghorx_mobile_app_new/features/account/education/repo/bloc/education_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/education/repo/education_repo.dart';
+import 'package:ghorx_mobile_app_new/features/account/experience/repo/bloc/professinal_experince_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/experience/repo/experience_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/insurance/repo/bloc/insurance_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/insurance/repo/insurance_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/languages/repo/bloc/language_bloc.dart';
@@ -189,6 +191,9 @@ class AppBlocProvider extends StatelessWidget {
         BlocProvider<DoctfileBloc>(
           create: (_) => DoctfileBloc(repository: DoctFileRepo()),
         ),
+        BlocProvider<ProfessinalExperinceBloc>(
+          create: (_) => ProfessinalExperinceBloc(repository: ProfessionalExperienceRepo()),
+        )
         BlocProvider<ProfessionalrefBloc>(
           create: (_) => ProfessionalrefBloc(repository: ProfessionalrefRepo()),
         ),
