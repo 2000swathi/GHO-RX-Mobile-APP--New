@@ -16,6 +16,7 @@ class ChangePasswordBloc
         final response = await repository.ChangePassword(
           currentPassword: event.currentPw,
           newPassword: event.newPw,
+          confirmPassword: event.confirmPw,
         );
         if (response["Status"] == 1) {
           final message =
@@ -24,8 +25,9 @@ class ChangePasswordBloc
           emit(CPSuccess(message: message));
         } else {
           final error =
-              response["Error"]?.toString() ?? "Failed to update Password";
-
+              response["Error"]?.toString().isNotEmpty == true
+                  ? response["Error"].toString()
+                  : response["Info"]?.toString() ?? "Failed to update password";
           emit(CPError(message: error));
         }
       } catch (e) {

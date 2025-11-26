@@ -92,8 +92,8 @@ class _AccreditationScreenState extends State<AccreditationScreen> {
               }
               if (state is AccreditationgetState) {
                 final info = state.accreditationModel.data;
-                if (info.isEmpty ) {
-                return  Center(child: Text("No Accreditation Added"));
+                if (info.isEmpty) {
+                  return Center(child: Text("No Accreditation Added"));
                 }
                 return ListView.builder(
                   itemCount: info.length,

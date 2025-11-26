@@ -41,7 +41,7 @@ class Delacc extends StatelessWidget {
           btnTxt1: "cancel",
           btnbg1: AppColors.cards1,
           btnTextClr: AppColors.textPrimary,
-          btnTxt2: "Delete Account",
+          btnTxt2: "Delete",
           btnbg2: AppColors.red,
           btn2pressed: () {
             Navigator.pop(context);
