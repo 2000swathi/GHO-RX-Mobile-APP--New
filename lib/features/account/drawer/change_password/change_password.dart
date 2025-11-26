@@ -44,7 +44,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
           CustomSnackbar.show(context, message, true);
 
-          Navigator.pushNamed(context, '/login', arguments: state.message);
+          Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
         } else if (state is CPError) {
           CustomSnackbar.show(context, state.message, false);
         }
