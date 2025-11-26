@@ -193,7 +193,7 @@ class AppBlocProvider extends StatelessWidget {
         ),
         BlocProvider<ProfessinalExperinceBloc>(
           create: (_) => ProfessinalExperinceBloc(repository: ProfessionalExperienceRepo()),
-        )
+        ),
         BlocProvider<ProfessionalrefBloc>(
           create: (_) => ProfessionalrefBloc(repository: ProfessionalrefRepo()),
         ),
