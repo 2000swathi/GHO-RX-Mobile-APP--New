@@ -9,6 +9,7 @@ class GetFileIdEvent extends GetEvent {
   final String filename;
   final String fileSize;
   final String filePath;
+  final String saltKey;
   final BuildContext context;
 
   GetFileIdEvent({
@@ -17,6 +18,7 @@ class GetFileIdEvent extends GetEvent {
     required this.filename,
     required this.fileSize,
     required this.filePath,
+    required this.saltKey,
     required this.context,
   });
 }
@@ -29,6 +31,7 @@ class GetUploadUrlEvent extends GetEvent {
   final String filePath;
   final String caseID;
   final String fileUploadedID;
+  final String saltKey;
   final int docTypeID;
 
   GetUploadUrlEvent({
@@ -38,8 +41,8 @@ class GetUploadUrlEvent extends GetEvent {
     required this.filePath,
     required this.caseID,
     required this.fileUploadedID,
+    required this.saltKey,
     required this.docTypeID,
-
   });
 }
 
@@ -50,8 +53,8 @@ class UploadFileToS3Event extends GetEvent {
   final String filePath;
   final String caseID;
   final int docTypeID;
+  final String saltKey;
   final String fileUploadedID;
- 
 
   UploadFileToS3Event({
     required this.context,
@@ -59,32 +62,34 @@ class UploadFileToS3Event extends GetEvent {
     required this.filePath,
     required this.caseID,
     required this.docTypeID,
-    required this.fileUploadedID
+    required this.saltKey,
+    required this.fileUploadedID,
   });
 }
 
 class DeleteFileEvent extends GetEvent {
-   final BuildContext context;
-  final String caseID;
+  final BuildContext context;
+  final String saltID;
   final int docTypeId;
   final int fileUploadedID;
   final String filePath;
-  
 
   DeleteFileEvent({
-    required this.caseID,
+    required this.saltID,
     required this.docTypeId,
     required this.fileUploadedID,
     required this.filePath,
-    required this.context
+    required this.context,
   });
 }
+
 class SuccessApiEvent extends GetEvent {
   final String caseID;
   final int docTypeID;
   final String fileUploadedID;
   final String status;
   final String filePath;
+   final String saltKey;
   final BuildContext context;
 
   SuccessApiEvent({
@@ -93,6 +98,7 @@ class SuccessApiEvent extends GetEvent {
     required this.fileUploadedID,
     required this.status,
     required this.filePath,
+      required this.saltKey,
     required this.context,
   });
 }

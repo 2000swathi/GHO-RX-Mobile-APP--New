@@ -6,6 +6,8 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/bloc/case_details_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/bloc/case_details_event.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/summary/repository/bloc/summary_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/summary/repository/bloc/summary_event.dart';
 
@@ -44,6 +46,12 @@ class _WrittenreportState extends State<Writtenreport> {
           CustomScaffoldMessenger.showSuccessMessage(
             context,
             state.response["Data"][0][0]["msg"],
+          );
+          context.read<CaseDetailsBloc>().add(
+            CaseDetailsEventRequested(
+              saltID: widget.saltID.toString(),
+              silent: true,
+            ),
           );
         } else if (state is SummaryFailure) {
           CustomScaffoldMessenger.showErrorMessage(context, state.message);
@@ -89,11 +97,11 @@ class _WrittenreportState extends State<Writtenreport> {
                         isLoading: isLoading,
                         onPressed: () {
                           context.read<SummaryBloc>().add(
-                                summarycaseEvent(
-                                  saltID: widget.saltID,
-                                  summary: summaryController.text.trim(),
-                                ),
-                              );
+                            summarycaseEvent(
+                              saltID: widget.saltID,
+                              summary: summaryController.text.trim(),
+                            ),
+                          );
                         },
                       ),
                     );

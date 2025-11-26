@@ -13,7 +13,6 @@ import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_pag
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/bloc/case_details_event.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/attestation/bloc/attest_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/attestation/bloc/attest_event.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/repository/bloc/final_submission_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/widget/common_qa.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/repository/model/closed_case_model.dart';
 import 'package:ghorx_mobile_app_new/utilities/size_config.dart';
@@ -40,8 +39,6 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
     );
     context.read<AttestBloc>().add(AttestListEvent(saltID: widget.saltID));
   }
-
-  List<bool> _attestationChecks = [];
 
   @override
   Widget build(BuildContext context) {
@@ -191,7 +188,9 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                                       children: [
                                         Text(
                                           medications.name,
-                                          style: AppFonts.buttontxt.copyWith(color: AppColors.textPrimary),
+                                          style: AppFonts.buttontxt.copyWith(
+                                            color: AppColors.textPrimary,
+                                          ),
                                         ),
                                         Spacer(),
                                         Text(

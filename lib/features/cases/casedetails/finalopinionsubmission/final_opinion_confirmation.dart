@@ -5,7 +5,7 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessan
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/attestation/widget/checkbox_declaration.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_container.dart';
-import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart'; // ✅ added this
+import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart'; 
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/claiment/widget/audio_summary_list_widget.dart';
@@ -40,9 +40,11 @@ class _FinalOpinionConfirmationState extends State<FinalOpinionConfirmation> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     context.read<CaseDetailsBloc>().add(
-      CaseDetailsEventRequested(saltID: widget.saltID),
+      CaseDetailsEventRequested(saltID: widget.saltID, silent: true),
     );
-    context.read<AttestBloc>().add(AttestListEvent(saltID: widget.saltID));
+    context.read<AttestBloc>().add(
+      AttestListEvent(saltID: widget.saltID, silent: true),
+    );
   }
 
   List<bool> _attestationChecks = [];
@@ -266,27 +268,31 @@ class _FinalOpinionConfirmationState extends State<FinalOpinionConfirmation> {
                                       ]
                                       : [],
                             ),
-                        SizedBox(height: 16.h),
-                        CustomContainer(
-                          greyHeading: "Q&A",
+                        caseDetails.questions!.isEmpty
+                            ? SizedBox()
+                            : SizedBox(height: 16.h),
+                        caseDetails.questions!.isEmpty
+                            ? SizedBox()
+                            : CustomContainer(
+                              greyHeading: "Q&A",
 
-                          customWidgets1: [
-                            SizedBox(height: 10),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: caseDetails.questions!.length,
-                              itemBuilder: (context, index) {
-                                var qaList = caseDetails.questions![index];
-                                return CommonQa(
-                                  question: qaList.question,
-                                  ans: qaList.answer.toString(),
-                                  support: qaList.support.toString(),
-                                );
-                              },
+                              customWidgets1: [
+                                SizedBox(height: 10),
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: caseDetails.questions!.length,
+                                  itemBuilder: (context, index) {
+                                    var qaList = caseDetails.questions![index];
+                                    return CommonQa(
+                                      question: qaList.question,
+                                      ans: qaList.answer.toString(),
+                                      support: qaList.support.toString(),
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
                         SizedBox(height: 16.h),
                         BlocBuilder<AttestBloc, AttestState>(
                           builder: (context, attestState) {

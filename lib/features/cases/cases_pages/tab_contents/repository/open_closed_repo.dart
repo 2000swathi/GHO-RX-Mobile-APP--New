@@ -31,8 +31,9 @@ class OpenClosedRepository {
       throw Exception("Failed to fetch Open cases: $e");
     }
   }
+
   //closedcases
-    Future<List<ClosedCaseModel>> fetchClosedCases() async {
+  Future<List<ClosedCaseModel>> fetchClosedCases() async {
     final token = await SharedPreference.getToken();
     final reviewerId = await SharedPreference.getUserId();
     if (token!.isEmpty || reviewerId!.isEmpty) {

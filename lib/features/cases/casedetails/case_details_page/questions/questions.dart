@@ -14,7 +14,12 @@ class QuestionTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final questionAns = questionAnswer ?? [];
     if (questionAns.isEmpty) {
-      return Center(child: Text("No Questions Added"));
+      return Column(
+        children: [
+          SizedBox(height: 200),
+          Center(child: Text("No Questions Added")),
+        ],
+      );
     }
     return Container(
       margin: EdgeInsets.all(1.0),
@@ -50,7 +55,7 @@ class QuestionTab extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                  
+
                     children: [
                       GestureDetector(
                         onTap: () {
@@ -86,7 +91,7 @@ class QuestionTab extends StatelessWidget {
                                       "Not Submitted",
                                       style: AppFonts.labelItalic.copyWith(
                                         color: AppColors.warningred,
-                                        fontSize: 14
+                                        fontSize: 14,
                                       ),
                                     ),
                                   ],

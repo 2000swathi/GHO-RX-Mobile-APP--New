@@ -16,6 +16,7 @@ class AudioItem extends StatefulWidget {
   final String filePath;
   final String fileSize;
   final String caseID;
+  final String saltKey;
   final VoidCallback onDelete;
 
   const AudioItem({
@@ -25,6 +26,7 @@ class AudioItem extends StatefulWidget {
     required this.filePath,
     required this.fileSize,
     required this.caseID,
+    required this.saltKey,
     required this.onDelete,
   });
 
@@ -35,7 +37,7 @@ class AudioItem extends StatefulWidget {
 class _AudioItemState extends State<AudioItem> {
   final AudioPlayer _player = AudioPlayer();
   bool _isPlaying = false;
-  bool _isUploading = false; 
+  bool _isUploading = false;
   Duration _position = Duration.zero;
 
   late final StreamSubscription<Duration> _positionSub;
@@ -97,6 +99,7 @@ class _AudioItemState extends State<AudioItem> {
           docTypeID: 6,
           filename: widget.fileName,
           fileSize: widget.fileSize,
+          saltKey: widget.saltKey,
           context: context,
         ),
       );
@@ -132,10 +135,10 @@ class _AudioItemState extends State<AudioItem> {
         if (state is SuccessAPI && state.filePath == widget.filePath) {
           setState(() => _isUploading = false);
           widget.onDelete();
-        } else if (state is GetFileIdFailure && state.filePath == widget.filePath) {
+        } else if (state is GetFileIdFailure &&
+            state.filePath == widget.filePath) {
           setState(() => _isUploading = false);
-          CustomScaffoldMessenger.showErrorMessage(
-              context, "Failed to upload ${widget.fileName}");
+          CustomScaffoldMessenger.showErrorMessage(context, state.message);
         }
       },
       child: Container(
@@ -170,9 +173,10 @@ class _AudioItemState extends State<AudioItem> {
                       ),
                       Slider(
                         padding: EdgeInsets.zero,
-                        value: _position.inSeconds
-                            .toDouble()
-                            .clamp(0, widget.duration.inSeconds.toDouble()),
+                        value: _position.inSeconds.toDouble().clamp(
+                          0,
+                          widget.duration.inSeconds.toDouble(),
+                        ),
                         max: widget.duration.inSeconds.toDouble(),
                         onChanged: (value) async {
                           await _player.seek(Duration(seconds: value.toInt()));
@@ -207,14 +211,15 @@ class _AudioItemState extends State<AudioItem> {
                 _isUploading
                     ? Padding(
                       padding: EdgeInsetsGeometry.all(10),
-                      child: const LoadingAnimation())
+                      child: const LoadingAnimation(),
+                    )
                     : IconButton(
-                        onPressed: _submitRecording,
-                        icon: const Icon(
-                          Icons.upload,
-                          color: AppColors.primarycolor,
-                        ),
+                      onPressed: _submitRecording,
+                      icon: const Icon(
+                        Icons.upload,
+                        color: AppColors.primarycolor,
                       ),
+                    ),
               ],
             ),
           ],

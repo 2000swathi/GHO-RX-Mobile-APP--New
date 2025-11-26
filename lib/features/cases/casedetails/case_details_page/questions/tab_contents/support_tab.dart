@@ -6,6 +6,8 @@ import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/questions/repository/bloc/q_and_a_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/questions/repository/bloc/q_and_a_event.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/bloc/case_details_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/bloc/case_details_event.dart';
 
 class SupportTab extends StatefulWidget {
   final String? previousAnswer;
@@ -48,6 +50,9 @@ class _SupportTabState extends State<SupportTab> {
           CustomScaffoldMessenger.showSuccessMessage(
             context,
             state.response["Data"][0][0]["msg"],
+          );
+          context.read<CaseDetailsBloc>().add(
+            CaseDetailsEventRequested(saltID: widget.saltID, silent: true),
           );
 
           FocusScope.of(context).unfocus();

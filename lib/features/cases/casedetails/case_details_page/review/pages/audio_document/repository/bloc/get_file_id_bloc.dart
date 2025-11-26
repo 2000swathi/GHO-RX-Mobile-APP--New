@@ -19,10 +19,13 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
           event.docTypeID,
           event.filename,
           event.fileSize,
+          event.saltKey,
         );
 
-        if (response["Status"] == 1 &&
-            response["Data"]?[0]?[0]?["id"] != null) {
+        if (response["Data"] != null &&
+            response["Data"][0] != null &&
+            response["Data"][0][0] != null &&
+            response["Data"][0][0]["id"] != null) {
           emit(GetFileIdSuccess(response: response, filePath: event.filePath));
 
           final String fileID = response["Data"][0][0]["fid"].toString();
@@ -38,6 +41,7 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
               context: event.context,
               caseID: event.caseID,
               docTypeID: event.docTypeID,
+              saltKey: event.saltKey,
               fileUploadedID: fileUploadedID,
             ),
           );
@@ -79,6 +83,7 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
               filePath: event.filePath,
               caseID: event.caseID,
               docTypeID: event.docTypeID,
+              saltKey: event.saltKey,
               fileUploadedID: event.fileUploadedID,
             ),
           );
@@ -114,6 +119,7 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
               fileUploadedID: event.fileUploadedID,
               status: "2",
               filePath: event.filePath,
+              saltKey: event.saltKey,
               context: event.context,
             ),
           );
@@ -125,6 +131,7 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
               fileUploadedID: event.fileUploadedID,
               status: "3",
               filePath: event.filePath,
+              saltKey: event.saltKey,
               context: event.context,
             ),
           );
@@ -143,13 +150,14 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
           event.docTypeID,
           event.fileUploadedID,
           event.status,
+          event.saltKey,
         );
 
         if (response["Status"] == 1) {
           emit(SuccessAPI(filePath: event.filePath));
           CustomScaffoldMessenger.showSuccessMessage(
             event.context,
-            "File upload successfully",
+            "File uploaded successfully",
           );
         } else {
           emit(
@@ -168,17 +176,22 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
       emit(GetFileIdLoading(filePath: event.filePath));
       try {
         final response = await repository.deleteFile(
-          event.caseID,
+          event.saltID,
           event.docTypeId,
           event.fileUploadedID,
         );
 
         if (response["Status"] == 1) {
-          emit(DeleteFileSuccess(response: response));
-          CustomScaffoldMessenger.showSuccessMessage(
-            event.context,
-            response["Data"][0][0]["msg"],
-          );
+          if (response["Data"] != null &&
+              response["Data"][0] != null &&
+              response["Data"][0][0] != null &&
+              response["Data"][0][0]["msg"] != null) {
+            emit(DeleteFileSuccess(response: response));
+            CustomScaffoldMessenger.showSuccessMessage(
+              event.context,
+              response["Data"][0][0]["msg"],
+            );
+          }
         } else {
           emit(
             GetFileIdFailure(

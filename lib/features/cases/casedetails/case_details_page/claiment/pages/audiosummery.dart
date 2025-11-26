@@ -44,7 +44,7 @@ class _AudiosummeryState extends State<Audiosummery> {
             style: AppFonts.hinttext2.copyWith(fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 12),
-          AudioSummaryListWidget(audioList: audioList,),
+          AudioSummaryListWidget(audioList: audioList),
         ],
       ),
     );

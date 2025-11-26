@@ -51,6 +51,15 @@ class LogoutSuccess extends AuthState {
   List<Object?> get props => [isLogout];
 }
 
+//forgot email
+class ForgotEmailSuccess extends AuthState {
+  final String message;
+  const ForgotEmailSuccess(this.message);
+  @override
+  List<Object?> get props => [message];
+}
+
+
 class AuthFailure extends AuthState {
   final String error;
 

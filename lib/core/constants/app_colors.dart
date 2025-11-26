@@ -23,4 +23,6 @@ class AppColors {
   static const Color yellow = Color(0xffFF9800);
   static const Color lightpink = Color(0xffFFF8E6);
   static const Color profilepink = Color(0xffFF8A65);
+  static const Color grey = Color(0xff565555);
+  static const Color cards1 = Color(0xffE7E9EF);
 }

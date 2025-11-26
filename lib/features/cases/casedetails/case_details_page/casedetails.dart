@@ -23,14 +23,14 @@ class CaseDetailsPage extends StatefulWidget {
 class _CaseDetailsPageState extends State<CaseDetailsPage> {
   final repository = CaseDetRepository();
   late OpenCaseModel opencases;
+  bool isRefreshed = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Safe place to read ModalRoute arguments only once
+
     opencases = ModalRoute.of(context)?.settings.arguments as OpenCaseModel;
 
-    // Dispatch event only once per page build
     context.read<CaseDetailsBloc>().add(
       CaseDetailsEventRequested(saltID: opencases.saltKey.toString()),
     );
@@ -75,7 +75,9 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
         builder: (context, state) {
           if (state is CaseDetailsLoading) {
             return const Center(child: LoadingAnimation());
-          } else if (state is casedetailsSuccess) {
+          }
+
+          if (state is casedetailsSuccess) {
             final CaseInfo = state.caseDetailsModel.caseInfo!;
             return SingleChildScrollView(
               child: Padding(
@@ -192,6 +194,7 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
                                 ),
                           ),
                         );
+                        ;
                       },
                     ),
                     const SizedBox(height: 14),

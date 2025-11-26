@@ -17,6 +17,7 @@ class GetFileIDReo {
     int docTypeID,
     String fileName,
     String fileSize,
+    String saltID,
   ) async {
     final token = await SharedPreference.getToken();
     final reviewerId = await SharedPreference.getUserId();
@@ -27,12 +28,13 @@ class GetFileIDReo {
         reviewerId.isEmpty) {
       throw Exception('Token or ReviewerId not found in SharedPreferences');
     }
+    final dk1Value =
+        (saltID.isEmpty || saltID.trim().isEmpty) ? reviewerId : saltID;
 
     final data = {
       ...ApiUtils.getCommonParams(action: "filemgr", token: token),
       "Tags": [
-        {"T": "dk1", "V": reviewerId},
-        {"T": "dk2", "V": caseID},
+        {"T": "dk1", "V": dk1Value},
         {"T": "c1", "V": docTypeID},
         {"T": "c2", "V": fileName},
         {"T": "c3", "V": fileSize},
@@ -129,6 +131,7 @@ class GetFileIDReo {
     int docTypeID,
     String fileUploadedID,
     String status,
+    String saltID,
   ) async {
     final token = await SharedPreference.getToken();
     final reviewerId = await SharedPreference.getUserId();
@@ -139,15 +142,16 @@ class GetFileIDReo {
         reviewerId.isEmpty) {
       throw Exception('Token or ReviewerId not found in SharedPreferences');
     }
+    final dk1Value =
+        (saltID.isEmpty || saltID.trim().isEmpty) ? reviewerId : saltID;
 
     final data = {
       ...ApiUtils.getCommonParams(action: "filemgr", token: token),
       "Tags": [
-        {"T": "dk1", "V": reviewerId},
+        {"T": "dk1", "V": dk1Value},
         {"T": "dk2", "V": docTypeID},
         {"T": "c1", "V": int.parse(fileUploadedID)},
         {"T": "c2", "V": status},
-        {"T": "c3", "V": caseID},
         {"T": "c10", "V": "2"},
       ],
     };
@@ -161,9 +165,8 @@ class GetFileIDReo {
   }
 
   //delete
-
   Future<Map<String, dynamic>> deleteFile(
-    String caseID,
+    String saltID,
     int docTypeID,
     int fileUploadedID,
   ) async {
@@ -177,11 +180,14 @@ class GetFileIDReo {
       throw Exception('Token or ReviewerId not found in SharedPreferences');
     }
 
+    // If caseID is empty → use reviewerId
+    final dk1Value =
+        (saltID.isEmpty || saltID.trim().isEmpty) ? reviewerId : saltID;
+
     final data = {
       ...ApiUtils.getCommonParams(action: "filemgr", token: token),
       "Tags": [
-        {"T": "dk1", "V": reviewerId},
-        {"T": "dk2", "V": caseID},
+        {"T": "dk1", "V": dk1Value},
         {"T": "c1", "V": fileUploadedID},
         {"T": "c2", "V": docTypeID},
         {"T": "c10", "V": "4"},

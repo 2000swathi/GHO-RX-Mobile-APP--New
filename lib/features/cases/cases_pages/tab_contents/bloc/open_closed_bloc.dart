@@ -27,6 +27,7 @@ class OpenClosedBloc extends Bloc<OpenClosedEvent, OpenClosedState> {
       emit(OpenCloseError(message: e.toString()));
     }
   }
+
   //closed cases
   Future<void> _onFetchClosedCases(
     FetchClosedCases event,

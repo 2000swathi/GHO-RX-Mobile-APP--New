@@ -17,7 +17,7 @@ class CustomTextFormField extends StatelessWidget {
   final VoidCallback? onTap;
   final bool readOnly;
   final TextCapitalization? textCapitalization;
-
+  final TextInputAction? textInputAction;
 
   const CustomTextFormField({
     super.key,
@@ -34,12 +34,20 @@ class CustomTextFormField extends StatelessWidget {
     this.onTap,
     this.readOnly = false,
     this.textCapitalization,
+    this.textInputAction,
   });
 
   @override
   Widget build(BuildContext context) {
     Color borderColor = AppColors.offgreycolor;
 
+    final capitalization =
+        textCapitalization ??
+        (keyboardType == TextInputType.emailAddress ||
+                keyboardType == TextInputType.phone ||
+                keyboardType == TextInputType.number
+            ? TextCapitalization.none
+            : TextCapitalization.words);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -52,8 +60,22 @@ class CustomTextFormField extends StatelessWidget {
           controller: controller,
           obscureText: obscureText,
           validator: validator,
-          onChanged: onChanged,
           inputFormatters: inputFormatters,
+          textInputAction: textInputAction ?? TextInputAction.done,
+          onChanged: (value) {
+            String finalValue = value;
+            if (keyboardType == TextInputType.emailAddress) {
+              final lower = value.toLowerCase();
+              if (value != lower) {
+                controller?.value = controller!.value.copyWith(
+                  text: lower,
+                  selection: TextSelection.collapsed(offset: lower.length),
+                );
+              }
+              finalValue = lower;
+            }
+            onChanged?.call(finalValue);
+          },
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: AppFonts.hinttext,
@@ -71,6 +93,8 @@ class CustomTextFormField extends StatelessWidget {
               borderSide: BorderSide(color: borderColor),
             ),
           ),
+
+          textCapitalization: capitalization,
         ),
       ],
     );

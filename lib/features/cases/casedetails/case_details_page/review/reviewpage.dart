@@ -125,7 +125,6 @@ class _ReviewpageState extends State<Reviewpage>
                       caseID: widget.caseID,
                       audioSummaryModel: widget.audioSummaryModel,
                       saltID: widget.saltID,
-                      
                     ),
                   ),
                 ),

@@ -79,7 +79,7 @@ class Summerypage extends StatelessWidget {
                             isExpandedValue ? "Read less" : "Read more...",
                             style: AppFonts.labelItalic.copyWith(
                               color: AppColors.secondarycolor,
-                              fontSize: 14
+                              fontSize: 14,
                             ),
                           ),
                         ),

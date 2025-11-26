@@ -4,7 +4,7 @@ import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final bool iswhite;
   final Color? color;
   final Color? colortext;
@@ -16,7 +16,7 @@ class CustomButton extends StatelessWidget {
   const CustomButton({
     super.key,
     required this.text,
-    required this.onPressed,
+     this.onPressed,
     this.iswhite = false,
     this.color = AppColors.primarycolor,
     this.colortext = AppColors.white,

@@ -1,0 +1,159 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
+import 'package:ghorx_mobile_app_new/core/constants/custom_datepicker.dart';
+import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
+import 'package:ghorx_mobile_app_new/features/account/insurance/repo/bloc/insurance_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/insurance/repo/model/insurance_model.dart';
+
+class AddEditInsuranceSheet {
+  static void showSheet(
+    BuildContext context,
+    InsuranceData? info,
+    bool isEdit, {
+    required InsuranceBloc insuranceBloc,
+  }) {
+    final TextEditingController prIDController = TextEditingController(
+      text: isEdit ? info?.providerID ?? '' : '',
+    );
+    final TextEditingController pNameController = TextEditingController(
+      text: isEdit ? info?.providerName ?? '' : '',
+    );
+    final TextEditingController issueDateController = TextEditingController(
+      text: isEdit ? info?.issueDate ?? '' : '',
+    );
+    final TextEditingController expDateController = TextEditingController(
+      text: isEdit ? info?.expiryDate ?? '' : '',
+    );
+
+    final _formKey = GlobalKey<FormState>();
+
+    CustomBottomSheet.show(
+      context: context,
+      heading: isEdit ? "Edit Insurance" : "Add Insurance",
+      content: [
+        Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              CustomTextFormField(
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                controller: prIDController,
+                name: "Provider ID",
+                hintText: "Enter Provider ID",
+                validator: Validation.validateID,
+              ),
+              const SizedBox(height: 10),
+              CustomTextFormField(
+                controller: pNameController,
+                name: "Provider Name",
+                hintText: "Enter Provider name",
+                validator: Validation.validateProviderName,
+              ),
+              const SizedBox(height: 10),
+              CustomTextFormField(
+                controller: issueDateController,
+                name: "Issue Date",
+                hintText: "Issue Date",
+                readOnly: true,
+                suffixIcon: Icon(
+                  Icons.calendar_today_outlined,
+                  color: AppColors.primarycolor,
+                  size: 20,
+                ),
+                onTap:
+                    () => showCommonDatePicker(
+                      context: context,
+                      controller: issueDateController,
+                    ),
+                validator: (value) => Validation.validateIssueDate(value),
+              ),
+              const SizedBox(height: 10),
+              CustomTextFormField(
+                controller: expDateController,
+                name: "Expiry Date",
+                hintText: "Expiry Date",
+                readOnly: true,
+                suffixIcon: Icon(
+                  Icons.calendar_today_outlined,
+                  color: AppColors.primarycolor,
+                  size: 20,
+                ),
+                onTap:
+                    () => showCommonDatePicker(
+                      context: context,
+                      controller: expDateController,
+                    ),
+                validator:
+                    (value) => Validation.validateExpiryDate(
+                      issueDateController.text,
+                      value,
+                    ),
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
+        ),
+      ],
+
+      actionButton: BlocListener<InsuranceBloc, InsuranceState>(
+        listener: (context, state) {
+          if (state is InsuranceSuccess) {
+            Navigator.pop(context);
+            insuranceBloc.add(FetchInsurance());
+            CustomScaffoldMessenger.showSuccessMessage(context, state.message);
+          } else if (state is InsuranceError) {
+            CustomScaffoldMessenger.showErrorMessage(context, state.message);
+          }
+        },
+
+        child: BlocBuilder<InsuranceBloc, InsuranceState>(
+          builder: (context, addState) {
+            final bool isAddLoading = addState is InsuranceAddLoading;
+            return BlocBuilder<InsuranceBloc, InsuranceState>(
+              builder: (context, editState) {
+                final bool isEditLoading = editState is InsuranceEditLoading;
+                final bool isLoading = isAddLoading || isEditLoading;
+
+                return CustomButton(
+                  text: isEdit ? "Update Insurance" : "Submit Insurance",
+                  isLoading: isLoading,
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      if (isEdit) {
+                        context.read<InsuranceBloc>().add(
+                          EditInsuranceEvent(
+                            insuranceId: info!.id.toString(),
+                            providerID: prIDController.text,
+                            providerName: pNameController.text,
+                            issueDate: issueDateController.text,
+                            expiryDate: expDateController.text,
+                          ),
+                        );
+                      } else {
+                        context.read<InsuranceBloc>().add(
+                          AddInsurance(
+                            providerID: prIDController.text,
+                            providerName: pNameController.text,
+                            issueDate: issueDateController.text,
+                            expiryDate: expDateController.text,
+                          ),
+                        );
+                      }
+                    }
+                  },
+                );
+              },
+            );
+          },
+        ),
+      ),
+    );
+  }
+}

@@ -4,77 +4,80 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart'
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/bloc/open_closed_bloc.dart';
-import 'repository/open_closed_repo.dart';
 
-class OpenCasesTab extends StatelessWidget {
+
+class OpenCasesTab extends StatefulWidget {
   const OpenCasesTab({super.key});
 
   @override
+  State<OpenCasesTab> createState() => _OpenCasesTabState();
+}
+
+class _OpenCasesTabState extends State<OpenCasesTab> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<OpenClosedBloc>().add(FetchOpenCases());
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create:
-          (context) =>
-              OpenClosedBloc(repository: OpenClosedRepository())
-                ..add(FetchOpenCases()),
-      child: BlocBuilder<OpenClosedBloc, OpenClosedState>(
-        builder: (context, state) {
-          if (state is OpenClosedInitial || state is OpenClosedLoading) {
-            return const Center(child: LoadingAnimation());
-          } else if (state is OpenCaseLoaded) {
-            final openCases = state.openCases;
-            if (openCases.isEmpty) {
-              return const Center(child: Text('No open cases available'));
-            }
-            return ListView.separated(
-              padding: const EdgeInsets.all(15),
-              itemCount: openCases.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 15),
-              itemBuilder: (context, index) {
-                final caseItem = openCases[index];
-                return CaseCard(
-                  ontap: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/casedetails',
-                      arguments: caseItem,
-                    );
-                  },
-                  caseId: 'Case ID: ${caseItem.id}',
-                  allottedTime: '${caseItem.timeAllowed}',
-                  dueDate: caseItem.dueDate,
-                  description: caseItem.medicalSummary,
-                );
-              },
-            );
-          } else if (state is OpenCloseError) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Text(
-                  '${state.message}',
-                  style: AppFonts.subtext,
-                ),
-              ),
-            );
-          } else {
-            return const Center(child: Text('No data available'));
+    return BlocBuilder<OpenClosedBloc, OpenClosedState>(
+      builder: (context, state) {
+        if (state is OpenClosedInitial || state is OpenClosedLoading) {
+          return const Center(child: LoadingAnimation());
+        } else if (state is OpenCaseLoaded) {
+          final openCases = state.openCases;
+          if (openCases.isEmpty) {
+            return const Center(child: Text('No open cases available'));
           }
-        },
-      ),
+          return ListView.separated(
+            padding: const EdgeInsets.all(15),
+            itemCount: openCases.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 15),
+            itemBuilder: (context, index) {
+              final caseItem = openCases[index];
+              return OpenCaseCard(
+                ontap: () {
+                  Navigator.pushNamed(
+                    context,
+                    '/casedetails',
+                    arguments: caseItem,
+                  );
+                },
+
+                caseId: 'Case ID: ${caseItem.id}',
+
+                dueDate: caseItem.dueDate,
+                description: caseItem.medicalSummary,
+              );
+            },
+          );
+        } else if (state is OpenCloseError) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Text('${state.message}', style: AppFonts.subtext),
+            ),
+          );
+        } else {
+          return const Center(child: Text('No data available'));
+        }
+      },
     );
   }
 }
 
-class CaseCard extends StatelessWidget {
+class OpenCaseCard extends StatelessWidget {
   final String caseId;
-  final String allottedTime;
+
   final String dueDate;
   final String description;
   final Function()? ontap;
-  const CaseCard({
+  const OpenCaseCard({
     super.key,
     required this.caseId,
-    required this.allottedTime,
+
     required this.dueDate,
     required this.description,
     this.ontap,
@@ -114,7 +117,7 @@ class CaseCard extends StatelessWidget {
                           Text('Case Identifier', style: AppFonts.subtext),
                           const SizedBox(height: 4),
                           Text(
-                            caseId,
+                            "Case ID : ${caseId}",
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -125,20 +128,7 @@ class CaseCard extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          RichText(
-                            text: TextSpan(
-                              text: "Allotted Time:",
-                              style: AppFonts.subtext,
-                              children: [
-                                TextSpan(
-                                  text: ' $allottedTime',
-                                  style: AppFonts.subtext.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          Text('Due Date :', style: AppFonts.subtext),
                           const SizedBox(height: 8),
 
                           Text(

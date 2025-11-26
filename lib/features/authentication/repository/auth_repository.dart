@@ -47,6 +47,7 @@ class AuthRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
+      print(response);
       return OtpVerifyResponse.fromJson(response);
     } on DioException catch (e) {
       throw Exception("${e.message}");
@@ -54,10 +55,9 @@ class AuthRepository {
       rethrow;
     }
   }
+
   //otp resend
-  Future<OtpResponse> otpResend({
-    required String email,
-  }) async {
+  Future<OtpResponse> otpResend({required String email}) async {
     final data = {
       ...ApiUtils.getCommonParams(action: "reviewer", token: ""),
       "Tags": [
@@ -68,11 +68,36 @@ class AuthRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
+      print(response);
       return OtpResponse.fromJson(response);
     } on DioException catch (e) {
       throw Exception("${e.message}");
     } catch (e) {
       rethrow;
+    }
+  }
+
+  //forgot email
+  Future<String> forgotEmail({required String email}) async {
+    final data = {
+      ...ApiUtils.getCommonParams(action: "reviewer", token: ""),
+      "Tags": [
+        {"T": "dk1", "V": email},
+        {"T": "c10", "V": "94"},
+      ],
+    };
+
+    try {
+      final response = await _dioHandler.post('', data: data);
+      print("FORGOT EMAIL RESPONSE:");
+      print(response);
+      if(response["Status"] == 1) {
+        return response["Data"][0][0]["msg"];
+      } else {
+        throw Exception(response["Error"] ?? "Something went wrong");
+      }
+    } catch (e) {
+      throw Exception("${e}");
     }
   }
 }

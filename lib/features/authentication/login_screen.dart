@@ -77,6 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             name: "Email",
                             hintText: "Enter your email",
                             controller: emailController,
+                            keyboardType: TextInputType.emailAddress,
                             validator: Validation.validateEmail,
                           ),
                           SizedBox(height: 20),
@@ -105,7 +106,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             children: [
                               Spacer(),
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.pushNamed(context, '/forgotEmail');
+                                },
                                 child: Text(
                                   "Forget Password?",
                                   style: AppFonts.labelItalic,
