@@ -22,7 +22,7 @@ class CompletionRateCard extends StatelessWidget {
     return Center(
       child: SizedBox(
         width: 140,
-        height: 140,
+
         child: TweenAnimationBuilder<double>(
           tween: Tween<double>(begin: 0, end: completionRate / 100),
           duration: const Duration(seconds: 2),
