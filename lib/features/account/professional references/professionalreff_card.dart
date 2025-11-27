@@ -26,7 +26,7 @@ class ProfessionalRefeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InfoCard(
-      title: "Professional References $index",
+      title: "Reference $index",
       onEdit: onEdit ?? () {},
       onDelete: onDelete ?? () {},
       fields: [
@@ -34,7 +34,7 @@ class ProfessionalRefeCard extends StatelessWidget {
         {"label": "Designation:", "value": designationRefe},
         // {"label": "Designation1:", "value": designation1Refe},
         {"label": "Relationship:", "value": relationshipRefe},
-        {"label": "phone:", "value": phoneRefe},
+        {"label": "Phone:", "value": phoneRefe},
       ],
     );
   }
