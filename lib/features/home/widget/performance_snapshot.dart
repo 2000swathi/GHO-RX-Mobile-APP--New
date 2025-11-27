@@ -1,10 +1,10 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/home/widget/custom_rate_chart.dart';
+import 'package:ghorx_mobile_app_new/features/home/widget/glass_container.dart';
 
 class PerformanceSnapshotWidget extends StatelessWidget {
   final List<dynamic> performanceData;
@@ -15,7 +15,7 @@ class PerformanceSnapshotWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           colors: [
             Color.fromARGB(255, 233, 193, 235),
             Color.fromARGB(255, 233, 238, 212),
@@ -24,7 +24,6 @@ class PerformanceSnapshotWidget extends StatelessWidget {
           end: Alignment.bottomRight,
         ),
       ),
-
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: ClipRRect(
@@ -34,210 +33,159 @@ class PerformanceSnapshotWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Performance Snapshot", style: AppFonts.subheading),
+                const Text("Performance Snapshot",
+                    style: AppFonts.subheading),
                 const SizedBox(height: 12),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                          child: SizedBox(
-                            height: 286,
-                            width: 195,
-                            child: Container(
-                              margin: const EdgeInsets.only(right: 12),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                gradient: LinearGradient(
-                                  colors: [
-                                    AppColors.white.withAlpha(3),
-                                    AppColors.white.withAlpha(2),
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                                border: Border.all(
-                                  color: AppColors.white.withAlpha(4),
-                                  width: 1.5,
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withAlpha(5),
-                                    blurRadius: 10,
-                                    offset: const Offset(0, 4),
-                                  ),
-                                ],
-                              ),
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Overview",
-                                    style: AppFonts.semiratechart,
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    "You have ${performanceData.isNotEmpty ? performanceData[0]["PendingCases"].toString() : "0"} Pending Cases",
-                                    style: AppFonts.textred,
-                                  ),
-                                  const SizedBox(height: 12),
-                                  CustomRateChart(
-                                    completionRate:
-                                        performanceData.isNotEmpty
-                                            ? double.parse(
-                                              performanceData[0]["Percentage"]
-                                                  .toString(),
-                                            )
-                                            : 0,
-                                  ),
 
-                                  const Text(
-                                    "Keep it up! You're ahead of 0% of doctors.",
-                                    style: TextStyle(
-                                      fontSize: 11,
-                                      color: Colors.black54,
+                /// MAIN ROW
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final double totalHeight =
+                        constraints.maxWidth * 0.75; // Control total height
+
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+
+                        /// LEFT BIG CARD
+                        Expanded(
+                          child: ElevatedGlassBox(
+                            borderRadius: 12,
+                            margin: const EdgeInsets.only(right: 12),
+                            child: SizedBox(
+                              height: totalHeight,
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    const Text("Overview",
+                                        style: AppFonts.semiratechart),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      "You have ${performanceData.isNotEmpty ? performanceData[0]["PendingCases"] : "0"} Pending Cases",
+                                      style: AppFonts.textred,
                                     ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
+                                      const SizedBox(height:20),
+                                    CustomRateChart(
+                                      completionRate:
+                                          performanceData.isNotEmpty
+                                              ? double.parse(
+                                                  performanceData[0]
+                                                          ["Percentage"]
+                                                      .toString())
+                                              : 0,
+                                    ),
+                                    const Spacer(),
+                                    Center(
+                                      child: Text(
+                                        "Keep it up! You're ahead of ${performanceData.isNotEmpty ? performanceData[0]["ReviewerPercentile"].toString() : "0"}% of doctors.",
+                                        style: AppFonts.subtext
+                                            .copyWith(fontSize: 12),
+                                            textAlign: TextAlign.left,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                              child: SizedBox(
-                                height: 145,
-                                width: 195,
-                                child: Container(
-                                  margin: const EdgeInsets.only(bottom: 10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16),
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        AppColors.white.withAlpha(3),
-                                        AppColors.white.withAlpha(2),
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                    border: Border.all(
-                                      color: AppColors.white.withAlpha(4),
-                                      width: 1.5,
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withAlpha(5),
-                                        blurRadius: 10,
-                                        offset: const Offset(0, 4),
-                                      ),
-                                    ],
-                                  ),
-                                  padding: const EdgeInsets.all(16),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SvgPicture.asset("assets/svg/time_svg.svg"),
-                                      Spacer(),
-                                      Text(
-                                        "Avg. Response Time",
-                                        style: AppFonts.subtext,
-                                      ),
-                                      const SizedBox(height: 6),
-                                      Text(
-                                        performanceData.isNotEmpty
-                                            ? performanceData[0]["AvgResponseTime"]
-                                                .toString()
-                                            : "0 hrs",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                    ],
+
+                        /// RIGHT SIDE = 2 CARDS
+                        Expanded(
+                          child: SizedBox(
+                            height: totalHeight,
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: _buildSmallCard(
+                                    icon: "assets/svg/time_svg.svg",
+                                    title: "Avg. Response Time",
+                                    value: performanceData.isNotEmpty
+                                        ? performanceData[0]
+                                                ["AvgResponseTime"]
+                                            .toString()
+                                        : "0 hrs",
                                   ),
                                 ),
-                              ),
-                            ),
-                          ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                              child: SizedBox(
-                                height: 137,
-                                width: 195,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16),
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Colors.white.withAlpha(3),
-                                        Colors.white.withAlpha(2),
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                    border: Border.all(
-                                      color: Colors.white.withAlpha(4),
-                                      width: 1.5,
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withAlpha(5),
-                                        blurRadius: 10,
-                                        offset: const Offset(0, 4),
-                                      ),
-                                    ],
-                                  ),
-                                  padding: const EdgeInsets.all(16),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SvgPicture.asset(
-                                          "assets/svg/earningg_svg.svg"),
-                                          Spacer(),
-                                      Text(
-                                        "Total Earnings",
-                                        style: AppFonts.semiratechart,
-                                      ),
-                                      const SizedBox(height: 6),
-                                      Text(
-                                        performanceData.isNotEmpty
-                                            ? performanceData[0]["TotalEarnings"]
-                                                .toString()
-                                            : "0.0",
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                    ],
+                                const SizedBox(height: 10),
+                                Expanded(
+                                  child: _buildSmallCard(
+                                    icon:
+                                        "assets/svg/earningg_svg.svg",
+                                    title: "Total Earnings",
+                                    value: performanceData.isNotEmpty
+                                        ? performanceData[0]
+                                                ["TotalEarnings"]
+                                            .toString()
+                                        : "0.0",
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ],
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// RIGHT SMALL CARDS WIDGET
+  Widget _buildSmallCard({
+    required String icon,
+    required String title,
+    required String value,
+  }) {
+    return ElevatedGlassBox(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            gradient: LinearGradient(
+              colors: [
+                AppColors.white.withAlpha(3),
+                AppColors.white.withAlpha(2),
+              ],
+            ),
+            border: Border.all(
+              color: AppColors.white.withAlpha(4),
+              width: 1.5,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(5),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SvgPicture.asset(icon),
+              const Spacer(),
+              Text(title, style: AppFonts.subtext),
+              const SizedBox(height: 6),
+              Text(
+                value,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+            ],
           ),
         ),
       ),

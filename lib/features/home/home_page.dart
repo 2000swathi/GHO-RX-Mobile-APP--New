@@ -99,9 +99,10 @@ class _HomePageState extends State<HomePage> {
                           ? SizedBox.shrink()
                           : UpcomingCase(cases: cases[0]),
 
-                      const SizedBox(height: 10),
+                     
                       KPIHeader(),
                       PerformanceSnapshotWidget(performanceData: snapShot),
+                       const SizedBox(height: 30),
                     ],
                   ),
                 ),
