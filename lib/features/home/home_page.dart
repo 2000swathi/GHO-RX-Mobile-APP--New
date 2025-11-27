@@ -69,6 +69,7 @@ class _HomePageState extends State<HomePage> {
               return Scaffold(body: const Center(child: Text("No data available")));
             }
             final cases = (data.length > 1 ? data[1] : []);
+            final snapShot = (data.length > 2 ? data[2] : []);
 
             return Scaffold(
               backgroundColor: Colors.white,
@@ -89,6 +90,7 @@ class _HomePageState extends State<HomePage> {
                   await Future.delayed(const Duration(seconds: 1));
                 },
                 child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,7 +101,7 @@ class _HomePageState extends State<HomePage> {
 
                       const SizedBox(height: 10),
                       KPIHeader(),
-                      const PerformanceSnapshotWidget(),
+                      PerformanceSnapshotWidget(performanceData: snapShot),
                     ],
                   ),
                 ),

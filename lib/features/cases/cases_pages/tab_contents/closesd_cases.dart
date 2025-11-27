@@ -53,7 +53,7 @@ class _ClosedCasesTabState extends State<ClosedCasesTab> {
                 },
                 caseId: "Case ID ${caseItem.id.toString()}",
                 name: caseItem.patientName,
-                payout: "80",
+                payout:caseItem.amount.toString(),
                 dueDate: caseItem.completedDate,
                 description: caseItem.summaryOfRecords,
               );
@@ -165,7 +165,7 @@ class CaseCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "\$$payout",
+                     payout,
                       style: AppFonts.semiratechart.copyWith(
                         color: AppColors.successcolor,
                       ),
