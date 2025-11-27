@@ -1,14 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/home/widget/custom_rate_chart.dart';
 
 class PerformanceSnapshotWidget extends StatelessWidget {
-  const PerformanceSnapshotWidget({
-    super.key,
-  });
+  final List<dynamic> performanceData;
+  const PerformanceSnapshotWidget({super.key, this.performanceData = const []});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class PerformanceSnapshotWidget extends StatelessWidget {
           end: Alignment.bottomRight,
         ),
       ),
-    
+
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: ClipRRect(
@@ -34,10 +34,7 @@ class PerformanceSnapshotWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Performance Snapshot",
-                  style: AppFonts.subheading,
-                ),
+                Text("Performance Snapshot", style: AppFonts.subheading),
                 const SizedBox(height: 12),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,21 +43,14 @@ class PerformanceSnapshotWidget extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(12),
                         child: BackdropFilter(
-                          filter: ImageFilter.blur(
-                            sigmaX: 8,
-                            sigmaY: 8,
-                          ),
+                          filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
                           child: SizedBox(
                             height: 286,
                             width: 195,
                             child: Container(
-                              margin: const EdgeInsets.only(
-                                right: 12,
-                              ),
+                              margin: const EdgeInsets.only(right: 12),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                  12,
-                                ),
+                                borderRadius: BorderRadius.circular(12),
                                 gradient: LinearGradient(
                                   colors: [
                                     AppColors.white.withAlpha(3),
@@ -83,8 +73,7 @@ class PerformanceSnapshotWidget extends StatelessWidget {
                               ),
                               padding: const EdgeInsets.all(16),
                               child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     "Overview",
@@ -92,12 +81,20 @@ class PerformanceSnapshotWidget extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    "You have 0 Pending Cases",
+                                    "You have ${performanceData.isNotEmpty ? performanceData[0]["PendingCases"].toString() : "0"} Pending Cases",
                                     style: AppFonts.textred,
                                   ),
                                   const SizedBox(height: 12),
-                                  const CustomRateChart(),
-    
+                                  CustomRateChart(
+                                    completionRate:
+                                        performanceData.isNotEmpty
+                                            ? double.parse(
+                                              performanceData[0]["Percentage"]
+                                                  .toString(),
+                                            )
+                                            : 0,
+                                  ),
+
                                   const Text(
                                     "Keep it up! You're ahead of 0% of doctors.",
                                     style: TextStyle(
@@ -119,20 +116,14 @@ class PerformanceSnapshotWidget extends StatelessWidget {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(16),
                             child: BackdropFilter(
-                              filter: ImageFilter.blur(
-                                sigmaX: 8,
-                                sigmaY: 8,
-                              ),
+                              filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
                               child: SizedBox(
                                 height: 145,
                                 width: 195,
                                 child: Container(
-                                  margin: const EdgeInsets.only(
-                                    bottom: 10,
-                                  ),
+                                  margin: const EdgeInsets.only(bottom: 10),
                                   decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.circular(16),
+                                    borderRadius: BorderRadius.circular(16),
                                     gradient: LinearGradient(
                                       colors: [
                                         AppColors.white.withAlpha(3),
@@ -142,15 +133,12 @@ class PerformanceSnapshotWidget extends StatelessWidget {
                                       end: Alignment.bottomRight,
                                     ),
                                     border: Border.all(
-                                      color: AppColors.white
-                                          .withAlpha(4),
+                                      color: AppColors.white.withAlpha(4),
                                       width: 1.5,
                                     ),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.black.withAlpha(
-                                          5,
-                                        ),
+                                        color: Colors.black.withAlpha(5),
                                         blurRadius: 10,
                                         offset: const Offset(0, 4),
                                       ),
@@ -161,13 +149,18 @@ class PerformanceSnapshotWidget extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
+                                      SvgPicture.asset("assets/svg/time_svg.svg"),
+                                      Spacer(),
                                       Text(
                                         "Avg. Response Time",
                                         style: AppFonts.subtext,
                                       ),
                                       const SizedBox(height: 6),
-                                      const Text(
-                                        "0h 0m",
+                                      Text(
+                                        performanceData.isNotEmpty
+                                            ? performanceData[0]["AvgResponseTime"]
+                                                .toString()
+                                            : "0 hrs",
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
@@ -182,17 +175,13 @@ class PerformanceSnapshotWidget extends StatelessWidget {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(16),
                             child: BackdropFilter(
-                              filter: ImageFilter.blur(
-                                sigmaX: 8,
-                                sigmaY: 8,
-                              ),
+                              filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
                               child: SizedBox(
                                 height: 137,
                                 width: 195,
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.circular(16),
+                                    borderRadius: BorderRadius.circular(16),
                                     gradient: LinearGradient(
                                       colors: [
                                         Colors.white.withAlpha(3),
@@ -202,16 +191,12 @@ class PerformanceSnapshotWidget extends StatelessWidget {
                                       end: Alignment.bottomRight,
                                     ),
                                     border: Border.all(
-                                      color: Colors.white.withAlpha(
-                                        4,
-                                      ),
+                                      color: Colors.white.withAlpha(4),
                                       width: 1.5,
                                     ),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.black.withAlpha(
-                                          5,
-                                        ),
+                                        color: Colors.black.withAlpha(5),
                                         blurRadius: 10,
                                         offset: const Offset(0, 4),
                                       ),
@@ -222,14 +207,20 @@ class PerformanceSnapshotWidget extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
+                                      SvgPicture.asset(
+                                          "assets/svg/earningg_svg.svg"),
+                                          Spacer(),
                                       Text(
                                         "Total Earnings",
                                         style: AppFonts.semiratechart,
                                       ),
                                       const SizedBox(height: 6),
-                                      const Text(
-                                        "\$0.0",
-                                        style: TextStyle(
+                                      Text(
+                                        performanceData.isNotEmpty
+                                            ? performanceData[0]["TotalEarnings"]
+                                                .toString()
+                                            : "0.0",
+                                        style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
                                         ),

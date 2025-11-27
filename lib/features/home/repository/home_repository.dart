@@ -9,7 +9,7 @@ class HomeRepository {
     final token = await SharedPreference.getToken();
     final reviewerId = await SharedPreference.getUserId();
     if (token!.isEmpty || reviewerId!.isEmpty) {
-      throw Exception('Token or ReviewerId not found in SharedPreferences');
+      throw Exception('Token or ReviewerId not found');
     }
 
     final data = {
