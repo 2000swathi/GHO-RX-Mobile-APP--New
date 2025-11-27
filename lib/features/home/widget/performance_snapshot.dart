@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/home/widget/custom_rate_chart.dart';
@@ -148,6 +149,8 @@ class PerformanceSnapshotWidget extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
+                                      SvgPicture.asset("assets/svg/time_svg.svg"),
+                                      Spacer(),
                                       Text(
                                         "Avg. Response Time",
                                         style: AppFonts.subtext,
@@ -204,6 +207,9 @@ class PerformanceSnapshotWidget extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
+                                      SvgPicture.asset(
+                                          "assets/svg/earningg_svg.svg"),
+                                          Spacer(),
                                       Text(
                                         "Total Earnings",
                                         style: AppFonts.semiratechart,
