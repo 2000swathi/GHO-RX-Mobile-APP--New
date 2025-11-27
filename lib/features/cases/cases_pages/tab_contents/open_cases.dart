@@ -46,7 +46,7 @@ class _OpenCasesTabState extends State<OpenCasesTab> {
                   );
                 },
 
-                caseId: 'Case ID: ${caseItem.id}',
+                caseId: '${caseItem.id}',
 
                 dueDate: caseItem.dueDate,
                 description: caseItem.medicalSummary,
