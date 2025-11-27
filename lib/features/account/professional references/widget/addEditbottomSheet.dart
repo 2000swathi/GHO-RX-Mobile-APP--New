@@ -3,9 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_drop_down_field.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/referenceListResponse.dart';
 import 'package:ghorx_mobile_app_new/features/account/professional%20references/repo/bloc/professionalref_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/professional%20references/repo/model/professionaleref_model.dart';
 
@@ -15,10 +17,12 @@ class AddProfessionalRefBottomSheet {
     ReferenceModel? info,
     bool isEdit, {
     required ProfessionalrefBloc profRefBloc,
+    required List<List<ReferenceData>> relationList,
   }) {
+    final flattenedList = relationList.expand((e) => e).toList();
     final _formKey = GlobalKey<FormState>();
-    // var refId = isEdit ? info?.id:"";
 
+    String? relationID = isEdit ? info?.relationship : null;
     // Controllers
     final nameController = TextEditingController();
     final designationController = TextEditingController();
@@ -68,12 +72,58 @@ class AddProfessionalRefBottomSheet {
               ),
               const SizedBox(height: 20),
 
-              CustomTextFormField(
-                controller: relationShipController,
+              // CustomTextFormField(
+              //   controller: relationShipController,
+              //   name: "Relationship",
+              //   // keyboardType: TextInputType.emailAddress,
+              //   hintText: "Enter relation",
+              //   // validator: Validation.validateEmail,
+              // ),
+              // CustomDropdownFormField(
+              //   name: "Relationship",
+              //   hintText: "--Choose Your Relationship--",
+              //   value: relationID,
+              //   items:
+              //       flattenedList
+              //           .map(
+              //             (e) => DropdownItem(
+              //               value: e.dataValue,
+              //               label:
+              //                   (e.displyText == null ||
+              //                           e.displyText!.trim().isEmpty)
+              //                       ? e.dataValue
+              //                       : e.displyText!,
+              //             ),
+              //           )
+              //           .toList(),
+
+              //   // FIX 2: UPDATE degreeID on selection
+              //   onChanged: (value) {
+              //     relationID = value; // update selected value
+              //     relationShipController.text =
+              //         value ?? ''; // update controller if needed
+              //   },
+              // ),
+              CustomDropdownFormField(
                 name: "Relationship",
-                // keyboardType: TextInputType.emailAddress,
-                hintText: "Enter relation",
-                // validator: Validation.validateEmail,
+                hintText: "--Choose Your Relationship--",
+                value: relationID,
+                items:
+                    flattenedList
+                        .map(
+                          (e) => DropdownItem(
+                            value: e.dataValue,
+                            label:
+                                e.displyText.isEmpty
+                                    ? e.dataValue
+                                    : e.displyText,
+                          ),
+                        )
+                        .toList(),
+                onChanged: (value) {
+                  relationID = value; // update selected value
+                  relationShipController.text = value ?? '';
+                },
               ),
             ],
           ),
@@ -92,7 +142,7 @@ class AddProfessionalRefBottomSheet {
         listener: (context, state) {
           if (state is ProRefSuccess) {
             Navigator.pop(context); // closes loader
-            // Navigator.pop(context); // closes bottom sheet
+            Navigator.pop(context); // closes bottom sheet
 
             profRefBloc.add(FetchProfessionalref());
 
