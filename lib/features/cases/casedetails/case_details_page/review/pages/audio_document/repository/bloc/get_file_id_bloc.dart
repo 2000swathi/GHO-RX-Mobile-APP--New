@@ -182,14 +182,12 @@ class GetFileIdBloc extends Bloc<GetEvent, GetFileIdState> {
         );
 
         if (response["Status"] == 1) {
-          if (response["Data"] != null &&
-              response["Data"][0] != null &&
-              response["Data"][0][0] != null &&
-              response["Data"][0][0]["msg"] != null) {
+          if (response["Info"] != null  || response["Info"] != ""
+             ) {
             emit(DeleteFileSuccess(response: response));
             CustomScaffoldMessenger.showSuccessMessage(
               event.context,
-              response["Data"][0][0]["msg"],
+              response["Info"],
             );
           }
         } else {

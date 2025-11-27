@@ -194,7 +194,7 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                                         ),
                                         Spacer(),
                                         Text(
-                                          "${medications.endMonth} ${medications.endYear}",
+                                          "${medications.startPd} ${medications.endpd}",
                                           style: AppFonts.labelItalic,
                                         ),
                                       ],

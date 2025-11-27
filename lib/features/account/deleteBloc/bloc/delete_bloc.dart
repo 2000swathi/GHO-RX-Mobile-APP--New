@@ -28,7 +28,7 @@ class DeleteBloc extends Bloc<DeleteEvent, DeleteState> {
         final message = response["Data"]?[0]?[0]?["msg"] ?? "Deleted Successfully";
         emit(DeleteSuccess(message: message));
       }else {
-        emit(DeleteFailure(error: response["Info"]?? "Failed to delete"));
+        emit(DeleteFailure(error: response["Info"] ?? "Failed to delete item"));
       }
     } catch (e) {
       emit(DeleteFailure(error: e.toString()));
