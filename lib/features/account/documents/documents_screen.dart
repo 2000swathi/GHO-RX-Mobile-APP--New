@@ -15,7 +15,7 @@ import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_pag
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_event.dart';
 
 class DocumentsScreen extends StatefulWidget {
-  DocumentsScreen({super.key});
+  const DocumentsScreen({super.key});
 
   @override
   State<DocumentsScreen> createState() => _DocumentsScreenState();
@@ -61,11 +61,8 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
         body: BlocListener<GetFileIdBloc, GetFileIdState>(
           listener: (context, state) async {
             if (state is DeleteFileSuccess) {
-              if (Navigator.canPop(context)) {
-                Navigator.pop(context);
-              }
+              context.read<DoctfileBloc>().add(UploadDocFileEvent());
             } else if (state is GetFileIdFailure) {
-              Navigator.pop(context);
               CustomScaffoldMessenger.showErrorMessage(context, state.message);
             }
           },
@@ -86,6 +83,14 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
                     );
                   }
                   final List documents = state.response["Data"][0];
+                  if (documents.isEmpty) {
+                    return Center(
+                      child: Text(
+                        "No documents uploaded yet.",
+                        style: AppFonts.hinttext2,
+                      ),
+                    );
+                  }
 
                   final Map<String, List> groupedDocs = {};
 

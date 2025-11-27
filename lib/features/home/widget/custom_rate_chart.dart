@@ -2,68 +2,63 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 class CustomRateChart extends StatelessWidget {
-  const CustomRateChart({super.key});
+  final double completionRate;
+
+  const CustomRateChart({super.key, required this.completionRate});
 
   @override
   Widget build(BuildContext context) {
-    return const CompletionRateCard(
-      completionRate: 86,
-      completed: 18,
-      total: 21,
-    );
+    return CompletionRateCard(completionRate: completionRate.toInt());
   }
 }
 
 class CompletionRateCard extends StatelessWidget {
   final int completionRate;
-  final int completed;
-  final int total;
 
-  const CompletionRateCard({
-    super.key,
-    required this.completionRate,
-    required this.completed,
-    required this.total,
-  });
+  const CompletionRateCard({super.key, required this.completionRate});
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
         width: 140,
-        height: 140,
-        child: CustomPaint(
-          painter: SemiCircleProgressPainter(
-            progress: completionRate / 100,
-          ),
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "$completionRate%",
-                    style: const TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF6B7FD7),
-                      height: 1,
-                    ),
+
+        child: TweenAnimationBuilder<double>(
+          tween: Tween<double>(begin: 0, end: completionRate / 100),
+          duration: const Duration(seconds: 2),
+          builder: (context, value, child) {
+            return CustomPaint(
+              painter: SemiCircleProgressPainter(progress: value),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "${(value * 100).toInt()}%",
+                        style: const TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF6B7FD7),
+                          height: 1,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        "Completion Rate",
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: Colors.grey[700],
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    "Completion Rate",
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: Colors.grey[700],
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );
@@ -81,33 +76,34 @@ class SemiCircleProgressPainter extends CustomPainter {
     final radius = size.width / 2.5;
     const strokeWidth = 12.0;
 
-    // Background arc (light gray/purple)
-    final backgroundPaint = Paint()
-      ..color = const Color(0xFFE0E0E0)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = strokeWidth
-      ..strokeCap = StrokeCap.round;
+    // Background arc
+    final backgroundPaint =
+        Paint()
+          ..color = const Color(0xFFE0E0E0)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = strokeWidth
+          ..strokeCap = StrokeCap.round;
 
-    // Progress arc (blue)
-    final progressPaint = Paint()
-      ..color = const Color(0xFF6B9EFF)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = strokeWidth
-      ..strokeCap = StrokeCap.round;
+    // Progress arc
+    final progressPaint =
+        Paint()
+          ..color = const Color(0xFF6B9EFF)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = strokeWidth
+          ..strokeCap = StrokeCap.round;
 
-    // Draw background semi-circle
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
-      math.pi, 
-      math.pi, 
+      math.pi,
+      math.pi,
       false,
       backgroundPaint,
     );
 
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
-      math.pi, 
-      math.pi * progress, 
+      math.pi,
+      math.pi * progress,
       false,
       progressPaint,
     );

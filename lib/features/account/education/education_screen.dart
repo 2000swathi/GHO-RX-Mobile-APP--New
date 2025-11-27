@@ -4,6 +4,7 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/commondelete_dialogbox.
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/account/deleteBloc/bloc/delete_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/education/addedit_educationsheet.dart';
 import 'package:ghorx_mobile_app_new/features/account/education/widget/education_card.dart';
@@ -93,8 +94,43 @@ class _EducationScreenState extends State<EducationScreen> {
               } else if (state is EducationError) {
                 return Center(child: Text(state.message));
               } else if (state is EducationListState) {
+                final rawData = state.educationResponse.data;
+
+                if (rawData == null || rawData is! List) {
+                  return Center(
+                    child: Text(
+                      "No education details added yet",
+                      style: AppFonts.textprimary,
+                    ),
+                  );
+                }
+
+                final flattened =
+                    rawData.expand((item) {
+                      if (item is List) return item;
+                      if (item == null) return [];
+                      return [item];
+                    }).toList();
+
                 final info =
-                    state.educationResponse.data.expand((e) => e).toList();
+                    flattened.where((item) {
+                      try {
+                        final institution =
+                            item?.institution?.toString().trim();
+                        return institution != null && institution.isNotEmpty;
+                      } catch (_) {
+                        return false;
+                      }
+                    }).toList();
+
+                if (info.isEmpty) {
+                  return Center(
+                    child: Text(
+                      "No education details added yet",
+                      style: AppFonts.textprimary,
+                    ),
+                  );
+                }
                 return ListView.builder(
                   itemCount: info.length,
                   itemBuilder: (context, index) {
@@ -113,18 +149,20 @@ class _EducationScreenState extends State<EducationScreen> {
                           listBloc.add(FetchEducationList());
                           showDialog(
                             context: context,
-                            barrierDismissible: false, 
-                            builder: (_) => const Center(child: LoadingAnimation()),
+                            barrierDismissible: false,
+                            builder:
+                                (_) => const Center(child: LoadingAnimation()),
                           );
                           final listState = await listBloc.stream.firstWhere(
-                            (s) => s is EductionTypeListState || s is ListFailure,
+                            (s) =>
+                                s is EductionTypeListState || s is ListFailure,
                           );
 
                           Navigator.pop(context);
 
                           if (listState is EductionTypeListState) {
-                            final degreeTypeList = 
-                                  listState.educationTypeResponse.data;
+                            final degreeTypeList =
+                                listState.educationTypeResponse.data;
 
                             AddeditEducationBottomSheet.showSheet(
                               context,
