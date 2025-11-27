@@ -13,6 +13,8 @@ import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/bloc/pr
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/profile_info_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/country_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/model/personalinfo_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_event.dart';
 import 'package:intl/intl.dart';
 
 class EditProfileSheetWidget extends StatefulWidget {
@@ -20,10 +22,10 @@ class EditProfileSheetWidget extends StatefulWidget {
   final List<Country> countries;
 
   const EditProfileSheetWidget({
-    Key? key,
+    super.key,
     required this.info,
     required this.countries,
-  }) : super(key: key);
+  });
 
   static void show(BuildContext context, PersonalInfoModel info, List<Country> countries) {
     CustomBottomSheet.show(
@@ -251,6 +253,7 @@ class _EditProfileSheetWidgetState extends State<EditProfileSheetWidget> {
         final msg = response["Data"]?[0]?[0]?["msg"] ?? "Profile updated successfully";
         CustomScaffoldMessenger.showSuccessMessage(context, msg);
         context.read<ProfileInfoBloc>().add(FetchPersonalInfo());
+        context.read<PicBloc>().add(FetchPicEvent());
         Navigator.pop(context);
       } else {
         final err = response["Info"] ?? "Something went wrong";
