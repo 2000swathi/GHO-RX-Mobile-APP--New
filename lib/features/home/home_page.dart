@@ -89,6 +89,7 @@ class _HomePageState extends State<HomePage> {
                   await Future.delayed(const Duration(seconds: 1));
                 },
                 child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
