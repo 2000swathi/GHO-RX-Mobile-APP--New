@@ -44,7 +44,7 @@ class ProfessionalrefBloc
         phone: event.phone,
       );
       if (response["Status"] == 1) {
-        String message = "License updated successfully";
+        String message = "Reference updated successfully";
 
         final data = response["Data"];
         if (data is List && data.isNotEmpty) {
