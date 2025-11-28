@@ -113,37 +113,9 @@ class AddProfessionalRefBottomSheet {
                   if (relationID == "Other")
                     Padding(
                       padding: EdgeInsets.only(top: 12),
-                      child: TextFormField(
-                        controller: otherRelationController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(
-                              color: AppColors.offgreycolor,
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: AppColors.offgreycolor,
-                              width: 1,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: AppColors.offgreycolor,
-                              width: 1.6,
-                            ),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 15,
-                            vertical: 12,
-                          ),
-                          labelText: "Please specify your relationship",
-                          labelStyle: TextStyle(color: AppColors.offgreycolor),
-                        ),
-                        onChanged: (text) {
-                          relationShipController.text = text;
-                        },
+                      child: CustomTextFormField(
+                        name: "Other",
+                        hintText: "Enter your relationship",
                       ),
                     ),
                 ],
