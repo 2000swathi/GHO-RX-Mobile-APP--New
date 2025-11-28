@@ -1,5 +1,5 @@
 class ClosedCaseModel {
-  final int id;
+  final String id;
   final String patientName;
   final String gender;
   final int age;
@@ -25,7 +25,7 @@ class ClosedCaseModel {
 
   factory ClosedCaseModel.fromJson(Map<String, dynamic> json) {
     return ClosedCaseModel(
-      id: json['id'] ?? 0,
+      id: json['id'] ?? '0',
       patientName: json['PatientName'] ?? '',
       gender: json['Gender'] ?? '',
       age: json['Age'] ?? 0,

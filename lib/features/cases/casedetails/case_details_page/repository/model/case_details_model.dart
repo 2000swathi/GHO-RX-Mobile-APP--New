@@ -102,7 +102,7 @@ class CaseDetailsModel {
 // --- Sub Models ---
 
 class CaseInfo {
-  final int id;
+  final String id;
   final String patientName;
   final String saltKey;
   final String gender;
@@ -129,7 +129,7 @@ class CaseInfo {
   });
 
   factory CaseInfo.fromJson(Map<String, dynamic> json) => CaseInfo(
-    id: json['id'] ?? 0,
+    id: json['id'] ?? '0',
     patientName: json['PatientName'] ?? '',
     saltKey: json['SaltKey'] ?? '',
     gender: json['Gender'] ?? '',
