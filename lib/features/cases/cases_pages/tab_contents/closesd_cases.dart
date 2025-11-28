@@ -138,7 +138,7 @@ class CaseCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "$caseId",
+                  caseId,
                   style: AppFonts.semiratechart,
                   textAlign: TextAlign.left,
                 ),
