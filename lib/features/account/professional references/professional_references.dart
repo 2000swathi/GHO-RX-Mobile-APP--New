@@ -5,7 +5,7 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessan
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/features/account/deleteBloc/bloc/delete_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/account/education/repo/bloc/education_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/professional%20references/professionalreff_card.dart';
 import 'package:ghorx_mobile_app_new/features/account/professional%20references/repo/bloc/professionalref_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/professional%20references/widget/addEditbottomSheet.dart';
@@ -31,17 +31,34 @@ class _ProfessionalReferencesScreenState
   Widget build(BuildContext context) {
     // final professionalrefBloc = context.read<ProfessionalrefBloc>();
     final deleteBloc = context.read<DeleteBloc>();
+    final listBloc = context.read<ListBloc>();
     return Scaffold(
       backgroundColor: AppColors.backgroundcolor,
       appBar: CustomAccountAppBar(
         title: "Professional References",
-        onAdd: () {
-          AddProfessionalRefBottomSheet.showSheet(
-            context,
-            null,
-            false, // info = null for Add
-            profRefBloc: context.read<ProfessionalrefBloc>(),
+        onAdd: () async {
+          listBloc.add(FetchReferenceList());
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (_) => const Center(child: LoadingAnimation()),
           );
+          final listState = await listBloc.stream.firstWhere(
+            (s) => s is ReferenceTypeListState || s is ListFailure,
+          );
+          Navigator.pop(context);
+
+          if (listState is ReferenceTypeListState) {
+            final referenceTypelist = listState.referenceTypeResponse;
+
+            AddProfessionalRefBottomSheet.showSheet(
+              context,
+              null,
+              false, // info = null for Add
+              profRefBloc: context.read<ProfessionalrefBloc>(),
+              relationList: referenceTypelist.data,
+            );
+          }
         },
       ),
 
@@ -74,12 +91,9 @@ class _ProfessionalReferencesScreenState
             builder: (context, state) {
               if (state is ProfessionalrefLoading) {
                 return const Center(child: LoadingAnimation());
-              }
-
-              if (state is ProfessionalrefError) {
+              } else if (state is ProfessionalrefError) {
                 return Center(child: Text(state.message));
-              }
-              if (state is ProfessionalrefgetState) {
+              } else if (state is ProfessionalrefgetState) {
                 final info = state.professionalerefModel.data;
                 if (info.isEmpty) {
                   return Center(child: Text("No Professional reference Added"));
@@ -99,13 +113,30 @@ class _ProfessionalReferencesScreenState
                         relationshipRefe: reference.relationship,
                         phoneRefe: reference.phone,
                         onEdit: () async {
-                          AddProfessionalRefBottomSheet.showSheet(
-                            context,
-                            reference,
-                            true,
-
-                            profRefBloc: context.read<ProfessionalrefBloc>(),
+                          listBloc.add(FetchReferenceList());
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder:
+                                (_) => const Center(child: LoadingAnimation()),
                           );
+
+                          final listState = await listBloc.stream.firstWhere(
+                            (s) =>
+                                s is ReferenceTypeListState || s is ListFailure,
+                          );
+                          Navigator.pop(context);
+                          if (listState is ReferenceTypeListState) {
+                            final referenceTypeList =
+                                listState.referenceTypeResponse.data;
+                            AddProfessionalRefBottomSheet.showSheet(
+                              context,
+                              reference,
+                              true,
+                              profRefBloc: context.read<ProfessionalrefBloc>(),
+                              relationList: referenceTypeList,
+                            );
+                          }
                         },
                         onDelete: () async {
                           final confirmed = await showDeleteConfirmationDialog(
