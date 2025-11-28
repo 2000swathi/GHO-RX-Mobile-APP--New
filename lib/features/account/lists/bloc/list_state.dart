@@ -102,3 +102,11 @@ class EductionTypeListState extends ListState {
   @override
   List<Object> get props => [educationTypeResponse];
 }
+//reference
+
+class ReferenceTypeListState extends ListState {
+  final ProfessionalReferenceResponse referenceTypeResponse;
+  const ReferenceTypeListState({required this.referenceTypeResponse});
+  @override
+  List<Object> get props => [referenceTypeResponse];
+}

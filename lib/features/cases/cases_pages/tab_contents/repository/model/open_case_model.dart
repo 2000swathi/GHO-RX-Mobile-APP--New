@@ -1,5 +1,5 @@
 class OpenCaseModel {
-  final int id;
+  final String id;
   final String patientName;
   final String gender;
   final int age;
@@ -21,7 +21,7 @@ class OpenCaseModel {
 
   factory OpenCaseModel.fromJson(Map<String, dynamic> json) {
     return OpenCaseModel(
-      id: json['id'] ?? 0,
+      id: json['id'] ?? '0',
       patientName: json['Patient Name'] ?? '',
       gender: json['Gender'] ?? '',
       age: json['Age'] ?? 0,
