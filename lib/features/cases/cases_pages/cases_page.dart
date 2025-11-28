@@ -12,6 +12,10 @@ class CasesPage extends StatefulWidget {
 }
 
 class _CasesPageState extends State<CasesPage> {
+  Future<void> _onRefresh() async {
+    await Future.delayed(const Duration(seconds: 1));
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -30,7 +34,24 @@ class _CasesPageState extends State<CasesPage> {
             tabs: [Tab(text: "Open"), Tab(text: "Closed")],
           ),
         ),
-        body: const TabBarView(children: [OpenCasesTab(), ClosedCasesTab()]),
+        body: TabBarView(
+          children: [
+            RefreshIndicator(
+              onRefresh: _onRefresh,
+              child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                child: OpenCasesTab(),
+              ),
+            ),
+            RefreshIndicator(
+              onRefresh: _onRefresh,
+              child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                child: ClosedCasesTab(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
