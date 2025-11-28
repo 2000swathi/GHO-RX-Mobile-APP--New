@@ -179,7 +179,7 @@ class ListRepository {
     };
     try {
       final response = await _dioHandler.post('', data: data);
-      return EducationTypeModel.fromJson(response);
+      return EducationTypeModel.fromJson(response); 
     } catch (e) {
       throw Exception("Failed to fetch degree list: $e");
     }
