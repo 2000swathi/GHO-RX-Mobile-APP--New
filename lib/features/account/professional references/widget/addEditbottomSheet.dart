@@ -6,6 +6,7 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_drop_down_field.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
+import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/referenceListResponse.dart';
 import 'package:ghorx_mobile_app_new/features/account/professional%20references/repo/bloc/professionalref_bloc.dart';
@@ -23,13 +24,15 @@ class AddProfessionalRefBottomSheet {
     final _formKey = GlobalKey<FormState>();
 
     String? relationID = isEdit ? info?.relationship : null;
+
     // Controllers
     final nameController = TextEditingController();
     final designationController = TextEditingController();
     final phoneController = TextEditingController();
     final relationShipController = TextEditingController();
+    final otherRelationController = TextEditingController();
 
-    // ------------ PREFILL ON EDIT MODE -------------------
+    /// Prefill when editing
     if (isEdit && info != null) {
       nameController.text = info.fullName;
       designationController.text = info.designation;
@@ -42,113 +45,126 @@ class AddProfessionalRefBottomSheet {
       heading:
           isEdit ? "Edit Professional Reference" : "Add Professional Reference",
       content: [
-        Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              CustomTextFormField(
-                controller: nameController,
-                name: "Full Name",
-                hintText: "Enter full name",
-                validator: Validation.validateProviderName,
-              ),
-              const SizedBox(height: 20),
+        StatefulBuilder(
+          builder: (context, setState) {
+            return Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  CustomTextFormField(
+                    controller: nameController,
+                    name: "Full Name",
+                    hintText: "Enter full name",
+                    validator: Validation.validateProviderName,
+                  ),
+                  const SizedBox(height: 20),
 
-              CustomTextFormField(
-                controller: designationController,
-                name: "Designation",
-                hintText: "Enter designation",
-                validator: Validation.validateProviderName,
-              ),
-              const SizedBox(height: 20),
+                  CustomTextFormField(
+                    controller: designationController,
+                    name: "Designation",
+                    hintText: "Enter designation",
+                    validator: Validation.validateProviderName,
+                  ),
+                  const SizedBox(height: 20),
 
-              CustomTextFormField(
-                controller: phoneController,
-                keyboardType: TextInputType.phone,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                name: "Phone Number",
-                hintText: "Enter phone number",
-                // validator: Validation.validatePhoneNumber,
-              ),
-              const SizedBox(height: 20),
+                  CustomTextFormField(
+                    controller: phoneController,
+                    keyboardType: TextInputType.phone,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    name: "Phone Number",
+                    hintText: "Enter phone number",
+                  ),
+                  const SizedBox(height: 20),
 
-              // CustomTextFormField(
-              //   controller: relationShipController,
-              //   name: "Relationship",
-              //   // keyboardType: TextInputType.emailAddress,
-              //   hintText: "Enter relation",
-              //   // validator: Validation.validateEmail,
-              // ),
-              // CustomDropdownFormField(
-              //   name: "Relationship",
-              //   hintText: "--Choose Your Relationship--",
-              //   value: relationID,
-              //   items:
-              //       flattenedList
-              //           .map(
-              //             (e) => DropdownItem(
-              //               value: e.dataValue,
-              //               label:
-              //                   (e.displyText == null ||
-              //                           e.displyText!.trim().isEmpty)
-              //                       ? e.dataValue
-              //                       : e.displyText!,
-              //             ),
-              //           )
-              //           .toList(),
+                  /// ---------------------------
+                  /// Relationship Dropdown + Other
+                  /// ---------------------------
+                  CustomDropdownFormField(
+                    name: "Relationship",
+                    hintText: "--Choose Your Relationship--",
+                    value: relationID,
+                    items:
+                        flattenedList
+                            .map(
+                              (e) => DropdownItem(
+                                value:
+                                    (e.displyText.isEmpty)
+                                        ? e.dataValue
+                                        : e.displyText,
+                                label:
+                                    (e.displyText.isEmpty)
+                                        ? e.dataValue
+                                        : e.displyText,
+                              ),
+                            )
+                            .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        relationID = value;
 
-              //   // FIX 2: UPDATE degreeID on selection
-              //   onChanged: (value) {
-              //     relationID = value; // update selected value
-              //     relationShipController.text =
-              //         value ?? ''; // update controller if needed
-              //   },
-              // ),
-              CustomDropdownFormField(
-                name: "Relationship",
-                hintText: "--Choose Your Relationship--",
-                value: relationID,
-                items:
-                    flattenedList
-                        .map(
-                          (e) => DropdownItem(
-                            value: e.dataValue,
-                            label:
-                                e.displyText.isEmpty
-                                    ? e.dataValue
-                                    : e.displyText,
+                        if (value != "Other") {
+                          relationShipController.text = value ?? "";
+                          otherRelationController.clear();
+                        }
+                      });
+                    },
+                  ),
+
+                  if (relationID == "Other")
+                    Padding(
+                      padding: EdgeInsets.only(top: 12),
+                      child: TextFormField(
+                        controller: otherRelationController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              color: AppColors.offgreycolor,
+                            ),
                           ),
-                        )
-                        .toList(),
-                onChanged: (value) {
-                  relationID = value; // update selected value
-                  relationShipController.text = value ?? '';
-                },
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: AppColors.offgreycolor,
+                              width: 1,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: AppColors.offgreycolor,
+                              width: 1.6,
+                            ),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 15,
+                            vertical: 12,
+                          ),
+                          labelText: "Please specify your relationship",
+                          labelStyle: TextStyle(color: AppColors.offgreycolor),
+                        ),
+                        onChanged: (text) {
+                          relationShipController.text = text;
+                        },
+                      ),
+                    ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         ),
       ],
+
+      /// -----------------------------------
+      /// ACTION BUTTON (Submit)
+      /// -----------------------------------
       actionButton: BlocListener<ProfessionalrefBloc, ProfessionalrefState>(
-        // listener: (context, state) {
-        //   if (state is ProRefSuccess) {
-        //     Navigator.pop(context);
-        //     profRefBloc.add(FetchProfessionalref());
-        //     CustomScaffoldMessenger.showSuccessMessage(context, state.message);
-        //   } else if (state is ProfessionalrefError) {
-        //     CustomScaffoldMessenger.showErrorMessage(context, state.message);
-        //   }
-        // },
         listener: (context, state) {
           if (state is ProRefSuccess) {
-            Navigator.pop(context); // closes loader
-            Navigator.pop(context); // closes bottom sheet
-
+            Navigator.pop(context); // close loading
+            // Navigator.pop(context); // close sheet
             profRefBloc.add(FetchProfessionalref());
-
             CustomScaffoldMessenger.showSuccessMessage(context, state.message);
           } else if (state is ProfessionalrefError) {
-            Navigator.pop(context); // close loader if open
+            Navigator.pop(context);
             CustomScaffoldMessenger.showErrorMessage(context, state.message);
           }
         },

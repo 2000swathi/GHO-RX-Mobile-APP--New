@@ -5,7 +5,6 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessan
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/features/account/deleteBloc/bloc/delete_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/account/education/repo/bloc/education_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/professional%20references/professionalreff_card.dart';
 import 'package:ghorx_mobile_app_new/features/account/professional%20references/repo/bloc/professionalref_bloc.dart';
