@@ -53,7 +53,7 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
           ),
         ),
         title: Text(
-          "${opencases.id.toString()} ",
+          "Case ID : ${opencases.id.toString()} ",
           style: AppFonts.subheading,
         ),
         actions: [
