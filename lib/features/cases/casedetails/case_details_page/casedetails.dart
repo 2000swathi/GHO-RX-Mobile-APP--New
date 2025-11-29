@@ -62,10 +62,9 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
             child: CircleAvatar(
               radius: 20,
               backgroundColor: Color(0xFFE3F2FD),
-              child: SvgPicture.asset(
-                'assets/svg/email_svg.svg',
-                width: 20,
-                height: 20,
+              child: CircleAvatar(
+                backgroundColor: AppColors.primarycolor.withAlpha(8),
+                child: SvgPicture.asset("assets/svg/email_svg.svg"),
               ),
             ),
           ),

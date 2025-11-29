@@ -120,7 +120,30 @@ class _PaymentPageState extends State<PaymentPage> {
           ),
         ),
 
-        body: TabBarView(children: [PayReceived(), PayPending()]),
+        body: TabBarView(
+          children: [
+            RefreshIndicator(
+              color: AppColors.white,
+              backgroundColor: AppColors.primarycolor,
+              onRefresh: () async {
+                context.read<PaymentBloc>().add(
+                  FetchPaymentInfo(dateValue: "7"),
+                );
+              },
+              child: PayReceived(),
+            ),
+            RefreshIndicator(
+              color: AppColors.white,
+              backgroundColor: AppColors.primarycolor,
+              onRefresh: () async {
+                context.read<PaymentBloc>().add(
+                  FetchPaymentInfo(dateValue: "7"),
+                );
+              },
+              child: PayPending(),
+            ),
+          ],
+        ),
       ),
     );
   }

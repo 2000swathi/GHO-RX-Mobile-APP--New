@@ -44,6 +44,7 @@ class PayPending extends StatelessWidget {
                   }
 
                   return ListView.builder(
+                    physics: BouncingScrollPhysics(),
                     itemCount: pendingList.length,
                     itemBuilder: (context, index) {
                       final pay = pendingList[index];
