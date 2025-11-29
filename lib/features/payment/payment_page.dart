@@ -18,10 +18,6 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-  Future<void> _onRefresh() async {
-    await Future.delayed(const Duration(seconds: 1));
-  }
-
   @override
   void initState() {
     super.initState();
@@ -124,26 +120,29 @@ class _PaymentPageState extends State<PaymentPage> {
           ),
         ),
 
-        body: RefreshIndicator(
-          onRefresh: _onRefresh,
-          child: TabBarView(
-            children: [
-              RefreshIndicator(
-                onRefresh: _onRefresh,
-                child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  child: PayReceived(),
-                ),
-              ),
-              RefreshIndicator(
-                onRefresh: _onRefresh,
-                child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  child: PayPending(),
-                ),
-              ),
-            ],
-          ),
+        body: TabBarView(
+          children: [
+            RefreshIndicator(
+              color: AppColors.white,
+              backgroundColor: AppColors.primarycolor,
+              onRefresh: () async {
+                context.read<PaymentBloc>().add(
+                  FetchPaymentInfo(dateValue: "7"),
+                );
+              },
+              child: PayReceived(),
+            ),
+            RefreshIndicator(
+              color: AppColors.white,
+              backgroundColor: AppColors.primarycolor,
+              onRefresh: () async {
+                context.read<PaymentBloc>().add(
+                  FetchPaymentInfo(dateValue: "7"),
+                );
+              },
+              child: PayPending(),
+            ),
+          ],
         ),
       ),
     );

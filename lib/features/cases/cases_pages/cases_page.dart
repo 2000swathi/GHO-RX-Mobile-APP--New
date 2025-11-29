@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/bloc/open_closed_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/widgets/case_appbar.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/closesd_cases.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/open_cases.dart';
@@ -12,10 +14,6 @@ class CasesPage extends StatefulWidget {
 }
 
 class _CasesPageState extends State<CasesPage> {
-  Future<void> _onRefresh() async {
-    await Future.delayed(const Duration(seconds: 1));
-  }
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -37,18 +35,20 @@ class _CasesPageState extends State<CasesPage> {
         body: TabBarView(
           children: [
             RefreshIndicator(
-              onRefresh: _onRefresh,
-              child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                child: OpenCasesTab(),
-              ),
+              color: AppColors.white,
+              backgroundColor: AppColors.primarycolor,
+              onRefresh: () async {
+                context.read<OpenClosedBloc>().add(FetchOpenCases());
+              },
+              child: OpenCasesTab(),
             ),
             RefreshIndicator(
-              onRefresh: _onRefresh,
-              child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                child: ClosedCasesTab(),
-              ),
+              color: AppColors.white,
+              backgroundColor: AppColors.primarycolor,
+              onRefresh: () async {
+                context.read<OpenClosedBloc>().add(FetchClosedCases());
+              },
+              child: ClosedCasesTab(),
             ),
           ],
         ),

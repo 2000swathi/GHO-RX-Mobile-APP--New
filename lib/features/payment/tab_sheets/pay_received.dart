@@ -7,79 +7,69 @@ import 'package:ghorx_mobile_app_new/features/payment/tab_sheets/repository/bloc
 import 'package:ghorx_mobile_app_new/features/payment/widgets/common_days_dropdown.dart';
 
 class PayReceived extends StatelessWidget {
-  PayReceived({super.key});
+  const PayReceived({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        color: AppColors.white,
-        padding: const EdgeInsets.symmetric(horizontal: 14),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14),
-          child: Column(
-            children: [
-              SizedBox(height: 20),
+    return Container(
+      color: AppColors.white,
+      padding: const EdgeInsets.symmetric(horizontal: 14),
+      child: Column(
+        children: [
+          const SizedBox(height: 20),
+          KPIHeader2(),
+          const SizedBox(height: 25),
 
-              // DailyPaymentGraph(),
+          Expanded(
+            child: BlocBuilder<PaymentBloc, PaymentState>(
+              builder: (context, state) {
+                if (state is PaymentLoading) {
+                  return LoadingAnimation();
+                }
 
-              // SizedBox(height: 24),
-              KPIHeader2(),
+                if (state is PaymentSuccess) {
+                  final list = state.response["Data"][0];
 
-              SizedBox(height: 25),
-
-              BlocBuilder<PaymentBloc, PaymentState>(
-                builder: (context, state) {
-                  if (state is PaymentLoading) {
-                    return LoadingAnimation();
-                  }
-
-                  if (state is PaymentSuccess) {
-                    final list = state.response["Data"][0];
-                    if (list.isEmpty) {
-                      return Column(
-                        children: [
-                          Text("(No transactions in this time period)"),
-                          SizedBox(height: 20,)
-                        ],
-                      );
-                    }
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: list.length,
-                      itemBuilder: (context, index) {
-                        final pay = list[index];
-                        return ListTile(
-                          title: Text("${pay["Name"]}"),
-                          subtitle: Text("Case ID : ${pay["CaseID"]}"),
-                          leading: Icon(
-                            Icons.verified,
-                            color: AppColors.successcolor,
-                          ),
-                          trailing: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                "${pay["AmountPaid"]}",
-                                style: AppFonts.subtext.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              Text("${pay["PaymentDate"]}"),
-                            ],
-                          ),
-                        );
-                      },
+                  if (list.isEmpty) {
+                    return Center(
+                      child: Text("(No transactions in this time period)"),
                     );
                   }
 
-                  return Text("No data");
-                },
-              ),
-            ],
+                  return ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: list.length,
+                    itemBuilder: (context, index) {
+                      final pay = list[index];
+                      return ListTile(
+                        title: Text("${pay["Name"]}"),
+                        subtitle: Text("Case ID : ${pay["CaseID"]}"),
+                        leading: Icon(
+                          Icons.verified,
+                          color: AppColors.successcolor,
+                        ),
+                        trailing: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              "${pay["AmountPaid"]}",
+                              style: AppFonts.subtext.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text("${pay["PaymentDate"]}"),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                }
+
+                return const Center(child: Text("No data"));
+              },
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

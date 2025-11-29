@@ -13,7 +13,7 @@ import 'package:ghorx_mobile_app_new/features/home/widget/profile_pic_dialogue.d
 import 'package:ghorx_mobile_app_new/features/shimmer/widget/shapes.dart';
 
 class AccountPage extends StatefulWidget {
-  AccountPage({Key? key}) : super(key: key);
+  const AccountPage({super.key});
 
   @override
   State<AccountPage> createState() => _AccountPageState();
@@ -120,9 +120,10 @@ class _AccountPageState extends State<AccountPage> {
         ),
         body: SafeArea(
           child: RefreshIndicator(
+            color: AppColors.white,
+              backgroundColor: AppColors.primarycolor,
             onRefresh: () async {
               context.read<PicBloc>().add(FetchPicEvent());
-              await Future.delayed(const Duration(seconds: 1));
             },
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 14),
