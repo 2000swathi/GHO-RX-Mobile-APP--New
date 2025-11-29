@@ -13,7 +13,7 @@ import 'package:ghorx_mobile_app_new/features/home/widget/profile_pic_dialogue.d
 import 'package:ghorx_mobile_app_new/features/shimmer/widget/shapes.dart';
 
 class AccountPage extends StatefulWidget {
-  AccountPage({Key? key}) : super(key: key);
+  const AccountPage({super.key});
 
   @override
   State<AccountPage> createState() => _AccountPageState();
@@ -119,38 +119,46 @@ class _AccountPageState extends State<AccountPage> {
           ],
         ),
         body: SafeArea(
-          child: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 14),
-            children: [
-              BlocBuilder<PicBloc, PicState>(
-                builder: (context, state) {
-                  if (state is PicInitial || state is PicLoading) {
-                    return _profileShimmer();
-                  }
+          child: RefreshIndicator(
+            color: AppColors.white,
+              backgroundColor: AppColors.primarycolor,
+            onRefresh: () async {
+              context.read<PicBloc>().add(FetchPicEvent());
+            },
+            child: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 14),
+              children: [
+                BlocBuilder<PicBloc, PicState>(
+                  builder: (context, state) {
+                    if (state is PicInitial || state is PicLoading) {
+                      return _profileShimmer();
+                    }
 
-                  if (state is PicSuccess) {
-                    return _buildProfile(context, state);
-                  }
+                    if (state is PicSuccess) {
+                      return _buildProfile(context, state);
+                    }
 
-                  return const SizedBox.shrink();
-                },
-              ),
-
-              const SizedBox(height: 25),
-
-              ..._drawerItems.map(
-                (item) => DrawerItemTile(
-                  imagePath: item.imagePath,
-                  title: item.title,
-                  onTap:
-                      item.routeName != null
-                          ? () => Navigator.pushNamed(context, item.routeName!)
-                          : null,
+                    return const SizedBox.shrink();
+                  },
                 ),
-              ),
 
-              const SizedBox(height: 30),
-            ],
+                const SizedBox(height: 25),
+
+                ..._drawerItems.map(
+                  (item) => DrawerItemTile(
+                    imagePath: item.imagePath,
+                    title: item.title,
+                    onTap:
+                        item.routeName != null
+                            ? () =>
+                                Navigator.pushNamed(context, item.routeName!)
+                            : null,
+                  ),
+                ),
+
+                const SizedBox(height: 30),
+              ],
+            ),
           ),
         ),
       ),
