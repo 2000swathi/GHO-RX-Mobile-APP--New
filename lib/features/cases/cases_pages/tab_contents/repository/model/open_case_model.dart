@@ -3,7 +3,7 @@ class OpenCaseModel {
   final String patientName;
   final String gender;
   final int age;
-  final int timeAllowed;
+  final String timeAllowed;
   final String dueDate;
   final String medicalSummary;
   final String saltKey;
@@ -25,10 +25,10 @@ class OpenCaseModel {
       patientName: json['Patient Name'] ?? '',
       gender: json['Gender'] ?? '',
       age: json['Age'] ?? 0,
-      timeAllowed: json['TimeAllowed'] ?? 0,
+      timeAllowed: json['TimeAllowed'] ?? '0',
       dueDate: json['DueDate'] ?? '',
       medicalSummary: json['MedicalSummary'] ?? '',
-      saltKey: json['SaltKey'] ?? '',
+      saltKey: json['CaseReviewerID'] ?? '',
     );
   }
 
@@ -41,7 +41,7 @@ class OpenCaseModel {
       'TimeAllowed': timeAllowed,
       'DueDate': dueDate,
       'MedicalSummary': medicalSummary,
-      'SaltKey':saltKey
+      'CaseReviewerID':saltKey
     };
   }
 }

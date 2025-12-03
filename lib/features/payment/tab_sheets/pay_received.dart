@@ -24,7 +24,7 @@ class PayReceived extends StatelessWidget {
             child: BlocBuilder<PaymentBloc, PaymentState>(
               builder: (context, state) {
                 if (state is PaymentLoading) {
-                  return LoadingAnimation();
+                  return Center(child: LoadingAnimation());
                 }
 
                 if (state is PaymentSuccess) {

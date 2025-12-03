@@ -8,7 +8,7 @@ import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_pag
 class QuestionTab extends StatelessWidget {
   final List<QuestionAnswerModel>? questionAnswer;
   final String saltID;
-  QuestionTab({super.key, required this.questionAnswer, required this.saltID});
+  const QuestionTab({super.key, required this.questionAnswer, required this.saltID});
 
   @override
   Widget build(BuildContext context) {
