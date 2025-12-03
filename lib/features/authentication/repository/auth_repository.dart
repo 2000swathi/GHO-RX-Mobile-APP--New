@@ -47,7 +47,6 @@ class AuthRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
-      print(response);
       return OtpVerifyResponse.fromJson(response);
     } on DioException catch (e) {
       throw Exception("${e.message}");
@@ -68,7 +67,6 @@ class AuthRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
-      print(response);
       return OtpResponse.fromJson(response);
     } on DioException catch (e) {
       throw Exception("${e.message}");
@@ -89,8 +87,7 @@ class AuthRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
-      print("FORGOT EMAIL RESPONSE:");
-      print(response);
+   
       if(response["Status"] == 1) {
         return response["Data"][0][0]["msg"];
       } else {

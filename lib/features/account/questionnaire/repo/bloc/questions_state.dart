@@ -25,6 +25,14 @@ class QuestionsLoaded extends QuestionsState {
   List<Object?> get props => [message, questionId];
 }
 
+class Questionsgetting extends QuestionsState {
+  final Map<String, dynamic> response;
+  Questionsgetting(this.response);
+
+  @override
+  List<Object?> get props => [response];
+}
+
 class QuestionsError extends QuestionsState {
   final String message;
   final String questionId;

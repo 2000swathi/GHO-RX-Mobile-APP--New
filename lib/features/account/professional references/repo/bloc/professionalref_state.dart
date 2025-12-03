@@ -15,25 +15,29 @@ class ProfessionalrefAddLoading extends ProfessionalrefState {}
 
 class ProfessionalrefEditLoading extends ProfessionalrefState {}
 
-//professional ref
+// Fetch success state
 class ProfessionalrefgetState extends ProfessionalrefState {
   final ProfessionalerefModel professionalerefModel;
   const ProfessionalrefgetState({required this.professionalerefModel});
+
   @override
-  List<Object> get props => [ProfessionalerefModel];
+  List<Object> get props => [professionalerefModel];
 }
 
-//add//edit
+// Add / Edit success
 class ProRefSuccess extends ProfessionalrefState {
   final String message;
   const ProRefSuccess({required this.message});
+
   @override
   List<Object> get props => [message];
 }
 
+// Failure
 class ProfessionalrefError extends ProfessionalrefState {
   final String message;
   const ProfessionalrefError({required this.message});
+
   @override
   List<Object> get props => [message];
 }

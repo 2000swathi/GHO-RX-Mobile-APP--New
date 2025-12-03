@@ -97,7 +97,7 @@ class _QuestionCardState extends State<QuestionCard> {
                       if (!isChecked) return;
 
                       context.read<QuestionsBloc>().add(
-                        FetchQuestionsEvent(
+                        CheckQuestionsEvent(
                           qID: widget.questionId,
                           answer: true,
                           comments: "",

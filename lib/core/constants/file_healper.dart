@@ -14,14 +14,12 @@ class FileHelper {
       if (!await file.exists()) {
         final response = await Dio().download(url, filePath);
         if (response.statusCode == 200) {
-          print("File downloaded: $filePath");
         }
       }
 
       // ✅ Open the file using OpenFilex
       await OpenFilex.open(filePath);
     } catch (e) {
-      print("Error opening file: $e");
       rethrow;
     }
   }

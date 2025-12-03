@@ -45,8 +45,6 @@ class AddEditExperienceSheet {
   }) {
     final formKey = GlobalKey<FormState>();
 
-    print("DEBUG >> EDIT MODE: dateFrom = ${item?.dateFrom}");
-    print("DEBUG >> EDIT MODE: dateTo = ${item?.dateTo}");
 
     final parsedFrom = parseMonthYear(item?.dateFrom);
     final parsedTo = parseMonthYear(item?.dateTo);

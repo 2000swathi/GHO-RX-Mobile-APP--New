@@ -21,8 +21,7 @@ class AddeditEducationBottomSheet {
     final flattenedList = educationList.expand((e) => e).toList();
     final _formKey = GlobalKey<FormState>();
 
-    String? degreeID = isEdit ? info?.degree : null;
-
+    // Controllers
     final instController = TextEditingController(
       text: isEdit ? info?.institution ?? '' : '',
     );
@@ -31,13 +30,36 @@ class AddeditEducationBottomSheet {
     );
     final yearController = TextEditingController(
       text:
-          isEdit && info?.completedYear != null
+          (isEdit && info?.completedYear != null)
               ? info!.completedYear.toString()
               : '',
     );
     final commentsController = TextEditingController(
       text: isEdit ? info?.comments ?? '' : '',
     );
+    final otherDegreeController = TextEditingController();
+
+    String? degreeID;
+    if (isEdit && info?.degree != null && info!.degree!.isNotEmpty) {
+      final saved = info.degree!;
+
+      final matchByValue =
+          flattenedList.where((e) => e.dataValue == saved).toList();
+      if (matchByValue.isNotEmpty) {
+        degreeID = matchByValue.first.dataValue;
+      } else {
+        final matchByDisplay =
+            flattenedList.where((e) => (e.displayText ?? '') == saved).toList();
+        if (matchByDisplay.isNotEmpty) {
+          degreeID = matchByDisplay.first.dataValue;
+        } else {
+          degreeID = "Other";
+          otherDegreeController.text = saved;
+        }
+      }
+    } else {
+      degreeID = null;
+    }
 
     CustomBottomSheet.show(
       context: context,
@@ -55,16 +77,13 @@ class AddeditEducationBottomSheet {
                     controller: instController,
                     validator: Validation.validateProviderName,
                   ),
+
                   const SizedBox(height: 20),
 
-                  // FIX 2: Dropdown using EducationData
                   CustomDropdownFormField(
                     name: "Degree",
                     hintText: " -Choose Your Degree- ",
-
-                    // FIX 1: Pass degreeID to dropdown
                     value: degreeID,
-
                     items:
                         flattenedList
                             .map(
@@ -78,21 +97,43 @@ class AddeditEducationBottomSheet {
                               ),
                             )
                             .toList(),
-
-                    // FIX 2: UPDATE degreeID on selection
                     onChanged: (value) {
-                      setState(() => degreeID = value);
+                      setState(() {
+                        degreeID = value;
+                        if (value != "Other") {
+                          otherDegreeController.clear();
+                        }
+                      });
                     },
                   ),
 
+                  AnimatedSize(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    child:
+                        degreeID == "Other"
+                            ? Padding(
+                              padding: const EdgeInsets.only(top: 12),
+                              child: CustomTextFormField(
+                                name: "Other",
+                                hintText: "Enter your degree",
+                                controller: otherDegreeController,
+                                validator: Validation.validateProviderName,
+                              ),
+                            )
+                            : const SizedBox.shrink(),
+                  ),
+
                   const SizedBox(height: 20),
+
                   CustomTextFormField(
                     name: "Duration",
                     hintText: "Enter Duration",
-                    validator: Validation.validateProviderName,
                     controller: durationController,
+                    validator: Validation.validateProviderName,
                   ),
                   const SizedBox(height: 20),
+
                   CustomTextFormField(
                     name: "Year",
                     hintText: "Enter Year",
@@ -100,11 +141,12 @@ class AddeditEducationBottomSheet {
                     validator: Validation.validateProviderName,
                   ),
                   const SizedBox(height: 20),
+
                   CustomTextFormField(
                     name: "Comments",
                     hintText: "Enter Comments",
-                    validator: Validation.validateProviderName,
                     controller: commentsController,
+                    validator: Validation.validateProviderName,
                   ),
                 ],
               ),
@@ -132,12 +174,25 @@ class AddeditEducationBottomSheet {
               isLoading: isLoading,
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
+                  final String finalDegree =
+                      degreeID == "Other"
+                          ? otherDegreeController.text.trim()
+                          : degreeID ?? "";
+
+                  if (finalDegree.isEmpty) {
+                    CustomScaffoldMessenger.showErrorMessage(
+                      context,
+                      "Please enter your degree",
+                    );
+                    return;
+                  }
+
                   if (isEdit) {
                     educationBloc.add(
                       EditEducation(
                         id: info!.id.toString(),
                         institution: instController.text,
-                        degree: degreeID ?? '',
+                        degree: finalDegree,
                         duration: durationController.text,
                         year: yearController.text,
                         comments: commentsController.text,
@@ -147,7 +202,7 @@ class AddeditEducationBottomSheet {
                     educationBloc.add(
                       AddEducation(
                         institution: instController.text,
-                        degree: degreeID ?? '',
+                        degree: finalDegree,
                         duration: durationController.text,
                         year: yearController.text,
                         comments: commentsController.text,

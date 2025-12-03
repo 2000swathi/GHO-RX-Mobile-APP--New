@@ -24,7 +24,7 @@ class _ClosedCasesTabState extends State<ClosedCasesTab> {
   Widget build(BuildContext context) {
     return BlocBuilder<OpenClosedBloc, OpenClosedState>(
       builder: (context, state) {
-        if (state is OpenClosedInitial || state is OpenClosedLoading) {
+        if (state is OpenClosedLoading) {
           return const Center(child: LoadingAnimation());
         } else if (state is ClosedCaseLoaded) {
           final closedCases = state.closedcases;
@@ -35,7 +35,7 @@ class _ClosedCasesTabState extends State<ClosedCasesTab> {
             shrinkWrap: true,
             physics: BouncingScrollPhysics(),
             padding: const EdgeInsets.all(16),
-            separatorBuilder: (_, __) => const SizedBox(height: 15),
+            separatorBuilder: (_, _) => const SizedBox(height: 15),
             itemCount: closedCases.length,
             itemBuilder: (context, index) {
               final caseItem = closedCases[index];
@@ -53,7 +53,7 @@ class _ClosedCasesTabState extends State<ClosedCasesTab> {
                 },
                 caseId: "Case ID ${caseItem.id.toString()}",
                 name: caseItem.patientName,
-                payout: "80",
+                payout:caseItem.amount.toString(),
                 dueDate: caseItem.completedDate,
                 description: caseItem.summaryOfRecords,
               );
@@ -138,7 +138,7 @@ class CaseCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "$caseId : $name",
+                  caseId,
                   style: AppFonts.semiratechart,
                   textAlign: TextAlign.left,
                 ),
@@ -165,7 +165,7 @@ class CaseCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "\$$payout",
+                     payout,
                       style: AppFonts.semiratechart.copyWith(
                         color: AppColors.successcolor,
                       ),

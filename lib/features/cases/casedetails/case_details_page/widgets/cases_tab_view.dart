@@ -8,7 +8,7 @@ import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_pag
 class CasesTabView extends StatefulWidget {
   final CaseDetailsModel caseDetailsModel;
   final String saltID;
-  CasesTabView({
+  const CasesTabView({
     super.key,
     required this.caseDetailsModel,
     required this.saltID,

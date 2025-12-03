@@ -49,6 +49,7 @@ class AddEditBankInfoBottonSheet {
                     (value) =>
                         Validation.field(value, fieldName: "Bank Name"),
               ),
+              const SizedBox(height: 10),
               CustomTextFormField(
                 controller: bankTypeController,
                 name: "Bank Type",
@@ -60,7 +61,7 @@ class AddEditBankInfoBottonSheet {
               const SizedBox(height: 10),
               CustomTextFormField(
                 controller: routingNumberController,
-                name: "Routing Number",
+                name: "Routing Number (Branch Code)",
                 hintText: "Enter Routing Number",
               ),
               SizedBox(height: 10),

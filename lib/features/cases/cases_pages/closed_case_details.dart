@@ -73,7 +73,7 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
               padding: const EdgeInsets.all(8.0),
               child: Center(
                 child: Text(
-                  "${state.error}",
+                  state.error,
                   style: AppFonts.textprimary,
                   textAlign: TextAlign.center,
                 ),
@@ -83,6 +83,14 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
 
           if (state is casedetailsSuccess) {
             final caseDetails = state.caseDetailsModel;
+            if (caseDetails.caseInfo == null) {
+              return Center(
+                child: Text(
+                  "No Case Details Available",
+                  style: AppFonts.textprimary,
+                ),
+              );
+            }
             final audioItemsdr = caseDetails.draudiosummery ?? [];
             final audioItemsPat = caseDetails.audiosummery ?? [];
             final audioListdr =
@@ -194,7 +202,7 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                                         ),
                                         Spacer(),
                                         Text(
-                                          "${medications.endMonth} ${medications.endYear}",
+                                          "${medications.startPd} ${medications.endpd}",
                                           style: AppFonts.labelItalic,
                                         ),
                                       ],

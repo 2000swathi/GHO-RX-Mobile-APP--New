@@ -41,7 +41,6 @@ class AddeditLanguageSheet {
                 ],
                 onChanged: (val) {
                   selectedLanguage = val;
-                  print("Selected language: $val");
                 },
               ),
 
@@ -57,7 +56,6 @@ class AddeditLanguageSheet {
                 ],
                 onChanged: (val) {
                   selectedProficiency = val;
-                  print("Selected language: $val");
                 },
               ),
             ],

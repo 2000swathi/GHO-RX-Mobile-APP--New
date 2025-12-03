@@ -91,48 +91,45 @@ class _MainPageState extends State<MainPage> {
         body: IndexedStack(index: _currentIndex, children: _pages),
         bottomNavigationBar: SafeArea(
           top: false,
-          child: SizedBox(
-            height: 65 + MediaQuery.of(context).padding.bottom,
-            child: BottomNavigationBar(
-              currentIndex: _currentIndex,
-              backgroundColor: AppColors.primarycolor,
-              selectedItemColor: Colors.white,
-              unselectedItemColor: Colors.white70,
-              type: BottomNavigationBarType.fixed,
-              onTap: (index) => setState(() => _currentIndex = index),
-              items: [
-                BottomNavigationBarItem(
-                  icon:
-                      _currentIndex == 0
-                          ? SvgPicture.asset("assets/svg/homeclick.svg")
-                          : SvgPicture.asset("assets/svg/home_svg.svg"),
-                  label: "Home",
-                ),
-                BottomNavigationBarItem(
-                  icon:
-                      _currentIndex == 1
-                          ? SvgPicture.asset("assets/svg/caseclick.svg")
-                          : SvgPicture.asset("assets/svg/cases_svg.svg"),
-                  label: "Cases",
-                ),
-                BottomNavigationBarItem(
-                  icon:
-                      _currentIndex == 2
-                          ? SvgPicture.asset(
-                            "assets/svg/payment_click_icon.svg",
-                          )
-                          : SvgPicture.asset("assets/svg/payment_icon.svg"),
-                  label: "Earnings",
-                ),
-                BottomNavigationBarItem(
-                  icon:
-                      _currentIndex == 3
-                          ? SvgPicture.asset("assets/svg/profile_clik.svg")
-                          : SvgPicture.asset("assets/svg/profile_svg.svg"),
-                  label: "Profile",
-                ),
-              ],
-            ),
+          child: BottomNavigationBar(
+            currentIndex: _currentIndex,
+            backgroundColor: AppColors.primarycolor,
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.white70,
+            type: BottomNavigationBarType.fixed,
+            onTap: (index) => setState(() => _currentIndex = index),
+            items: [
+              BottomNavigationBarItem(
+                icon:
+                    _currentIndex == 0
+                        ? SvgPicture.asset("assets/svg/homeclick.svg")
+                        : SvgPicture.asset("assets/svg/home_svg.svg"),
+                label: "Home",
+              ),
+              BottomNavigationBarItem(
+                icon:
+                    _currentIndex == 1
+                        ? SvgPicture.asset("assets/svg/caseclick.svg")
+                        : SvgPicture.asset("assets/svg/cases_svg.svg"),
+                label: "Cases",
+              ),
+              BottomNavigationBarItem(
+                icon:
+                    _currentIndex == 2
+                        ? SvgPicture.asset(
+                          "assets/svg/payment_click_icon.svg",
+                        )
+                        : SvgPicture.asset("assets/svg/payment_icon.svg"),
+                label: "Earnings",
+              ),
+              BottomNavigationBarItem(
+                icon:
+                    _currentIndex == 3
+                        ? SvgPicture.asset("assets/svg/profile_clik.svg")
+                        : SvgPicture.asset("assets/svg/profile_svg.svg"),
+                label: "Profile",
+              ),
+            ],
           ),
         ),
       ),

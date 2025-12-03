@@ -5,7 +5,6 @@ import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/bloc/open_closed_bloc.dart';
 
-
 class OpenCasesTab extends StatefulWidget {
   const OpenCasesTab({super.key});
 
@@ -24,7 +23,7 @@ class _OpenCasesTabState extends State<OpenCasesTab> {
   Widget build(BuildContext context) {
     return BlocBuilder<OpenClosedBloc, OpenClosedState>(
       builder: (context, state) {
-        if (state is OpenClosedInitial || state is OpenClosedLoading) {
+        if (state is OpenClosedLoading) {
           return const Center(child: LoadingAnimation());
         } else if (state is OpenCaseLoaded) {
           final openCases = state.openCases;
@@ -32,9 +31,10 @@ class _OpenCasesTabState extends State<OpenCasesTab> {
             return const Center(child: Text('No open cases available'));
           }
           return ListView.separated(
+            physics: BouncingScrollPhysics(),
             padding: const EdgeInsets.all(15),
             itemCount: openCases.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 15),
+            separatorBuilder: (_, _) => const SizedBox(height: 15),
             itemBuilder: (context, index) {
               final caseItem = openCases[index];
               return OpenCaseCard(
@@ -46,7 +46,7 @@ class _OpenCasesTabState extends State<OpenCasesTab> {
                   );
                 },
 
-                caseId: 'Case ID: ${caseItem.id}',
+                caseId: caseItem.id,
 
                 dueDate: caseItem.dueDate,
                 description: caseItem.medicalSummary,
@@ -57,7 +57,7 @@ class _OpenCasesTabState extends State<OpenCasesTab> {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
-              child: Text('${state.message}', style: AppFonts.subtext),
+              child: Text(state.message, style: AppFonts.subtext),
             ),
           );
         } else {
@@ -114,10 +114,8 @@ class OpenCaseCard extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Case Identifier', style: AppFonts.subtext),
-                          const SizedBox(height: 4),
                           Text(
-                            "Case ID : ${caseId}",
+                            "Case ID : $caseId",
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,

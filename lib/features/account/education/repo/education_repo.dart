@@ -25,7 +25,6 @@ class EducationRepo {
     };
     try {
       final response = await _dioHandler.post('', data: data);
-      print(response);
       return EducationResponse.fromJson(response);
     } catch (e) {
       throw (e.toString());

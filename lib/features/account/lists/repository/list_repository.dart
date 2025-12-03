@@ -179,12 +179,13 @@ class ListRepository {
     };
     try {
       final response = await _dioHandler.post('', data: data);
-      return EducationTypeModel.fromJson(response);
+      return EducationTypeModel.fromJson(response); 
     } catch (e) {
       throw Exception("Failed to fetch degree list: $e");
     }
-}
-// doctype lists
+  }
+
+  // doctype lists
   Future<Map<String, dynamic>> fetchDocTypeList() async {
     final data = {
       ...ApiUtils.getCommonParams(action: action, token: ""),
@@ -199,5 +200,22 @@ class ListRepository {
     } catch (e) {
       throw Exception("Failed to fetch doc type list: $e");
     }
-}
+  }
+
+  //reference list
+  Future<Map<String, dynamic>> fetchReferenceList() async {
+    final data = {
+      ...ApiUtils.getCommonParams(action: action, token: ""),
+      "Tags": [
+        {"T": "dk1", "V": "REFERENCERELATION"},
+        {"T": "c10", "V": "3"},
+      ],
+    };
+    try {
+      final response = await _dioHandler.post('', data: data);
+      return response;
+    } catch (e) {
+      throw Exception("Failed to fetch reference type list: $e");
+    }
+  }
 }

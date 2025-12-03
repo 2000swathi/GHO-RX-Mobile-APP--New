@@ -17,7 +17,7 @@ class AudioSummaryListWidget extends StatefulWidget {
   final String? caseID;
   final String? saltID;
 
-  AudioSummaryListWidget({
+  const AudioSummaryListWidget({
     super.key,
     required this.audioList,
     this.isDrUploaded = false,
@@ -97,7 +97,6 @@ class _AudioSummaryListWidgetState extends State<AudioSummaryListWidget> {
 
       await _player.play();
     } catch (e) {
-      debugPrint("Audio error: $e");
       setState(() {
         _isLoading = false;
         _playingIndex = null;

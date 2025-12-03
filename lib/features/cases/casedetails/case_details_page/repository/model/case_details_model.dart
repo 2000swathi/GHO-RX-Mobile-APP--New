@@ -131,7 +131,7 @@ class CaseInfo {
   factory CaseInfo.fromJson(Map<String, dynamic> json) => CaseInfo(
     id: json['id'] ?? 0,
     patientName: json['PatientName'] ?? '',
-    saltKey: json['SaltKey'] ?? '',
+    saltKey: json['CaseReviewerID'] ?? '',
     gender: json['Gender'] ?? '',
     dateAssigned: json['DateAssigned'] ?? '',
     dueDate: json['DueDate'] ?? '',
@@ -145,7 +145,7 @@ class CaseInfo {
   Map<String, dynamic> toJson() => {
     'id': id,
     'PatientName': patientName,
-    'SaltKey': saltKey,
+    'CaseReviewerID': saltKey,
     'Gender': gender,
     'DateAssigned': dateAssigned,
     'DueDate': dueDate,
@@ -170,26 +170,26 @@ class MedicalSummary {
 
 class MedicationModel {
   final String name;
-  final int endMonth;
-  final int endYear;
+  final String startPd;
+  final String endpd;
 
   MedicationModel({
     required this.name,
-    required this.endMonth,
-    required this.endYear,
+    required this.startPd,
+    required this.endpd,
   });
 
   factory MedicationModel.fromJson(Map<String, dynamic> json) =>
       MedicationModel(
         name: json['MedicationName'] ?? "",
-        endMonth: json['EndMonth'] ?? 0,
-        endYear: json['EndYear'] ?? 0,
+        startPd: json['StartPeriod'] ?? '',
+        endpd: json['EndPeriod'] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
     'MedicationName': name,
-    "EndMonth": endMonth,
-    "EndYear": endYear,
+    "EndMonth": startPd,
+    "EndYear": endpd,
   };
 }
 

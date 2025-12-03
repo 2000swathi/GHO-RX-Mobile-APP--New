@@ -7,6 +7,7 @@ import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/cou
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/education_typemodel.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/issueing_authority.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/license_response_model.dart';
+import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/referenceListResponse.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/specialty%20type_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/specialty_response_model.dart';
 
@@ -28,6 +29,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     on<FetchQuestList>(_onFetchQuestList);
     on<FetchEducationList>(_onFetchDegreeType);
     on<FetchDocTypeList>(_onFetchDocTypeList);
+    on<FetchReferenceList>(_onFetchReferenceTypeList);
   }
 
   //country list
@@ -176,7 +178,6 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     try {
       final response = await repository.fetchQuestionsList();
       if (response["Status"] == 1) {
-        print(response);
         return emit(QuestionsLIstState(response: response));
       } else {
         return emit(ListFailure(error: response["Info"]));
@@ -214,6 +215,30 @@ class ListBloc extends Bloc<ListEvent, ListState> {
         return emit(CommonListState(response: response));
       } else {
         return emit(ListFailure(error: response["Info"]));
+      }
+    } catch (e) {
+      emit(ListFailure(error: e.toString()));
+    }
+  }
+
+  //reference list
+  Future<void> _onFetchReferenceTypeList(
+    FetchReferenceList event,
+    Emitter<ListState> emit,
+  ) async {
+    emit(ListLoading());
+
+    try {
+      final response = await repository.fetchReferenceList();
+
+      if (response["Status"] == 1) {
+        // Convert response to ProfessionalReferenceResponse model
+        final referenceResponse = ProfessionalReferenceResponse.fromJson(
+          response,
+        );
+        emit(ReferenceTypeListState(referenceTypeResponse: referenceResponse));
+      } else {
+        emit(ListFailure(error: response["Info"]));
       }
     } catch (e) {
       emit(ListFailure(error: e.toString()));
