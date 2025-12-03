@@ -23,7 +23,7 @@ class _OpenCasesTabState extends State<OpenCasesTab> {
   Widget build(BuildContext context) {
     return BlocBuilder<OpenClosedBloc, OpenClosedState>(
       builder: (context, state) {
-        if (state is OpenClosedInitial || state is OpenClosedLoading) {
+        if (state is OpenClosedLoading) {
           return const Center(child: LoadingAnimation());
         } else if (state is OpenCaseLoaded) {
           final openCases = state.openCases;
@@ -46,7 +46,7 @@ class _OpenCasesTabState extends State<OpenCasesTab> {
                   );
                 },
 
-                caseId: '${caseItem.id}',
+                caseId: caseItem.id,
 
                 dueDate: caseItem.dueDate,
                 description: caseItem.medicalSummary,
@@ -57,7 +57,7 @@ class _OpenCasesTabState extends State<OpenCasesTab> {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
-              child: Text('${state.message}', style: AppFonts.subtext),
+              child: Text(state.message, style: AppFonts.subtext),
             ),
           );
         } else {

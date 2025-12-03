@@ -131,7 +131,7 @@ class CaseInfo {
   factory CaseInfo.fromJson(Map<String, dynamic> json) => CaseInfo(
     id: json['id'] ?? 0,
     patientName: json['PatientName'] ?? '',
-    saltKey: json['SaltKey'] ?? '',
+    saltKey: json['CaseReviewerID'] ?? '',
     gender: json['Gender'] ?? '',
     dateAssigned: json['DateAssigned'] ?? '',
     dueDate: json['DueDate'] ?? '',
@@ -145,7 +145,7 @@ class CaseInfo {
   Map<String, dynamic> toJson() => {
     'id': id,
     'PatientName': patientName,
-    'SaltKey': saltKey,
+    'CaseReviewerID': saltKey,
     'Gender': gender,
     'DateAssigned': dateAssigned,
     'DueDate': dueDate,

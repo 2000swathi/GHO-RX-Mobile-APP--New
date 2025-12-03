@@ -68,9 +68,7 @@ class _KPIHeader2State extends State<KPIHeader2> {
                       orElse: () => durationItems.first,
                     );
 
-                    if (_selectedDuration == null) {
-                      _selectedDuration = defaultItem.value;
-                    }
+                    _selectedDuration ??= defaultItem.value;
 
                     return RangeDropdownFormField<String>(
                       name: '',

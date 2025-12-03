@@ -77,7 +77,11 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
           }
 
           if (state is casedetailsSuccess) {
-            final CaseInfo = state.caseDetailsModel.caseInfo!;
+            final caseInfo = state.caseDetailsModel.caseInfo;
+            if (caseInfo == null) {
+              return Center(child: Text("Case info not available"));
+            }
+
             return SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -88,7 +92,7 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          CaseInfo.patientName,
+                          caseInfo.patientName,
                           style: AppFonts.subheading16,
                         ),
                         Container(
@@ -120,11 +124,11 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
                         ),
                         const SizedBox(width: 7),
                         Text(
-                          CaseInfo.gender,
+                          caseInfo.gender,
                           style: AppFonts.subheading16.copyWith(fontSize: 14),
                         ),
                         const SizedBox(width: 15),
-                        if (CaseInfo.dob!.isNotEmpty)
+                        if (caseInfo.dob!.isNotEmpty)
                           const Icon(
                             Icons.cake,
                             size: 19,
@@ -132,7 +136,7 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
                           ),
                         const SizedBox(width: 7),
                         Text(
-                          CaseInfo.dob.toString(),
+                          caseInfo.dob.toString(),
                           style: AppFonts.subheading16.copyWith(fontSize: 14),
                         ),
                       ],
@@ -144,7 +148,7 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
                         const Icon(Icons.circle, size: 6, color: AppColors.red),
                         const SizedBox(width: 3),
                         Text(
-                          "${CaseInfo.dueDate}",
+                          caseInfo.dueDate,
                           style: AppFonts.textSecondary.copyWith(
                             fontSize: 14,
                             color: AppColors.red,
@@ -193,7 +197,7 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
                                 ),
                           ),
                         );
-                        ;
+                        
                       },
                     ),
                     const SizedBox(height: 14),

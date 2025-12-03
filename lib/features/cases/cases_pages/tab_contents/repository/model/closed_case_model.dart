@@ -32,7 +32,7 @@ class ClosedCaseModel {
       timeUsed: json['TimeUsed'] ?? 0,
       completedDate: json['CompletedDate'] ?? '',
       summaryOfRecords: json['SummaryOfRecords'] ?? '',
-      saltID: json['SaltKey']??"",
+      saltID: json['CaseReviewerID']??"",
       caseID: json['CaseID']??"",
       amount: json["Amount"]??0.0,
     );
@@ -47,7 +47,7 @@ class ClosedCaseModel {
       'TimeUsed': timeUsed,
       'CompletedDate': completedDate,
       'SummaryOfRecords': summaryOfRecords,
-      'SaltKey': saltID,
+      'CaseReviewerID': saltID,
       'CaseID':caseID,
       'Amount':amount,
     };
