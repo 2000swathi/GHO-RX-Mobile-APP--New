@@ -9,7 +9,7 @@ class DeleteBloc extends Bloc<DeleteEvent, DeleteState> {
 
   DeleteBloc({required this.repository}) : super(DeleteInitial()) {
     on<DeleteProfileItem>(_onDeleteProfileItem);
-    on<fetchDeleteAccount>(_onDeleteAccount);
+    on<FetchDeleteAccount>(_onDeleteAccount);
   }
   Future<void> _onDeleteProfileItem(
     DeleteProfileItem event,
@@ -35,7 +35,7 @@ class DeleteBloc extends Bloc<DeleteEvent, DeleteState> {
     }
   }
   Future<void> _onDeleteAccount(
-    fetchDeleteAccount event,
+    FetchDeleteAccount event,
     Emitter<DeleteState> emit,
   ) async {
     emit(DeleteLoading());

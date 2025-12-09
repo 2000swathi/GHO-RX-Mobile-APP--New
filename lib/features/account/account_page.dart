@@ -121,7 +121,7 @@ class _AccountPageState extends State<AccountPage> {
         body: SafeArea(
           child: RefreshIndicator(
             color: AppColors.white,
-              backgroundColor: AppColors.primarycolor,
+            backgroundColor: AppColors.primarycolor,
             onRefresh: () async {
               context.read<PicBloc>().add(FetchPicEvent());
             },
@@ -130,7 +130,7 @@ class _AccountPageState extends State<AccountPage> {
               children: [
                 BlocBuilder<PicBloc, PicState>(
                   builder: (context, state) {
-                    if (state is PicInitial || state is PicLoading) {
+                    if (state is PicLoading) {
                       return _profileShimmer();
                     }
 
@@ -187,7 +187,37 @@ class _AccountPageState extends State<AccountPage> {
     final data = state.response["Data"];
 
     if (data == null || data.isEmpty || data[0].isEmpty) {
-      return _profileShimmer();
+      return Center(
+        child: Stack(
+          children: [
+            CircleAvatar(
+              radius: 55,
+              backgroundColor: AppColors.primarycolor.withAlpha(13),
+              child: ClipOval(child: SvgPicture.asset("assets/svg/person.svg")),
+            ),
+            Positioned(
+              right: 4,
+              bottom: 4,
+              child: InkWell(
+                onTap:
+                    () => showDialog(
+                      context: context,
+                      builder:
+                          (_) => ProfileDialog(url: "", fileID: 0),
+                    ),
+                child: CircleAvatar(
+                  radius: 16,
+                  backgroundColor: AppColors.white,
+                  child: SvgPicture.asset(
+                    "assets/svg/account/edit.svg",
+                    height: 16,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
     }
 
     final info = data[0][0];
@@ -195,7 +225,7 @@ class _AccountPageState extends State<AccountPage> {
     final fullName = info["FullName"] ?? '';
     final email = info["email"] ?? '';
     final fileID = info["FileUploadID"] ?? 0;
-    Widget _avatarShimmer() {
+    Widget avatarShimmer() {
       return ShimmerShapes.circle(110);
     }
 
@@ -219,9 +249,9 @@ class _AccountPageState extends State<AccountPage> {
                               fit: BoxFit.cover,
                               width: double.infinity,
                               height: double.infinity,
-                              placeholder: (_, __) => _avatarShimmer(),
+                              placeholder: (_, _) => avatarShimmer(),
                               errorWidget:
-                                  (_, __, ___) =>
+                                  (_, _, _) =>
                                       SvgPicture.asset("assets/svg/person.svg"),
                             )
                             : SvgPicture.asset("assets/svg/person.svg"),
