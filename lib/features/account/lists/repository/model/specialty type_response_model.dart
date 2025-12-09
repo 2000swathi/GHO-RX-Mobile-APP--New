@@ -37,7 +37,7 @@ class SpecialtyTypeResponseModel {
 }
 
 class SpecialtytypeList {
-  final int specialtytypeID;
+  final String specialtytypeID;
   final String specialtytypeName;
 
   SpecialtytypeList({
@@ -47,15 +47,15 @@ class SpecialtytypeList {
 
   factory SpecialtytypeList.fromJson(Map<String, dynamic> json) {
     return SpecialtytypeList(
-      specialtytypeID: json['SpecialtyTypeid'] ?? 0,
-      specialtytypeName: json['SpecialtyType'] ?? '',
+      specialtytypeID: json['DataValue'] ?? '',
+      specialtytypeName: json['DisplyText'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'SpecialtyTypeid': specialtytypeID,
-      'SpecialtyType': specialtytypeName,
+      'DataValue': specialtytypeID,
+      'DisplyText': specialtytypeName,
     };
   }
 }

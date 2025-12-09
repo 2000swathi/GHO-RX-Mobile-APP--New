@@ -47,7 +47,7 @@ class PersonalInfoModel {
       birthDate: json['BirthDate'] ?? "",
       countryName: json['CountryName'] ?? "",
       imageUrl: json['_Url'] ?? "",
-      fileID: json['FileUploadID'] ?? "",
+      fileID: json['FileUploadID'] ?? 0,
     );
   }
 }

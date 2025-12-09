@@ -29,67 +29,36 @@ class SpecialtyModel {
       data: specialties,
     );
   }
-
-  get specialtyId => null;
-
-  get id => null;
 }
 
 class Specialtym {
   final int id;
   final int reviewerId;
   final int specialtyId;
-  final int? specialtyIdOld;
   final String specialtyType;
-  final bool isCertified;
-  final DateTime expDate;
-  final bool credentialStatus;
-  final String? code;
-  final String? docCode;
-  final bool? isMain;
-  final bool? isExpertise;
-  final bool? isSub;
   final String certifiedBoard;
   final String specialty;
+  final int certificationBodyID;
 
   Specialtym({
     required this.id,
     required this.reviewerId,
     required this.specialtyId,
-    this.specialtyIdOld,
     required this.specialtyType,
-    required this.isCertified,
-    required this.expDate,
-    required this.credentialStatus,
-    this.code,
-    this.docCode,
-    this.isMain,
-    this.isExpertise,
-    this.isSub,
     required this.certifiedBoard,
     required this.specialty,
+    required this.certificationBodyID,
   });
 
   factory Specialtym.fromJson(Map<String, dynamic> json) {
     return Specialtym(
-      id: json['ID'] ?? 0,
+      id: json['id'] ?? 0,
       reviewerId: json['ReviewerID'] ?? 0,
       specialtyId: json['SpecialtyID'] ?? 0,
-      specialtyIdOld: json['SpecialtyID_Old'],
       specialtyType: json['SpecialtyType'] ?? '',
-      isCertified: json['IsCertified'] ?? false,
-      expDate:
-          json['ExpDate'] != null
-              ? DateTime.parse(json['ExpDate'])
-              : DateTime(1970),
-      credentialStatus: json['CredentialStatus'] ?? false,
-      code: json['Code'],
-      docCode: json['DocCode'],
-      isMain: json['IsMain'],
-      isExpertise: json['IsExpertise'],
-      isSub: json['IsSub'],
       certifiedBoard: json['CertifiedBoard'] ?? '',
       specialty: json['Specialty'] ?? '',
+      certificationBodyID: json['CertificationBodyID'] ?? 0,
     );
   }
 }

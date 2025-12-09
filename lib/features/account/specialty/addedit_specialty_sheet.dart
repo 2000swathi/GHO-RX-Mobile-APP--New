@@ -24,18 +24,18 @@ class AddEditSpecialtySheet {
   }) {
     final formKey = GlobalKey<FormState>();
     String? selectedSpecialtyID = isEdit ? info?.specialtyId.toString() : null;
-    String? selectedCertifiedBoard;
-    if (isEdit && info?.certifiedBoard != null) {
-      try {
-        selectedCertifiedBoard =
-            certList
-                .firstWhere((e) => e.certifiedName == info!.certifiedBoard)
-                .certifiedID
-                .toString();
-      } catch (e) {
-        selectedCertifiedBoard = null;
-      }
-    }
+    String? selectedCertifiedBoard =isEdit? info?.certificationBodyID.toString():null;
+    // if (isEdit && info?.certifiedBoard != null) {
+    //   try {
+    //     selectedCertifiedBoard =
+    //         certList
+    //             .firstWhere((e) => e.certifiedName == info!.certifiedBoard)
+    //             .certifiedID
+    //             .toString();
+    //   } catch (e) {
+    //     selectedCertifiedBoard = null;
+    //   }
+    // }
     String? selectedSpecialtyType;
     if (isEdit && info?.specialtyType != null) {
       try {
