@@ -11,17 +11,13 @@ import 'package:ghorx_mobile_app_new/features/account/specialty/widget/specialty
 import 'package:ghorx_mobile_app_new/features/account/widget/custom_profile_appbar.dart';
 
 class SpecialtyScreen extends StatefulWidget {
-  SpecialtyScreen({super.key});
+  const SpecialtyScreen({super.key});
 
   @override
   State<SpecialtyScreen> createState() => _SpecialtyScreenState();
 }
 
 class _SpecialtyScreenState extends State<SpecialtyScreen> {
-  final List<Map<String, dynamic>> specialtyData = [
-    {"specialty": "Surgeon", "certifiedBoard": "NABH", "specialtyType": "ABCD"},
-    {"specialty": "Surgeon", "certifiedBoard": "NABH", "specialtyType": "ABCD"},
-  ];
   @override
   void initState() {
     super.initState();

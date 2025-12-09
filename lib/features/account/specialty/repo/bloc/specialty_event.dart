@@ -14,7 +14,7 @@ class AddSpecialty extends SpecialtyEvent {
   final String certifiedBoard;
   final String specialtyType;
 
-  AddSpecialty({
+  const AddSpecialty({
     required this.specialty,
     required this.certifiedBoard,
     required this.specialtyType,
