@@ -171,7 +171,7 @@ class _KPIHeaderState extends State<KPIHeader> {
                             color: const Color(0xffF4F5F7),
                             textColor: const Color(0xff404040).withAlpha(48),
                             data: "Next Payout",
-                            data1: data1["NextPayout"].toString(),
+                            data1: data1["NextPayout"]==null?"0.0":data1["NextPayout"].toString(),
                             data2Color: const Color(0xff94989B),
                           ),
                         ),
