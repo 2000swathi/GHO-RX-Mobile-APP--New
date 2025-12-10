@@ -158,7 +158,7 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                         const Icon(Icons.circle, size: 6, color: AppColors.red),
                         SizedBox(width: 4),
                         Text(
-                          "${caseDetails.caseInfo!.dueDate.toString()}",
+                          caseDetails.caseInfo!.dueDate.toString(),
                           style: AppFonts.textSecondary.copyWith(
                             fontSize: 16,
                             color: AppColors.red,
@@ -179,7 +179,6 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                         ? SizedBox()
                         : CustomContainer(
                           greyHeading: "Medication",
-
                           customWidgets1: [
                             SizedBox(height: 10),
                             ListView.builder(

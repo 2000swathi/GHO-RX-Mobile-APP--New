@@ -33,8 +33,7 @@ class PerformanceSnapshotWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text("Performance Snapshot",
-                    style: AppFonts.subheading),
+                const Text("Performance Snapshot", style: AppFonts.subheading),
                 const SizedBox(height: 12),
 
                 /// MAIN ROW
@@ -46,7 +45,6 @@ class PerformanceSnapshotWidget extends StatelessWidget {
                     return Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-
                         /// LEFT BIG CARD
                         Expanded(
                           child: ElevatedGlassBox(
@@ -57,33 +55,36 @@ class PerformanceSnapshotWidget extends StatelessWidget {
                               child: Padding(
                                 padding: const EdgeInsets.all(16),
                                 child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text("Overview",
-                                        style: AppFonts.semiratechart),
+                                    const Text(
+                                      "Overview",
+                                      style: AppFonts.semiratechart,
+                                    ),
                                     const SizedBox(height: 4),
                                     Text(
                                       "You have ${performanceData.isNotEmpty ? performanceData[0]["PendingCases"] : "0"} Pending Cases",
                                       style: AppFonts.textred,
                                     ),
-                                      const SizedBox(height:20),
+                                    const SizedBox(height: 20),
                                     CustomRateChart(
                                       completionRate:
-                                          performanceData.isNotEmpty
+                                          performanceData[0]["Percentage"] !=
+                                                  null
                                               ? double.parse(
-                                                  performanceData[0]
-                                                          ["Percentage"]
-                                                      .toString())
+                                                performanceData[0]["Percentage"]
+                                                    .toString(),
+                                              )
                                               : 0,
                                     ),
                                     const Spacer(),
                                     Center(
                                       child: Text(
                                         "Keep it up! You're ahead of ${performanceData.isNotEmpty ? performanceData[0]["ReviewerPercentile"].toString() : "0"}% of doctors.",
-                                        style: AppFonts.subtext
-                                            .copyWith(fontSize: 12),
-                                            textAlign: TextAlign.left,
+                                        style: AppFonts.subtext.copyWith(
+                                          fontSize: 12,
+                                        ),
+                                        textAlign: TextAlign.left,
                                       ),
                                     ),
                                   ],
@@ -103,24 +104,25 @@ class PerformanceSnapshotWidget extends StatelessWidget {
                                   child: _buildSmallCard(
                                     icon: "assets/svg/time_svg.svg",
                                     title: "Avg. Response Time",
-                                    value: performanceData.isNotEmpty
-                                        ? performanceData[0]
-                                                ["AvgResponseTime"]
-                                            .toString()
-                                        : "0 hrs",
+                                    value:
+                                        performanceData[0]["AvgResponseTime"] !=
+                                                null
+                                            ? performanceData[0]["AvgResponseTime"]
+                                                .toString()
+                                            : "0 hrs",
                                   ),
                                 ),
                                 const SizedBox(height: 10),
                                 Expanded(
                                   child: _buildSmallCard(
-                                    icon:
-                                        "assets/svg/earningg_svg.svg",
+                                    icon: "assets/svg/earningg_svg.svg",
                                     title: "Total Earnings",
-                                    value: performanceData.isNotEmpty
-                                        ? performanceData[0]
-                                                ["TotalEarnings"]
-                                            .toString()
-                                        : "0.0",
+                                    value:
+                                        performanceData[0]["TotalEarnings"] !=
+                                                null
+                                            ? performanceData[0]["TotalEarnings"]
+                                                .toString()
+                                            : "0.0",
                                   ),
                                 ),
                               ],
@@ -158,10 +160,7 @@ class PerformanceSnapshotWidget extends StatelessWidget {
                 AppColors.white.withAlpha(2),
               ],
             ),
-            border: Border.all(
-              color: AppColors.white.withAlpha(4),
-              width: 1.5,
-            ),
+            border: Border.all(color: AppColors.white.withAlpha(4), width: 1.5),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withAlpha(5),
