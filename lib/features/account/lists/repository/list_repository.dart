@@ -104,7 +104,8 @@ class ListRepository {
     final data = {
       ...ApiUtils.getCommonParams(action: action, token: ""),
       "Tags": [
-        {"T": "c10", "V": "88"},
+        {"T": "dk1", "V": "SPECIALTYTYPE"},
+        {"T": "c10", "V": "3"},
       ],
     };
 
@@ -179,7 +180,7 @@ class ListRepository {
     };
     try {
       final response = await _dioHandler.post('', data: data);
-      return EducationTypeModel.fromJson(response); 
+      return EducationTypeModel.fromJson(response);
     } catch (e) {
       throw Exception("Failed to fetch degree list: $e");
     }

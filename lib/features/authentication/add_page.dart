@@ -202,7 +202,7 @@ class AddPage extends StatelessWidget {
                       child: CustomButton(
                         text: "Continue",
                         onPressed: () {
-                           openLink("https://reviewer.g2ndopinion.com/auth/signup");
+                           openLink("https://reviewer.g2ndopinion.com/join");
                         },
                         iswhite: true,
                       ),

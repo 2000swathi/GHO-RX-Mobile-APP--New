@@ -37,9 +37,9 @@ class SpecialtyBloc extends Bloc<SpecialtyEvent, SpecialtyState> {
 
     try {
       final response = await repository.addSpecialty(
-        specialty: event.specialty,
-        certifiedBoard: event.certifiedBoard,
-        specialtyType: event.specialtyType,
+        specialtyID: event.specialty,
+        certifiedBoardId: event.certifiedBoard,
+        specialtyTypeID: event.specialtyType,
       );
       if (response["Status"] == 1) {
         String message = "Added Successfully";
@@ -71,8 +71,8 @@ class SpecialtyBloc extends Bloc<SpecialtyEvent, SpecialtyState> {
       final response = await repository.editSpecialty(
         specialtyId: event.specialtyId,
         id: event.id,
-        certifiedBoard: event.certifiedBoard,
-        specialtyType: event.specialtyType,
+        certifiedBoardName: event.certifiedBoard,
+        specialtyTypeId: event.specialtyType,
       );
 
       if (response["Status"] == 1) {
