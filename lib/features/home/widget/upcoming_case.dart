@@ -30,21 +30,18 @@ class UpcomingCase extends StatelessWidget {
           ],
         ),
         SizedBox(height: 10),
-        InkWell(
-          onTap: () {
-            final openCase = OpenCaseModel.fromJson(cases);
-            Navigator.pushNamed(
-              context,
-              AppRouter.casedetails,
-              arguments: openCase,
-            );
+        OpenCaseCard(
+          caseId: cases["id"].toString(),
+          ontap: () {
+             final openCase = OpenCaseModel.fromJson(cases);
+          Navigator.pushNamed(
+            context,
+            AppRouter.casedetails,
+            arguments: openCase,
+          );
           },
-          child: OpenCaseCard(
-            caseId: cases["id"].toString(),
-
-            dueDate: cases["DueDate"] ?? "",
-            description: cases["MedicalSummary"]??"",
-          ),
+          dueDate: cases["DueDate"] ?? "",
+          description: cases["MedicalSummary"] ?? "",
         ),
         SizedBox(height: 15),
       ],
