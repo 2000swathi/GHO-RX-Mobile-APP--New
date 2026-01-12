@@ -266,6 +266,12 @@ class Validation {
     }
     return null;
   }
+  static String? validateSpecialtyBoard(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter the Certified Board / Institution';
+    }
+    return null;
+  }
 
   static String? validateCertifiedBoard(Object? value) {
     if (value == null || value.toString().trim().isEmpty) {

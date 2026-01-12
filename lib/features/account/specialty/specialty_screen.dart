@@ -32,7 +32,6 @@ class _SpecialtyScreenState extends State<SpecialtyScreen> {
         onAdd: () async {
           final listBloc = context.read<ListBloc>();
           listBloc.add(FetchSpecialtyList());
-          listBloc.add(FetchCertifiedList());
           listBloc.add(FetchSpecialtyTypeList());
           showDialog(
             context: context,
@@ -44,9 +43,7 @@ class _SpecialtyScreenState extends State<SpecialtyScreen> {
             listBloc.stream.firstWhere(
               (s) => s is SpecialtyListState || s is ListFailure,
             ),
-            listBloc.stream.firstWhere(
-              (s) => s is CertifiedListState || s is ListFailure,
-            ),
+
             listBloc.stream.firstWhere(
               (s) => s is SpecialtyTypeListState || s is ListFailure,
             ),
@@ -55,20 +52,15 @@ class _SpecialtyScreenState extends State<SpecialtyScreen> {
           Navigator.of(context, rootNavigator: true).pop();
 
           final listState = results[0];
-          final certifiedState = results[1];
-          final typeState = results[2];
+          final typeState = results[1];
 
           if (listState is SpecialtyListState &&
-              certifiedState is CertifiedListState &&
               typeState is SpecialtyTypeListState) {
             final specialties =
                 listState.specialtyResponse.data
                     .expand((inner) => inner)
                     .toList();
-            final certifiedBoards =
-                certifiedState.certifiedResponse.data
-                    .expand((inner) => inner)
-                    .toList();
+
             final specialtyTypes =
                 typeState.specialtyTypeResponse.data
                     .expand((inner) => inner)
@@ -78,7 +70,7 @@ class _SpecialtyScreenState extends State<SpecialtyScreen> {
               context,
               null,
               specialties,
-              certifiedBoards,
+
               specialtyTypes,
               false,
               specBloc: context.read<SpecialtyBloc>(),
@@ -87,8 +79,6 @@ class _SpecialtyScreenState extends State<SpecialtyScreen> {
             String errorMessage = "Failed to load data.";
             if (listState is ListFailure) {
               errorMessage = listState.error;
-            } else if (certifiedState is ListFailure) {
-              errorMessage = certifiedState.error;
             }
 
             ScaffoldMessenger.of(
@@ -131,8 +121,8 @@ class _SpecialtyScreenState extends State<SpecialtyScreen> {
                 return Center(child: Text(state.message));
               } else if (state is SpecialtyGetState) {
                 final info = state.specialtyModel.data;
-                if (info.isEmpty ) {
-                return  Center(child: Text("No specialty Added"));
+                if (info.isEmpty) {
+                  return Center(child: Text("No specialty Added"));
                 }
                 return ListView.builder(
                   itemCount: info.length,
@@ -156,7 +146,6 @@ class _SpecialtyScreenState extends State<SpecialtyScreen> {
 
                           final listBloc = context.read<ListBloc>();
                           listBloc.add(FetchSpecialtyList());
-                          listBloc.add(FetchCertifiedList());
                           listBloc.add(FetchSpecialtyTypeList());
 
                           final results = await Future.wait([
@@ -164,10 +153,7 @@ class _SpecialtyScreenState extends State<SpecialtyScreen> {
                               (s) =>
                                   s is SpecialtyListState || s is ListFailure,
                             ),
-                            listBloc.stream.firstWhere(
-                              (s) =>
-                                  s is CertifiedListState || s is ListFailure,
-                            ),
+
                             listBloc.stream.firstWhere(
                               (s) =>
                                   s is SpecialtyTypeListState ||
@@ -182,15 +168,9 @@ class _SpecialtyScreenState extends State<SpecialtyScreen> {
                           final typeState = results[2];
 
                           if (listState is SpecialtyListState &&
-                              certifiedState is CertifiedListState &&
                               typeState is SpecialtyTypeListState) {
                             final specialties =
                                 listState.specialtyResponse.data
-                                    .expand((inner) => inner)
-                                    .toList();
-
-                            final certifiedBoards =
-                                certifiedState.certifiedResponse.data
                                     .expand((inner) => inner)
                                     .toList();
 
@@ -203,7 +183,6 @@ class _SpecialtyScreenState extends State<SpecialtyScreen> {
                               context,
                               specialty,
                               specialties,
-                              certifiedBoards,
                               specialtyTypes,
                               true,
                               specBloc: context.read<SpecialtyBloc>(),
