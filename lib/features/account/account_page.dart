@@ -294,6 +294,5 @@ class _DrawerItem {
   final String title;
   final String imagePath;
   final String? routeName;
-
   _DrawerItem({required this.title, required this.imagePath, this.routeName});
 }
