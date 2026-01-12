@@ -6,9 +6,9 @@ import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/model/case_details_model.dart';
 
 class Audiosummery extends StatefulWidget {
-  final List<AudioSummaryModel>? audiosummery;
+  final List<CaseDocumentModel>? documents;
 
-  const Audiosummery({super.key, required this.audiosummery});
+  const Audiosummery({super.key, required this.documents});
 
   @override
   State<Audiosummery> createState() => _AudiosummeryState();
@@ -17,8 +17,8 @@ class Audiosummery extends StatefulWidget {
 class _AudiosummeryState extends State<Audiosummery> {
   @override
   Widget build(BuildContext context) {
-    final allItems = widget.audiosummery ?? [];
-    final audioList = allItems.where((item) => item.docTypeID == 6).toList();
+    final allItems = widget.documents ?? [];
+    final audioList = allItems.where((item) => item.documentTypeId == 6).toList();
     if (audioList.isEmpty) {
       return SizedBox();
     }

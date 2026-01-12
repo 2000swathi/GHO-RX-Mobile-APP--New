@@ -63,7 +63,7 @@ class Medications extends StatelessWidget {
                               ),
                               SizedBox(height: 4),
                               Text(
-                                "${medication.startPd.toString()} - ${medication.endpd.toString()}",
+                                "${medication.startPeriod.toString()} - ${medication.endPeriod.toString()}",
                                 style: AppFonts.buttontxt16.copyWith(
                                   fontSize: 16,
                                   color: AppColors.red,

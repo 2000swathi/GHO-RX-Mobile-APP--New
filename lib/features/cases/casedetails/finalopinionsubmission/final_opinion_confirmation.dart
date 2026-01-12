@@ -4,8 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/attestation/widget/checkbox_declaration.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/attestation/attestation_repo.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_container.dart';
-import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart'; 
+import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/claiment/widget/audio_summary_list_widget.dart';
@@ -23,11 +24,11 @@ import 'package:ghorx_mobile_app_new/utilities/size_config.dart';
 
 class FinalOpinionConfirmation extends StatefulWidget {
   final CaseDetailsModel caseDetailsModel;
-  final String saltID;
+  final String caseReviewerID;
   const FinalOpinionConfirmation({
     super.key,
     required this.caseDetailsModel,
-    required this.saltID,
+    required this.caseReviewerID,
   });
 
   @override
@@ -40,18 +41,22 @@ class _FinalOpinionConfirmationState extends State<FinalOpinionConfirmation> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     context.read<CaseDetailsBloc>().add(
-      CaseDetailsEventRequested(saltID: widget.saltID, silent: true),
-    );
-    context.read<AttestBloc>().add(
-      AttestListEvent(saltID: widget.saltID, silent: true),
+      CaseDetailsEventRequested(
+        caseID: widget.caseReviewerID,
+        silent: true,
+        caseReviewerID: widget.caseReviewerID,
+      ),
     );
   }
 
   List<bool> _attestationChecks = [];
+  CaseDetailsModel? _lastCaseDetails;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocProvider(
+      create: (context) => AttestBloc(repository: AttestationRepo()),
+      child: Scaffold(
       appBar: AppBar(
         elevation: 0,
         leadingWidth: 40,
@@ -66,7 +71,7 @@ class _FinalOpinionConfirmationState extends State<FinalOpinionConfirmation> {
           ),
         ),
         title: Text(
-          "Case ID : ${widget.caseDetailsModel.caseInfo!.id.toString()} ",
+          "Case ID : ${widget.caseDetailsModel.caseInfo!.caseId.toString()} ",
           style: AppFonts.subheading,
         ),
         actions: [
@@ -103,15 +108,36 @@ class _FinalOpinionConfirmationState extends State<FinalOpinionConfirmation> {
 
           if (state is casedetailsSuccess) {
             final caseDetails = state.caseDetailsModel;
-            final audioItems = caseDetails.draudiosummery ?? [];
+            if (caseDetails != _lastCaseDetails) {
+              _lastCaseDetails = caseDetails;
+              _attestationChecks = caseDetails.declarations
+                  .map((e) => e.status == 1)
+                  .toList();
+            }
+            final audioItems = caseDetails.reviewerDocuments;
             final audioList =
-                audioItems.where((item) => item.docTypeID == 6).toList();
+                audioItems.where((item) => item.documentTypeId == 6).toList();
             final docList =
-                audioItems.where((item) => item.docTypeID != 6).toList();
+                audioItems.where((item) => item.documentTypeId != 6).toList();
 
             return Padding(
               padding: const EdgeInsets.only(left: 14, right: 14),
-              child: BlocConsumer<FinalSubmissionBloc, FinalSubmissionState>(
+              child: BlocListener<AttestBloc, AttestState>(
+                listener: (context, state) {
+                  if (state is AttestSuccessState) {
+                    context.read<CaseDetailsBloc>().add(
+                          CaseDetailsEventRequested(
+                            caseID: widget.caseReviewerID,
+                            caseReviewerID: widget.caseReviewerID,
+                            silent: true,
+                          ),
+                        );
+                  } else if (state is AttestFailedState) {
+                    CustomScaffoldMessenger.showErrorMessage(
+                        context, state.error);
+                  }
+                },
+                child: BlocConsumer<FinalSubmissionBloc, FinalSubmissionState>(
                 listener: (context, finalState) async {
                   if (finalState is FinalSubmissionSuccess) {
                     CustomScaffoldMessenger.showSuccessMessage(
@@ -144,7 +170,7 @@ class _FinalOpinionConfirmationState extends State<FinalOpinionConfirmation> {
                         Row(
                           children: [
                             Text(
-                              caseDetails.caseInfo!.patientName,
+                              caseDetails.caseInfo!.patient,
                               style: AppFonts.subheading,
                             ),
                             const Spacer(),
@@ -169,34 +195,37 @@ class _FinalOpinionConfirmationState extends State<FinalOpinionConfirmation> {
                         ),
                         SizedBox(height: 6.h),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            const Icon(Icons.person),
-                            Text(
-                              caseDetails.caseInfo!.gender,
-                              style: AppFonts.subtext,
+                            const Icon(
+                              Icons.circle,
+                              size: 6,
+                              color: AppColors.textPrimary,
                             ),
-                            SizedBox(width: 14.w),
-                            const Icon(Icons.cake, size: 18),
-                            SizedBox(width: 5),
+                            const SizedBox(width: 3),
                             Text(
-                              caseDetails.caseInfo!.dob.toString(),
-                              style: AppFonts.subtext,
+                              "Assigned Date : ${caseDetails.caseInfo!.dateAssigned}",
+                              style: AppFonts.textSecondary.copyWith(
+                                fontSize: 14,
+                                color: AppColors.textPrimary,
+                              ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 6.h),
+
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             const Icon(
                               Icons.circle,
                               size: 6,
                               color: AppColors.red,
                             ),
-                            SizedBox(width: 4),
+                            const SizedBox(width: 3),
                             Text(
-                              caseDetails.caseInfo!.dueDate.toString(),
+                              "Due Date : ${caseDetails.caseInfo!.dueDate}",
                               style: AppFonts.textSecondary.copyWith(
-                                fontSize: 16,
+                                fontSize: 14,
                                 color: AppColors.red,
                               ),
                             ),
@@ -238,9 +267,9 @@ class _FinalOpinionConfirmationState extends State<FinalOpinionConfirmation> {
                                   fileList: docList,
                                   itemCount: docList.length,
                                   caseID:
-                                      widget.caseDetailsModel.caseInfo!.caseID
+                                      widget.caseDetailsModel.caseInfo!.caseId
                                           .toString(),
-                                  saltID: widget.saltID,
+                                  saltID: widget.caseReviewerID,
                                 ),
                               ],
                             ),
@@ -261,17 +290,17 @@ class _FinalOpinionConfirmationState extends State<FinalOpinionConfirmation> {
                                               widget
                                                   .caseDetailsModel
                                                   .caseInfo!
-                                                  .caseID
+                                                  .caseId
                                                   .toString(),
-                                          saltID: widget.saltID,
+                                          saltID: widget.caseReviewerID,
                                         ),
                                       ]
                                       : [],
                             ),
-                        caseDetails.questions!.isEmpty
+                        caseDetails.questions.isEmpty
                             ? SizedBox()
                             : SizedBox(height: 16.h),
-                        caseDetails.questions!.isEmpty
+                        caseDetails.questions.isEmpty
                             ? SizedBox()
                             : CustomContainer(
                               greyHeading: "Q&A",
@@ -281,9 +310,9 @@ class _FinalOpinionConfirmationState extends State<FinalOpinionConfirmation> {
                                 ListView.builder(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: caseDetails.questions!.length,
+                                  itemCount: caseDetails.questions.length,
                                   itemBuilder: (context, index) {
-                                    var qaList = caseDetails.questions![index];
+                                    var qaList = caseDetails.questions[index];
                                     return CommonQa(
                                       question: qaList.question,
                                       ans: qaList.answer.toString(),
@@ -294,94 +323,46 @@ class _FinalOpinionConfirmationState extends State<FinalOpinionConfirmation> {
                               ],
                             ),
                         SizedBox(height: 16.h),
-                        BlocBuilder<AttestBloc, AttestState>(
-                          builder: (context, attestState) {
-                            if (attestState is AttestLoading) {
-                              return const Center(child: LoadingAnimation());
-                            }
 
-                            if (attestState is AttestFailedState) {
-                              return Center(
-                                child: Text(
-                                  "Failed to load attestation list.\n${attestState.error}",
-                                  style: AppFonts.textSecondary.copyWith(
-                                    color: Colors.red,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              );
-                            }
+                        CustomContainer(
+                          greyHeading: "Clinical and Compliance Declaration",
+                          customWidgets1: [
+                            SizedBox(height: 10),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: caseDetails.declarations.length,
+                              itemBuilder: (context, index) {
+                                final item = caseDetails.declarations[index];
+                                final title = item.title;
+                                final description = item.description;
 
-                            if (attestState is AttestSuccessState) {
-                              final response = attestState.response;
-                              final data = response["Data"];
-                              if (data == null ||
-                                  data.isEmpty ||
-                                  data[0].isEmpty) {
-                                return CustomContainer(
-                                  greyHeading:
-                                      "Clinical and Compliance Declaration",
-                                  customWidgets1: [
-                                    Center(
-                                      child: Text(
-                                        "No attestation items found",
-                                        style: AppFonts.textSecondary,
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              }
-                              final List<dynamic> attestList = data[0];
-                              if (_attestationChecks.length !=
-                                  attestList.length) {
-                                _attestationChecks = List.generate(
-                                  attestList.length,
-                                  (_) => false,
-                                );
-                              }
-
-                              return CustomContainer(
-                                greyHeading:
-                                    "Clinical and Compliance Declaration",
-                                customWidgets1: [
-                                  SizedBox(height: 10),
-                                  ListView.builder(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: attestList.length,
-                                    itemBuilder: (context, index) {
-                                      final item = attestList[index];
-                                      final title =
-                                          item["AttestationTitle"] ??
-                                          'Untitled';
-                                      final description =
-                                          item["Description"] ??
-                                          'No description available';
-
-                                      return Padding(
-                                        padding: const EdgeInsets.only(top: 10),
-                                        child: CommonCheckboxDeclaration(
-                                          title: title,
-                                          declarationText: description,
-                                          initialValue:
-                                              _attestationChecks[index],
-                                          onChanged: (val) {
-                                            setState(() {
-                                              _attestationChecks[index] =
-                                                  val ?? false;
-                                            });
-                                          },
-                                        ),
-                                      );
+                                return Padding(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: CommonCheckboxDeclaration(
+                                    title: title,
+                                    declarationText: description,
+                                    initialValue: _attestationChecks[index],
+                                    onChanged: (val) async{
+                                      setState(() {
+                                        _attestationChecks[index] =
+                                            val ?? false;
+                                      });
+                                      if (val == true) {
+                                        context.read<AttestBloc>().add(
+                                          AttestListEvent(
+                                            caseReviewerID:
+                                               widget.caseReviewerID,
+                                            attestationID: item.id,
+                                          ),
+                                        );
+                                      }
                                     },
                                   ),
-                                ],
-                              );
-                            }
-
-                            return const SizedBox.shrink();
-                          },
+                                );
+                              },
+                            ),
+                          ],
                         ),
 
                         SizedBox(height: 36),
@@ -407,7 +388,7 @@ class _FinalOpinionConfirmationState extends State<FinalOpinionConfirmation> {
                                   (context) => ConfirmSubmissionDialog(
                                     onConfirm: () {
                                       context.read<FinalSubmissionBloc>().add(
-                                        SubmitCaseEvent(saltID: widget.saltID),
+                                        SubmitCaseEvent(saltID: widget.caseReviewerID),
                                       );
                                     },
                                   ),
@@ -420,12 +401,13 @@ class _FinalOpinionConfirmationState extends State<FinalOpinionConfirmation> {
                   );
                 },
               ),
-            );
+            ));
           }
 
           // ✅ fallback for other states
           return const SizedBox.shrink();
         },
+      ),
       ),
     );
   }

@@ -4,7 +4,7 @@ import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/model/case_details_model.dart';
 
 class Summerypage extends StatelessWidget {
-  final MedicalSummary? medicalSummary;
+  final CaseInfo? medicalSummary;
 
   const Summerypage({super.key, required this.medicalSummary});
 

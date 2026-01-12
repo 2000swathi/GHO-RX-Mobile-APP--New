@@ -70,8 +70,8 @@ class _UploadDocState extends State<UploadDoc> {
                   value: selectedDocTypeId,
                   items: widget.docTypes.map<DropdownItem<int>>((doc) {
                     return DropdownItem<int>(
-                      value: int.parse(doc['DataValue']),     
-                      label: doc['DisplyText'],    
+                      value:doc['id'],     
+                      label: doc['txt'],    
                     );
                   }).toList(),
                   onChanged: (value) {

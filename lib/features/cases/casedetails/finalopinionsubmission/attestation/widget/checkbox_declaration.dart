@@ -23,8 +23,8 @@ class CommonCheckboxDeclaration extends StatefulWidget {
 
 class _CommonCheckboxDeclarationState extends State<CommonCheckboxDeclaration> {
   late bool isChecked;
-  bool _isExpanded = false; // Controls "Read more / less"
-  bool _showReadMore = false; // Whether to show the toggle link
+  bool _isExpanded = false; 
+  bool _showReadMore = false; 
 
   @override
   void initState() {

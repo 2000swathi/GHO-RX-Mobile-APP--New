@@ -12,7 +12,7 @@ import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/model/case_details_model.dart';
 
 class AudioSummaryListWidget extends StatefulWidget {
-  final List<AudioSummaryModel> audioList;
+  final List<CaseDocumentModel> audioList;
   final bool? isDrUploaded;
   final String? caseID;
   final String? saltID;
@@ -277,7 +277,10 @@ class _AudioSummaryListWidgetState extends State<AudioSummaryListWidget> {
                       ),
                     );
                     context.read<CaseDetailsBloc>().add(
-                      CaseDetailsEventRequested(saltID: widget.saltID!),
+                      CaseDetailsEventRequested(
+                        caseID: widget.saltID!,
+                        caseReviewerID: widget.saltID!,
+                      ),
                     );
                   },
                   icon: SvgPicture.asset("assets/svg/trash.svg"),
