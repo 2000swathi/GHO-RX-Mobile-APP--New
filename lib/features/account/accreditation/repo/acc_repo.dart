@@ -62,11 +62,9 @@ class AccRepo {
   }
 
   //edit 
-  Future<Map<String, dynamic>> editAccreditation({
-    required String accreditationId,
+  Future<Map<String, dynamic>> saveAccreditation({
     required String accreditationtype,
     required String accreditationbody,
-    required String accreditationnumber,
   }) async {
     final token = await SharedPreference.getToken();
     final reviewerId = await SharedPreference.getUserId();
@@ -79,20 +77,18 @@ class AccRepo {
       ...ApiUtils.getCommonParams(action: "revieweraccred", token: token),
       "Tags": [
         {"T": "dk1", "V": reviewerId},
-        {"T": "dk2", "V": accreditationId},
         {"T": "c1", "V": accreditationtype},
         {"T": "c2", "V": accreditationbody},
-        {"T": "c3", "V": accreditationnumber},
-        {"T": "c10", "V": "2"},
+        {"T": "c4", "V": "1"},
+        {"T": "c10", "V": "5"},
       ],
     };
     try {
       final response = await _dioHandler.post('', data: requestData);
+      print(response);
       return response;
     } catch (e) {
       throw (e.toString());
     }
   }
-
-
 }

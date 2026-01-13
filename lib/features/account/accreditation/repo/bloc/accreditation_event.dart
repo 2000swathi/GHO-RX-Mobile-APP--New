@@ -9,37 +9,20 @@ sealed class AccreditationEvent extends Equatable {
 
 class FetchAccreditation extends AccreditationEvent {}
 
-//add Accreditation
-class AddAccrediation extends AccreditationEvent {
-  final String accreditationtype;
-  final String accreditationbody;
-  final String accreditationnumber;
-
-  AddAccrediation({
-    required this.accreditationtype,
-    required this.accreditationbody,
-    required this.accreditationnumber,
-  });
-}
 //edit accreditation
-class EditAcreditationEvent extends AccreditationEvent {
-  final String accreditationId;
+class SaveAccreditationEvent extends AccreditationEvent {
   final String accreditationtype;
   final String accreditationbody;
-  final String accreditationnumber;
 
-  const EditAcreditationEvent({
-    required this.accreditationId,
+  const SaveAccreditationEvent({
     required this.accreditationtype,
     required this.accreditationbody,
-    required this.accreditationnumber,
   });
 
   @override
   List<Object> get props => [
-    accreditationId,
-    accreditationtype,
-    accreditationbody,
-    accreditationnumber,
-  ];
+        accreditationtype,
+        accreditationbody,
+      ];
 }
+

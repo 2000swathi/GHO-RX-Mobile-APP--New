@@ -232,7 +232,6 @@ class ListBloc extends Bloc<ListEvent, ListState> {
       final response = await repository.fetchReferenceList();
 
       if (response["Status"] == 1) {
-        // Convert response to ProfessionalReferenceResponse model
         final referenceResponse = ProfessionalReferenceResponse.fromJson(
           response,
         );
