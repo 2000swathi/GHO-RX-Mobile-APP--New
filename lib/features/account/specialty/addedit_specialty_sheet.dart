@@ -4,8 +4,8 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_bottomsheet.dart
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_drop_down_field.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/custom_textformfield.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
-import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/certified_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/specialty%20type_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/specialty/repo/bloc/specialty_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/specialty/repo/model/specialty_model.dart';
@@ -16,26 +16,12 @@ class AddEditSpecialtySheet {
     BuildContext context,
     Specialtym? info,
     List<SpecialtyList> splList,
-    List<CertifiedList> certList,
     List<SpecialtytypeList> specList,
     bool isEdit, {
-    // required ProfileBloc profileBloc,
     required SpecialtyBloc specBloc,
   }) {
     final formKey = GlobalKey<FormState>();
     String? selectedSpecialtyID = isEdit ? info?.specialtyId.toString() : null;
-    String? selectedCertifiedBoard =isEdit? info?.certificationBodyID.toString():null;
-    // if (isEdit && info?.certifiedBoard != null) {
-    //   try {
-    //     selectedCertifiedBoard =
-    //         certList
-    //             .firstWhere((e) => e.certifiedName == info!.certifiedBoard)
-    //             .certifiedID
-    //             .toString();
-    //   } catch (e) {
-    //     selectedCertifiedBoard = null;
-    //   }
-    // }
     String? selectedSpecialtyType;
     if (isEdit && info?.specialtyType != null) {
       try {
@@ -48,6 +34,8 @@ class AddEditSpecialtySheet {
         selectedSpecialtyType = null;
       }
     }
+    final TextEditingController certifiedBoardController =TextEditingController(text: isEdit?info?.certifiedBoard:"");
+
 
     CustomBottomSheet.show(
       context: context,
@@ -79,31 +67,14 @@ class AddEditSpecialtySheet {
                           selectedSpecialtyID = id;
                         }),
                   ),
-                  const SizedBox(height: 10),
-
-                  // Certified Board Dropdown
-                  CustomDropdownFormField<String>(
-                    name: "Certified Board",
-                    hintText: "-Select Certified Board-",
-                    items:
-                        certList
-                            .map(
-                              (e) => DropdownItem<String>(
-                                label: e.certifiedName,
-                                value: e.certifiedID.toString(),
-                              ),
-                            )
-                            .toList(),
-                    value: selectedCertifiedBoard,
-                    onChanged: (id) {
-                      setState(() {
-                        selectedCertifiedBoard = id;
-                      });
-                    },
-                    validator: Validation.validateCertifiedBoard,
+                  const SizedBox(height: 20),
+                  CustomTextFormField(
+                    controller: certifiedBoardController,
+                    validator: Validation.validateSpecialtyBoard,
+                    name: "Certified Board / Institution",
+                    hintText: "enter Certified board / Institution",
                   ),
-
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
 
                   CustomDropdownFormField<String>(
                     name: "Specialty Type",
@@ -135,7 +106,7 @@ class AddEditSpecialtySheet {
       actionButton: BlocListener<SpecialtyBloc, SpecialtyState>(
         listener: (context, state) {
           if (state is SpecialtySuccess) {
-             Navigator.pop(context);
+            Navigator.pop(context);
             context.read<SpecialtyBloc>().add(FetchSpecialty());
             CustomScaffoldMessenger.showSuccessMessage(context, state.message);
           } else if (state is SpecialtyError) {
@@ -160,7 +131,7 @@ class AddEditSpecialtySheet {
                       EditSpecialtyEvent(
                         id: info!.id.toString(),
                         specialtyId: selectedSpecialtyID ?? '',
-                        certifiedBoard: selectedCertifiedBoard ?? '',
+                        certifiedBoard: certifiedBoardController.text.trim(),
                         specialtyType: selectedSpecialtyType ?? '',
                       ),
                     );
@@ -168,7 +139,7 @@ class AddEditSpecialtySheet {
                     context.read<SpecialtyBloc>().add(
                       AddSpecialty(
                         specialty: selectedSpecialtyID ?? '',
-                        certifiedBoard: selectedCertifiedBoard ?? '',
+                        certifiedBoard: certifiedBoardController.text.trim(),
                         specialtyType: selectedSpecialtyType ?? '',
                       ),
                     );
