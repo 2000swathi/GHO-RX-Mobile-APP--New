@@ -52,7 +52,8 @@ class _SupportTabState extends State<SupportTab> {
             state.response["Data"][0][0]["msg"],
           );
           context.read<CaseDetailsBloc>().add(
-            CaseDetailsEventRequested(saltID: widget.saltID, silent: true),
+            CaseDetailsEventRequested(caseID: widget.saltID, silent: true,
+            caseReviewerID: widget.saltID,),
           );
 
           FocusScope.of(context).unfocus();

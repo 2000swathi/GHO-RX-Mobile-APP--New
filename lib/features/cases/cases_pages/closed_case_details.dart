@@ -35,9 +35,9 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     context.read<CaseDetailsBloc>().add(
-      CaseDetailsEventRequested(saltID: widget.saltID),
+      CaseDetailsEventRequested(caseID: widget.saltID,caseReviewerID: widget.saltID),
     );
-    context.read<AttestBloc>().add(AttestListEvent(saltID: widget.saltID));
+    
   }
 
   @override
@@ -91,16 +91,16 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                 ),
               );
             }
-            final audioItemsdr = caseDetails.draudiosummery ?? [];
-            final audioItemsPat = caseDetails.audiosummery ?? [];
+            final audioItemsdr = caseDetails.reviewerDocuments ?? [];
+            final audioItemsPat = caseDetails.clientDocuments ?? [];
             final audioListdr =
-                audioItemsdr.where((item) => item.docTypeID == 6).toList();
+                audioItemsdr.where((item) => item.documentTypeId == 6).toList();
             final audioListPat =
-                audioItemsPat.where((item) => item.docTypeID == 6).toList();
+                audioItemsPat.where((item) => item.documentTypeId == 6).toList();
             final docList =
-                audioItemsdr.where((item) => item.docTypeID != 6).toList();
+                audioItemsdr.where((item) => item.documentTypeId != 6).toList();
             final docListPat =
-                audioItemsPat.where((item) => item.docTypeID != 6).toList();
+                audioItemsPat.where((item) => item.documentTypeId != 6).toList();
 
             return Padding(
               padding: const EdgeInsets.only(left: 14, right: 14),
@@ -112,7 +112,7 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                     Row(
                       children: [
                         Text(
-                          caseDetails.caseInfo!.patientName,
+                          caseDetails.caseInfo!.patient,
                           style: AppFonts.subheading,
                         ),
                         const Spacer(),
@@ -136,22 +136,22 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                       ],
                     ),
                     SizedBox(height: 6.h),
-                    Row(
-                      children: [
-                        const Icon(Icons.person),
-                        Text(
-                          caseDetails.caseInfo!.gender,
-                          style: AppFonts.subtext,
-                        ),
-                        SizedBox(width: 14.w),
-                        const Icon(Icons.cake, size: 18),
-                        SizedBox(width: 5),
-                        Text(
-                          caseDetails.caseInfo!.dob.toString(),
-                          style: AppFonts.subtext,
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   children: [
+                    //     const Icon(Icons.person),
+                    //     Text(
+                    //       caseDetails.caseInfo!.gender,
+                    //       style: AppFonts.subtext,
+                    //     ),
+                    //     SizedBox(width: 14.w),
+                    //     const Icon(Icons.cake, size: 18),
+                    //     SizedBox(width: 5),
+                    //     Text(
+                    //       caseDetails.caseInfo!.dob.toString(),
+                    //       style: AppFonts.subtext,
+                    //     ),
+                    //   ],
+                    // ),
                     SizedBox(height: 6.h),
                     Row(
                       children: [
@@ -170,12 +170,12 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                     CustomContainer(
                       greyHeading: "Patient Report",
 
-                      datas: caseDetails.medicalSummary!.medicalSummary,
+                      datas: caseDetails.caseInfo!.medicalSummary,
                     ),
-                    caseDetails.medications!.isEmpty
+                    caseDetails.medications.isEmpty
                         ? SizedBox()
                         : SizedBox(height: 16.h),
-                    caseDetails.medications!.isEmpty
+                    caseDetails.medications.isEmpty
                         ? SizedBox()
                         : CustomContainer(
                           greyHeading: "Medication",
@@ -184,10 +184,10 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                             ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: caseDetails.medications!.length,
+                              itemCount: caseDetails.medications.length,
                               itemBuilder: (context, index) {
                                 var medications =
-                                    caseDetails.medications![index];
+                                    caseDetails.medications[index];
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -201,7 +201,7 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                                         ),
                                         Spacer(),
                                         Text(
-                                          "${medications.startPd} ${medications.endpd}",
+                                          "${medications.startPeriod} ${medications.endPeriod}",
                                           style: AppFonts.labelItalic,
                                         ),
                                       ],

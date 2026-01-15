@@ -7,8 +7,8 @@ import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_pag
 
 class QuestionTab extends StatelessWidget {
   final List<QuestionAnswerModel>? questionAnswer;
-  final String saltID;
-  const QuestionTab({super.key, required this.questionAnswer, required this.saltID});
+  final String caseReviewerID;
+  const QuestionTab({super.key, required this.questionAnswer, required this.caseReviewerID});
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,7 @@ class QuestionTab extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          QuestionansSheet.showSheet(context, qAndA, saltID);
+                          QuestionansSheet.showSheet(context, qAndA, caseReviewerID);
                         },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

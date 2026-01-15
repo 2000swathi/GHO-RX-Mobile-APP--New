@@ -47,7 +47,7 @@ class _OpenCasesTabState extends State<OpenCasesTab> {
                 },
 
                 caseId: caseItem.id,
-
+                patient: caseItem.patientName,
                 dueDate: caseItem.dueDate,
                 description: caseItem.medicalSummary,
               );
@@ -56,9 +56,7 @@ class _OpenCasesTabState extends State<OpenCasesTab> {
         } else if (state is OpenCloseError) {
           return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Text(state.message, style: AppFonts.subtext),
-            ),
+            child: Center(child: Text(state.message, style: AppFonts.subtext)),
           );
         } else {
           return const Center(child: Text('No data available'));
@@ -70,14 +68,14 @@ class _OpenCasesTabState extends State<OpenCasesTab> {
 
 class OpenCaseCard extends StatelessWidget {
   final String caseId;
-
+  final String patient;
   final String dueDate;
   final String description;
   final Function()? ontap;
   const OpenCaseCard({
     super.key,
     required this.caseId,
-
+    required this.patient,
     required this.dueDate,
     required this.description,
     this.ontap,

@@ -7,17 +7,18 @@ import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_pag
 
 class Clainment extends StatelessWidget {
   final CaseDetailsModel caseDetailsModel;
-  Clainment({super.key, required this.caseDetailsModel});
+  const Clainment({super.key, required this.caseDetailsModel});
 
   @override
   Widget build(BuildContext context) {
+    
     return Column(
       children: [
-        Summerypage(medicalSummary: caseDetailsModel.medicalSummary),
+        Summerypage(medicalSummary: caseDetailsModel.caseInfo),
         SizedBox(height: 10),
-        Audiosummery(audiosummery: caseDetailsModel.audiosummery),
+        Audiosummery(documents: caseDetailsModel.clientDocuments),
         SizedBox(height: 10),
-        Medicalreport(medicalsummery: caseDetailsModel.audiosummery),
+        Medicalreport(medicalsummery: caseDetailsModel.clientDocuments),
         SizedBox(height: 10),
         Medications(medicationModel: caseDetailsModel.medications),
         SizedBox(height: 10),

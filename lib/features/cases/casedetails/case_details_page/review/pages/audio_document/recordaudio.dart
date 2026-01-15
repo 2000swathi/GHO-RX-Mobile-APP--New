@@ -22,13 +22,13 @@ import 'package:just_audio/just_audio.dart';
 // ignore: must_be_immutable
 class Recordaudio extends StatefulWidget {
   final String caseID;
-  final String saltID;
-  List<AudioSummaryModel>? audioSummaryModel;
+  final String caseReviewerID;
+  List<CaseDocumentModel>? audioSummaryModel;
 
   Recordaudio({
     super.key,
     required this.caseID,
-    required this.saltID,
+    required this.caseReviewerID,
     required this.audioSummaryModel,
   });
 
@@ -196,7 +196,7 @@ class _RecordaudioState extends State<Recordaudio> {
                                                 docTypeID: 1,
                                                 filename: fileName,
                                                 fileSize: fileSize,
-                                                saltKey: widget.saltID,
+                                                saltKey: widget.caseReviewerID,
                                                 context: context,
                                               ),
                                             );
@@ -241,7 +241,7 @@ class _RecordaudioState extends State<Recordaudio> {
                                                 docTypeID: 1,
                                                 filename: fileName,
                                                 fileSize: fileSize,
-                                                saltKey: widget.saltID,
+                                                saltKey: widget.caseReviewerID,
                                                 context: context,
                                               ),
                                             );
@@ -339,7 +339,7 @@ class _RecordaudioState extends State<Recordaudio> {
                 filePath: recording['path'],
                 fileSize: '$fileSizeInKB KB',
                 caseID: widget.caseID,
-                saltKey: widget.saltID,
+                saltKey: widget.caseReviewerID,
                 onDelete: () => _deleteRecording(index),
               );
             }),

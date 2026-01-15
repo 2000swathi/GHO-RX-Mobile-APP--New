@@ -1,8 +1,9 @@
 abstract class CaseDetailsEvent {}
 
 class CaseDetailsEventRequested extends CaseDetailsEvent {
-  final String saltID;
+  final String caseID;
+  final String caseReviewerID;
   final bool silent;
 
-  CaseDetailsEventRequested({required this.saltID, this.silent = false});
+  CaseDetailsEventRequested({required this.caseID,required this.caseReviewerID ,this.silent = false});
 }

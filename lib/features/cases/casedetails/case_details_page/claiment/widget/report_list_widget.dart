@@ -12,7 +12,7 @@ import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_pag
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_event.dart';
 
 class ReportListWidget extends StatelessWidget {
-  final List<AudioSummaryModel> fileList;
+  final List<CaseDocumentModel> fileList;
   final int itemCount;
   final bool? isDrUploaded;
   final String? caseID;
@@ -85,7 +85,10 @@ class ReportListWidget extends StatelessWidget {
                       ),
                     );
                     context.read<CaseDetailsBloc>().add(
-                      CaseDetailsEventRequested(saltID: saltID!),
+                      CaseDetailsEventRequested(caseID: saltID!,
+                      caseReviewerID: saltID!,
+                      silent: true,
+                      ),
                     );
                   },
                   icon: SvgPicture.asset("assets/svg/trash.svg"),

@@ -1,7 +1,12 @@
 abstract class AttestEvent {}
 
 class AttestListEvent extends AttestEvent {
-  final String saltID;
-   final bool silent;
-  AttestListEvent({required this.saltID,this.silent = false});
+  final String caseReviewerID;
+  final int attestationID;
+  final bool silent;
+  AttestListEvent({
+    required this.caseReviewerID,
+    required this.attestationID,
+    this.silent = false,
+  });
 }

@@ -8,13 +8,13 @@ import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_pag
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/summary/writtenreport.dart';
 
 class Reviewpage extends StatefulWidget {
-  String saltID;
+  String caseReviewerID;
   String summaryRecords;
   String caseID;
-  List<AudioSummaryModel>? audioSummaryModel;
+  List<CaseDocumentModel>? audioSummaryModel;
   Reviewpage({
     super.key,
-    required this.saltID,
+    required this.caseReviewerID,
     required this.summaryRecords,
     required this.caseID,
     required this.audioSummaryModel,
@@ -112,7 +112,7 @@ class _ReviewpageState extends State<Reviewpage>
                   maintainState: true,
                   child: Writtenreport(
                     onNext: _goToNextTab,
-                    saltID: widget.saltID,
+                    caseReviewerID: widget.caseReviewerID,
                     summaryRecords: widget.summaryRecords,
                   ),
                 ),
@@ -124,7 +124,7 @@ class _ReviewpageState extends State<Reviewpage>
                     child: Recordaudio(
                       caseID: widget.caseID,
                       audioSummaryModel: widget.audioSummaryModel,
-                      saltID: widget.saltID,
+                      caseReviewerID: widget.caseReviewerID,
                     ),
                   ),
                 ),

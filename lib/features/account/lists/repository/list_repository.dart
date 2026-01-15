@@ -192,10 +192,11 @@ class ListRepository {
   // doctype lists
   Future<Map<String, dynamic>> fetchDocTypeList() async {
     final data = {
-      ...ApiUtils.getCommonParams(action: action, token: ""),
+      ...ApiUtils.getCommonParams(action: "filemgr", token: ""),
       "Tags": [
-        {"T": "dk1", "V": "REVIEWERFILE"},
-        {"T": "c10", "V": "3"},
+        {"T": "dk1", "V": "0"},
+        {"T": "dk2", "V": "REVPROFILE"},
+        {"T": "c10", "V": "5"},
       ],
     };
     try {

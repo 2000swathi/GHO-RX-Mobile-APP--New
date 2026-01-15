@@ -5,7 +5,7 @@ import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_pag
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/model/case_details_model.dart';
 
 class Medicalreport extends StatelessWidget {
-  final List<AudioSummaryModel>? medicalsummery;
+  final List<CaseDocumentModel>? medicalsummery;
 
   const Medicalreport({super.key, required this.medicalsummery});
 
@@ -15,7 +15,7 @@ class Medicalreport extends StatelessWidget {
 
     // Filter only non-audio items (documents)
     final allItems = medicalsummery ?? [];
-    final reports = allItems.where((item) => item.docTypeID != 6).toList();
+    final reports = allItems.where((item) => item.documentTypeId != 6).toList();
 
     if (reports.isEmpty) {
       return SizedBox();
