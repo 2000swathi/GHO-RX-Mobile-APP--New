@@ -11,9 +11,7 @@ final class AccreditationInitial extends AccreditationState {}
 
 class AccrediationLoading extends AccreditationState {}
 
-class AccrediationAddLoading extends AccreditationState {}
-
-class AccrediationeditLoading extends AccreditationState {}
+class AccrediationSaveLoading extends AccreditationState {}
 
 //Acreditation
 class AccreditationgetState extends AccreditationState {

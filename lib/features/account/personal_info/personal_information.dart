@@ -26,6 +26,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
   Widget _avatarShimmer() {
     return ShimmerShapes.circle(110);
   }
+
   @override
   void initState() {
     super.initState();
@@ -79,14 +80,20 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                   "value": "${info.firstName} ${info.lastName}",
                 },
                 {"label": "Date of Birth", "value": info.birthDate},
+                {"label": "Gender", "value": info.gender},
                 {"label": "Email", "value": info.email},
-                {"label": "Mobile Number", "value": info.phone},
-                {"label": "Address 1", "value": info.address1},
-                {"label": "Address 2", "value": info.address2},
-                {"label": "Country", "value": info.countryName},
-                {"label": "State", "value": info.state},
-                {"label": "City", "value": info.city},
-                {"label": "Zip/Postal Code", "value": info.zipCode},
+                {"label": "Mobile", "value": info.phone},
+                {"label": "Work Phone", "value": info.workPhone},
+                {"label": "NPI", "value": info.npi},
+                {"label": "Nationality", "value": info.countryName},
+                {"label": "FullAddress", "value": info.address1},
+                {"label": "Approved", "value": info.approved ? "Yes" : "No"},
+                {"label": "Board Certified", "value": info.boardCertified},
+                {"label": "Active Practice", "value": info.activePractice},
+                {"label": "Active Teaching", "value": info.activeTeaching},
+                {"label": "Active Publishing", "value": info.activePublishing},
+                {"label": "Active Research", "value": info.activeResearch},
+                {"label": "Active Surgeon", "value": info.activeSurgeon},
               ];
 
               return ListView(
@@ -155,6 +162,9 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                   ),
                   const SizedBox(height: 32),
                   ...infoList
+                      .where(
+                        (item) => item['value']!.toString().trim().isNotEmpty,
+                      )
                       .map((item) => buildInfo(item['label']!, item['value']!))
                       .toList(),
                   const SizedBox(height: 20),
