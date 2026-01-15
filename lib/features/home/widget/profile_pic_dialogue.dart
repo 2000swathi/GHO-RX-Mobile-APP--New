@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -48,12 +49,9 @@ class _ProfileDialogState extends State<ProfileDialog> {
             context.read<PicBloc>().add(FetchPicEvent());
             context.read<ProfileInfoBloc>().add(FetchPersonalInfo());
             Navigator.pop(context);
-          }else if (state is GetFileIdFailure) {
+          } else if (state is GetFileIdFailure) {
             Navigator.pop(context);
-            CustomScaffoldMessenger.showErrorMessage(
-              context,
-              state.message,
-            );
+            CustomScaffoldMessenger.showErrorMessage(context, state.message);
           }
         },
         child: Container(

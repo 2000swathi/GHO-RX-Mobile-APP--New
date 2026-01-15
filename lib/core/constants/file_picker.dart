@@ -224,94 +224,51 @@ class ImagePickerService {
 
   /// Handle permission requests for storage or photos
   Future<bool> requestStoragePermission(BuildContext context) async {
-    if (Platform.isAndroid) {
-      final androidInfo = await DeviceInfoPlugin().androidInfo;
-      final sdkInt = androidInfo.version.sdkInt;
+  if (Platform.isAndroid) {
+    final androidInfo = await DeviceInfoPlugin().androidInfo;
+    final sdkInt = androidInfo.version.sdkInt;
 
-      if (sdkInt >= 33) {
-        // Android 13+ system picker (no permission required)
-        return true;
-      } else if (sdkInt >= 30) {
-        var status = await Permission.manageExternalStorage.status;
-        if (status.isGranted) return true;
-
-        if (status.isDenied) {
-          status = await Permission.manageExternalStorage.request();
-          return status.isGranted;
-        }
-
-        if (status.isPermanentlyDenied) {
-          CustomScaffoldMessenger.showSuccessMessage(
-            context,
-
-            "Please enable storage access in settings.",
-          );
-          await openAppSettings();
-          return false;
-        }
-      } else {
-        var status = await Permission.storage.status;
-        if (status.isGranted) return true;
-
-        if (status.isDenied) {
-          status = await Permission.storage.request();
-          return status.isGranted;
-        }
-
-        if (status.isPermanentlyDenied) {
-          CustomScaffoldMessenger.showSuccessMessage(
-            context,
-
-            "Please enable storage access in settings.",
-          );
-          await openAppSettings();
-          return false;
-        }
-      }
-
-      CustomScaffoldMessenger.showSuccessMessage(
-        context,
-
-        "Storage access is required.",
-      );
-      return false;
+    if (sdkInt >= 33) {
+      return true; // Android 13+ system picker
     }
 
-    if (Platform.isIOS) {
-      var status = await Permission.photos.status;
+    if (sdkInt >= 30) {
+      var status = await Permission.manageExternalStorage.status;
+      if (status.isGranted) return true;
 
-      if (status.isGranted || status.isLimited) {
-        return true;
-      }
+      status = await Permission.manageExternalStorage.request();
+      if (status.isGranted) return true;
 
-      if (status.isDenied) {
-        status = await Permission.photos.request();
-        if (status.isGranted || status.isLimited) {
-          return true;
-        }
-        return false;
-      }
-
-      if (status.isPermanentlyDenied || status.isRestricted) {
+      if (status.isPermanentlyDenied) {
         CustomScaffoldMessenger.showSuccessMessage(
           context,
-
-          "Please enable photo access in settings.",
+          "Please enable storage access in settings.",
         );
         await openAppSettings();
-        return false;
       }
-
-      CustomScaffoldMessenger.showSuccessMessage(
-        context,
-
-        "Photo access is required.",
-      );
       return false;
     }
 
+    var status = await Permission.storage.status;
+    if (status.isGranted) return true;
+
+    status = await Permission.storage.request();
+    if (status.isGranted) return true;
+
+    if (status.isPermanentlyDenied) {
+      CustomScaffoldMessenger.showSuccessMessage(
+        context,
+        "Please enable storage access in settings.",
+      );
+      await openAppSettings();
+    }
     return false;
   }
+
+  // ✅ iOS → Always allow picker
+  return true;
+}
+
 
   /// Pick files (e.g. PDFs, docs, etc.)
   Future<void> pickFile(BuildContext context) async {
