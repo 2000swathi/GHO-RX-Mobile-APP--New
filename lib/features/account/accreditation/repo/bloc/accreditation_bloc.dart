@@ -23,45 +23,20 @@ class AccreditationBloc extends Bloc<AccreditationEvent, AccreditationState> {
 
     try {
       final accreditation = await repository.fetchAccreditationInfo();
-      emit(AccreditationgetState(accreditationModel: accreditation));
+      if (accreditation.status == 1) {
+        emit(AccreditationgetState(accreditationModel: accreditation));
+      } else {
+     
+        final errorMsg =
+            accreditation.info.isNotEmpty
+                ? accreditation.info
+                : 'Failed to fetch accreditations';
+        emit(AccrediationError(message: errorMsg));
+      }
     } catch (e) {
       emit(AccrediationError(message: e.toString()));
     }
   }
-
-  //accreditation
-  // Future<void> _addaccrediation(
-  //   AddAccrediation event,
-  //   Emitter<AccreditationState> emit,
-  // ) async {
-  //   emit(AccrediationAddLoading());
-
-  //   try {
-  //     final response = await repository.addaccrediation(
-  //       accreditationtype: event.accreditationtype,
-  //       accreditationbody: event.accreditationbody,
-  //       accreditationnumber: event.accreditationnumber,
-  //     );
-  //     if (response["Status"] == 1) {
-  //       String message = "License updated successfully";
-
-  //       final data = response["Data"];
-  //       if (data is List && data.isNotEmpty) {
-  //         final level1 = data[0];
-  //         if (level1 is List && level1.isNotEmpty) {
-  //           final msgObj = level1[0];
-  //           if (msgObj is Map && msgObj["msg"] != null) {
-  //             message = msgObj["msg"].toString();
-  //           }
-  //         }
-  //       }
-  //       emit(AccSuccess(message: message));
-  //     }
-  //   } catch (e) {
-  //     emit(AccrediationError(message: "An error occurred: ${e.toString()}"));
-  //   }
-  // }
-
   // Save Accreditation
   Future<void> _saveAccreditation(
     SaveAccreditationEvent event,
@@ -78,23 +53,13 @@ class AccreditationBloc extends Bloc<AccreditationEvent, AccreditationState> {
       if (response["Status"] == 1) {
         String message = "Saved Successfully";
         final data = response["Data"];
-        if(data is List &&
-          data.isNotEmpty &&
-          data[0] is List &&
-          data[0].isNotEmpty &&
-          data[0][0]['msg'] != null) {
-            message = data[0][0]['msg'].toString();
-          }
-        
-        // if (data is List && data.isNotEmpty) {
-        //   final level1 = data[0];
-        //   if (level1 is List && level1.isNotEmpty) {
-        //     final msgObj = level1[0];
-        //     if (msgObj is Map && msgObj["msg"] != null) {
-        //       message = msgObj["msg"].toString();
-        //     }
-        //   }
-        // }
+        if (data is List &&
+            data.isNotEmpty &&
+            data[0] is List &&
+            data[0].isNotEmpty &&
+            data[0][0]['msg'] != null) {
+          message = data[0][0]['msg'].toString();
+        }
         emit(AccSuccess(message: message));
       } else {
         final error =

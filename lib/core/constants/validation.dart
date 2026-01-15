@@ -444,4 +444,13 @@ static String? validateToMonthYear(
     final year = int.parse(parts[1]);
     return DateTime(year, month);
   }
+
+   static String? validateNPI(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'NPI number is required';
+    } else if (!RegExp(r'^\d{10}$').hasMatch(value.trim())) {
+      return 'Enter a valid 10-digit number';
+    }
+    return null;
+  }
 }

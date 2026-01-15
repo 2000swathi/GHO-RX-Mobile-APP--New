@@ -7,7 +7,10 @@ sealed class AccreditationEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class FetchAccreditation extends AccreditationEvent {}
+class FetchAccreditation extends AccreditationEvent {
+
+  const FetchAccreditation();
+}
 
 //edit accreditation
 class SaveAccreditationEvent extends AccreditationEvent {

@@ -37,14 +37,17 @@ class _AccreditationScreenState extends State<AccreditationScreen> {
           BlocListener<AccreditationBloc, AccreditationState>(
             listener: (context, state) {
               if (state is AccreditationgetState) {
-                selectedAccre
-                  ..clear()
-                  ..addAll(
-                    state.accreditationModel.data.map(
-                      (e) => {"id": e.id, "name": e.accreditationType},
-                    ),
-                  );
-                setState(() {});
+                // Only update selectedAccre if we have valid data from a successful API response
+                if (state.accreditationModel.status == 1) {
+                  selectedAccre
+                    ..clear()
+                    ..addAll(
+                      state.accreditationModel.data.map(
+                        (e) => {"id": e.id, "name": e.accreditationType},
+                      ),
+                    );
+                  setState(() {});
+                }
               }
             },
           ),
