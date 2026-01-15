@@ -60,13 +60,19 @@ class BankInfoModel {
 
   factory BankInfoModel.fromJson(Map<String, dynamic> json) {
     return BankInfoModel(
-      id: json['id'] ?? 0,
-      reviewerId: json['ReviewerID'] ?? '',
-      accountType: json['AccountType'] ?? '',
-      routingNumber: json['RoutingNumber'] ?? '',
-      accountNumber: json['AccountNumber'] ?? '',
-      accountHolderName: json['AccountHolderName'] ?? '',
-      bankName: json['BankName'] ?? '',
+      id: json['id'] is int ? json['id'] : int.tryParse(json['id']?.toString() ?? '0') ?? 0,
+
+      reviewerId: json['ReviewerID']?.toString() ?? '',
+
+      accountType: json['AccountType']?.toString() ?? '',
+
+      routingNumber: json['RoutingNumber']?.toString() ?? '',
+
+      accountNumber: json['AccountNumber']?.toString() ?? '',
+
+      accountHolderName: json['AccountHolderName']?.toString() ?? '',
+
+      bankName: json['BankName']?.toString() ?? '',
     );
   }
 
@@ -81,12 +87,5 @@ class BankInfoModel {
       'BankName': bankName,
     };
   }
-
-  static List<BankInfoModel> listFromResponse(Map<String, dynamic> json) {
-    final data = json['Data'] as List?;
-    if (data == null || data.isEmpty) return [];
-    final innerList = data.first as List?;
-    if (innerList == null || innerList.isEmpty) return [];
-    return innerList.map((e) => BankInfoModel.fromJson(e)).toList();
-  }
 }
+

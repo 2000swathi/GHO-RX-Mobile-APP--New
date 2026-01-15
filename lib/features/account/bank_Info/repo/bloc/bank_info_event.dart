@@ -8,6 +8,7 @@ sealed class BankInfoEvent extends Equatable {
 }
 
 class FetchBankInfo extends BankInfoEvent {}
+
 class AddBankInfo extends BankInfoEvent {
   final String accountType;
   final String routingNumber;
@@ -15,14 +16,23 @@ class AddBankInfo extends BankInfoEvent {
   final String holderName;
   final String bankName;
 
-  AddBankInfo({
+  const AddBankInfo({
     required this.accountNumber,
     required this.accountType,
     required this.holderName,
     required this.routingNumber,
     required this.bankName,
   });
+  @override
+  List<Object> get props => [
+    accountNumber,
+    accountType,
+    holderName,
+    routingNumber,
+    bankName,
+  ];
 }
+
 //Edit Bank Event
 class EditBankInfoEvent extends BankInfoEvent {
   final String accountType;
@@ -44,9 +54,10 @@ class EditBankInfoEvent extends BankInfoEvent {
   @override
   List<Object> get props => [
     accountType,
-    routingNumber,
     id,
+    routingNumber,
     accountNumber,
     holderName,
+    bankName,
   ];
 }

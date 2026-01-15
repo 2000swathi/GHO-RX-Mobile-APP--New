@@ -18,13 +18,13 @@ class Bankinforepo {
       ...ApiUtils.getCommonParams(action: "revieweracc", token: token),
       "Tags": [
         {"T": "dk1", "V": reviewerId},
-        {"T": "dk2", "V": "0"},
         {"T": "c10", "V": "3"},
       ],
     };
 
     try {
       final response = await _dioHandler.post('', data: data);
+      print(response);
       return BankInfoResponseModel.fromJson(response);
     } catch (e) {
       throw Exception(e.toString());
@@ -59,6 +59,7 @@ class Bankinforepo {
 
     try {
       final response = await _dioHandler.post('', data: data);
+      print(response);
       return response;
     } catch (e) {
       throw Exception("Failed to add Bank Info: $e");
@@ -87,13 +88,14 @@ class Bankinforepo {
         {"T": "c2", "V": routingNumber},
         {"T": "c3", "V": accountNumber},
         {"T": "c4", "V": holderName},
-        {"T": "c4", "V": bankName},
+        {"T": "c5", "V": bankName},
         {"T": "c10", "V": "2"},
       ],
     };
 
     try {
       final response = await _dioHandler.post('', data: data);
+      print(response);
       return response;
     } catch (e) {
       throw Exception("Failed to edit Bank Info: $e");
