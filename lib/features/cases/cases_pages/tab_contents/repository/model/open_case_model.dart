@@ -3,10 +3,11 @@ class OpenCaseModel {
   final String patientName;
   final String gender;
   final int age;
-  final String timeAllowed;
+  final dynamic timeAllowed;
   final String dueDate;
   final String medicalSummary;
-  final String saltKey;
+  final String caseReviewerID;
+  final String caseID;
 
   OpenCaseModel({
     required this.id,
@@ -16,32 +17,34 @@ class OpenCaseModel {
     required this.timeAllowed,
     required this.dueDate,
     required this.medicalSummary,
-    required this.saltKey,
+    required this.caseReviewerID,
+    required this.caseID,
   });
 
   factory OpenCaseModel.fromJson(Map<String, dynamic> json) {
     return OpenCaseModel(
       id: json['id'] ?? '0',
-      patientName: json['Patient Name'] ?? '',
+      patientName: json['PatientName'] ?? '',
       gender: json['Gender'] ?? '',
       age: json['Age'] ?? 0,
       timeAllowed: json['TimeAllowed'] ?? '0',
       dueDate: json['DueDate'] ?? '',
       medicalSummary: json['MedicalSummary'] ?? '',
-      saltKey: json['CaseReviewerID'] ?? '',
+      caseReviewerID: json['CaseReviewerID'] ?? '',
+      caseID: json['CaseID'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'Patient Name': patientName,
+      'PatientName': patientName,
       'Gender': gender,
       'Age': age,
       'TimeAllowed': timeAllowed,
       'DueDate': dueDate,
       'MedicalSummary': medicalSummary,
-      'CaseReviewerID':saltKey
+      'CaseReviewerID':caseReviewerID
     };
   }
 }

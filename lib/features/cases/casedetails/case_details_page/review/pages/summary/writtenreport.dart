@@ -13,13 +13,13 @@ import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_pag
 
 class Writtenreport extends StatefulWidget {
   final VoidCallback? onNext;
-  final String saltID;
+  final String caseReviewerID;
   String summaryRecords;
 
   Writtenreport({
     super.key,
     this.onNext,
-    required this.saltID,
+    required this.caseReviewerID,
     required this.summaryRecords,
   });
 
@@ -43,13 +43,17 @@ class _WrittenreportState extends State<Writtenreport> {
     return BlocListener<SummaryBloc, SummaryState>(
       listener: (context, state) {
         if (state is SummarySuccess) {
+          if(state.response["Data"]==null){
+            return;
+          }
           CustomScaffoldMessenger.showSuccessMessage(
             context,
-            state.response["Data"][0][0]["msg"],
+            state.response["Data"][0][0]["msg"]??"Summary saved successfully",
           );
           context.read<CaseDetailsBloc>().add(
             CaseDetailsEventRequested(
-              saltID: widget.saltID.toString(),
+              caseID: widget.caseReviewerID.toString(),
+              caseReviewerID: widget.caseReviewerID,
               silent: true,
             ),
           );
@@ -98,7 +102,7 @@ class _WrittenreportState extends State<Writtenreport> {
                         onPressed: () {
                           context.read<SummaryBloc>().add(
                             summarycaseEvent(
-                              saltID: widget.saltID,
+                              saltID: widget.caseReviewerID,
                               summary: summaryController.text.trim(),
                             ),
                           );

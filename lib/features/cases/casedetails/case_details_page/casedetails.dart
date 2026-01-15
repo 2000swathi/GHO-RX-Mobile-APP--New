@@ -32,7 +32,10 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
     opencases = ModalRoute.of(context)?.settings.arguments as OpenCaseModel;
 
     context.read<CaseDetailsBloc>().add(
-      CaseDetailsEventRequested(saltID: opencases.saltKey.toString()),
+      CaseDetailsEventRequested(
+        caseID: opencases.caseID.toString(),
+        caseReviewerID: opencases.caseReviewerID,
+      ),
     );
   }
 
@@ -91,10 +94,7 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          caseInfo.patientName,
-                          style: AppFonts.subheading16,
-                        ),
+                        Text(caseInfo.patient, style: AppFonts.subheading16),
                         Container(
                           padding: EdgeInsets.symmetric(
                             horizontal: 12,
@@ -111,44 +111,33 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SvgPicture.asset(
-                          "assets/svg/person.svg",
-                          colorFilter: ColorFilter.mode(
-                            AppColors.textPrimary,
-                            BlendMode.srcIn,
-                          ),
-                          width: 16,
+                        const Icon(
+                          Icons.circle,
+                          size: 6,
+                          color: AppColors.textPrimary,
                         ),
-                        const SizedBox(width: 7),
+                        const SizedBox(width: 3),
                         Text(
-                          caseInfo.gender,
-                          style: AppFonts.subheading16.copyWith(fontSize: 14),
-                        ),
-                        const SizedBox(width: 15),
-                        if (caseInfo.dob!.isNotEmpty)
-                          const Icon(
-                            Icons.cake,
-                            size: 19,
+                          "Assigned Date : ${caseInfo.dateAssigned}",
+                          style: AppFonts.textSecondary.copyWith(
+                            fontSize: 14,
                             color: AppColors.textPrimary,
                           ),
-                        const SizedBox(width: 7),
-                        Text(
-                          caseInfo.dob.toString(),
-                          style: AppFonts.subheading16.copyWith(fontSize: 14),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         const Icon(Icons.circle, size: 6, color: AppColors.red),
                         const SizedBox(width: 3),
                         Text(
-                          caseInfo.dueDate,
+                          "Due Date : ${caseInfo.dueDate}",
                           style: AppFonts.textSecondary.copyWith(
                             fontSize: 14,
                             color: AppColors.red,
@@ -164,11 +153,10 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
                             state.caseDetailsModel.caseInfo?.summaryOfRecords
                                 .trim() ??
                             '';
-                        final hasUnanswered = state.caseDetailsModel.questions!
+                        final hasUnanswered = state.caseDetailsModel.questions
                             .any((q) {
-                              final answer = q.answer?.toString().trim() ?? '';
-                              final support =
-                                  q.support?.toString().trim() ?? '';
+                              final answer = q.answer.toString().trim();
+                              final support = q.support.toString().trim();
                               return answer.isEmpty || support.isEmpty;
                             });
                         if (summary.isEmpty && hasUnanswered) {
@@ -193,17 +181,16 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
                             builder:
                                 (context) => FinalOpinionConfirmation(
                                   caseDetailsModel: state.caseDetailsModel,
-                                  saltID: opencases.saltKey,
+                                  caseReviewerID: opencases.caseReviewerID,
                                 ),
                           ),
                         );
-                        
                       },
                     ),
                     const SizedBox(height: 14),
                     CasesTabView(
                       caseDetailsModel: state.caseDetailsModel,
-                      saltID: opencases.saltKey,
+                      caseReviewerID: opencases.caseReviewerID,
                     ),
                     const SizedBox(height: 14),
                   ],

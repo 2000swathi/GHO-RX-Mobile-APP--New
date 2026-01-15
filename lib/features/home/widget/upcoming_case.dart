@@ -40,6 +40,7 @@ class UpcomingCase extends StatelessWidget {
             arguments: openCase,
           );
           },
+          patient: cases["Patient"] ?? "",
           dueDate: cases["DueDate"] ?? "",
           description: cases["MedicalSummary"] ?? "",
         ),

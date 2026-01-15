@@ -128,11 +128,10 @@ class _LanguageScreenState extends State<LanguageScreen> {
                         itemCount: unselected.length,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3, 
+                              crossAxisCount: 3,
                               crossAxisSpacing: 12,
-                              mainAxisSpacing: 12, 
-                              childAspectRatio:
-                                  2.5, 
+                              mainAxisSpacing: 12,
+                              childAspectRatio: 2.5,
                             ),
                         itemBuilder: (context, index) {
                           final name = unselected[index];

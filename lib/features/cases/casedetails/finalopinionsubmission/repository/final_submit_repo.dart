@@ -5,7 +5,7 @@ import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
 class SubmitCaseRepo {
   final DioHandler _dioHandler = DioHandler();
 
-  Future<Map<String, dynamic>> submitCase(String saltKey) async {
+  Future<Map<String, dynamic>> submitCase(String caseReviewerID) async {
     final token = await SharedPreference.getToken();
     if (token == null || token.isEmpty) {
       throw Exception('Token  not found in SharedPreferences');
@@ -14,7 +14,7 @@ class SubmitCaseRepo {
     final data = {
       ...ApiUtils.getCommonParams(action: "reviewercase", token: token),
       "Tags": [
-        {"T": "dk1", "V": saltKey},
+        {"T": "dk1", "V": caseReviewerID},
         {"T": "c10", "V": "17"},
       ],
     };

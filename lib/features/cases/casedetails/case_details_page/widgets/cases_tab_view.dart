@@ -7,11 +7,11 @@ import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_pag
 
 class CasesTabView extends StatefulWidget {
   final CaseDetailsModel caseDetailsModel;
-  final String saltID;
+  final String caseReviewerID;
   const CasesTabView({
     super.key,
     required this.caseDetailsModel,
-    required this.saltID,
+    required this.caseReviewerID,
   });
 
   @override
@@ -36,26 +36,26 @@ class _CasesTabViewState extends State<CasesTabView> {
         ),
 
         SizedBox(height: 8),
-        _buildTabContent(selectedIndex, widget.saltID),
+        _buildTabContent(selectedIndex, widget.caseReviewerID),
       ],
     );
   }
 
-  Widget _buildTabContent(int index, String saltID) {
+  Widget _buildTabContent(int index, String caseReviewerID) {
     switch (index) {
       case 0:
         return Clainment(caseDetailsModel: widget.caseDetailsModel);
       case 1:
         return QuestionTab(
           questionAnswer: widget.caseDetailsModel.questions,
-          saltID: saltID,
+          caseReviewerID: caseReviewerID,
         );
       default:
         return Reviewpage(
-          saltID: saltID,
+          caseReviewerID: caseReviewerID,
           summaryRecords: widget.caseDetailsModel.caseInfo!.summaryOfRecords,
-          caseID: widget.caseDetailsModel.caseInfo!.caseID.toString(),
-          audioSummaryModel: widget.caseDetailsModel.draudiosummery,
+          caseID: widget.caseDetailsModel.caseInfo!.caseId.toString(),
+          audioSummaryModel: widget.caseDetailsModel.reviewerDocuments,
         );
     }
   }

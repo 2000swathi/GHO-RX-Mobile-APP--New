@@ -11,14 +11,14 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
   CaseDetailsBloc({required this.repository}) : super(CaseDetailsInitial()) {
     on<CaseDetailsEventRequested>((event, emit) async {
-      // 👇 Show loading only when it's not a silent refresh
       if (!event.silent) {
         emit(CaseDetailsLoading());
       }
 
       try {
         final casedtlResponse = await repository.getcaseDetails(
-          saltID: event.saltID,
+          caseReviewerID: event.caseReviewerID,
+          caseID: event.caseID,
         );
 
         if (casedtlResponse.status == 1) {

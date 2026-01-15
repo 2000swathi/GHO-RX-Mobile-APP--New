@@ -29,7 +29,7 @@ class SpecialtyListState extends ListState {
 
 //accreditationtype
 class AccreditationTypeListState extends ListState {
-  final AccreditationTypeModel accreditationTypeResponse;
+  final AccreditationTypeList accreditationTypeResponse;
   const AccreditationTypeListState({required this.accreditationTypeResponse});
   @override
   List<Object> get props => [accreditationTypeResponse];

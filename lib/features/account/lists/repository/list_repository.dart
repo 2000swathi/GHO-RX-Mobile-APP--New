@@ -47,17 +47,19 @@ class ListRepository {
   }
 
   // accreditation_type
-  Future<AccreditationTypeModel> fetchAccreditationTypeList() async {
+  Future<AccreditationTypeList> fetchAccreditationTypeList() async {
     final data = {
-      ...ApiUtils.getCommonParams(action: action, token: ""),
+      ...ApiUtils.getCommonParams(action: "revieweraccred", token: ""),
       "Tags": [
-        {"T": "c10", "V": "90"},
+        {"T": "dk1", "V": "reviewerid"},
+        {"T": "c10", "V": "6"},
       ],
     };
 
     try {
       final response = await _dioHandler.post('', data: data);
-      return AccreditationTypeModel.fromJson(response);
+      print(response);
+      return AccreditationTypeList.fromJson(response);
     } catch (e) {
       throw Exception("Failed to fetch accreditation types: $e");
     }
@@ -135,6 +137,7 @@ class ListRepository {
     }
   }
 
+  // language
   Future<Map<String, dynamic>> fetchLangList() async {
     final data = {
       ...ApiUtils.getCommonParams(action: action, token: ""),
@@ -189,10 +192,11 @@ class ListRepository {
   // doctype lists
   Future<Map<String, dynamic>> fetchDocTypeList() async {
     final data = {
-      ...ApiUtils.getCommonParams(action: action, token: ""),
+      ...ApiUtils.getCommonParams(action: "filemgr", token: ""),
       "Tags": [
-        {"T": "dk1", "V": "REVIEWERFILE"},
-        {"T": "c10", "V": "3"},
+        {"T": "dk1", "V": "0"},
+        {"T": "dk2", "V": "REVPROFILE"},
+        {"T": "c10", "V": "5"},
       ],
     };
     try {
