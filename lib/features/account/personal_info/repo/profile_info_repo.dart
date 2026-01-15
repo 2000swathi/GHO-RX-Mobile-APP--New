@@ -20,14 +20,14 @@ class ProfileInfoRepo {
       ...ApiUtils.getCommonParams(action: "reviewer", token: token),
       "Tags": [
         {"T": "dk1", "V": reviewerId},
-        {"T": "c10", "V": "7"},
+        {"T": "c1", "V": "0"},
+        {"T": "c10", "V": "51"},
       ],
     };
 
-
     try {
       final response = await _dioHandler.post('', data: data);
-
+      print(response);
       final dataList = response['Data'];
       if (dataList == null || dataList.isEmpty) {
         throw "Data is null or empty";
@@ -70,11 +70,12 @@ class ProfileInfoRepo {
       "Tags": [
         {"T": "dk1", "V": reviewerId},
         {"T": "c1", "V": jsonEncode(data)},
-        {"T": "c10", "V": "1"},
+        {"T": "c10", "V": "12"},
       ],
     };
     try {
       final response = await _dioHandler.post('', data: requestData);
+      print(response);
       return response;
     } catch (e) {
       throw (e.toString());

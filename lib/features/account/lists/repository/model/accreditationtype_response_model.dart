@@ -1,63 +1,60 @@
-class AccreditationTypeModel {
+// Main Response Model
+class AccreditationTypeList {
   final int status;
   final String error;
   final String info;
-  final List<AccreditationTypeData> data;
+  final List<List<AccreditationType>> data;
 
-  AccreditationTypeModel({
+  AccreditationTypeList({
     required this.status,
     required this.error,
     required this.info,
     required this.data,
   });
 
-  factory AccreditationTypeModel.fromJson(Map<String, dynamic> json) {
-   
-    final rawData = json['Data'] as List?;
-    final innerList = rawData != null && rawData.isNotEmpty ? rawData.first as List : [];
+  factory AccreditationTypeList.fromJson(Map<String, dynamic> json) {
+  final rawData = json['Data'];
 
-    return AccreditationTypeModel(
-      status: json['Status'] ?? 0,
-      error: json['Error'] ?? '',
-      info: json['Info'] ?? '',
-      data: innerList
-          .map((item) => AccreditationTypeData.fromJson(item))
-          .toList(),
-    );
+  List<List<AccreditationType>> parsedData;
+
+  if (rawData is List && rawData.isNotEmpty) {
+    parsedData = rawData.map<List<AccreditationType>>((list) {
+      if (list is List) {
+        return list
+            .whereType<Map<String, dynamic>>()
+            .map((item) => AccreditationType.fromJson(item))
+            .toList();
+      }
+      return <AccreditationType>[];
+    }).toList();
+  } else {
+    parsedData = [[]];
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'Status': status,
-      'Error': error,
-      'Info': info,
-      'Data': [
-        data.map((item) => item.toJson()).toList(),
-      ],
-    };
-  }
+  return AccreditationTypeList(
+    status: json['Status'] ?? 0,
+    error: json['Error'] ?? '',
+    info: json['Info'] ?? '',
+    data: parsedData,
+  );
 }
 
-class AccreditationTypeData {
-  final int accreditationTypeID;
-  final String name;
+}
 
-  AccreditationTypeData({
-    required this.accreditationTypeID,
-    required this.name,
+// Individual Accreditation Type Model
+class AccreditationType {
+  final int id;
+  final String degree;
+
+  AccreditationType({
+    required this.id,
+    required this.degree,
   });
 
-  factory AccreditationTypeData.fromJson(Map<String, dynamic> json) {
-    return AccreditationTypeData(
-      accreditationTypeID: json['AccreditationTypeID'] ?? 0,
-      name: json['AccreditationType'] ?? '',
+  factory AccreditationType.fromJson(Map<String, dynamic> json) {
+    return AccreditationType(
+      id: json['id'] ?? 0,
+      degree: json['D'] ?? '',
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'AccreditationTypeID': accreditationTypeID,
-      'AccreditationType': name,
-    };
   }
 }
