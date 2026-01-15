@@ -14,7 +14,9 @@ class FetchLanguage extends LanguageEvent {}
 class AddLanguage extends LanguageEvent {
   final String language;
   
-  AddLanguage({required this.language,});
+  const AddLanguage({required this.language,});
+  @override
+  List<Object> get props => [language];
 }
 //edit
 class EditLanguageEvent extends LanguageEvent {

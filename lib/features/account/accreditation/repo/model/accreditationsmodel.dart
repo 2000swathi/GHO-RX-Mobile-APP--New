@@ -42,41 +42,16 @@ class AccreditationModel {
 }
 
 class AccreditationData {
-  final int id;
-  final int reviewerId;
-  final String accreditationType;
-  final String accreditationBody;
-  final String accreditationNumber;
-  final String accreditationTypeID;
+  final dynamic id;
+  final String name;
 
-  AccreditationData({
-    required this.id,
-    required this.reviewerId,
-    required this.accreditationType,
-    required this.accreditationBody,
-    required this.accreditationNumber,
-    required this.accreditationTypeID,
-  });
+  AccreditationData({required this.id, required this.name});
 
   factory AccreditationData.fromJson(Map<String, dynamic> json) {
-    return AccreditationData(
-      id: json['ID'] ?? 0,
-      reviewerId: json['ReviewerId'] ?? 0,
-      accreditationType: json['AccreditationType'] ?? '',
-      accreditationBody: json['AccreditationBody'] ?? '',
-      accreditationNumber: json['AccreditationNumber'] ?? '',
-      accreditationTypeID: json['AccreditationTypeID'] ?? '',
-    );
+    return AccreditationData(id: json['id'] ?? 0, name: json['D'] ?? '');
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'ID': id,
-      'ReviewerId': reviewerId,
-      'AccreditationType': accreditationType,
-      'AccreditationBody': accreditationBody,
-      'AccreditationNumber': accreditationNumber,
-      'AccreditationTypeID': accreditationTypeID,
-    };
+    return {'id': id, 'D': name};
   }
 }

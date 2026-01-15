@@ -11,8 +11,7 @@ class AccreditationBloc extends Bloc<AccreditationEvent, AccreditationState> {
   AccreditationBloc({required this.repository})
     : super(AccreditationInitial()) {
     on<FetchAccreditation>(_onFetchAccreditation);
-    // on<AddAccrediation>(_addaccrediation);
-    on<SaveAccreditationEvent>(_saveAccreditation);
+    on<AddAccreditationEvent>(_addAccreditation);
   }
   //fetch accreditation
   Future<void> _onFetchAccreditation(
@@ -38,16 +37,15 @@ class AccreditationBloc extends Bloc<AccreditationEvent, AccreditationState> {
     }
   }
   // Save Accreditation
-  Future<void> _saveAccreditation(
-    SaveAccreditationEvent event,
+  Future<void> _addAccreditation(
+    AddAccreditationEvent event,
     Emitter<AccreditationState> emit,
   ) async {
     emit(AccrediationSaveLoading());
 
     try {
-      final response = await repository.saveAccreditation(
-        accreditationtype: event.accreditationtype,
-        accreditationbody: event.accreditationbody,
+      final response = await repository.addAccreditation(
+        accreditationName: event.accreditationName,
       );
 
       if (response["Status"] == 1) {

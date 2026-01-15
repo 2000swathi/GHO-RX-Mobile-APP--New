@@ -21,7 +21,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     on<FetchCountryList>(_onFetchCountry);
     on<FetchSpecialtyList>(_onFetchSpecialty);
     on<FetchLicenseList>(_onFetchLicense);
-    on<FetchAccrediationList>(_onFetchAccreditation);
+    // on<FetchAccrediationList>(_onFetchAccreditation);
     on<FetchCertifiedList>(_onFetchCertified);
     on<FetchSpecialtyTypeList>(_onFetchSpecialtyType);
     on<FetchIssueingAuthorityList>(_onFetchIssueingAuthority);
@@ -62,25 +62,25 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     }
   }
 
-  //accrediation list
-  Future<void> _onFetchAccreditation(
-    FetchAccrediationList event,
-    Emitter<ListState> emit,
-  ) async {
-    emit(ListLoading());
+  // //accrediation list
+  // Future<void> _onFetchAccreditation(
+  //   FetchAccrediationList event,
+  //   Emitter<ListState> emit,
+  // ) async {
+  //   emit(ListLoading());
 
-    try {
-      final accreditationTypeResponse =
-          await repository.fetchAccreditationTypeList();
-      emit(
-        AccreditationTypeListState(
-          accreditationTypeResponse: accreditationTypeResponse,
-        ),
-      );
-    } catch (e) {
-      emit(ListFailure(error: e.toString()));
-    }
-  }
+  //   try {
+  //     final accreditationTypeResponse =
+  //         await repository.fetchAccreditationTypeList();
+  //     emit(
+  //       AccreditationTypeListState(
+  //         accreditationTypeResponse: accreditationTypeResponse,
+  //       ),
+  //     );
+  //   } catch (e) {
+  //     emit(ListFailure(error: e.toString()));
+  //   }
+  // }
 
   //license list
   Future<void> _onFetchLicense(

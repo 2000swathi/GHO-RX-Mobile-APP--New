@@ -42,7 +42,6 @@ class LanguageRepo {
       "Tags": [
         {"T": "dk1", "V": userId},
         {"T": "c1", "V": language},
-        // {"T": "c2", "V": proficiency},
         {"T": "c10", "V": "1"},
       ],
     };
@@ -69,7 +68,6 @@ class LanguageRepo {
         {"T": "dk1", "V": token},
         {"T": "dk2", "V": id},
         {"T": "c1", "V": language},
-        // {"T": "c2", "V": proficiency},
         {"T": "c10", "V": "4"},
       ],
     };
