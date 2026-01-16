@@ -87,13 +87,7 @@ class CommonListState extends ListState {
   List<Object> get props => [response];
 }
 
-// questions
-class QuestionsLIstState extends ListState {
-  final Map<String, dynamic> response;
-  const QuestionsLIstState({required this.response});
-  @override
-  List<Object> get props => [response];
-}
+
 
 //degree type
 class EductionTypeListState extends ListState {

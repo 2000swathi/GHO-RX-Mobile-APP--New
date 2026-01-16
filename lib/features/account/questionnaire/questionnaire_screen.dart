@@ -5,7 +5,6 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart'
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/account/deleteBloc/bloc/delete_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/questionnaire/repo/bloc/questions_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/custom_profile_appbar.dart';
 
@@ -17,16 +16,23 @@ class QuestionnaireScreen extends StatefulWidget {
 }
 
 class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
-  final List<Map<String, dynamic>> selectedQuestions = [];
+  List<Map<String, dynamic>> allQuestions = [];
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ListBloc>().add(FetchQuestList());
       context.read<QuestionsBloc>().add(FetchQuestionsEvent());
     });
   }
+
+  bool isSelected(Map q) {
+    return q["qid"] != null && q["qid"].toString() != '0';
+  }
+
+  final Set<String> updatingIds = {};
+
+  bool hasFetchedInitially = false;
 
   @override
   Widget build(BuildContext context) {
@@ -36,26 +42,31 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: MultiBlocListener(
           listeners: [
+            /// QUESTIONS LISTENER
             BlocListener<QuestionsBloc, QuestionsState>(
               listener: (context, state) {
-                if (state is Questionsgetting) {
-                  selectedQuestions
-                    ..clear()
-                    ..addAll(
-                      state.response["Data"][0]
-                          .map<Map<String, dynamic>>(
-                            (e) => {
-                              "QuestionnaireID": e["QuestionnaireID"],
-                              "Question": e["Question"],
-                              "Answer": e["Answer"],
-                            },
-                          )
-                          .toList(),
+                if (state is Questionsgetting && !hasFetchedInitially) {
+                  setState(() {
+                    allQuestions = List<Map<String, dynamic>>.from(
+                      state.response["Data"]?[0] ?? [],
                     );
-                  setState(() {});
+                    hasFetchedInitially = true;
+                  });
                 }
               },
             ),
+
+            BlocListener<QuestionsBloc, QuestionsState>(
+              listener: (context, state) {
+                if (state is Questionsgetting || state is QuestionsError) {
+                  setState(() {
+                    updatingIds.clear();
+                  });
+                }
+              },
+            ),
+
+            /// DELETE LISTENER
             BlocListener<DeleteBloc, DeleteState>(
               listener: (context, state) {
                 if (state is DeleteSuccess) {
@@ -72,39 +83,22 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
               },
             ),
           ],
-          child: BlocBuilder<ListBloc, ListState>(
+          child: BlocBuilder<QuestionsBloc, QuestionsState>(
             builder: (context, state) {
-              if (state is ListLoading) {
+              if (state is QuestionsLoading && allQuestions.isEmpty) {
                 return const Center(child: LoadingAnimation());
-              } else if (state is ListFailure) {
-                return Center(child: Text(state.error));
-              } else if (state is QuestionsLIstState) {
-                final info = state.response["Data"]?[0];
-                final List questions = info ?? [];
+              }
 
-                // Separate selected and unselected
-                final List selected =
-                    questions
-                        .where(
-                          (q) => selectedQuestions.any(
-                            (sel) =>
-                                sel["QuestionnaireID"].toString() ==
-                                q["ID"].toString(),
-                          ),
-                        )
-                        .toList();
+              if (state is QuestionsError && allQuestions.isEmpty) {
+                return Center(child: Text(state.message));
+              }
 
-                final List unselected =
-                    questions
-                        .where(
-                          (q) =>
-                              !selectedQuestions.any(
-                                (sel) =>
-                                    sel["QuestionnaireID"].toString() ==
-                                    q["ID"].toString(),
-                              ),
-                        )
-                        .toList();
+              if (allQuestions.isNotEmpty) {
+                final selected =
+                    allQuestions.where((q) => isSelected(q)).toList();
+
+                final unselected =
+                    allQuestions.where((q) => !isSelected(q)).toList();
 
                 return SingleChildScrollView(
                   padding: const EdgeInsets.only(bottom: 20),
@@ -113,6 +107,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                     children: [
                       const SizedBox(height: 20),
 
+                      /// INFO BOX
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 12,
@@ -123,11 +118,9 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
                             color: AppColors.primarycolor.withAlpha(50),
-                            width: 1,
                           ),
                         ),
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Icon(
                               Icons.info_outline,
@@ -148,36 +141,26 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
 
                       const SizedBox(height: 20),
 
-                      // Selected Questions
-                      if (selected.isNotEmpty)
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Submitted Questions",
-                              style: AppFonts.textprimary.copyWith(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Column(
-                              children:
-                                  selected.map((q) {
-                                    return Padding(
-                                      padding: const EdgeInsets.only(
-                                        bottom: 14,
-                                      ),
-                                      child: questionItem(q, true),
-                                    );
-                                  }).toList(),
-                            ),
-                          ],
+                      /// SUBMITTED
+                      if (selected.isNotEmpty) ...[
+                        Text(
+                          "Submitted Questions",
+                          style: AppFonts.textprimary.copyWith(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
+                        const SizedBox(height: 10),
+                        ...selected.map(
+                          (q) => Padding(
+                            padding: const EdgeInsets.only(bottom: 14),
+                            child: questionItem(q),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                      ],
 
-                      const SizedBox(height: 20),
-
-                      // Available Questions
+                      /// AVAILABLE
                       if (unselected.isNotEmpty) ...[
                         Text(
                           "Available Questions",
@@ -187,14 +170,11 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        Column(
-                          children:
-                              unselected.map((q) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 14),
-                                  child: questionItem(q, false),
-                                );
-                              }).toList(),
+                        ...unselected.map(
+                          (q) => Padding(
+                            padding: const EdgeInsets.only(bottom: 14),
+                            child: questionItem(q),
+                          ),
                         ),
                       ],
                     ],
@@ -210,39 +190,29 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
     );
   }
 
-  Widget questionItem(Map q, bool isSelected) {
+  Widget questionItem(Map q) {
+    final selected = isSelected(q);
+
     void toggleSelection() {
+      final id = q["id"].toString();
+
+      if (updatingIds.contains(id)) return; // 🔒 prevent double tap
+
       setState(() {
-        if (isSelected) {
-          selectedQuestions.removeWhere(
-            (sel) => sel["QuestionnaireID"].toString() == q["ID"].toString(),
-          );
+        updatingIds.add(id);
 
-          context.read<DeleteBloc>().add(
-            DeleteProfileItem(
-              id: q["ID"].toString(),
-              action: "reviewerque",
-              isLang: false,
-            ),
-          );
-        } else {
-          selectedQuestions.add({
-            "QuestionnaireID": q["ID"],
-            "Question": q["Question"],
-            "Answer": q["Answer"] ?? "",
-          });
-
-          context.read<QuestionsBloc>().add(
-            CheckQuestionsEvent(
-              qID: q["ID"].toString(),
-              answer: true,
-              comments: "",
-            ),
-          );
-
-          CustomScaffoldMessenger.showCommonMessage(context, "Submitted");
+        final index = allQuestions.indexWhere((e) => e["id"] == q["id"]);
+        if (index != -1) {
+          allQuestions[index] = {
+            ...allQuestions[index],
+            "qid": selected ? "0" : "1",
+          };
         }
       });
+
+      context.read<QuestionsBloc>().add(
+        AddQuestionsEvent(id: id, value: selected ? "0" : "1"),
+      );
     }
 
     return InkWell(
@@ -250,7 +220,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
       child: Row(
         children: [
           Checkbox(
-            value: isSelected,
+            value: selected,
             onChanged: (_) => toggleSelection(),
             activeColor: AppColors.primarycolor,
           ),

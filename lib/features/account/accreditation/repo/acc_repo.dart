@@ -6,7 +6,7 @@ import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
 class AccRepo {
   final DioHandler _dioHandler = DioHandler();
 
-  // Accreditation
+  //fetch Accreditation
   Future<AccreditationModel> fetchAccreditationInfo() async {
     final token = await SharedPreference.getToken();
     final reviewerId = await SharedPreference.getUserId();
