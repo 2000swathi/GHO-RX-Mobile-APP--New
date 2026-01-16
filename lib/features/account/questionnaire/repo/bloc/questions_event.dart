@@ -2,19 +2,14 @@ part of 'questions_bloc.dart';
 
 abstract class QuestionsEvent {}
 
-class CheckQuestionsEvent extends QuestionsEvent {
-  final String qID;
-  final bool answer;
-  final String comments;
+class AddQuestionsEvent extends QuestionsEvent {
+  final String id;
+  final String value;
 
-  CheckQuestionsEvent({
-    required this.qID,
-    required this.answer,
-    required this.comments,
-  });
+  AddQuestionsEvent({required this.id,required this.value});
 
-  @override
-  List<Object?> get props => [qID, answer, comments];
+  List<Object?> get props => [id];
 }
 
 class FetchQuestionsEvent extends QuestionsEvent {}
+

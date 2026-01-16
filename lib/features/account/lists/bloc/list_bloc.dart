@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/list_repository.dart';
-import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/accreditationtype_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/certified_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/country_response_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/model/education_typemodel.dart';
@@ -26,7 +25,6 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     on<FetchSpecialtyTypeList>(_onFetchSpecialtyType);
     on<FetchIssueingAuthorityList>(_onFetchIssueingAuthority);
     on<FetchLangList>(_onFetchLaunguageList);
-    on<FetchQuestList>(_onFetchQuestList);
     on<FetchEducationList>(_onFetchDegreeType);
     on<FetchDocTypeList>(_onFetchDocTypeList);
     on<FetchReferenceList>(_onFetchReferenceTypeList);
@@ -168,24 +166,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     }
   }
 
-  //questions list
-  Future<void> _onFetchQuestList(
-    FetchQuestList event,
-    Emitter<ListState> emit,
-  ) async {
-    emit(ListLoading());
 
-    try {
-      final response = await repository.fetchQuestionsList();
-      if (response["Status"] == 1) {
-        return emit(QuestionsLIstState(response: response));
-      } else {
-        return emit(ListFailure(error: response["Info"]));
-      }
-    } catch (e) {
-      emit(ListFailure(error: e.toString()));
-    }
-  }
 
   //degree type
   Future<void> _onFetchDegreeType(
