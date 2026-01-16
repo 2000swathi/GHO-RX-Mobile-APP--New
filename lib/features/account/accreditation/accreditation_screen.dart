@@ -5,8 +5,8 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart'
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/account/accreditation/repo/bloc/accreditation_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/accreditation/repo/model/accreditationsmodel.dart';
 import 'package:ghorx_mobile_app_new/features/account/deleteBloc/bloc/delete_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/custom_profile_appbar.dart';
 
 class AccreditationScreen extends StatefulWidget {
@@ -18,12 +18,14 @@ class AccreditationScreen extends StatefulWidget {
 
 class _AccreditationScreenState extends State<AccreditationScreen> {
   final List<Map<String, dynamic>> selectedAccre = [];
+  List<AccreditationData> _allAccreditations = [];
 
   @override
   void initState() {
     super.initState();
-    context.read<ListBloc>().add(FetchAccrediationList());
-    context.read<AccreditationBloc>().add(FetchAccreditation());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AccreditationBloc>().add(FetchAccreditation());
+    });
   }
 
   @override
@@ -37,52 +39,44 @@ class _AccreditationScreenState extends State<AccreditationScreen> {
           BlocListener<AccreditationBloc, AccreditationState>(
             listener: (context, state) {
               if (state is AccreditationgetState) {
-                // Only update selectedAccre if we have valid data from a successful API response
                 if (state.accreditationModel.status == 1) {
-                  selectedAccre
-                    ..clear()
-                    ..addAll(
-                      state.accreditationModel.data.map(
-                        (e) => {"id": e.id, "name": e.accreditationType},
-                      ),
-                    );
+                  _allAccreditations = state.accreditationModel.data;
+                  final selectedItems = state.accreditationModel.data
+                      .where((e) => e.id != 0 && e.id.toString() != '0')
+                      .map((e) => {"id": e.id, "name": e.name});
+                  selectedAccre.clear();
+                  selectedAccre.addAll(selectedItems);
                   setState(() {});
                 }
+              } else if (state is AccSuccess) {
+                context.read<AccreditationBloc>().add(FetchAccreditation());
               }
             },
           ),
         ],
-        child: BlocBuilder<ListBloc, ListState>(
+        child: BlocBuilder<AccreditationBloc, AccreditationState>(
           builder: (context, state) {
-            if (state is ListLoading) {
+            if (state is AccrediationLoading && _allAccreditations.isEmpty) {
               return const Center(child: LoadingAnimation());
             }
 
-            if (state is ListFailure) {
-              return Center(child: Text(state.error));
+            if (state is AccrediationError && _allAccreditations.isEmpty) {
+              return Center(child: Text(state.message));
             }
 
-            if (state is AccreditationTypeListState) {
-              final allAccreditation =
-                  state.accreditationTypeResponse.data
-                      .expand((e) => e)
-                      .toList();
+            if (_allAccreditations.isNotEmpty) {
+              final allAccreditation = _allAccreditations;
 
-              if (allAccreditation.isEmpty) {
-                return const Center(
-                  child: Text("No accreditation data available"),
+              final selected = selectedAccre.map((e) {
+                return allAccreditation.firstWhere(
+                  (element) => element.name == e['name'],
+                  orElse: () => AccreditationData(id: e['id'], name: e['name']),
                 );
-              }
+              }).toList();
 
-              final selected =
-                  allAccreditation.where((item) {
-                    return selectedAccre.any((e) => e["name"] == item.degree);
-                  }).toList();
-
-              final unselected =
-                  allAccreditation.where((item) {
-                    return !selectedAccre.any((e) => e["name"] == item.degree);
-                  }).toList();
+              final unselected = allAccreditation.where((item) {
+                return !selectedAccre.any((e) => e["name"] == item.name);
+              }).toList();
 
               return Padding(
                 padding: const EdgeInsets.all(16),
@@ -105,7 +99,7 @@ class _AccreditationScreenState extends State<AccreditationScreen> {
                           children:
                               selected.map((item) {
                                 return accreditationItem(
-                                  name: item.degree,
+                                  name: item.name,
                                   id: item.id,
                                   isSelected: true,
                                 );
@@ -138,7 +132,7 @@ class _AccreditationScreenState extends State<AccreditationScreen> {
                         itemBuilder: (context, index) {
                           final item = unselected[index];
                           return accreditationItem(
-                            name: item.degree,
+                            name: item.name,
                             id: item.id,
                             isSelected: false,
                           );
@@ -160,7 +154,7 @@ class _AccreditationScreenState extends State<AccreditationScreen> {
   /// Accreditation chip
   Widget accreditationItem({
     required String name,
-    required int id,
+    required dynamic id,
     required bool isSelected,
   }) {
     return GestureDetector(
@@ -173,10 +167,7 @@ class _AccreditationScreenState extends State<AccreditationScreen> {
           }
         });
         context.read<AccreditationBloc>().add(
-          SaveAccreditationEvent(
-            accreditationtype: name,
-            accreditationbody: name,
-          ),
+          AddAccreditationEvent(accreditationName: name),
         );
         CustomScaffoldMessenger.showCommonMessage(context, "$name saved");
       },
@@ -198,10 +189,7 @@ class _AccreditationScreenState extends State<AccreditationScreen> {
                 } else {
                   selectedAccre.add({"id": id, "name": name});
                   context.read<AccreditationBloc>().add(
-                    SaveAccreditationEvent(
-                      accreditationtype: name,
-                      accreditationbody: name,
-                    ),
+                    AddAccreditationEvent(accreditationName: name),
                   );
                   CustomScaffoldMessenger.showCommonMessage(
                     context,

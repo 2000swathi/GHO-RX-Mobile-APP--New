@@ -18,8 +18,7 @@ class AccRepo {
       ...ApiUtils.getCommonParams(action: "revieweraccred", token: token),
       "Tags": [
         {"T": "dk1", "V": reviewerId},
-        {"T": "dk2", "V": "0"},
-        {"T": "c10", "V": "3"},
+        {"T": "c10", "V": "6"},
       ],
     };
 
@@ -31,10 +30,9 @@ class AccRepo {
     }
   }
 
-  //save 
-  Future<Map<String, dynamic>> saveAccreditation({
-    required String accreditationtype,
-    required String accreditationbody,
+  //add
+  Future<Map<String, dynamic>> addAccreditation({
+    required String accreditationName,
   }) async {
     final token = await SharedPreference.getToken();
     final reviewerId = await SharedPreference.getUserId();
@@ -47,18 +45,46 @@ class AccRepo {
       ...ApiUtils.getCommonParams(action: "revieweraccred", token: token),
       "Tags": [
         {"T": "dk1", "V": reviewerId},
-        {"T": "c1", "V": accreditationtype},
-        {"T": "c2", "V": accreditationbody},
+        {"T": "c1", "V": accreditationName},
         {"T": "c4", "V": "1"},
         {"T": "c10", "V": "5"},
       ],
     };
     try {
       final response = await _dioHandler.post('', data: requestData);
-      print(response);
       return response;
     } catch (e) {
       throw (e.toString());
     }
   }
+
+  // // edit
+  // Future<Map<String, dynamic>> editAccreditation({
+  //   required String accreditationtype,
+  //   required String accreditationbody,
+  // }) async {
+  //   final token = await SharedPreference.getToken();
+  //   final reviewerId = await SharedPreference.getUserId();
+
+  //   if (token!.isEmpty || reviewerId!.isEmpty) {
+  //     throw Exception('Token or ReviewerId not found in SharedPreferences');
+  //   }
+
+  //   final requestData = {
+  //     ...ApiUtils.getCommonParams(action: "revieweraccred", token: token),
+  //     "Tags": [
+  //       {"T": "dk1", "V": reviewerId},
+  //       {"T": "c1", "V": accreditationtype},
+  //       {"T": "c4", "V": "1"},
+  //       {"T": "c10", "V": "5"},
+  //     ],
+  //   };
+  //   try {
+  //     final response = await _dioHandler.post('', data: requestData);
+  //     print(response);
+  //     return response;
+  //   } catch (e) {
+  //     throw (e.toString());
+  //   }
+  // }
 }

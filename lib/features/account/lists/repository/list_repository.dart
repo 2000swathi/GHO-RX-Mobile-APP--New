@@ -58,7 +58,6 @@ class ListRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
-      print(response);
       return AccreditationTypeList.fromJson(response);
     } catch (e) {
       throw Exception("Failed to fetch accreditation types: $e");
