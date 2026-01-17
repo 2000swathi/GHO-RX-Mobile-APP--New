@@ -4,6 +4,8 @@ import 'package:ghorx_mobile_app_new/features/account/accreditation/repo/acc_rep
 import 'package:ghorx_mobile_app_new/features/account/accreditation/repo/bloc/accreditation_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/bank_Info/repo/bankinforepo.dart';
 import 'package:ghorx_mobile_app_new/features/account/bank_Info/repo/bloc/bank_info_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/conflict_of_interest/bloc/conflict_interest_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/conflict_of_interest/repo/conflict_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/deleteBloc/bloc/delete_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/deleteBloc/repository/delete_repository.dart';
 import 'package:ghorx_mobile_app_new/features/account/documents/repo/bloc/doctfile_bloc.dart';
@@ -22,6 +24,8 @@ import 'package:ghorx_mobile_app_new/features/account/license/repo/bloc/license_
 import 'package:ghorx_mobile_app_new/features/account/license/repo/license_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/repository/list_repository.dart';
+import 'package:ghorx_mobile_app_new/features/account/non_disclosure/repo/bloc/nondisclosure_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/non_disclosure/repo/nondisclosure_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/bloc/profile_info_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/profile_info_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/prfile_pic/bloc/pic_bloc.dart';
@@ -204,6 +208,12 @@ class AppBlocProvider extends StatelessWidget {
         BlocProvider<QuestionsBloc>(
           create: (_) => QuestionsBloc(repository: QuestionnaireRepo()),
         ),
+        BlocProvider<ConflictInterestBloc>(
+          create: (_) => ConflictInterestBloc(repo: ConflictOfInterestRepo()),
+          ),
+        BlocProvider<NondisclosureBloc>(
+          create: (_) => NondisclosureBloc(repo: NonDisclosureRepo()),
+          ),
       ],
       child: child,
     );

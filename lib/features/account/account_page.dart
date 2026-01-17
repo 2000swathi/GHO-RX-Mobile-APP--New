@@ -84,6 +84,16 @@ class _AccountPageState extends State<AccountPage> {
       imagePath: "assets/svg/account/courthouse 1.png",
       routeName: AppRouter.bankInfo,
     ),
+    _DrawerItem(
+      title: "Conflict Of Interest", 
+      imagePath: "assets/svg/account/question-mark.png",
+      routeName: AppRouter.conflictInterest,
+    ),
+    _DrawerItem(
+      title: "Non-Disclosure & Confidentiality", 
+      imagePath: "assets/svg/account/question-mark.png",
+      routeName: AppRouter.non_disclosure,
+    )
   ];
   @override
   void initState() {
