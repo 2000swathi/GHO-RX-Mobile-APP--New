@@ -4,7 +4,7 @@ import 'package:ghorx_mobile_app_new/features/account/accreditation/repo/acc_rep
 import 'package:ghorx_mobile_app_new/features/account/accreditation/repo/bloc/accreditation_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/bank_Info/repo/bankinforepo.dart';
 import 'package:ghorx_mobile_app_new/features/account/bank_Info/repo/bloc/bank_info_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/account/conflict_of_interest/bloc/conflict_interest_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/account/conflict_of_interest/repo/bloc/conflict_interest_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/conflict_of_interest/repo/conflict_repo.dart';
 import 'package:ghorx_mobile_app_new/features/account/deleteBloc/bloc/delete_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/deleteBloc/repository/delete_repository.dart';

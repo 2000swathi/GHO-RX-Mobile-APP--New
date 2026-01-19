@@ -38,152 +38,155 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAccountAppBar(title: "Questionnaire"),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: MultiBlocListener(
-          listeners: [
-            /// QUESTIONS LISTENER
-            BlocListener<QuestionsBloc, QuestionsState>(
-              listener: (context, state) {
-                if (state is Questionsgetting && !hasFetchedInitially) {
-                  setState(() {
-                    allQuestions = List<Map<String, dynamic>>.from(
-                      state.response["Data"]?[0] ?? [],
+      body: SafeArea(
+        bottom: true,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: MultiBlocListener(
+            listeners: [
+              /// QUESTIONS LISTENER
+              BlocListener<QuestionsBloc, QuestionsState>(
+                listener: (context, state) {
+                  if (state is Questionsgetting && !hasFetchedInitially) {
+                    setState(() {
+                      allQuestions = List<Map<String, dynamic>>.from(
+                        state.response["Data"]?[0] ?? [],
+                      );
+                      hasFetchedInitially = true;
+                    });
+                  }
+                },
+              ),
+        
+              BlocListener<QuestionsBloc, QuestionsState>(
+                listener: (context, state) {
+                  if (state is Questionsgetting || state is QuestionsError) {
+                    setState(() {
+                      updatingIds.clear();
+                    });
+                  }
+                },
+              ),
+        
+              /// DELETE LISTENER
+              BlocListener<DeleteBloc, DeleteState>(
+                listener: (context, state) {
+                  if (state is DeleteSuccess) {
+                    CustomScaffoldMessenger.showCommonMessage(
+                      context,
+                      state.message,
                     );
-                    hasFetchedInitially = true;
-                  });
+                  } else if (state is DeleteFailure) {
+                    CustomScaffoldMessenger.showCommonMessage(
+                      context,
+                      state.error,
+                    );
+                  }
+                },
+              ),
+            ],
+            child: BlocBuilder<QuestionsBloc, QuestionsState>(
+              builder: (context, state) {
+                if (state is QuestionsLoading && allQuestions.isEmpty) {
+                  return const Center(child: LoadingAnimation());
                 }
-              },
-            ),
-
-            BlocListener<QuestionsBloc, QuestionsState>(
-              listener: (context, state) {
-                if (state is Questionsgetting || state is QuestionsError) {
-                  setState(() {
-                    updatingIds.clear();
-                  });
+        
+                if (state is QuestionsError && allQuestions.isEmpty) {
+                  return Center(child: Text(state.message));
                 }
-              },
-            ),
-
-            /// DELETE LISTENER
-            BlocListener<DeleteBloc, DeleteState>(
-              listener: (context, state) {
-                if (state is DeleteSuccess) {
-                  CustomScaffoldMessenger.showCommonMessage(
-                    context,
-                    state.message,
-                  );
-                } else if (state is DeleteFailure) {
-                  CustomScaffoldMessenger.showCommonMessage(
-                    context,
-                    state.error,
-                  );
-                }
-              },
-            ),
-          ],
-          child: BlocBuilder<QuestionsBloc, QuestionsState>(
-            builder: (context, state) {
-              if (state is QuestionsLoading && allQuestions.isEmpty) {
-                return const Center(child: LoadingAnimation());
-              }
-
-              if (state is QuestionsError && allQuestions.isEmpty) {
-                return Center(child: Text(state.message));
-              }
-
-              if (allQuestions.isNotEmpty) {
-                final selected =
-                    allQuestions.where((q) => isSelected(q)).toList();
-
-                final unselected =
-                    allQuestions.where((q) => !isSelected(q)).toList();
-
-                return SingleChildScrollView(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 20),
-
-                      /// INFO BOX
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.primarycolor.withAlpha(13),
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: AppColors.primarycolor.withAlpha(50),
+        
+                if (allQuestions.isNotEmpty) {
+                  final selected =
+                      allQuestions.where((q) => isSelected(q)).toList();
+        
+                  final unselected =
+                      allQuestions.where((q) => !isSelected(q)).toList();
+        
+                  return SingleChildScrollView(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 20),
+        
+                        /// INFO BOX
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
                           ),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.info_outline,
-                              color: AppColors.primarycolor,
+                          decoration: BoxDecoration(
+                            color: AppColors.primarycolor.withAlpha(13),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: AppColors.primarycolor.withAlpha(50),
                             ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                "Please answer all questions honestly and completely",
-                                style: AppFonts.textprogressbar.copyWith(
-                                  fontWeight: FontWeight.w500,
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.info_outline,
+                                color: AppColors.primarycolor,
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  "Please answer all questions honestly and completely",
+                                  style: AppFonts.textprogressbar.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      /// SUBMITTED
-                      if (selected.isNotEmpty) ...[
-                        Text(
-                          "Submitted Questions",
-                          style: AppFonts.textprimary.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            ],
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        ...selected.map(
-                          (q) => Padding(
-                            padding: const EdgeInsets.only(bottom: 14),
-                            child: questionItem(q),
-                          ),
-                        ),
+        
                         const SizedBox(height: 20),
-                      ],
-
-                      /// AVAILABLE
-                      if (unselected.isNotEmpty) ...[
-                        Text(
-                          "Available Questions",
-                          style: AppFonts.textprimary.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+        
+                        /// SUBMITTED
+                        if (selected.isNotEmpty) ...[
+                          Text(
+                            "Submitted Questions",
+                            style: AppFonts.textprimary.copyWith(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 10),
-                        ...unselected.map(
-                          (q) => Padding(
-                            padding: const EdgeInsets.only(bottom: 14),
-                            child: questionItem(q),
+                          const SizedBox(height: 10),
+                          ...selected.map(
+                            (q) => Padding(
+                              padding: const EdgeInsets.only(bottom: 14),
+                              child: questionItem(q),
+                            ),
                           ),
-                        ),
+                          const SizedBox(height: 20),
+                        ],
+        
+                        /// AVAILABLE
+                        if (unselected.isNotEmpty) ...[
+                          Text(
+                            "Available Questions",
+                            style: AppFonts.textprimary.copyWith(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          ...unselected.map(
+                            (q) => Padding(
+                              padding: const EdgeInsets.only(bottom: 14),
+                              child: questionItem(q),
+                            ),
+                          ),
+                        ],
                       ],
-                    ],
-                  ),
-                );
-              }
-
-              return const Center(child: Text("Invalid State"));
-            },
+                    ),
+                  );
+                }
+        
+                return const Center(child: Text("Invalid State"));
+              },
+            ),
           ),
         ),
       ),

@@ -15,71 +15,74 @@ class NonDisclosureScreen extends StatefulWidget {
 
 class _NonDisclosureScreenState extends State<NonDisclosureScreen> {
   List<Map<String, dynamic>> conditions = [];
-  Map<String, bool> selectedMap = {};
 
-   @override
+  final Map<String, bool> selectedMap = {};
+
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<NondisclosureBloc>().add(FetchNonDisclosureEvent());
     });
   }
+
+  bool _resolveInitialCheckboxValue(Map<String, dynamic> q) {
+    final qid = q["qid"];
+
+    if (qid != null && qid != 0) return true;
+
+    final answer = q["Answer"];
+    if (answer == null) return false;
+
+    final v = answer.toString().toLowerCase();
+    return v == '1' || v == 'yes' || v == 'true';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAccountAppBar(title: "Non-Disclosure & Confidentiality"),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: MultiBlocListener(
-          listeners: [
-            BlocListener<NondisclosureBloc, NondisclosureState>(
-              listener: (context, state) {
-                if (state is NondisclosureSuccess) {
-                  setState(() {
-                    final dataList = state.data["Data"];
-                    if (dataList == null || dataList.isEmpty) {
-                      return;
-                    }
+      appBar: const CustomAccountAppBar(
+        title: "Non-Disclosure & Confidentiality",
+      ),
+      body: SafeArea(
+        bottom: true,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: BlocListener<NondisclosureBloc, NondisclosureState>(
+            listener: (context, state) {
+              if (state is NondisclosureSuccess) {
+                final dataList = state.data["Data"];
+                if (dataList == null || dataList.isEmpty) return;
 
-                    conditions = List<Map<String, dynamic>>.from(
-                      dataList[0] ?? [],
+                final questions = List<Map<String, dynamic>>.from(dataList[0]);
+
+                setState(() {
+                  conditions = questions;
+
+                  for (final q in conditions) {
+                    final id = q["id"].toString();
+                    selectedMap.putIfAbsent(
+                      id,
+                      () => _resolveInitialCheckboxValue(q),
                     );
-
-                    for (final q in conditions) {
-                      final id = q["id"].toString();
-                      final answer = q["Answer"];
-
-                      if (answer != null && answer != "") {
-                        selectedMap[id] = answer == "1";
-                      } else if (!selectedMap.containsKey(id)) {
-                        selectedMap[id] = false;
-                      }
-                    }
-                  });
-                }
-              },
-            ),
-
-            BlocListener<NondisclosureBloc, NondisclosureState>(
-              listener: (context, state) {
-                if (state is NondisclosureSuccess ||
-                    state is NonDisclosureError) {
-                  setState(() {});
-                }
-              },
-            ),
-          ],
-          child: BlocBuilder<NondisclosureBloc, NondisclosureState>(
-            builder: (context, state) {
-              if (state is NondisclosureLoading && conditions.isEmpty) {
-                return const Center(child: LoadingAnimation());
+                  }
+                });
               }
+            },
+            child: BlocBuilder<NondisclosureBloc, NondisclosureState>(
+              builder: (context, state) {
+                if (state is NondisclosureLoading && conditions.isEmpty) {
+                  return const Center(child: LoadingAnimation());
+                }
 
-              if (state is NonDisclosureError) {
-                return Center(child: Text(state.message));
-              }
+                if (state is NonDisclosureError) {
+                  return Center(child: Text(state.message));
+                }
 
-              if (conditions.isNotEmpty) {
+                if (conditions.isEmpty) {
+                  return const SizedBox();
+                }
+
                 return ListView.separated(
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   itemCount: conditions.length,
@@ -95,16 +98,16 @@ class _NonDisclosureScreenState extends State<NonDisclosureScreen> {
                           value: selectedMap[id] ?? false,
                           activeColor: AppColors.primarycolor,
                           onChanged: (value) {
-                            final isCecked = value ?? false;
+                            final checked = value ?? false;
 
                             setState(() {
-                              selectedMap[id] = isCecked;
+                              selectedMap[id] = checked;
                             });
 
                             context.read<NondisclosureBloc>().add(
                               AddNonDisclosureEvent(
                                 id: id,
-                                value: isCecked ? '1' : '0',
+                                value: checked ? '1' : '0',
                               ),
                             );
                           },
@@ -126,10 +129,8 @@ class _NonDisclosureScreenState extends State<NonDisclosureScreen> {
                     );
                   },
                 );
-              }
-
-              return const SizedBox();
-            },
+              },
+            ),
           ),
         ),
       ),

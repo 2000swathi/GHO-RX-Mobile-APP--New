@@ -9,7 +9,7 @@ class NondisclosureBloc extends Bloc<NonDisclosureEvent, NondisclosureState> {
   final NonDisclosureRepo repo;
 
   NondisclosureBloc({required this.repo}) : super(NondisclosureInitial()) {
-    on<FetchNonDisclosureEvent>(onfetchNondisclosure); 
+    on<FetchNonDisclosureEvent>(onfetchNondisclosure);
     on<AddNonDisclosureEvent>(onaddNondisclosure);
   }
 
@@ -21,7 +21,7 @@ class NondisclosureBloc extends Bloc<NonDisclosureEvent, NondisclosureState> {
 
     try {
       final response = await repo.fetchNonDisclosure();
-        emit(NondisclosureSuccess(response));
+      emit(NondisclosureSuccess(response));
     } catch (e) {
       emit(NonDisclosureError(message: e.toString(), conflictId: ""));
     }
@@ -34,10 +34,7 @@ class NondisclosureBloc extends Bloc<NonDisclosureEvent, NondisclosureState> {
     emit(NondisclosureLoading(event.id));
 
     try {
-      final response = await repo.addNonDisclosure(
-        event.id,
-        event.value,
-      );
+      final response = await repo.addNonDisclosure(event.id, event.value);
       if (response['Status'] == 1) {
         add(FetchNonDisclosureEvent());
       } else {
@@ -49,12 +46,7 @@ class NondisclosureBloc extends Bloc<NonDisclosureEvent, NondisclosureState> {
         );
       }
     } catch (e) {
-      emit(
-        NonDisclosureError(
-          message: e.toString(),
-          conflictId: event.id,
-        ),
-      );
+      emit(NonDisclosureError(message: e.toString(), conflictId: event.id));
     }
   }
 }

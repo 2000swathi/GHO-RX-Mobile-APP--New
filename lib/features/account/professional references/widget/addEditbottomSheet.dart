@@ -128,52 +128,55 @@ class AddProfessionalRefBottomSheet {
       /// -----------------------------------
       /// ACTION BUTTON (Submit)
       /// -----------------------------------
-      actionButton: BlocListener<ProfessionalrefBloc, ProfessionalrefState>(
-        listener: (context, state) {
-          if (state is ProRefSuccess) {
-            Navigator.pop(context); // close loading
-            // Navigator.pop(context); // close sheet
-            profRefBloc.add(FetchProfessionalref());
-            CustomScaffoldMessenger.showSuccessMessage(context, state.message);
-          } else if (state is ProfessionalrefError) {
-            Navigator.pop(context);
-            CustomScaffoldMessenger.showErrorMessage(context, state.message);
-          }
-        },
-
-        child: BlocBuilder<ProfessionalrefBloc, ProfessionalrefState>(
-          builder: (context, state) {
-            final bool isLoading = state is ProfessionalrefAddLoading;
-
-            return CustomButton(
-              text:
-                  isEdit
-                      ? "Update Professional Reference"
-                      : "Add Professional Reference",
-              isLoading: isLoading,
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  final event =
-                      isEdit
-                          ? EditProRef(
-                            refId: info!.id.toString(),
-                            fullName: nameController.text,
-                            designation: designationController.text,
-                            relationship: relationShipController.text,
-                            phone: phoneController.text,
-                          )
-                          : AddProRef(
-                            fullName: nameController.text,
-                            designation: designationController.text,
-                            relationship: relationShipController.text,
-                            phone: phoneController.text,
-                          );
-
-                  profRefBloc.add(event);
-                }
-              },
-            );
+      actionButton: SafeArea(
+        bottom: true,
+        child: BlocListener<ProfessionalrefBloc, ProfessionalrefState>(
+          listener: (context, state) {
+            if (state is ProRefSuccess) {
+              Navigator.pop(context); // close loading
+              // Navigator.pop(context); // close sheet
+              profRefBloc.add(FetchProfessionalref());
+              CustomScaffoldMessenger.showSuccessMessage(context, state.message);
+            } else if (state is ProfessionalrefError) {
+              Navigator.pop(context);
+              CustomScaffoldMessenger.showErrorMessage(context, state.message);
+            }
           },
+        
+          child: BlocBuilder<ProfessionalrefBloc, ProfessionalrefState>(
+            builder: (context, state) {
+              final bool isLoading = state is ProfessionalrefAddLoading;
+        
+              return CustomButton(
+                text:
+                    isEdit
+                        ? "Update Professional Reference"
+                        : "Add Professional Reference",
+                isLoading: isLoading,
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    final event =
+                        isEdit
+                            ? EditProRef(
+                              refId: info!.id.toString(),
+                              fullName: nameController.text,
+                              designation: designationController.text,
+                              relationship: relationShipController.text,
+                              phone: phoneController.text,
+                            )
+                            : AddProRef(
+                              fullName: nameController.text,
+                              designation: designationController.text,
+                              relationship: relationShipController.text,
+                              phone: phoneController.text,
+                            );
+        
+                    profRefBloc.add(event);
+                  }
+                },
+              );
+            },
+          ),
         ),
       ),
     );

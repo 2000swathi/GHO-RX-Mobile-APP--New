@@ -165,136 +165,130 @@ class _EditProfileSheetWidgetState extends State<EditProfileSheetWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
+    return SafeArea(
       child: Column(
         children: [
-          CustomTextFormField(
-            controller: firstNameController,
-            name: "First Name",
-            hintText: "Enter your first name",
-            validator: Validation.validateFirstName,
+          // 🔹 Scrollable Form Content
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.45,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    CustomTextFormField(
+                      controller: firstNameController,
+                      name: "First Name",
+                      hintText: "Enter your first name",
+                      validator: Validation.validateFirstName,
+                    ),
+                    const SizedBox(height: 10),
+
+                    CustomTextFormField(
+                      controller: lastNameController,
+                      name: "Last Name",
+                      hintText: "Enter your last name",
+                      validator: Validation.validateSecondtName,
+                    ),
+                    const SizedBox(height: 10),
+
+                    CustomTextFormField(
+                      controller: dobController,
+                      name: "Birth Date",
+                      hintText: "DD/MM/YYYY",
+                      keyboardType: TextInputType.number,
+                      validator: Validation.validateDOB,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        DobInputFormatter(),
+                      ],
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    CustomDropdownFormField<String>(
+                      name: "Nationality",
+                      hintText: "-Select Country-",
+                      value: selectedCountryId,
+                      validator: Validation.validateForCountry,
+                      items:
+                          widget.countries
+                              .map(
+                                (c) => DropdownItem<String>(
+                                  value: c.countryID.toString(),
+                                  label: c.countryName,
+                                ),
+                              )
+                              .toList(),
+                      onChanged: (id) {
+                        setState(() {
+                          selectedCountryId = id;
+                          final country = widget.countries.firstWhere(
+                            (c) => c.countryID.toString() == id,
+                          );
+                          selectedCountryCode = country.countryCode;
+                        });
+                      },
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    CustomPhoneField(
+                      label: "Phone Number",
+                      controller: phoneController,
+                      countryCode: selectedCountryCode,
+                      validator: Validation.validatePhone,
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    CustomPhoneField(
+                      label: "Work Phone Number",
+                      controller: workphoneController,
+                      countryCode: selectedCountryCode,
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    CustomTextFormField(
+                      controller: emailController,
+                      name: "Email",
+                      hintText: "Enter your email address",
+                      validator: Validation.validateEmail,
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    CustomTextFormField(
+                      controller: address1Controller,
+                      name: "Address 1",
+                      hintText: "Enter your residential address",
+                      validator: Validation.addressValidator,
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    CustomTextFormField(
+                      controller: npiController,
+                      name: "NPI",
+                      hintText: "National Provider Identifier",
+                      keyboardType: TextInputType.number,
+                      validator: Validation.validateNPI,
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    _buildCheckboxGrid(),
+
+                    const SizedBox(height: 10),
+                  ],
+                ),
+              ),
+            ),
           ),
-          const SizedBox(height: 10),
-          CustomTextFormField(
-            controller: lastNameController,
-            name: "Last Name",
-            hintText: "Enter your last name",
-            validator: Validation.validateSecondtName,
-          ),
-          const SizedBox(height: 10),
-          CustomTextFormField(
-            controller: dobController,
-            name: "Birth Date",
-            hintText: "DD/MM/YYYY",
-            keyboardType: TextInputType.number,
-            validator: Validation.validateDOB,
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-              DobInputFormatter(),
-            ],
-          ),
-          const SizedBox(height: 10),
-          CustomDropdownFormField<String>(
-            name: "Nationality",
-            hintText: "-Select Country-",
-            value: selectedCountryId,
-            validator: Validation.validateForCountry,
-            items:
-                widget.countries
-                    .map(
-                      (c) => DropdownItem<String>(
-                        value: c.countryID.toString(),
-                        label: c.countryName,
-                      ),
-                    )
-                    .toList(),
-            onChanged: (id) {
-              setState(() {
-                selectedCountryId = id;
-                final country = widget.countries.firstWhere(
-                  (c) => c.countryID.toString() == id,
-                );
-                selectedCountryCode = country.countryCode;
-              });
-            },
-          ),
-          const SizedBox(height: 10),
-          CustomPhoneField(
-            label: "Phone Number",
-            controller: phoneController,
-            countryCode: selectedCountryCode,
-            validator: Validation.validatePhone,
-          ),
-          const SizedBox(height: 10),
-          CustomPhoneField(
-            label: "Work Phone Number",
-            controller: workphoneController,
-            countryCode: selectedCountryCode,
-            // validator: Validation.validatePhone,
-          ),
-          const SizedBox(height: 10),
-          CustomTextFormField(
-            controller: emailController,
-            name: "Email",
-            hintText: "Enter your email address",
-            validator: Validation.validateEmail,
-            keyboardType: TextInputType.emailAddress,
-          ),
-          const SizedBox(height: 10),
-          CustomTextFormField(
-            controller: address1Controller,
-            name: "Address 1",
-            hintText: "Enter your residential address",
-            validator: Validation.addressValidator,
-          ),
-          // const SizedBox(height: 10),
-          // CustomTextFormField(
-          //   controller: address2Controller,
-          //   name: "Address 2",
-          //   hintText: "Enter your residential address",
-          //   validator: Validation.addressValidator,
-          // ),
-          // const SizedBox(height: 10),
-          // CustomTextFormField(
-          //   controller: cityController,
-          //   name: "City",
-          //   hintText: "Enter your city",
-          //   validator: Validation.validateForCity,
-          // ),
-          // const SizedBox(height: 10),
-          // CustomTextFormField(
-          //   controller: stateController,
-          //   name: "State",
-          //   hintText: "Enter your state",
-          //   validator: Validation.validateForState,
-          // ),
-          // const SizedBox(height: 10),
-          // CustomTextFormField(
-          //   controller: zipcodeController,
-          //   name: "Zip Code",
-          //   hintText: "Enter your zip code",
-          //   validator: Validation.postalCodeValidator,
-          //   keyboardType: TextInputType.number,
-          // ),
-          const SizedBox(height: 10),
-          CustomTextFormField(
-            controller: npiController,
-            name: "NPI",
-            hintText: "National Provider Identifier",
-            keyboardType: TextInputType.number,
-            validator: Validation.validateNPI,
-          ),
-          // SizedBox(height: 10),
-          // CustomTextFormField(
-          //   controller: nationalityController,
-          //   name: "Nationality",
-          //   hintText: "National Provider Identifier",
-          //   // validator: Validation.valid,
-          // ),
-          SizedBox(height: 20),
-          _buildCheckboxGrid(),
-          SizedBox(height: 20),
+
           CustomButton(
             text: "Submit Request",
             isLoading: isLoading,
@@ -378,14 +372,17 @@ class _EditProfileSheetWidgetState extends State<EditProfileSheetWidget> {
       ("Active Surgeon", activeSurgeon, (v) => activeSurgeon = v),
     ];
 
+    final width = MediaQuery.of(context).size.width;
+    final crossAxisCount = width < 600 ? 2 : 3;
+
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3, 
-        childAspectRatio: 3.5,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 4,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount,
+        childAspectRatio: 4,
+        mainAxisSpacing: 12,
+        crossAxisSpacing: 12,
       ),
       itemCount: items.length,
       itemBuilder: (context, index) {

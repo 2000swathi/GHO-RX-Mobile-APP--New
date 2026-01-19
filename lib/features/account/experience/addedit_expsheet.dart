@@ -210,69 +210,72 @@ class AddEditExperienceSheet {
                         ),
                   ),
 
-                  CustomTextFormField(
-                    name: "Comments",
-                    controller: commentsCtrl,
-                    hintText: "Enter Comments",
-                  ),
+                  // CustomTextFormField(
+                  //   name: "Comments",
+                  //   controller: commentsCtrl,
+                  //   hintText: "Enter Comments",
+                  // ),
                 ],
               ),
             );
           },
         ),
       ],
-      actionButton: BlocListener<
-        ProfessinalExperinceBloc,
-        ProfessinalExperinceState
-      >(
-        listener: (context, state) {
-          if (state is ExpSuccess) {
-            Navigator.pop(context);
-            context.read<ProfessinalExperinceBloc>().add(FetchExperience());
-          } else if (state is ExpError) {
-            CustomScaffoldMessenger.showErrorMessage(context, state.message);
-          }
-        },
-        child: BlocBuilder<ProfessinalExperinceBloc, ProfessinalExperinceState>(
-          builder: (context, state) {
-            final bool isLoading =
-                state is ProfessinalExperinceAddLoading ||
-                state is ProfessinalExperinceEditLoading;
-
-            return CustomButton(
-              text: isEdit ? "Update Experience" : "Add Experience",
-              isLoading: isLoading,
-              onPressed: () {
-                if (!formKey.currentState!.validate()) return;
-                if (isEdit) {
-                  experienceBloc.add(
-                    EditExperience(
-                      id: item!.id.toString(),
-                      institution: instCtrl.text,
-                      designation: desigCtrl.text,
-                      fromMonth: selectedFromMonth!,
-                      fromYear: fromYearCtrl.text,
-                      toMonth: selectedToMonth!,
-                      toYear: toYearCtrl.text,
-                      comments: commentsCtrl.text,
-                    ),
-                  );
-                } else {
-                  experienceBloc.add(
-                    AddExperience(
-                      institution: instCtrl.text,
-                      designation: desigCtrl.text,
-                      fromMonth: selectedFromMonth ?? "",
-                      fromYear: fromYearCtrl.text,
-                      toMonth: selectedToMonth ?? "",
-                      toYear: toYearCtrl.text,
-                      comments: commentsCtrl.text,
-                    ),
-                  );
-                }
-              },
-            );
+      actionButton: SafeArea(
+        bottom: true,
+        child: BlocListener<
+          ProfessinalExperinceBloc,
+          ProfessinalExperinceState
+        >(
+          listener: (context, state) {
+            if (state is ExpSuccess) {
+              Navigator.pop(context);
+              context.read<ProfessinalExperinceBloc>().add(FetchExperience());
+            } else if (state is ExpError) {
+              CustomScaffoldMessenger.showErrorMessage(context, state.message);
+            }
           },
+          child: BlocBuilder<ProfessinalExperinceBloc, ProfessinalExperinceState>(
+            builder: (context, state) {
+              final bool isLoading =
+                  state is ProfessinalExperinceAddLoading ||
+                  state is ProfessinalExperinceEditLoading;
+        
+              return CustomButton(
+                text: isEdit ? "Update Experience" : "Add Experience",
+                isLoading: isLoading,
+                onPressed: () {
+                  if (!formKey.currentState!.validate()) return;
+                  if (isEdit) {
+                    experienceBloc.add(
+                      EditExperience(
+                        id: item!.id.toString(),
+                        institution: instCtrl.text,
+                        designation: desigCtrl.text,
+                        fromMonth: selectedFromMonth!,
+                        fromYear: fromYearCtrl.text,
+                        toMonth: selectedToMonth!,
+                        toYear: toYearCtrl.text,
+                        comments: commentsCtrl.text,
+                      ),
+                    );
+                  } else {
+                    experienceBloc.add(
+                      AddExperience(
+                        institution: instCtrl.text,
+                        designation: desigCtrl.text,
+                        fromMonth: selectedFromMonth ?? "",
+                        fromYear: fromYearCtrl.text,
+                        toMonth: selectedToMonth ?? "",
+                        toYear: toYearCtrl.text,
+                        comments: commentsCtrl.text,
+                      ),
+                    );
+                  }
+                },
+              );
+            },
+          ),
         ),
       ),
     );

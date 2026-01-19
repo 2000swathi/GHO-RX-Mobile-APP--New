@@ -103,51 +103,54 @@ class AddEditSpecialtySheet {
           },
         ),
       ],
-      actionButton: BlocListener<SpecialtyBloc, SpecialtyState>(
-        listener: (context, state) {
-          if (state is SpecialtySuccess) {
-            Navigator.pop(context);
-            context.read<SpecialtyBloc>().add(FetchSpecialty());
-            CustomScaffoldMessenger.showSuccessMessage(context, state.message);
-          } else if (state is SpecialtyError) {
-            CustomScaffoldMessenger.showErrorMessage(context, state.message);
-          }
-        },
-        child: BlocBuilder<SpecialtyBloc, SpecialtyState>(
-          builder: (context, state) {
-            final isLoading =
-                state is SpecialityAddLoading || state is SpecialityEditLoading;
-
-            return CustomButton(
-              text:
-                  isEdit
-                      ? (isLoading ? "Updating..." : "Update Specialty")
-                      : (isLoading ? "Adding..." : "Add Specialty"),
-              isLoading: isLoading,
-              onPressed: () {
-                if (formKey.currentState!.validate()) {
-                  if (isEdit) {
-                    context.read<SpecialtyBloc>().add(
-                      EditSpecialtyEvent(
-                        id: info!.id.toString(),
-                        specialtyId: selectedSpecialtyID ?? '',
-                        certifiedBoard: certifiedBoardController.text.trim(),
-                        specialtyType: selectedSpecialtyType ?? '',
-                      ),
-                    );
-                  } else {
-                    context.read<SpecialtyBloc>().add(
-                      AddSpecialty(
-                        specialty: selectedSpecialtyID ?? '',
-                        certifiedBoard: certifiedBoardController.text.trim(),
-                        specialtyType: selectedSpecialtyType ?? '',
-                      ),
-                    );
-                  }
-                }
-              },
-            );
+      actionButton: SafeArea(
+        bottom: true,
+        child: BlocListener<SpecialtyBloc, SpecialtyState>(
+          listener: (context, state) {
+            if (state is SpecialtySuccess) {
+              Navigator.pop(context);
+              context.read<SpecialtyBloc>().add(FetchSpecialty());
+              CustomScaffoldMessenger.showSuccessMessage(context, state.message);
+            } else if (state is SpecialtyError) {
+              CustomScaffoldMessenger.showErrorMessage(context, state.message);
+            }
           },
+          child: BlocBuilder<SpecialtyBloc, SpecialtyState>(
+            builder: (context, state) {
+              final isLoading =
+                  state is SpecialityAddLoading || state is SpecialityEditLoading;
+        
+              return CustomButton(
+                text:
+                    isEdit
+                        ? (isLoading ? "Updating..." : "Update Specialty")
+                        : (isLoading ? "Adding..." : "Add Specialty"),
+                isLoading: isLoading,
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    if (isEdit) {
+                      context.read<SpecialtyBloc>().add(
+                        EditSpecialtyEvent(
+                          id: info!.id.toString(),
+                          specialtyId: selectedSpecialtyID ?? '',
+                          certifiedBoard: certifiedBoardController.text.trim(),
+                          specialtyType: selectedSpecialtyType ?? '',
+                        ),
+                      );
+                    } else {
+                      context.read<SpecialtyBloc>().add(
+                        AddSpecialty(
+                          specialty: selectedSpecialtyID ?? '',
+                          certifiedBoard: certifiedBoardController.text.trim(),
+                          specialtyType: selectedSpecialtyType ?? '',
+                        ),
+                      );
+                    }
+                  }
+                },
+              );
+            },
+          ),
         ),
       ),
     );

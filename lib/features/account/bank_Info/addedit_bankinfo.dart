@@ -84,58 +84,61 @@ class AddEditBankInfoBottonSheet {
           ),
         ),
       ],
-      actionButton: BlocListener<BankInfoBloc, BankInfoState>(
-        listener: (context, state) {
-          if (state is BankInfoSuccess) {
-            if (Navigator.canPop(context)) Navigator.pop(context);
-            bankinfobloc.add(FetchBankInfo());
-            CustomScaffoldMessenger.showSuccessMessage(context, state.message);
-          } else if (state is BankInfoError) {
-            CustomScaffoldMessenger.showErrorMessage(context, state.message);
-          }
-        },
-
-        child: BlocBuilder<BankInfoBloc, BankInfoState>(
-          builder: (context, addState) {
-            final bool isAddLoading = addState is BankInfoAddLoading;
-            return BlocBuilder<BankInfoBloc, BankInfoState>(
-              builder: (context, editState) {
-                final bool isEditLoading = editState is BankInfoEditLoading;
-                final bool isLoading = isAddLoading || isEditLoading;
-
-                return CustomButton(
-                  text: isEdit! ? "Update Bank Info" : "Submit Bank Info",
-                  isLoading: isLoading,
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      if (isEdit) {
-                        context.read<BankInfoBloc>().add(
-                          EditBankInfoEvent(
-                            id: info!.id.toString(),
-                            accountNumber: accountNumberController.text.trim(),
-                            accountType: accountTypeController.text.trim(),
-                            holderName: accountNameController.text.trim(),
-                            routingNumber: routingNumberController.text.trim(),
-                            bankName: bankNameController.text.trim()
-                          ),
-                        );
-                      } else {
-                        context.read<BankInfoBloc>().add(
-                          AddBankInfo(
-                            accountNumber: accountNumberController.text.trim(),
-                            accountType: accountTypeController.text.trim(),
-                            holderName: accountNameController.text.trim(),
-                            routingNumber: routingNumberController.text.trim(),
-                            bankName: bankNameController.text.trim()
-                          ),
-                        );
-                      }
-                    }
-                  },
-                );
-              },
-            );
+      actionButton: SafeArea(
+        bottom: true,
+        child: BlocListener<BankInfoBloc, BankInfoState>(
+          listener: (context, state) {
+            if (state is BankInfoSuccess) {
+              if (Navigator.canPop(context)) Navigator.pop(context);
+              bankinfobloc.add(FetchBankInfo());
+              CustomScaffoldMessenger.showSuccessMessage(context, state.message);
+            } else if (state is BankInfoError) {
+              CustomScaffoldMessenger.showErrorMessage(context, state.message);
+            }
           },
+        
+          child: BlocBuilder<BankInfoBloc, BankInfoState>(
+            builder: (context, addState) {
+              final bool isAddLoading = addState is BankInfoAddLoading;
+              return BlocBuilder<BankInfoBloc, BankInfoState>(
+                builder: (context, editState) {
+                  final bool isEditLoading = editState is BankInfoEditLoading;
+                  final bool isLoading = isAddLoading || isEditLoading;
+        
+                  return CustomButton(
+                    text: isEdit! ? "Update Bank Info" : "Submit Bank Info",
+                    isLoading: isLoading,
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        if (isEdit) {
+                          context.read<BankInfoBloc>().add(
+                            EditBankInfoEvent(
+                              id: info!.id.toString(),
+                              accountNumber: accountNumberController.text.trim(),
+                              accountType: accountTypeController.text.trim(),
+                              holderName: accountNameController.text.trim(),
+                              routingNumber: routingNumberController.text.trim(),
+                              bankName: bankNameController.text.trim()
+                            ),
+                          );
+                        } else {
+                          context.read<BankInfoBloc>().add(
+                            AddBankInfo(
+                              accountNumber: accountNumberController.text.trim(),
+                              accountType: accountTypeController.text.trim(),
+                              holderName: accountNameController.text.trim(),
+                              routingNumber: routingNumberController.text.trim(),
+                              bankName: bankNameController.text.trim()
+                            ),
+                          );
+                        }
+                      }
+                    },
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
     );

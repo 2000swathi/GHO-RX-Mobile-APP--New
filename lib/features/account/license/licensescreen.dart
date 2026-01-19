@@ -82,147 +82,150 @@ class _LicensescreenState extends State<Licensescreen> {
         },
       ),
 
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        child: BlocListener<DeleteBloc, DeleteState>(
-          listener: (context, state) {
-            if (state is DeleteLoading) {
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (_) => const Center(child: LoadingAnimation()),
-              );
-            } else if (state is DeleteSuccess) {
-              Navigator.pop(context);
-              CustomScaffoldMessenger.showSuccessMessage(
-                context,
-                state.message,
-              );
-              licenseBloc.add(FetchLicense());
-            } else if (state is DeleteFailure) {
-              Navigator.pop(context);
-              CustomScaffoldMessenger.showErrorMessage(context, state.error);
-            }
-          },
-          child: BlocBuilder<LicenseBloc, LicenseState>(
-            builder: (context, state) {
-              if (state is LicenseLoading) {
-                return const Center(child: LoadingAnimation());
-              }
-
-              if (state is LicenseError) {
-                return Center(child: Text(state.message));
-              }
-
-              if (state is Licensegetsuccess) {
-                final licenses = state.licenseModel.data;
-
-                if (licenses.isEmpty) {
-                  return const Center(child: Text("No licenses found"));
-                }
-
-                return ListView.builder(
-                  itemCount: licenses.length,
-                  itemBuilder: (context, index) {
-                    final license = licenses[index];
-
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
-                      child: LicenseCard(
-                        index: index + 1,
-                        licenseNumber: license.licenseNumber,
-                        issueDate: license.issueDate,
-                        expiryDate: license.expiryDate,
-                        licenseType: license.licenseType,
-
-                        /// ------------ DELETE CLICK ----------------
-                        onDelete: () async {
-                          final confirmed = await showDeleteConfirmationDialog(
-                            context: context,
-                            title: "Delete License",
-                            content: "Are you sure you want to delete?",
-                          );
-
-                          if (confirmed == true) {
-                            deleteBloc.add(
-                              DeleteProfileItem(
-                                id: license.id.toString(),
-                                action: "reviewerlic",
-                                isLang: false,
-                              ),
-                            );
-                          }
-                        },
-
-                        onEdit: () async {
-                          showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder:
-                                (_) => const Center(child: LoadingAnimation()),
-                          );
-
-                          final listBloc = context.read<ListBloc>();
-                          listBloc.add(FetchLicenseList());
-                          listBloc.add(FetchIssueingAuthorityList());
-
-                          final results = await Future.wait([
-                            listBloc.stream.firstWhere(
-                              (s) => s is LicenseListState || s is ListFailure,
-                            ),
-                            listBloc.stream.firstWhere(
-                              (s) =>
-                                  s is IssueingauthorityListState ||
-                                  s is ListFailure,
-                            ),
-                          ]);
-
-                          // final listState = await listBloc
-                          //     .stream
-                          //     .firstWhere(
-                          //       (s) =>
-                          //           s is LicenseListState ||
-                          //           s is ListFailure,
-                          //     );
-
-                          Navigator.of(context, rootNavigator: true).pop();
-
-                          final listState = results[0];
-                          final issueingstate = results[1];
-
-                          if (listState is LicenseListState &&
-                              issueingstate is IssueingauthorityListState) {
-                            final licenses =
-                                listState.licenseResponse.data
-                                    .expand((inner) => inner)
-                                    .toList();
-                            final issueingList =
-                                issueingstate.issueingauthorityResponse.data
-                                    .expand((inner) => inner)
-                                    .toList();
-
-                            AddEditLicenseSheet.showSheet(
-                              context,
-                              license,
-                              licenses,
-                              issueingList,
-                              true,
-                              licenseBloc: context.read<LicenseBloc>(),
-                            );
-                          } else if (listState is ListFailure) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(listState.error)),
-                            );
-                          }
-                        },
-                      ),
-                    );
-                  },
+      body: SafeArea(
+        bottom: true,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: BlocListener<DeleteBloc, DeleteState>(
+            listener: (context, state) {
+              if (state is DeleteLoading) {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (_) => const Center(child: LoadingAnimation()),
                 );
+              } else if (state is DeleteSuccess) {
+                Navigator.pop(context);
+                CustomScaffoldMessenger.showSuccessMessage(
+                  context,
+                  state.message,
+                );
+                licenseBloc.add(FetchLicense());
+              } else if (state is DeleteFailure) {
+                Navigator.pop(context);
+                CustomScaffoldMessenger.showErrorMessage(context, state.error);
               }
-
-              return const Center(child: Text("Invalid State"));
             },
+            child: BlocBuilder<LicenseBloc, LicenseState>(
+              builder: (context, state) {
+                if (state is LicenseLoading) {
+                  return const Center(child: LoadingAnimation());
+                }
+        
+                if (state is LicenseError) {
+                  return Center(child: Text(state.message));
+                }
+        
+                if (state is Licensegetsuccess) {
+                  final licenses = state.licenseModel.data;
+        
+                  if (licenses.isEmpty) {
+                    return const Center(child: Text("No licenses found"));
+                  }
+        
+                  return ListView.builder(
+                    itemCount: licenses.length,
+                    itemBuilder: (context, index) {
+                      final license = licenses[index];
+        
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: LicenseCard(
+                          index: index + 1,
+                          licenseNumber: license.licenseNumber,
+                          issueDate: license.issueDate,
+                          expiryDate: license.expiryDate,
+                          licenseType: license.licenseType,
+        
+                          /// ------------ DELETE CLICK ----------------
+                          onDelete: () async {
+                            final confirmed = await showDeleteConfirmationDialog(
+                              context: context,
+                              title: "Delete License",
+                              content: "Are you sure you want to delete?",
+                            );
+        
+                            if (confirmed == true) {
+                              deleteBloc.add(
+                                DeleteProfileItem(
+                                  id: license.id.toString(),
+                                  action: "reviewerlic",
+                                  isLang: false,
+                                ),
+                              );
+                            }
+                          },
+        
+                          onEdit: () async {
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder:
+                                  (_) => const Center(child: LoadingAnimation()),
+                            );
+        
+                            final listBloc = context.read<ListBloc>();
+                            listBloc.add(FetchLicenseList());
+                            listBloc.add(FetchIssueingAuthorityList());
+        
+                            final results = await Future.wait([
+                              listBloc.stream.firstWhere(
+                                (s) => s is LicenseListState || s is ListFailure,
+                              ),
+                              listBloc.stream.firstWhere(
+                                (s) =>
+                                    s is IssueingauthorityListState ||
+                                    s is ListFailure,
+                              ),
+                            ]);
+        
+                            // final listState = await listBloc
+                            //     .stream
+                            //     .firstWhere(
+                            //       (s) =>
+                            //           s is LicenseListState ||
+                            //           s is ListFailure,
+                            //     );
+        
+                            Navigator.of(context, rootNavigator: true).pop();
+        
+                            final listState = results[0];
+                            final issueingstate = results[1];
+        
+                            if (listState is LicenseListState &&
+                                issueingstate is IssueingauthorityListState) {
+                              final licenses =
+                                  listState.licenseResponse.data
+                                      .expand((inner) => inner)
+                                      .toList();
+                              final issueingList =
+                                  issueingstate.issueingauthorityResponse.data
+                                      .expand((inner) => inner)
+                                      .toList();
+        
+                              AddEditLicenseSheet.showSheet(
+                                context,
+                                license,
+                                licenses,
+                                issueingList,
+                                true,
+                                licenseBloc: context.read<LicenseBloc>(),
+                              );
+                            } else if (listState is ListFailure) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(listState.error)),
+                              );
+                            }
+                          },
+                        ),
+                      );
+                    },
+                  );
+                }
+        
+                return const Center(child: Text("Invalid State"));
+              },
+            ),
           ),
         ),
       ),
