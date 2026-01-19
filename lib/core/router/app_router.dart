@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/accreditation/accreditation_screen.dart';
+import 'package:ghorx_mobile_app_new/features/account/conflict_of_interest/conflict_interest_Screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/documents/documents_screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/bank_Info/bankInfoScrn.dart';
 import 'package:ghorx_mobile_app_new/features/account/drawer/aboutscrn/aboutScrn.dart';
@@ -13,6 +14,7 @@ import 'package:ghorx_mobile_app_new/features/account/languages/language_screen.
 import 'package:ghorx_mobile_app_new/features/account/drawer/change_password/change_password.dart';
 import 'package:ghorx_mobile_app_new/features/account/drawer/logout/logout_scrn.dart';
 import 'package:ghorx_mobile_app_new/features/account/license/licensescreen.dart';
+import 'package:ghorx_mobile_app_new/features/account/non_disclosure/non_disclosure_screen.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/personal_information.dart';
 import 'package:ghorx_mobile_app_new/features/account/insurance/insurance.dart';
 import 'package:ghorx_mobile_app_new/features/account/professional%20references/professional_references.dart';
@@ -59,6 +61,8 @@ class AppRouter {
   static const String bankInfo = '/bankInfo';
   static const String forgotEmail = '/forgotEmail';
   static const String experience = '/experience';
+  static const String conflictInterest = '/conflictInterest';
+  static const String non_disclosure = '/non_disclosure';
 
   //profile
   //drawer
@@ -142,6 +146,10 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => ForgotEmailScreen());
       case experience:
         return MaterialPageRoute(builder: (_) => ProfessionalExperienceScreen());
+      case conflictInterest:
+        return MaterialPageRoute(builder: (_) => ConflictInterestScreen());
+      case non_disclosure:
+        return MaterialPageRoute(builder: (_) => NonDisclosureScreen());
       default:
         return MaterialPageRoute(
           builder:

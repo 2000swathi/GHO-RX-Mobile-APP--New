@@ -70,6 +70,11 @@ class _AccountPageState extends State<AccountPage> {
       routeName: AppRouter.profesindInsurance,
     ),
     _DrawerItem(
+      title: "Bank Information",
+      imagePath: "assets/svg/account/courthouse 1.png",
+      routeName: AppRouter.bankInfo,
+    ),
+    _DrawerItem(
       title: "Documents / Uploads",
       imagePath: "assets/svg/account/folders.png",
       routeName: AppRouter.documents,
@@ -79,10 +84,16 @@ class _AccountPageState extends State<AccountPage> {
       imagePath: "assets/svg/account/question-mark.png",
       routeName: AppRouter.questionnaire,
     ),
+
     _DrawerItem(
-      title: "Bank Information",
-      imagePath: "assets/svg/account/courthouse 1.png",
-      routeName: AppRouter.bankInfo,
+      title: "Conflict Of Interest",
+      imagePath: "assets/svg/account/question-mark.png",
+      routeName: AppRouter.conflictInterest,
+    ),
+    _DrawerItem(
+      title: "Non-Disclosure & Confidentiality",
+      imagePath: "assets/svg/account/question-mark.png",
+      routeName: AppRouter.non_disclosure,
     ),
   ];
   @override
@@ -202,8 +213,7 @@ class _AccountPageState extends State<AccountPage> {
                 onTap:
                     () => showDialog(
                       context: context,
-                      builder:
-                          (_) => ProfileDialog(url: "", fileID: 0),
+                      builder: (_) => ProfileDialog(url: "", fileID: 0),
                     ),
                 child: CircleAvatar(
                   radius: 16,

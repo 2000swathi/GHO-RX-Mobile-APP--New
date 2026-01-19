@@ -2,11 +2,11 @@ import 'package:ghorx_mobile_app_new/utilities/network/api_utils.dart';
 import 'package:ghorx_mobile_app_new/utilities/network/dio_handler.dart';
 import 'package:ghorx_mobile_app_new/utilities/shared_preference.dart';
 
-class QuestionnaireRepo {
+class ConflictOfInterestRepo {
   final DioHandler _dioHandler = DioHandler();
 
-  // fetch
-  Future<Map<String, dynamic>> fetchQuestionnaire() async {
+    // fetch 
+    Future<Map<String, dynamic>> fetchConflictInterest() async {
     final token = await SharedPreference.getToken();
     final reviewerId = await SharedPreference.getUserId();
     if (token!.isEmpty || reviewerId!.isEmpty) {
@@ -16,22 +16,22 @@ class QuestionnaireRepo {
     final data = {
       ...ApiUtils.getCommonParams(action: "reviewerque", token: token),
       "Tags": [
-        {"T": "dk1", "V": reviewerId},
-        {"T": "c1", "V": "1"},
+        {"T": "dk1", "V": reviewerId}, 
+        {"T": "c1", "V": "2"},
         {"T": "c10", "V": "3"},
       ],
     };
 
     try {
       final response = await _dioHandler.post('', data: data);
+      print(response);
       return response;
     } catch (e) {
       throw Exception(e.toString());
     }
   }
 
-  // add
-  Future<Map<String, dynamic>> answerCheck(String id, String value) async {
+  Future<Map<String, dynamic>> addConflictInterest(String id, String value) async {
     final token = await SharedPreference.getToken();
     final reviewerId = await SharedPreference.getUserId();
     if (token!.isEmpty || reviewerId!.isEmpty) {
@@ -50,6 +50,7 @@ class QuestionnaireRepo {
 
     try {
       final response = await _dioHandler.post('', data: data);
+      print(response);
       return response;
     } catch (e) {
       throw Exception(e.toString());

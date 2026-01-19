@@ -11,6 +11,7 @@ class InsuranceBloc extends Bloc<InsuranceEvent, InsuranceState> {
   InsuranceBloc({required this.repository}) : super(InsuranceInitial()) {
     on<FetchInsurance>(_onFetchInsurance);
     on<EditInsuranceEvent>(_editInsurance);
+    on<AddInsurance>(addInsurance);
   }
   Future<void> _onFetchInsurance(
     FetchInsurance event,

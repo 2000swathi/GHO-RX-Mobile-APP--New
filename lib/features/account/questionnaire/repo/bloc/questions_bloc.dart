@@ -9,35 +9,34 @@ class QuestionsBloc extends Bloc<QuestionsEvent, QuestionsState> {
   final QuestionnaireRepo repository;
 
   QuestionsBloc({required this.repository}) : super(QuestionsInitial()) {
-    on<CheckQuestionsEvent>(_onFetchQuestions);
-    on<FetchQuestionsEvent>(_onLoadQuestions);
+    on<AddQuestionsEvent>(_onAddQuestions);
+    on<FetchQuestionsEvent>(_onFetchQuestions);
   }
 
-  Future<void> _onFetchQuestions(
-    CheckQuestionsEvent event,
+  Future<void> _onAddQuestions(
+    AddQuestionsEvent event,
     Emitter<QuestionsState> emit,
   ) async {
-    emit(QuestionsLoading(event.qID));
+    emit(QuestionsLoading(event.id));
 
     try {
-      final response = await repository.AnswerCheck(
-        event.qID,
-        event.answer,
-        event.comments,
-      );
-
-      emit(
-        QuestionsLoaded(
-          message: response["Data"]?[0]?[0]?["msg"] ?? "",
-          questionId: event.qID,
-        ),
-      );
+      final response = await repository.answerCheck(event.id,event.value);
+      if (response['Status'] == 1) {
+        add(FetchQuestionsEvent());
+      } else {
+        emit(
+          QuestionsError(
+            message: response['Info'] ?? "Failed to add question",
+            questionId: event.id,
+          ),
+        );
+      }
     } catch (e) {
-      emit(QuestionsError(message: e.toString(), questionId: event.qID));
+      emit(QuestionsError(message: e.toString(), questionId: event.id));
     }
   }
 
-  Future<void> _onLoadQuestions(
+  Future<void> _onFetchQuestions(
     FetchQuestionsEvent event,
     Emitter<QuestionsState> emit,
   ) async {

@@ -167,59 +167,62 @@ class AddEditLicenseSheet {
         ),
       ],
 
-      actionButton: MultiBlocListener(
-        listeners: [
-          BlocListener<LicenseBloc, LicenseState>(
-            listener: (context, state) {
-              if (state is LicSuccess) {
-                Navigator.pop(context);
-                licenseBloc.add(FetchLicense());
-                CustomScaffoldMessenger.showSuccessMessage(
-                  context,
-                  state.message,
-                );
-              } else if (state is LicenseError) {
-                CustomScaffoldMessenger.showErrorMessage(
-                  context,
-                  state.message,
-                );
-              }
-            },
-          ),
-        ],
-        child: BlocBuilder<LicenseBloc, LicenseState>(
-          builder: (context, state) {
-            final isLoading =
-                state is LicenseaddLoading || state is LicenseeditLoading;
-
-            return CustomButton(
-              text: isEdit ? "Update License" : "Add License",
-              isLoading: isLoading,
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  final event =
-                      isEdit
-                          ? EditLicenseEvent(
-                            id: info!.id.toString(),
-                            licenseType: selectedLicenceType!,
-                            licenseNumber: numController.text,
-                            issueDate: issueDateController.text,
-                            expiryDate: expDateController.text,
-                            issuingAuthority: selectedIssueingType!,
-                          )
-                          : AddLicenseEvent(
-                            licenseType: selectedLicenceType!,
-                            licenseNumber: numController.text,
-                            issueDate: issueDateController.text,
-                            expiryDate: expDateController.text,
-                            issuingAuthority: selectedIssueingType!,
-                          );
-
-                  context.read<LicenseBloc>().add(event);
+      actionButton: SafeArea(
+        bottom: true,
+        child: MultiBlocListener(
+          listeners: [
+            BlocListener<LicenseBloc, LicenseState>(
+              listener: (context, state) {
+                if (state is LicSuccess) {
+                  Navigator.pop(context);
+                  licenseBloc.add(FetchLicense());
+                  CustomScaffoldMessenger.showSuccessMessage(
+                    context,
+                    state.message,
+                  );
+                } else if (state is LicenseError) {
+                  CustomScaffoldMessenger.showErrorMessage(
+                    context,
+                    state.message,
+                  );
                 }
               },
-            );
-          },
+            ),
+          ],
+          child: BlocBuilder<LicenseBloc, LicenseState>(
+            builder: (context, state) {
+              final isLoading =
+                  state is LicenseaddLoading || state is LicenseeditLoading;
+        
+              return CustomButton(
+                text: isEdit ? "Update License" : "Add License",
+                isLoading: isLoading,
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    final event =
+                        isEdit
+                            ? EditLicenseEvent(
+                              id: info!.id.toString(),
+                              licenseType: selectedLicenceType!,
+                              licenseNumber: numController.text,
+                              issueDate: issueDateController.text,
+                              expiryDate: expDateController.text,
+                              issuingAuthority: selectedIssueingType!,
+                            )
+                            : AddLicenseEvent(
+                              licenseType: selectedLicenceType!,
+                              licenseNumber: numController.text,
+                              issueDate: issueDateController.text,
+                              expiryDate: expDateController.text,
+                              issuingAuthority: selectedIssueingType!,
+                            );
+        
+                    context.read<LicenseBloc>().add(event);
+                  }
+                },
+              );
+            },
+          ),
         ),
       ),
     );

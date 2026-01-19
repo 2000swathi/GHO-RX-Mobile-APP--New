@@ -154,65 +154,68 @@ class AddeditEducationBottomSheet {
           },
         ),
       ],
-      actionButton: BlocListener<EducationBloc, EducationState>(
-        listener: (context, state) {
-          if (state is EduSuccess) {
-            Navigator.pop(context);
-            educationBloc.add(FetchEducation());
-            CustomScaffoldMessenger.showSuccessMessage(context, state.message);
-          } else if (state is EducationError) {
-            CustomScaffoldMessenger.showErrorMessage(context, state.message);
-          }
-        },
-        child: BlocBuilder<EducationBloc, EducationState>(
-          builder: (context, state) {
-            final bool isLoading =
-                state is EducationAddLoading || state is EducationEditLoading;
-
-            return CustomButton(
-              text: isEdit ? "Update Education" : "Add Education",
-              isLoading: isLoading,
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  final String finalDegree =
-                      degreeID == "Other"
-                          ? otherDegreeController.text.trim()
-                          : degreeID ?? "";
-
-                  if (finalDegree.isEmpty) {
-                    CustomScaffoldMessenger.showErrorMessage(
-                      context,
-                      "Please enter your degree",
-                    );
-                    return;
-                  }
-
-                  if (isEdit) {
-                    educationBloc.add(
-                      EditEducation(
-                        id: info!.id.toString(),
-                        institution: instController.text,
-                        degree: finalDegree,
-                        duration: durationController.text,
-                        year: yearController.text,
-                        comments: commentsController.text,
-                      ),
-                    );
-                  } else {
-                    educationBloc.add(
-                      AddEducation(
-                        institution: instController.text,
-                        degree: finalDegree,
-                        duration: durationController.text,
-                        year: yearController.text,
-                        comments: commentsController.text,
-                      ),
-                    );
-                  }
-                }
-              },
-            );
+      actionButton: SafeArea(
+        bottom: true,
+        child: BlocListener<EducationBloc, EducationState>(
+          listener: (context, state) {
+            if (state is EduSuccess) {
+              Navigator.pop(context);
+              educationBloc.add(FetchEducation());
+              CustomScaffoldMessenger.showSuccessMessage(context, state.message);
+            } else if (state is EducationError) {
+              CustomScaffoldMessenger.showErrorMessage(context, state.message);
+            }
           },
+          child: BlocBuilder<EducationBloc, EducationState>(
+            builder: (context, state) {
+              final bool isLoading =
+                  state is EducationAddLoading || state is EducationEditLoading;
+        
+              return CustomButton(
+                text: isEdit ? "Update Education" : "Add Education",
+                isLoading: isLoading,
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    final String finalDegree =
+                        degreeID == "Other"
+                            ? otherDegreeController.text.trim()
+                            : degreeID ?? "";
+        
+                    if (finalDegree.isEmpty) {
+                      CustomScaffoldMessenger.showErrorMessage(
+                        context,
+                        "Please enter your degree",
+                      );
+                      return;
+                    }
+        
+                    if (isEdit) {
+                      educationBloc.add(
+                        EditEducation(
+                          id: info!.id.toString(),
+                          institution: instController.text,
+                          degree: finalDegree,
+                          duration: durationController.text,
+                          year: yearController.text,
+                          comments: commentsController.text,
+                        ),
+                      );
+                    } else {
+                      educationBloc.add(
+                        AddEducation(
+                          institution: instController.text,
+                          degree: finalDegree,
+                          duration: durationController.text,
+                          year: yearController.text,
+                          comments: commentsController.text,
+                        ),
+                      );
+                    }
+                  }
+                },
+              );
+            },
+          ),
         ),
       ),
     );

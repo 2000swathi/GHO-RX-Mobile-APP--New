@@ -1,7 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
@@ -9,9 +7,7 @@ import 'package:ghorx_mobile_app_new/features/account/personal_info/edit_person_
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/bloc/profile_info_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/account/personal_info/repo/model/personalinfo_model.dart';
 import 'package:ghorx_mobile_app_new/features/account/widget/custom_profile_appbar.dart';
-import 'package:ghorx_mobile_app_new/features/home/widget/profile_pic_dialogue.dart';
 import 'package:ghorx_mobile_app_new/features/account/lists/bloc/list_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/shimmer/widget/shapes.dart';
 
 class PersonalInformationScreen extends StatefulWidget {
   const PersonalInformationScreen({super.key});
@@ -23,9 +19,9 @@ class PersonalInformationScreen extends StatefulWidget {
 
 class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
   PersonalInfoModel? personalInfo;
-  Widget _avatarShimmer() {
-    return ShimmerShapes.circle(110);
-  }
+  // Widget _avatarShimmer() {
+  //   return ShimmerShapes.circle(110);
+  // }
 
   @override
   void initState() {
@@ -64,116 +60,119 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
             context.read<ListBloc>().add(FetchCountryList());
           },
         ),
-        body: BlocBuilder<ProfileInfoBloc, ProfileInfoState>(
-          builder: (context, state) {
-            if (state is ProfileInfoLoading) {
-              return const Center(child: LoadingAnimation());
-            } else if (state is ProfileInfoError) {
-              return Center(child: Text(state.message));
-            } else if (state is PersonalInfoState) {
-              personalInfo = state.personalInfomodel;
-              final info = personalInfo!;
-
-              final infoList = [
-                {
-                  "label": "Full Name",
-                  "value": "${info.firstName} ${info.lastName}",
-                },
-                {"label": "Date of Birth", "value": info.birthDate},
-                {"label": "Gender", "value": info.gender},
-                {"label": "Email", "value": info.email},
-                {"label": "Mobile", "value": info.phone},
-                {"label": "Work Phone", "value": info.workPhone},
-                {"label": "NPI", "value": info.npi},
-                {"label": "Nationality", "value": info.countryName},
-                {"label": "FullAddress", "value": info.address1},
-                {"label": "Approved", "value": info.approved ? "Yes" : "No"},
-                {"label": "Board Certified", "value": info.boardCertified},
-                {"label": "Active Practice", "value": info.activePractice},
-                {"label": "Active Teaching", "value": info.activeTeaching},
-                {"label": "Active Publishing", "value": info.activePublishing},
-                {"label": "Active Research", "value": info.activeResearch},
-                {"label": "Active Surgeon", "value": info.activeSurgeon},
-              ];
-
-              return ListView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 18,
-                  vertical: 20,
-                ),
-                children: [
-                  Center(
-                    child: SizedBox(
-                      height: 110,
-                      width: 110,
-                      child: Stack(
-                        children: [
-                          CircleAvatar(
-                            radius: 55,
-                            backgroundColor: AppColors.primarycolor.withAlpha(
-                              13,
-                            ),
-                            child: ClipOval(
-                              child:
-                                  info.imageUrl.toString().isNotEmpty
-                                      ? CachedNetworkImage(
-                                        imageUrl: info.imageUrl,
-                                        fit: BoxFit.cover,
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                        placeholder:
-                                            (_, __) => _avatarShimmer(),
-                                        errorWidget:
-                                            (_, __, ___) => SvgPicture.asset(
-                                              "assets/svg/person.svg",
-                                            ),
-                                      )
-                                      : SvgPicture.asset(
-                                        "assets/svg/person.svg",
-                                      ),
-                            ),
-                          ),
-                          Positioned(
-                            right: 4,
-                            bottom: 4,
-                            child: InkWell(
-                              onTap:
-                                  () => showDialog(
-                                    context: context,
-                                    builder:
-                                        (_) => ProfileDialog(
-                                          url: info.imageUrl,
-                                          fileID: info.fileID,
-                                        ),
-                                  ),
-                              child: CircleAvatar(
-                                radius: 16,
-                                backgroundColor: AppColors.white,
-                                child: SvgPicture.asset(
-                                  "assets/svg/account/edit.svg",
-                                  height: 16,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+        body: SafeArea(
+          top: false,
+          child: BlocBuilder<ProfileInfoBloc, ProfileInfoState>(
+            builder: (context, state) {
+              if (state is ProfileInfoLoading) {
+                return const Center(child: LoadingAnimation());
+              } else if (state is ProfileInfoError) {
+                return Center(child: Text(state.message));
+              } else if (state is PersonalInfoState) {
+                personalInfo = state.personalInfomodel;
+                final info = personalInfo!;
+          
+                final infoList = [
+                  {
+                    "label": "Full Name",
+                    "value": "${info.firstName} ${info.lastName}",
+                  },
+                  {"label": "Date of Birth", "value": info.birthDate},
+                  {"label": "Gender", "value": info.gender},
+                  {"label": "Email", "value": info.email},
+                  {"label": "Mobile", "value": info.phone},
+                  {"label": "Work Phone", "value": info.workPhone},
+                  {"label": "NPI", "value": info.npi},
+                  {"label": "Nationality", "value": info.countryName},
+                  {"label": "FullAddress", "value": info.address1},
+                  {"label": "Approved", "value": info.approved ? "Yes" : "No"},
+                  {"label": "Board Certified", "value": info.boardCertified},
+                  {"label": "Active Practice", "value": info.activePractice},
+                  {"label": "Active Teaching", "value": info.activeTeaching},
+                  {"label": "Active Publishing", "value": info.activePublishing},
+                  {"label": "Active Research", "value": info.activeResearch},
+                  {"label": "Active Surgeon", "value": info.activeSurgeon},
+                ];
+          
+                return ListView(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 18,
+                    vertical: 20,
                   ),
-                  const SizedBox(height: 32),
-                  ...infoList
-                      .where(
-                        (item) => item['value']!.toString().trim().isNotEmpty,
-                      )
-                      .map((item) => buildInfo(item['label']!, item['value']!))
-                      .toList(),
-                  const SizedBox(height: 20),
-                ],
-              );
-            }
-
-            return const Center(child: Text("Invalid State"));
-          },
+                  children: [
+                    // Center(
+                    //   child: SizedBox(
+                    //     height: 110,
+                    //     width: 110,
+                    //     child: Stack(
+                    //       children: [
+                    //         CircleAvatar(
+                    //           radius: 55,
+                    //           backgroundColor: AppColors.primarycolor.withAlpha(
+                    //             13,
+                    //           ),
+                    //           child: ClipOval(
+                    //             child:
+                    //                 info.imageUrl.toString().isNotEmpty
+                    //                     ? CachedNetworkImage(
+                    //                       imageUrl: info.imageUrl,
+                    //                       fit: BoxFit.cover,
+                    //                       width: double.infinity,
+                    //                       height: double.infinity,
+                    //                       placeholder:
+                    //                           (_, __) => _avatarShimmer(),
+                    //                       errorWidget:
+                    //                           (_, __, ___) => SvgPicture.asset(
+                    //                             "assets/svg/person.svg",
+                    //                           ),
+                    //                     )
+                    //                     : SvgPicture.asset(
+                    //                       "assets/svg/person.svg",
+                    //                     ),
+                    //           ),
+                    //         ),
+                    //         Positioned(
+                    //           right: 4,
+                    //           bottom: 4,
+                    //           child: InkWell(
+                    //             onTap:
+                    //                 () => showDialog(
+                    //                   context: context,
+                    //                   builder:
+                    //                       (_) => ProfileDialog(
+                    //                         url: info.imageUrl,
+                    //                         fileID: info.fileID,
+                    //                       ),
+                    //                 ),
+                    //             child: CircleAvatar(
+                    //               radius: 16,
+                    //               backgroundColor: AppColors.white,
+                    //               child: SvgPicture.asset(
+                    //                 "assets/svg/account/edit.svg",
+                    //                 height: 16,
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+                    // const SizedBox(height: 32),
+                    ...infoList
+                        .where(
+                          (item) => item['value']!.toString().trim().isNotEmpty,
+                        )
+                        .map((item) => buildInfo(item['label']!, item['value']!))
+                        .toList(),
+                    const SizedBox(height: 20),
+                  ],
+                );
+              }
+          
+              return const Center(child: Text("Invalid State"));
+            },
+          ),
         ),
       ),
     );

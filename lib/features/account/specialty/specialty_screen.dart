@@ -88,140 +88,144 @@ class _SpecialtyScreenState extends State<SpecialtyScreen> {
         },
       ),
 
-      body: BlocListener<DeleteBloc, DeleteState>(
-        listener: (context, state) {
-          if (state is DeleteLoading) {
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (_) => const Center(child: LoadingAnimation()),
-            );
-          } else if (state is DeleteSuccess) {
-            Navigator.pop(context);
-            CustomScaffoldMessenger.showSuccessMessage(
-              context,
-              "Specialty deleted successfully",
-            );
-            context.read<SpecialtyBloc>().add(FetchSpecialty());
-          } else if (state is DeleteFailure) {
-            Navigator.pop(context);
-            CustomScaffoldMessenger.showSuccessMessage(
-              context,
-              "Failed to delete specialty",
-            );
-          }
-        },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: BlocBuilder<SpecialtyBloc, SpecialtyState>(
-            builder: (context, state) {
-              if (state is SpecialityLoading) {
-                return Center(child: LoadingAnimation());
-              } else if (state is SpecialtyError) {
-                return Center(child: Text(state.message));
-              } else if (state is SpecialtyGetState) {
-                final info = state.specialtyModel.data;
-                if (info.isEmpty) {
-                  return Center(child: Text("No specialty Added"));
-                }
-                return ListView.builder(
-                  itemCount: info.length,
-                  itemBuilder: (context, index) {
-                    final specialty = info[index];
-
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 16),
-                      child: SpecialtyCard(
-                        index: index + 1,
-                        specialty: specialty.specialty,
-                        certifiedBoard: specialty.certifiedBoard,
-                        specialtyType: specialty.specialtyType,
-                        onEdit: () async {
-                          showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder:
-                                (_) => const Center(child: LoadingAnimation()),
-                          );
-
-                          final listBloc = context.read<ListBloc>();
-                          listBloc.add(FetchSpecialtyList());
-                          listBloc.add(FetchSpecialtyTypeList());
-
-                          final results = await Future.wait([
-                            listBloc.stream.firstWhere(
-                              (s) =>
-                                  s is SpecialtyListState || s is ListFailure,
-                            ),
-
-                            listBloc.stream.firstWhere(
-                              (s) =>
-                                  s is SpecialtyTypeListState ||
-                                  s is ListFailure,
-                            ),
-                          ]);
-
-                          Navigator.of(context, rootNavigator: true).pop();
-
-                          final listState = results[0];
-                          final certifiedState = results[1];
-                          final typeState = results[2];
-
-                          if (listState is SpecialtyListState &&
-                              typeState is SpecialtyTypeListState) {
-                            final specialties =
-                                listState.specialtyResponse.data
-                                    .expand((inner) => inner)
-                                    .toList();
-
-                            final specialtyTypes =
-                                typeState.specialtyTypeResponse.data
-                                    .expand((inner) => inner)
-                                    .toList();
-
-                            AddEditSpecialtySheet.showSheet(
-                              context,
-                              specialty,
-                              specialties,
-                              specialtyTypes,
-                              true,
-                              specBloc: context.read<SpecialtyBloc>(),
+      body: SafeArea(
+        bottom: true,
+        child: BlocListener<DeleteBloc, DeleteState>(
+          listener: (context, state) {
+            if (state is DeleteLoading) {
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (_) => const Center(child: LoadingAnimation()),
+              );
+            } else if (state is DeleteSuccess) {
+              Navigator.pop(context);
+              CustomScaffoldMessenger.showSuccessMessage(
+                context,
+                "Specialty deleted successfully",
+              );
+              context.read<SpecialtyBloc>().add(FetchSpecialty());
+            } else if (state is DeleteFailure) {
+              Navigator.pop(context);
+              CustomScaffoldMessenger.showSuccessMessage(
+                context,
+                "Failed to delete specialty",
+              );
+            }
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            child: BlocBuilder<SpecialtyBloc, SpecialtyState>(
+              builder: (context, state) {
+                if (state is SpecialityLoading) {
+                  return Center(child: LoadingAnimation());
+                } else if (state is SpecialtyError) {
+                  return Center(child: Text(state.message));
+                } else if (state is SpecialtyGetState) {
+                  final info = state.specialtyModel.data;
+                  if (info.isEmpty) {
+                    return Center(child: Text("No specialty Added"));
+                  }
+                  return ListView.builder(
+                    itemCount: info.length,
+                    itemBuilder: (context, index) {
+                      final specialty = info[index];
+        
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: 16),
+                        child: SpecialtyCard(
+                          index: index + 1,
+                          specialty: specialty.specialty,
+                          certifiedBoard: specialty.certifiedBoard,
+                          specialtyType: specialty.specialtyType,
+                          onEdit: () async {
+                            
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder:
+                                  (_) => const Center(child: LoadingAnimation()),
                             );
-                          } else {
-                            String errorMessage = "Failed to load data.";
-                            if (listState is ListFailure) {
-                              errorMessage = listState.error;
-                            } else if (certifiedState is ListFailure) {
-                              errorMessage = certifiedState.error;
-                            }
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(errorMessage)),
-                            );
-                          }
-                        },
-                        onDelete: () async {
-                          final confirmed = await showDeleteConfirmationDialog(
-                            context: context,
-                            title: "Delete Specialty",
-                            content: "Are you sure want to delete",
-                          );
-                          if (confirmed == true && context.mounted) {
-                            context.read<DeleteBloc>().add(
-                              DeleteProfileItem(
-                                id: specialty.id.toString(),
-                                action: "reviewerspl",
-                                isLang: false,
+        
+                            final listBloc = context.read<ListBloc>();
+                            listBloc.add(FetchSpecialtyList());
+                            listBloc.add(FetchSpecialtyTypeList());
+        
+                            final results = await Future.wait([
+                              listBloc.stream.firstWhere(
+                                (s) =>
+                                    s is SpecialtyListState || s is ListFailure,
                               ),
+        
+                              listBloc.stream.firstWhere(
+                                (s) =>
+                                    s is SpecialtyTypeListState ||
+                                    s is ListFailure,
+                              ),
+                            ]);
+        
+                            Navigator.of(context, rootNavigator: true).pop();
+        
+                            final listState = results[0];
+                            // final certifiedState = results[1];
+                            final typeState = results[1];
+        
+                            if (listState is SpecialtyListState &&
+                                typeState is SpecialtyTypeListState) {
+                              final specialties =
+                                  listState.specialtyResponse.data
+                                      .expand((inner) => inner)
+                                      .toList();
+        
+                              final specialtyTypes =
+                                  typeState.specialtyTypeResponse.data
+                                      .expand((inner) => inner)
+                                      .toList();
+        
+                              AddEditSpecialtySheet.showSheet(
+                                context,
+                                specialty,
+                                specialties,
+                                specialtyTypes,
+                                true,
+                                specBloc: context.read<SpecialtyBloc>(),
+                              );
+                            } else {
+                              String errorMessage = "Failed to load data.";
+                              if (listState is ListFailure) {
+                                errorMessage = listState.error;
+                              } else if (typeState is ListFailure) {
+                                errorMessage = typeState.error;
+                              }
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(errorMessage)),
+                              );
+                            }
+                          },
+                          onDelete: () async {
+                            final confirmed = await showDeleteConfirmationDialog(
+                              context: context,
+                              title: "Delete Specialty",
+                              content: "Are you sure want to delete",
                             );
-                          }
-                        },
-                      ),
-                    );
-                  },
-                );
-              }
-              return Center(child: Text("Invalid State"));
-            },
+                            if (confirmed == true && context.mounted) {
+                              context.read<DeleteBloc>().add(
+                                DeleteProfileItem(
+                                  id: specialty.id.toString(),
+                                  action: "reviewerspl",
+                                  isLang: false,
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      );
+                    },
+                  );
+                }
+                return Center(child: Text("Invalid State"));
+              },
+            ),
           ),
         ),
       ),

@@ -102,56 +102,59 @@ class AddEditInsuranceSheet {
         ),
       ],
 
-      actionButton: BlocListener<InsuranceBloc, InsuranceState>(
-        listener: (context, state) {
-          if (state is InsuranceSuccess) {
-            Navigator.pop(context);
-            insuranceBloc.add(FetchInsurance());
-            CustomScaffoldMessenger.showSuccessMessage(context, state.message);
-          } else if (state is InsuranceError) {
-            CustomScaffoldMessenger.showErrorMessage(context, state.message);
-          }
-        },
-
-        child: BlocBuilder<InsuranceBloc, InsuranceState>(
-          builder: (context, addState) {
-            final bool isAddLoading = addState is InsuranceAddLoading;
-            return BlocBuilder<InsuranceBloc, InsuranceState>(
-              builder: (context, editState) {
-                final bool isEditLoading = editState is InsuranceEditLoading;
-                final bool isLoading = isAddLoading || isEditLoading;
-
-                return CustomButton(
-                  text: isEdit ? "Update Insurance" : "Submit Insurance",
-                  isLoading: isLoading,
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      if (isEdit) {
-                        context.read<InsuranceBloc>().add(
-                          EditInsuranceEvent(
-                            insuranceId: info!.id.toString(),
-                            providerID: prIDController.text,
-                            providerName: pNameController.text,
-                            issueDate: issueDateController.text,
-                            expiryDate: expDateController.text,
-                          ),
-                        );
-                      } else {
-                        context.read<InsuranceBloc>().add(
-                          AddInsurance(
-                            providerID: prIDController.text,
-                            providerName: pNameController.text,
-                            issueDate: issueDateController.text,
-                            expiryDate: expDateController.text,
-                          ),
-                        );
-                      }
-                    }
-                  },
-                );
-              },
-            );
+      actionButton: SafeArea(
+        bottom: true,
+        child: BlocListener<InsuranceBloc, InsuranceState>(
+          listener: (context, state) {
+            if (state is InsuranceSuccess) {
+              Navigator.pop(context);
+              insuranceBloc.add(FetchInsurance());
+              CustomScaffoldMessenger.showSuccessMessage(context, state.message);
+            } else if (state is InsuranceError) {
+              CustomScaffoldMessenger.showErrorMessage(context, state.message);
+            }
           },
+        
+          child: BlocBuilder<InsuranceBloc, InsuranceState>(
+            builder: (context, addState) {
+              final bool isAddLoading = addState is InsuranceAddLoading;
+              return BlocBuilder<InsuranceBloc, InsuranceState>(
+                builder: (context, editState) {
+                  final bool isEditLoading = editState is InsuranceEditLoading;
+                  final bool isLoading = isAddLoading || isEditLoading;
+        
+                  return CustomButton(
+                    text: isEdit ? "Update Insurance" : "Submit Insurance",
+                    isLoading: isLoading,
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        if (isEdit) {
+                          context.read<InsuranceBloc>().add(
+                            EditInsuranceEvent(
+                              insuranceId: info!.id.toString(),
+                              providerID: prIDController.text,
+                              providerName: pNameController.text,
+                              issueDate: issueDateController.text,
+                              expiryDate: expDateController.text,
+                            ),
+                          );
+                        } else {
+                          context.read<InsuranceBloc>().add(
+                            AddInsurance(
+                              providerID: prIDController.text,
+                              providerName: pNameController.text,
+                              issueDate: issueDateController.text,
+                              expiryDate: expDateController.text,
+                            ),
+                          );
+                        }
+                      }
+                    },
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
     );

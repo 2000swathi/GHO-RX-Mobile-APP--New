@@ -58,163 +58,166 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
             Navigator.pop(context);
           },
         ),
-        body: BlocListener<GetFileIdBloc, GetFileIdState>(
-          listener: (context, state) async {
-            if (state is DeleteFileSuccess) {
-              context.read<DoctfileBloc>().add(UploadDocFileEvent());
-            } else if (state is GetFileIdFailure) {
-              CustomScaffoldMessenger.showErrorMessage(context, state.message);
-            }
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: BlocBuilder<DoctfileBloc, DoctfileState>(
-              builder: (context, state) {
-                if (state is DoctfileLoading) {
-                  return const Center(child: LoadingAnimation());
-                } else if (state is DoctfileSuccess) {
-                  if (state.response["Data"] == null ||
-                      state.response["Data"].isEmpty) {
-                    return Center(
-                      child: Text(
-                        "No documents uploaded yet.",
-                        style: AppFonts.hinttext2,
-                      ),
-                    );
-                  }
-                  final List documents = state.response["Data"][0];
-                  if (documents.isEmpty) {
-                    return Center(
-                      child: Text(
-                        "No documents uploaded yet.",
-                        style: AppFonts.hinttext2,
-                      ),
-                    );
-                  }
-
-                  final Map<String, List> groupedDocs = {};
-
-                  for (var doc in documents) {
-                    final String title = doc["DisplyText"] ?? "Others";
-                    groupedDocs.putIfAbsent(title, () => []);
-                    groupedDocs[title]!.add(doc);
-                  }
-
-                  return ListView(
-                    children:
-                        groupedDocs.entries.map((entry) {
-                          final String title = entry.key;
-                          final List docs = entry.value;
-
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // ===== HEADING =====
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 10,
+        body: SafeArea(
+          bottom: true,
+          child: BlocListener<GetFileIdBloc, GetFileIdState>(
+            listener: (context, state) async {
+              if (state is DeleteFileSuccess) {
+                context.read<DoctfileBloc>().add(UploadDocFileEvent());
+              } else if (state is GetFileIdFailure) {
+                CustomScaffoldMessenger.showErrorMessage(context, state.message);
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: BlocBuilder<DoctfileBloc, DoctfileState>(
+                builder: (context, state) {
+                  if (state is DoctfileLoading) {
+                    return const Center(child: LoadingAnimation());
+                  } else if (state is DoctfileSuccess) {
+                    if (state.response["Data"] == null ||
+                        state.response["Data"].isEmpty) {
+                      return Center(
+                        child: Text(
+                          "No documents uploaded yet.",
+                          style: AppFonts.hinttext2,
+                        ),
+                      );
+                    }
+                    final List documents = state.response["Data"][0];
+                    if (documents.isEmpty) {
+                      return Center(
+                        child: Text(
+                          "No documents uploaded yet.",
+                          style: AppFonts.hinttext2,
+                        ),
+                      );
+                    }
+          
+                    final Map<String, List> groupedDocs = {};
+          
+                    for (var doc in documents) {
+                      final String title = doc["DisplyText"] ?? "Others";
+                      groupedDocs.putIfAbsent(title, () => []);
+                      groupedDocs[title]!.add(doc);
+                    }
+          
+                    return ListView(
+                      children:
+                          groupedDocs.entries.map((entry) {
+                            final String title = entry.key;
+                            final List docs = entry.value;
+          
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // ===== HEADING =====
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 10,
+                                  ),
+                                  child: Text(
+                                    title,
+                                    style: AppFonts.subheading16,
+                                  ),
                                 ),
-                                child: Text(
-                                  title,
-                                  style: AppFonts.subheading16,
-                                ),
-                              ),
-
-                              // ===== FILE LIST =====
-                              ...docs.map((report) {
-                                return Row(
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        margin: const EdgeInsets.symmetric(
-                                          vertical: 3,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.white,
-                                          borderRadius: BorderRadius.circular(
-                                            12,
+          
+                                // ===== FILE LIST =====
+                                ...docs.map((report) {
+                                  return Row(
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          margin: const EdgeInsets.symmetric(
+                                            vertical: 3,
                                           ),
-                                          border: Border.all(
-                                            color: AppColors.primarycolor,
-                                            width: 1,
-                                          ),
-                                        ),
-                                        child: ListTile(
-                                          leading: SvgPicture.asset(
-                                            GetFilesandIcons.getFileIcon(
-                                              report["DownloadUrl"],
+                                          decoration: BoxDecoration(
+                                            color: AppColors.white,
+                                            borderRadius: BorderRadius.circular(
+                                              12,
                                             ),
-                                            width: 24,
-                                            height: 24,
+                                            border: Border.all(
+                                              color: AppColors.primarycolor,
+                                              width: 1,
+                                            ),
                                           ),
-                                          title: Text(
-                                            report["OrgFileName"],
-                                            style: AppFonts.subheading16,
-                                          ),
-                                          onTap: () async {
-                                            try {
-                                              await GetFilesandIcons.openDocument(
+                                          child: ListTile(
+                                            leading: SvgPicture.asset(
+                                              GetFilesandIcons.getFileIcon(
                                                 report["DownloadUrl"],
-                                              );
-                                            } catch (e) {
-                                              CustomScaffoldMessenger.showErrorMessage(
-                                                context,
-                                                "Could not open document",
-                                              );
-                                            }
-                                          },
+                                              ),
+                                              width: 24,
+                                              height: 24,
+                                            ),
+                                            title: Text(
+                                              report["OrgFileName"],
+                                              style: AppFonts.subheading16,
+                                            ),
+                                            onTap: () async {
+                                              try {
+                                                await GetFilesandIcons.openDocument(
+                                                  report["DownloadUrl"],
+                                                );
+                                              } catch (e) {
+                                                CustomScaffoldMessenger.showErrorMessage(
+                                                  context,
+                                                  "Could not open document",
+                                                );
+                                              }
+                                            },
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () async {
-                                        final confirmed =
-                                            await showDeleteConfirmationDialog(
-                                              context: context,
-                                              title: "Delete Document",
-                                              content:
-                                                  "Are you sure want to delete",
+                                      IconButton(
+                                        onPressed: () async {
+                                          final confirmed =
+                                              await showDeleteConfirmationDialog(
+                                                context: context,
+                                                title: "Delete Document",
+                                                content:
+                                                    "Are you sure want to delete",
+                                              );
+                                          if (confirmed == true &&
+                                              context.mounted) {
+                                            context.read<GetFileIdBloc>().add(
+                                              DeleteFileEvent(
+                                                saltID: "",
+                                                docTypeId:
+                                                    report["DocumentTypeID"],
+                                                fileUploadedID: report["id"],
+                                                filePath: "",
+                                                context: context,
+                                              ),
                                             );
-                                        if (confirmed == true &&
-                                            context.mounted) {
-                                          context.read<GetFileIdBloc>().add(
-                                            DeleteFileEvent(
-                                              saltID: "",
-                                              docTypeId:
-                                                  report["DocumentTypeID"],
-                                              fileUploadedID: report["id"],
-                                              filePath: "",
-                                              context: context,
-                                            ),
-                                          );
-                                        }
-                                      },
-                                      icon: SvgPicture.asset(
-                                        "assets/svg/trash.svg",
+                                          }
+                                        },
+                                        icon: SvgPicture.asset(
+                                          "assets/svg/trash.svg",
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                );
-                              }).toList(),
-                            ],
-                          );
-                        }).toList(),
-                  );
-                } else if (state is DoctfileFailure) {
+                                    ],
+                                  );
+                                }).toList(),
+                              ],
+                            );
+                          }).toList(),
+                    );
+                  } else if (state is DoctfileFailure) {
+                    return Center(
+                      child: Text(
+                        "Error: ${state.error}",
+                        style: AppFonts.hinttext2,
+                      ),
+                    );
+                  }
                   return Center(
                     child: Text(
-                      "Error: ${state.error}",
+                      "No documents uploaded yet.",
                       style: AppFonts.hinttext2,
                     ),
                   );
-                }
-                return Center(
-                  child: Text(
-                    "No documents uploaded yet.",
-                    style: AppFonts.hinttext2,
-                  ),
-                );
-              },
+                },
+              ),
             ),
           ),
         ),
