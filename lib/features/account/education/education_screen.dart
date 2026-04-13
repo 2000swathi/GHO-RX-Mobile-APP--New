@@ -36,7 +36,6 @@ class _EducationScreenState extends State<EducationScreen> {
         title: "Education",
         onAdd: () async {
           listBloc.add(FetchEducationList());
-
           showDialog(
             context: context,
             barrierDismissible: false,
