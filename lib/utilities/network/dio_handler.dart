@@ -20,7 +20,9 @@ class DioHandler {
   Future<Map<String, dynamic>> post(
     String path, {
     Map<String, dynamic>? data,
+    
   }) async {
+    print(data);
     try {
       final response = await _dio.post(path, data: data);
       return response.data;

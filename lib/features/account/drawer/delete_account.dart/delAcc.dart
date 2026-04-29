@@ -35,7 +35,7 @@ class Delacc extends StatelessWidget {
           svgPath: "assets/svg/account/del.svg",
           heading: "Delete Account",
           warningText:
-              "Are you sure you want to delete your account? \nThis action cannot be undone.",
+              "Are you sure you want to delete your account? This action cannot be undone.",
           colors: AppColors.red.withAlpha(15),
           imgColor: AppColors.red,
           btnTxt1: "cancel",

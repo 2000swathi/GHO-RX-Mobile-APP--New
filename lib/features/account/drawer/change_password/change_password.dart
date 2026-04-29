@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_button.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_snackbar.dart';
+import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/core/constants/validation.dart';
@@ -44,7 +45,11 @@ class _ChangePasswordState extends State<ChangePassword> {
 
           CustomSnackbar.show(context, message, true);
 
-          Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            '/login',
+            (route) => false,
+          );
         } else if (state is CPError) {
           CustomSnackbar.show(context, state.message, false);
         }
@@ -179,8 +184,13 @@ class _ChangePasswordState extends State<ChangePassword> {
                             builder: (context, state) {
                               return CustomButton(
                                 text: "Change Password",
+
+                                isLoading: state is CPLoading,
+
                                 onPressed: () {
-                                  // Validate the form before sending event
+                                  if (state is CPLoading)
+                                    return; // prevent multiple taps
+
                                   if (_formKey.currentState!.validate()) {
                                     context.read<ChangePasswordBloc>().add(
                                       FetchChangePassword(

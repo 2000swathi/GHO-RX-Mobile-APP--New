@@ -18,6 +18,7 @@ class ChangePasswordBloc
           newPassword: event.newPw,
           confirmPassword: event.confirmPw,
         );
+
         if (response["Status"] == 1) {
           final message =
               response["Info"]?.toString() ?? "Password updated successfully";
