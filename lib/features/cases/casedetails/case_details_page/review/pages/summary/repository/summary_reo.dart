@@ -22,9 +22,10 @@ class SummaryReo {
         {"T": "c10", "V": "14"},
       ],
     };
-
+    print(data);
     try {
       final response = await _dioHandler.post('', data: data);
+      print(response);
       return response;
     } catch (e) {
       throw (e.toString());

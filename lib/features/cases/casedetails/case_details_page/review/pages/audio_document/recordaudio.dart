@@ -46,58 +46,82 @@ class _RecordaudioState extends State<Recordaudio> {
   final List<Map<String, dynamic>> _recordings = [];
 
   Future<void> _startRecording() async {
-    if (await _recorder.hasPermission()) {
-      final dir = await getApplicationDocumentsDirectory();
-      final path =
-          '${dir.path}/recording_${DateTime.now().millisecondsSinceEpoch}.m4a';
+    try {
+      if (await _recorder.hasPermission()) {
+        final dir = await getApplicationDocumentsDirectory();
 
-      await _recorder.start(
-        const RecordConfig(encoder: AudioEncoder.aacLc, bitRate: 128000),
-        path: path,
-      );
+        final path =
+            '${dir.path}/recording_${DateTime.now().millisecondsSinceEpoch}.m4a';
 
-      setState(() {
-        isSelcted = false;
-        _isRecording = true;
-        _seconds = 0;
-      });
+        await _recorder.start(
+          const RecordConfig(encoder: AudioEncoder.aacLc, bitRate: 128000),
+          path: path,
+        );
 
-      _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-        setState(() => _seconds++);
-      });
-    } else {
-      CustomScaffoldMessenger.showErrorMessage(
-        context,
-        "Microphone permission denied.",
-      );
+        setState(() {
+          isSelcted = false;
+          _isRecording = true;
+          _seconds = 0;
+        });
+
+        _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+          setState(() => _seconds++);
+        });
+      } else {
+        CustomScaffoldMessenger.showErrorMessage(
+          context,
+          "Microphone permission denied.",
+        );
+      }
+    } catch (e) {
+      print("Start recording error: $e");
     }
   }
 
   Future<void> _stopRecording() async {
-    final path = await _recorder.stop();
-    _timer?.cancel();
+    try {
+      final path = await _recorder.stop();
+      _timer?.cancel();
 
-    if (path != null) {
-      final player = AudioPlayer();
-      await player.setFilePath(path);
-      final duration = player.duration ?? Duration.zero;
-      player.dispose();
+      if (path == null) {
+        setState(() => _isRecording = false);
+        return;
+      }
 
+      final file = File(path);
+
+      // ✅ ensure file is valid
+      if (!await file.exists() || await file.length() == 0) {
+        setState(() => _isRecording = false);
+
+        CustomScaffoldMessenger.showErrorMessage(context, "Recording failed");
+        return;
+      }
+
+      // ✅ NO AudioPlayer here (fix for iOS crash)
       setState(() {
         _recordings.add({
           'path': path,
           'name': path.split('/').last,
-          'duration': duration,
+          'duration': Duration.zero,
         });
         _isRecording = false;
       });
+    } catch (e) {
+      print("Stop recording error: $e");
+
+      setState(() => _isRecording = false);
+
+      CustomScaffoldMessenger.showErrorMessage(context, "Something went wrong");
     }
   }
 
   void _deleteRecording(int index) {
     if (index < 0 || index >= _recordings.length) return;
+
     final filePath = _recordings[index]['path'];
     File(filePath).deleteSync();
+
     setState(() => _recordings.removeAt(index));
   }
 
