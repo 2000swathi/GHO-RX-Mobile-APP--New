@@ -46,8 +46,7 @@ class AddEditBankInfoBottonSheet {
                 name: "Bank Name",
                 hintText: "Enter Bank Name",
                 validator:
-                    (value) =>
-                        Validation.field(value, fieldName: "Bank Name"),
+                    (value) => Validation.field(value, fieldName: "Bank Name"),
               ),
               const SizedBox(height: 10),
               CustomTextFormField(
@@ -91,20 +90,23 @@ class AddEditBankInfoBottonSheet {
             if (state is BankInfoSuccess) {
               if (Navigator.canPop(context)) Navigator.pop(context);
               bankinfobloc.add(FetchBankInfo());
-              CustomScaffoldMessenger.showSuccessMessage(context, state.message);
+              CustomScaffoldMessenger.showSuccessMessage(
+                context,
+                state.message,
+              );
             } else if (state is BankInfoError) {
               CustomScaffoldMessenger.showErrorMessage(context, state.message);
             }
           },
-        
+
           child: BlocBuilder<BankInfoBloc, BankInfoState>(
             builder: (context, addState) {
-              final bool isAddLoading = addState is BankInfoAddLoading;
               return BlocBuilder<BankInfoBloc, BankInfoState>(
                 builder: (context, editState) {
-                  final bool isEditLoading = editState is BankInfoEditLoading;
-                  final bool isLoading = isAddLoading || isEditLoading;
-        
+                  final bool isLoading =
+                      addState is BankInfoAddLoading ||
+                      editState is BankInfoEditLoading;
+
                   return CustomButton(
                     text: isEdit! ? "Update Bank Info" : "Submit Bank Info",
                     isLoading: isLoading,
@@ -114,21 +116,25 @@ class AddEditBankInfoBottonSheet {
                           context.read<BankInfoBloc>().add(
                             EditBankInfoEvent(
                               id: info!.id.toString(),
-                              accountNumber: accountNumberController.text.trim(),
+                              accountNumber:
+                                  accountNumberController.text.trim(),
                               accountType: accountTypeController.text.trim(),
                               holderName: accountNameController.text.trim(),
-                              routingNumber: routingNumberController.text.trim(),
-                              bankName: bankNameController.text.trim()
+                              routingNumber:
+                                  routingNumberController.text.trim(),
+                              bankName: bankNameController.text.trim(),
                             ),
                           );
                         } else {
                           context.read<BankInfoBloc>().add(
                             AddBankInfo(
-                              accountNumber: accountNumberController.text.trim(),
+                              accountNumber:
+                                  accountNumberController.text.trim(),
                               accountType: accountTypeController.text.trim(),
                               holderName: accountNameController.text.trim(),
-                              routingNumber: routingNumberController.text.trim(),
-                              bankName: bankNameController.text.trim()
+                              routingNumber:
+                                  routingNumberController.text.trim(),
+                              bankName: bankNameController.text.trim(),
                             ),
                           );
                         }

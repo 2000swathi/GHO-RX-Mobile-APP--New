@@ -193,7 +193,7 @@ class AddEditLicenseSheet {
             builder: (context, state) {
               final isLoading =
                   state is LicenseaddLoading || state is LicenseeditLoading;
-        
+
               return CustomButton(
                 text: isEdit ? "Update License" : "Add License",
                 isLoading: isLoading,
@@ -216,7 +216,7 @@ class AddEditLicenseSheet {
                               expiryDate: expDateController.text,
                               issuingAuthority: selectedIssueingType!,
                             );
-        
+
                     context.read<LicenseBloc>().add(event);
                   }
                 },

@@ -43,8 +43,11 @@ class Delacc extends StatelessWidget {
           btnTextClr: AppColors.textPrimary,
           btnTxt2: "Delete",
           btnbg2: AppColors.red,
+          isLoading: state is DeleteLoading,
           btn2pressed: () {
-            Navigator.pop(context);
+            if (state is DeleteLoading) return;
+
+            context.read<DeleteBloc>().add(FetchDeleteAccount());
           },
         );
       },

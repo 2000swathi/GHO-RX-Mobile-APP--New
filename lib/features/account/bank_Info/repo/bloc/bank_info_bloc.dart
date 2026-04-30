@@ -36,7 +36,7 @@ class BankInfoBloc extends Bloc<BankInfoEvent, BankInfoState> {
     AddBankInfo event,
     Emitter<BankInfoState> emit,
   ) async {
-    emit(BankInfoLoading());
+    emit(BankInfoAddLoading());
     try {
       final response = await repository.addBankInfo(
         accountType: event.accountType,

@@ -15,6 +15,7 @@ class customDialog extends StatelessWidget {
   final Color? btnTextClr;
   final Color? btnbg1;
   final Color? btnbg2;
+  final bool isLoading;
   // final VoidCallback? btn1pressed;
   final VoidCallback? btn2pressed;
 
@@ -30,6 +31,7 @@ class customDialog extends StatelessWidget {
     this.btnTextClr,
     this.btnbg1,
     this.btnbg2,
+    this.isLoading = false,
     // this.btn1pressed,
     this.btn2pressed,
   });
@@ -114,7 +116,11 @@ class customDialog extends StatelessWidget {
                   child: CustomButton(
                     text: btnTxt2,
                     color: btnbg2,
-                    onPressed: btn2pressed,
+                    isLoading: isLoading, // 👈 IMPORTANT
+                    onPressed:
+                        isLoading
+                            ? null
+                            : btn2pressed, // 👈 disable when loading
                   ),
                 ),
               ],

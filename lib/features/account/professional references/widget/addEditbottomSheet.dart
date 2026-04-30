@@ -136,17 +136,22 @@ class AddProfessionalRefBottomSheet {
               Navigator.pop(context); // close loading
               // Navigator.pop(context); // close sheet
               profRefBloc.add(FetchProfessionalref());
-              CustomScaffoldMessenger.showSuccessMessage(context, state.message);
+              CustomScaffoldMessenger.showSuccessMessage(
+                context,
+                state.message,
+              );
             } else if (state is ProfessionalrefError) {
               Navigator.pop(context);
               CustomScaffoldMessenger.showErrorMessage(context, state.message);
             }
           },
-        
+
           child: BlocBuilder<ProfessionalrefBloc, ProfessionalrefState>(
             builder: (context, state) {
-              final bool isLoading = state is ProfessionalrefAddLoading;
-        
+              final bool isLoading =
+                  state is ProfessionalrefAddLoading ||
+                  state is ProfessionalrefEditLoading;
+
               return CustomButton(
                 text:
                     isEdit
@@ -170,7 +175,7 @@ class AddProfessionalRefBottomSheet {
                               relationship: relationShipController.text,
                               phone: phoneController.text,
                             );
-        
+
                     profRefBloc.add(event);
                   }
                 },

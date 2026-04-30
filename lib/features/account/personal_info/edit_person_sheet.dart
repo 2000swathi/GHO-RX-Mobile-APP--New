@@ -319,7 +319,7 @@ class _EditProfileSheetWidgetState extends State<EditProfileSheetWidget> {
         "FirstName": firstNameController.text,
         "LastName": lastNameController.text,
         "eMail": emailController.text,
-        "Phone": phoneController.text,
+        "CellPhone": phoneController.text,
         "WorkPhone": workphoneController.text,
         "NPI": npiController.text,
         "Nationality": int.parse(selectedCountryId!),

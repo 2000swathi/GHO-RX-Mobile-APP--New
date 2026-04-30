@@ -32,6 +32,7 @@ class LicenseBloc extends Bloc<LicenseEvent, LicenseState> {
     AddLicenseEvent event,
     Emitter<LicenseState> emit,
   ) async {
+    emit(LicenseaddLoading());
     try {
       final licenseResponse = await repository.addLicense(
         licenseNumber: event.licenseNumber,
