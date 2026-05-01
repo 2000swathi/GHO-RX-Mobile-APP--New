@@ -6,7 +6,6 @@ import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/closed_case_details.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/bloc/open_closed_bloc.dart';
 
-
 class ClosedCasesTab extends StatefulWidget {
   const ClosedCasesTab({super.key});
 
@@ -15,21 +14,27 @@ class ClosedCasesTab extends StatefulWidget {
 }
 
 class _ClosedCasesTabState extends State<ClosedCasesTab> {
-    @override
+  @override
   void initState() {
     super.initState();
     context.read<OpenClosedBloc>().add(FetchClosedCases());
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<OpenClosedBloc, OpenClosedState>(
       builder: (context, state) {
-        if (state is OpenClosedLoading) {
+        if (state is ClosedCaseLoading) {
           return const Center(child: LoadingAnimation());
         } else if (state is ClosedCaseLoaded) {
           final closedCases = state.closedcases;
           if (closedCases.isEmpty) {
-            return const Center(child: Text('No closed cases available'));
+            return const Center(
+              child: Text(
+                'No closed cases available',
+                style: AppFonts.textprimary,
+              ),
+            );
           }
           return ListView.separated(
             shrinkWrap: true,
@@ -53,7 +58,7 @@ class _ClosedCasesTabState extends State<ClosedCasesTab> {
                 },
                 caseId: "Case ID ${caseItem.id.toString()}",
                 name: caseItem.patientName,
-                payout:caseItem.amount.toString(),
+                payout: caseItem.amount.toString(),
                 dueDate: caseItem.completedDate,
                 description: caseItem.summaryOfRecords,
               );
@@ -165,7 +170,7 @@ class CaseCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                     payout,
+                      payout,
                       style: AppFonts.semiratechart.copyWith(
                         color: AppColors.successcolor,
                       ),

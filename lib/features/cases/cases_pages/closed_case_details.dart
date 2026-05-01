@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:ghorx_mobile_app_new/core/common_widgets/custom_scaffold_meessanger.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/attestation/widget/checkbox_declaration.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/custom_container.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
@@ -11,8 +9,6 @@ import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_pag
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/claiment/widget/report_list_widget.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/bloc/case_details_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/bloc/case_details_event.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/attestation/bloc/attest_bloc.dart';
-import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/attestation/bloc/attest_event.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/widget/common_qa.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/repository/model/closed_case_model.dart';
 import 'package:ghorx_mobile_app_new/utilities/size_config.dart';
@@ -35,9 +31,11 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     context.read<CaseDetailsBloc>().add(
-      CaseDetailsEventRequested(caseID: widget.saltID,caseReviewerID: widget.saltID),
+      CaseDetailsEventRequested(
+        caseID: widget.saltID,
+        caseReviewerID: widget.saltID,
+      ),
     );
-    
   }
 
   @override
@@ -96,11 +94,17 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
             final audioListdr =
                 audioItemsdr.where((item) => item.documentTypeId == 6).toList();
             final audioListPat =
-                audioItemsPat.where((item) => item.documentTypeId == 6).toList();
+                audioItemsPat
+                    .where((item) => item.documentTypeId == 6)
+                    .toList();
             final docList =
                 audioItemsdr.where((item) => item.documentTypeId != 6).toList();
             final docListPat =
-                audioItemsPat.where((item) => item.documentTypeId != 6).toList();
+                audioItemsPat
+                    .where((item) => item.documentTypeId != 6)
+                    .toList();
+
+            final reportDocument = caseDetails.reportDocuments ?? [];
 
             return Padding(
               padding: const EdgeInsets.only(left: 14, right: 14),
@@ -212,7 +216,7 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                             ),
                           ],
                         ),
-                    docListPat.isEmpty ? SizedBox() : SizedBox(height: 16),
+                    //docListPat.isEmpty ? SizedBox() : SizedBox(height: 16),
                     docListPat.isEmpty
                         ? SizedBox()
                         : CustomContainer(
@@ -245,7 +249,7 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                             ),
                           ],
                         ),
-                    audioListPat.isEmpty ? SizedBox() : SizedBox(height: 16.h),
+                    //audioListPat.isEmpty ? SizedBox() : SizedBox(height: 16.h),
                     audioListPat.isEmpty
                         ? SizedBox()
                         : CustomContainer(
@@ -265,9 +269,9 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                                   ]
                                   : [],
                         ),
-                    caseDetails.questions!.isEmpty
-                        ? SizedBox()
-                        : SizedBox(height: 16.h),
+                    // caseDetails.questions!.isEmpty
+                    //     ? SizedBox()
+                    //     : SizedBox(height: 16.h),
                     caseDetails.questions!.isEmpty
                         ? SizedBox()
                         : CustomContainer(
@@ -347,6 +351,38 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                                     ),
                                   ]
                                   : [],
+                        ),
+                    docListPat.isEmpty
+                        ? SizedBox()
+                        : CustomContainer(
+                          greyHeading: "Final Report Document",
+                          customWidgets: Container(
+                            width: 41.w,
+                            height: 16.h,
+                            decoration: BoxDecoration(
+                              color: AppColors.successcolor.withAlpha(10),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "${reportDocument.length} Files",
+                                style: AppFonts.subtext.copyWith(
+                                  fontSize: 10,
+                                  color: AppColors.successcolor,
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          customWidgets1: [
+                            SizedBox(height: 10),
+                            ReportListWidget(
+                              fileList: reportDocument,
+                              itemCount: reportDocument.length,
+                              caseID: widget.closedCaseModel.caseID.toString(),
+                              saltID: widget.saltID,
+                            ),
+                          ],
                         ),
 
                     SizedBox(height: 36),

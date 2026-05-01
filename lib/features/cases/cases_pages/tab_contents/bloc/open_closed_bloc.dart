@@ -9,7 +9,7 @@ part 'open_closed_state.dart';
 
 class OpenClosedBloc extends Bloc<OpenClosedEvent, OpenClosedState> {
   final OpenClosedRepository repository;
-  OpenClosedBloc({required this.repository}) : super(OpenClosedInitial()) {
+  OpenClosedBloc({required this.repository}) : super(OpenCaseLoading()) {
     on<FetchOpenCases>(_onFetchOpenCases);
     on<FetchClosedCases>(_onFetchClosedCases);
   }
@@ -18,7 +18,7 @@ class OpenClosedBloc extends Bloc<OpenClosedEvent, OpenClosedState> {
     FetchOpenCases event,
     Emitter<OpenClosedState> emit,
   ) async {
-    emit(OpenClosedLoading());
+    emit(OpenCaseLoading());
 
     try {
       final openCases = await repository.fetchOpenCases();
@@ -33,7 +33,7 @@ class OpenClosedBloc extends Bloc<OpenClosedEvent, OpenClosedState> {
     FetchClosedCases event,
     Emitter<OpenClosedState> emit,
   ) async {
-    emit(OpenClosedLoading());
+    emit(ClosedCaseLoading());
 
     try {
       final closedCases = await repository.fetchClosedCases();

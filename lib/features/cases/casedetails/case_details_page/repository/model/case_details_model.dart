@@ -9,6 +9,7 @@ class CaseDetailsModel {
   final List<CaseDocumentModel> clientDocuments;
   final List<DeclarationModel> declarations;
   final List<CaseDocumentModel> reviewerDocuments;
+  final List<CaseDocumentModel>? reportDocuments;
 
   CaseDetailsModel({
     required this.status,
@@ -20,6 +21,7 @@ class CaseDetailsModel {
     required this.clientDocuments,
     required this.declarations,
     required this.reviewerDocuments,
+    this.reportDocuments,
   });
 
   factory CaseDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -31,47 +33,60 @@ class CaseDetailsModel {
       info: json['Info'] ?? '',
 
       /// 0️⃣ Case Info
-      caseInfo: data.isNotEmpty && data[0] is List && data[0].isNotEmpty
-          ? CaseInfo.fromJson(data[0][0])
-          : null,
+      caseInfo:
+          data.isNotEmpty && data[0] is List && data[0].isNotEmpty
+              ? CaseInfo.fromJson(data[0][0])
+              : null,
 
       /// 1️⃣ Medications
-      medications: data.length > 1
-          ? (data[1] as List)
-              .map((e) => MedicationModel.fromJson(e))
-              .toList()
-          : [],
+      medications:
+          data.length > 1
+              ? (data[1] as List)
+                  .map((e) => MedicationModel.fromJson(e))
+                  .toList()
+              : [],
 
       /// 2️⃣ Questions
-      questions: data.length > 2
-          ? (data[2] as List)
-              .map((e) => QuestionAnswerModel.fromJson(e))
-              .toList()
-          : [],
+      questions:
+          data.length > 2
+              ? (data[2] as List)
+                  .map((e) => QuestionAnswerModel.fromJson(e))
+                  .toList()
+              : [],
 
       /// 3️⃣ Client Documents
-      clientDocuments: data.length > 3
-          ? (data[3] as List)
-              .map((e) => CaseDocumentModel.fromJson(e))
-              .toList()
-          : [],
+      clientDocuments:
+          data.length > 3
+              ? (data[3] as List)
+                  .map((e) => CaseDocumentModel.fromJson(e))
+                  .toList()
+              : [],
 
       /// 4️⃣ Declarations
-      declarations: data.length > 4
-          ? (data[4] as List)
-              .map((e) => DeclarationModel.fromJson(e))
-              .toList()
-          : [],
+      declarations:
+          data.length > 4
+              ? (data[4] as List)
+                  .map((e) => DeclarationModel.fromJson(e))
+                  .toList()
+              : [],
 
       /// 5️⃣ Reviewer Documents (PDF + Image + Audio)
-      reviewerDocuments: data.length > 5
-          ? (data[5] as List)
-              .map((e) => CaseDocumentModel.fromJson(e))
-              .toList()
-          : [],
+      reviewerDocuments:
+          data.length > 5
+              ? (data[5] as List)
+                  .map((e) => CaseDocumentModel.fromJson(e))
+                  .toList()
+              : [],
+      reportDocuments:
+          data.length > 7
+              ? (data[7] as List)
+                  .map((e) => CaseDocumentModel.fromJson(e))
+                  .toList()
+              : [],
     );
   }
 }
+
 class CaseInfo {
   final String caseId;
   final String patient;
@@ -100,19 +115,20 @@ class CaseInfo {
   });
 
   factory CaseInfo.fromJson(Map<String, dynamic> json) => CaseInfo(
-        caseId: json['ID'] ?? '',
-        patient: json['Patient'] ?? '',
-        dateAssigned: json['DateAssigned'] ?? '',
-        dueDate: json['DueDate'] ?? '',
-        timeAllowed: json['TimeAllowed'] ?? '',
-        medicalSummary: json['MedicalSummary'] ?? '',
-        occupation: json['Occupation'] ?? '',
-        ethnicity: json['Ethnicity'] ?? '',
-        specialty: json['Specialty'] ?? '',
-        summaryOfRecords: json['SummaryOfRecords'] ?? '',
-        submittedDate: json['SubmittedDate'] ?? '',
-      );
+    caseId: json['ID'] ?? '',
+    patient: json['Patient'] ?? '',
+    dateAssigned: json['DateAssigned'] ?? '',
+    dueDate: json['DueDate'] ?? '',
+    timeAllowed: json['TimeAllowed'] ?? '',
+    medicalSummary: json['MedicalSummary'] ?? '',
+    occupation: json['Occupation'] ?? '',
+    ethnicity: json['Ethnicity'] ?? '',
+    specialty: json['Specialty'] ?? '',
+    summaryOfRecords: json['SummaryOfRecords'] ?? '',
+    submittedDate: json['SubmittedDate'] ?? '',
+  );
 }
+
 class MedicationModel {
   final String name;
   final String startPeriod;
@@ -131,6 +147,7 @@ class MedicationModel {
         endPeriod: json['EndPeriod'] ?? '',
       );
 }
+
 class QuestionAnswerModel {
   final int id;
   final String question;
@@ -152,6 +169,7 @@ class QuestionAnswerModel {
         support: json['Support'] ?? '',
       );
 }
+
 class CaseDocumentModel {
   final int id;
   final String fileName;
@@ -193,6 +211,7 @@ class CaseDocumentModel {
   bool get isAudio => documentTypeId == 6;
   bool get isDocument => documentTypeId == 1;
 }
+
 class DeclarationModel {
   final int id;
   final String title;
@@ -213,4 +232,6 @@ class DeclarationModel {
         description: json['d'] ?? '',
         status: json['s'] ?? 0,
       );
+
+      
 }

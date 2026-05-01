@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/rendering.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/model/case_details_model.dart';
 import 'package:ghorx_mobile_app_new/utilities/network/api_utils.dart';
 import 'package:ghorx_mobile_app_new/utilities/network/dio_handler.dart';
@@ -11,7 +10,10 @@ class CaseDetRepository {
   final DioHandler _dioHandler = DioHandler();
 
   // case details
-  Future<CaseDetailsModel> getcaseDetails({required String caseReviewerID,required String caseID}) async {
+  Future<CaseDetailsModel> getcaseDetails({
+    required String caseReviewerID,
+    required String caseID,
+  }) async {
     final token = await SharedPreference.getToken();
     // final reviewerId = await SharedPreference.getUserId();
     final data = {

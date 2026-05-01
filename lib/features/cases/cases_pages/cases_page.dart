@@ -14,7 +14,21 @@ class CasesPage extends StatefulWidget {
 }
 
 class _CasesPageState extends State<CasesPage> {
+  bool _isFirstLoad = true;
+
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (_isFirstLoad) {
+      _isFirstLoad = false;
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.read<OpenClosedBloc>().add(FetchOpenCases());
+      });
+    }
+  }
+
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,

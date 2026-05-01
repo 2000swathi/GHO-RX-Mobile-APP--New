@@ -1,4 +1,3 @@
-import 'package:open_filex/open_filex.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class GetFilesandIcons {

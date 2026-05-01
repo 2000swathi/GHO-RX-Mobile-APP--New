@@ -10,6 +10,7 @@ import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_pag
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/model/case_details_model.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/repository/bloc/get_file_id_event.dart';
+import 'package:ghorx_mobile_app_new/utilities/text_formatter.dart';
 
 class ReportListWidget extends StatelessWidget {
   final List<CaseDocumentModel> fileList;
@@ -35,6 +36,8 @@ class ReportListWidget extends StatelessWidget {
       itemCount: itemCount,
       itemBuilder: (context, index) {
         final report = fileList[index];
+
+        print(report.fileName);
         return Row(
           children: [
             Expanded(
@@ -58,7 +61,13 @@ class ReportListWidget extends StatelessWidget {
                     width: 24,
                     height: 24,
                   ),
-                  title: Text(report.fileName, style: AppFonts.subheading16),
+                  title: Text(
+                    TextFormatter.formatFileName(report.fileName),
+
+                    style: AppFonts.subheading16,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   onTap: () async {
                     try {
                       await GetFilesandIcons.openDocument(report.url);
@@ -85,9 +94,10 @@ class ReportListWidget extends StatelessWidget {
                       ),
                     );
                     context.read<CaseDetailsBloc>().add(
-                      CaseDetailsEventRequested(caseID: saltID!,
-                      caseReviewerID: saltID!,
-                      silent: true,
+                      CaseDetailsEventRequested(
+                        caseID: saltID!,
+                        caseReviewerID: saltID!,
+                        silent: true,
                       ),
                     );
                   },

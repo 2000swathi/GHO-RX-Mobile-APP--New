@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/repository/model/closed_case_model.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/repository/model/open_case_model.dart';
 import 'package:ghorx_mobile_app_new/utilities/network/api_utils.dart';
@@ -26,7 +24,7 @@ class OpenClosedRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
-      log(response.toString());
+
       return (response['Data'][0] as List)
           .map((caseJson) => OpenCaseModel.fromJson(caseJson))
           .toList();

@@ -7,9 +7,9 @@ sealed class OpenClosedState extends Equatable {
   List<Object> get props => [];
 }
 
-final class OpenClosedInitial extends OpenClosedState {}
+final class OpenCaseLoading extends OpenClosedState {}
 
-final class OpenClosedLoading extends OpenClosedState {}
+final class ClosedCaseLoading extends OpenClosedState {}
 
 //open cases
 final class OpenCaseLoaded extends OpenClosedState {
