@@ -8,19 +8,41 @@ class Summerypage extends StatelessWidget {
 
   const Summerypage({super.key, required this.medicalSummary});
 
-  @override
-  Widget build(BuildContext context) {
-    if (medicalSummary == null ||
-        medicalSummary!.medicalSummary.trim().isEmpty) {
-      return const SizedBox();
-    }
-    final isExpanded = ValueNotifier<bool>(false);
-    final text = medicalSummary?.medicalSummary.trim() ?? "";
+ @override
+Widget build(BuildContext context) {
+  if (medicalSummary == null) {
+    return const SizedBox();
+  }
+
+    final summaryText = medicalSummary?.medicalSummary.trim() ?? "";
+    final reason =
+        '''
+The patient is seeking a second opinion due to persistent symptoms that have not improved despite ongoing treatment. 
+There is uncertainty regarding the current treatment plan and a need to confirm the diagnosis and explore alternative therapies. 
+The patient also wishes to understand the long-term prognosis and possible complications associated with the condition.
+''' *
+        2;
+
+    final diagnosis =
+        '''
+The patient is currently diagnosed with a chronic inflammatory condition affecting multiple systems. 
+Symptoms include fatigue, pain, and intermittent fever. Previous investigations suggest an autoimmune origin, 
+but further evaluation is required to confirm the diagnosis and rule out other underlying causes.
+''' *
+        2;
+
+    final allergies =
+        '''
+The patient reports allergic reactions to certain medications including antibiotics and pain relievers. 
+There is also a history of seasonal allergies triggered by pollen and dust. 
+Food allergies include sensitivity to nuts and dairy products, which cause mild to moderate reactions.
+''' *
+        2;
 
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.all(1.0),
-      padding: const EdgeInsets.all(8.0),
+      margin: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(12.0),
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(15.0),
@@ -36,61 +58,97 @@ class Summerypage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Summary",
-            style: AppFonts.hinttext2.copyWith(fontWeight: FontWeight.w600),
-          ),
-          const SizedBox(height: 10),
-          LayoutBuilder(
-            builder: (context, constraints) {
-              final textSpan = TextSpan(
-                text: text,
-                style: AppFonts.textprimary,
-              );
-              final textPainter = TextPainter(
-                text: textSpan,
-                maxLines: 5,
-                textDirection: TextDirection.ltr,
-              );
-              textPainter.layout(maxWidth: constraints.maxWidth);
-
-              final exceedsFiveLines = textPainter.didExceedMaxLines;
-
-              return ValueListenableBuilder<bool>(
-                valueListenable: isExpanded,
-                builder: (context, isExpandedValue, _) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        text,
-                        style: AppFonts.textprimary,
-                        maxLines: isExpandedValue ? null : 5,
-                        overflow:
-                            isExpandedValue
-                                ? TextOverflow.visible
-                                : TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 5),
-                      if (exceedsFiveLines)
-                        GestureDetector(
-                          onTap: () => isExpanded.value = !isExpanded.value,
-                          child: Text(
-                            isExpandedValue ? "Read less" : "Read more...",
-                            style: AppFonts.labelItalic.copyWith(
-                              color: AppColors.secondarycolor,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                    ],
-                  );
-                },
-              );
-            },
-          ),
+          if (summaryText.isNotEmpty) ...[
+            _ExpandableSection(title: "Summary", text: summaryText),
+            const SizedBox(height: 15),
+          ],
+          if (reason.isNotEmpty) ...[
+            _ExpandableSection(title: "Reason for Seeking SOP", text: reason),
+            const SizedBox(height: 15),
+          ],
+          if (diagnosis.isNotEmpty) ...[
+            _ExpandableSection(title: "Current Diagnosis", text: diagnosis),
+            const SizedBox(height: 15),
+          ],
+          if (allergies.isNotEmpty) ...[
+            _ExpandableSection(title: "Allergies", text: allergies),
+          ],
         ],
       ),
+    );
+  }
+}
+
+/// 🔥 Reusable Expandable Section
+class _ExpandableSection extends StatefulWidget {
+  final String title;
+  final String text;
+
+  const _ExpandableSection({required this.title, required this.text});
+
+  @override
+  State<_ExpandableSection> createState() => _ExpandableSectionState();
+}
+
+class _ExpandableSectionState extends State<_ExpandableSection> {
+  bool isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final textSpan = TextSpan(
+          text: widget.text,
+          style: AppFonts.textprimary,
+        );
+
+        final textPainter = TextPainter(
+          text: textSpan,
+          maxLines: 3,
+          textDirection: TextDirection.ltr,
+        );
+
+        textPainter.layout(maxWidth: constraints.maxWidth);
+        final exceeds = textPainter.didExceedMaxLines;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            /// 🔹 Title
+            Text(
+              widget.title,
+              style: AppFonts.hinttext2.copyWith(fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 8),
+
+            /// 🔹 Content
+            Text(
+              widget.text,
+              style: AppFonts.textprimary,
+              maxLines: isExpanded ? null : 3,
+              overflow:
+                  isExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
+            ),
+
+            /// 🔹 Read More / Less
+            if (exceeds)
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isExpanded = !isExpanded;
+                  });
+                },
+                child: Text(
+                  isExpanded ? "Read less" : "Read more...",
+                  style: AppFonts.labelItalic.copyWith(
+                    color: AppColors.secondarycolor,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 }

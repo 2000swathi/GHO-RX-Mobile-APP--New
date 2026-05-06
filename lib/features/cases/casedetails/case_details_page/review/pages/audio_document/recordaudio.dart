@@ -17,7 +17,6 @@ import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_pag
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/audio_document/widget/pick_file_dialogue_box.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
-import 'package:just_audio/just_audio.dart';
 
 // ignore: must_be_immutable
 class Recordaudio extends StatefulWidget {

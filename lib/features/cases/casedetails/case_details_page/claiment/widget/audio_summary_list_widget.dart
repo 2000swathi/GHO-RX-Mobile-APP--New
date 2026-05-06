@@ -115,178 +115,184 @@ class _AudioSummaryListWidgetState extends State<AudioSummaryListWidget> {
     return ListView.separated(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
+      padding: EdgeInsets.zero,
       itemCount: widget.audioList.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 10),
+      separatorBuilder: (_, _) => const SizedBox(),
       itemBuilder: (context, index) {
         final audio = widget.audioList[index];
         final isSelected = _playingIndex == index;
 
-        return Row(
-          children: [
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.primarycolor),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset('assets/svg/audio.svg', width: 30),
-                    const SizedBox(width: 10),
-
-                    /// --- AUDIO DETAILS ---
-                    Expanded(
-                      child: StreamBuilder<Duration>(
-                        stream: _player.positionStream,
-                        builder: (context, snapshot) {
-                          final current =
-                              isSelected
-                                  ? snapshot.data ?? Duration.zero
-                                  : Duration.zero;
-                          final total = isSelected ? _total : Duration.zero;
-                          final progress =
-                              total.inMilliseconds > 0
-                                  ? current.inMilliseconds /
-                                      total.inMilliseconds
-                                  : 0.0;
-
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                audio.fileName,
-                                style: AppFonts.subheading16.copyWith(
-                                  fontSize: 14,
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: Row(
+            children: [
+              Flexible(
+                fit: FlexFit.loose,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColors.primarycolor),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset('assets/svg/audio.svg', width: 30),
+                      const SizedBox(width: 10),
+          
+                      /// --- AUDIO DETAILS ---
+                      Expanded(
+                        child: StreamBuilder<Duration>(
+                          stream: _player.positionStream,
+                          builder: (context, snapshot) {
+                            final current =
+                                isSelected
+                                    ? snapshot.data ?? Duration.zero
+                                    : Duration.zero;
+                            final total = isSelected ? _total : Duration.zero;
+                            final progress =
+                                total.inMilliseconds > 0
+                                    ? current.inMilliseconds /
+                                        total.inMilliseconds
+                                    : 0.0;
+          
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min, 
+                              children: [
+                                Text(
+                                  audio.fileName,
+                                  style: AppFonts.subheading16.copyWith(
+                                    fontSize: 14,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              const SizedBox(height: 6),
-                              TweenAnimationBuilder<double>(
-                                tween: Tween<double>(
-                                  begin: 0.0,
-                                  end: progress.clamp(0.0, 1.0),
+                                const SizedBox(height: 6),
+                                TweenAnimationBuilder<double>(
+                                  tween: Tween<double>(
+                                    begin: 0.0,
+                                    end: progress.clamp(0.0, 1.0),
+                                  ),
+                                  duration: const Duration(milliseconds: 200),
+                                  builder: (context, value, child) {
+                                    return LinearProgressIndicator(
+                                      value: value,
+                                      backgroundColor: AppColors.hint2color
+                                          .withAlpha(90),
+                                      valueColor: AlwaysStoppedAnimation(
+                                        AppColors.primarycolor,
+                                      ),
+                                      minHeight: 5,
+                                    );
+                                  },
                                 ),
-                                duration: const Duration(milliseconds: 200),
-                                builder: (context, value, child) {
-                                  return LinearProgressIndicator(
-                                    value: value,
-                                    backgroundColor: AppColors.hint2color
-                                        .withAlpha(90),
-                                    valueColor: AlwaysStoppedAnimation(
-                                      AppColors.primarycolor,
+                                const SizedBox(height: 6),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      _format(current),
+                                      style: AppFonts.textappbar.copyWith(
+                                        fontSize: 12,
+                                      ),
                                     ),
-                                    minHeight: 5,
+                                    Text(
+                                      _format(total),
+                                      style: AppFonts.textappbar.copyWith(
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+          
+                      const SizedBox(width: 12),
+          
+                      /// --- PLAY/PAUSE BUTTON ---
+                      ElevatedButton(
+                        onPressed: () => _playAudio(audio.url, index),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primarycolor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 8,
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (_isLoading && _playingIndex == index)
+                              SizedBox(
+                                height: 16,
+                                width: 16,
+                                child: CircularProgressIndicator(
+                                  color: AppColors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            else
+                              StreamBuilder<PlayerState>(
+                                stream: _player.playerStateStream,
+                                builder: (context, snapshot) {
+                                  final isPlaying =
+                                      snapshot.data?.playing ?? false;
+                                  final isCurrent = _playingIndex == index;
+                                  return Icon(
+                                    (isPlaying && isCurrent)
+                                        ? Icons.pause
+                                        : Icons.play_arrow,
+                                    color: AppColors.white,
+                                    size: 20,
                                   );
                                 },
                               ),
-                              const SizedBox(height: 6),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    _format(current),
-                                    style: AppFonts.textappbar.copyWith(
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                  Text(
-                                    _format(total),
-                                    style: AppFonts.textappbar.copyWith(
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-
-                    const SizedBox(width: 12),
-
-                    /// --- PLAY/PAUSE BUTTON ---
-                    ElevatedButton(
-                      onPressed: () => _playAudio(audio.url, index),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primarycolor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 8,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (_isLoading && _playingIndex == index)
-                            SizedBox(
-                              height: 16,
-                              width: 16,
-                              child: CircularProgressIndicator(
-                                color: AppColors.white,
-                                strokeWidth: 2,
-                              ),
-                            )
-                          else
-                            StreamBuilder<PlayerState>(
-                              stream: _player.playerStateStream,
-                              builder: (context, snapshot) {
-                                final isPlaying =
-                                    snapshot.data?.playing ?? false;
-                                final isCurrent = _playingIndex == index;
-                                return Icon(
-                                  (isPlaying && isCurrent)
-                                      ? Icons.pause
-                                      : Icons.play_arrow,
-                                  color: AppColors.white,
-                                  size: 20,
-                                );
-                              },
+                            const SizedBox(width: 4),
+                            Text(
+                              (isSelected && _player.playing) ? 'Pause' : 'Play',
+                              style: AppFonts.textwhite.copyWith(fontSize: 13),
                             ),
-                          const SizedBox(width: 4),
-                          Text(
-                            (isSelected && _player.playing) ? 'Pause' : 'Play',
-                            style: AppFonts.textwhite.copyWith(fontSize: 13),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            widget.isDrUploaded == true
-                ? IconButton(
-                  onPressed: () {
-                    context.read<GetFileIdBloc>().add(
-                      DeleteFileEvent(
-                        saltID: widget.caseID!,
-                        docTypeId: 6,
-                        fileUploadedID: audio.id,
-                        filePath: "",
-                        context: context,
-                      ),
-                    );
-                    context.read<CaseDetailsBloc>().add(
-                      CaseDetailsEventRequested(
-                        caseID: widget.saltID!,
-                        caseReviewerID: widget.saltID!,
-                      ),
-                    );
-                  },
-                  icon: SvgPicture.asset("assets/svg/trash.svg"),
-                )
-                : SizedBox(),
-          ],
+              widget.isDrUploaded == true
+                  ? IconButton(
+                    onPressed: () {
+                      context.read<GetFileIdBloc>().add(
+                        DeleteFileEvent(
+                          saltID: widget.caseID!,
+                          docTypeId: 6,
+                          fileUploadedID: audio.id,
+                          filePath: "",
+                          context: context,
+                        ),
+                      );
+                      context.read<CaseDetailsBloc>().add(
+                        CaseDetailsEventRequested(
+                          caseID: widget.saltID!,
+                          caseReviewerID: widget.saltID!,
+                        ),
+                      );
+                    },
+                    icon: SvgPicture.asset("assets/svg/trash.svg"),
+                  )
+                  : SizedBox(),
+            ],
+          ),
         );
       },
     );

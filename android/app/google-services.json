@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "651528352661",
+    "project_id": "ghoreviewer",
+    "storage_bucket": "ghoreviewer.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651528352661:android:0b1e472f42bf3622777c9c",
+        "android_client_info": {
+          "package_name": "in.globalhealthopinionrx"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5yU8Y3S82HaHjI7L59_BGRj43pUHjaeI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

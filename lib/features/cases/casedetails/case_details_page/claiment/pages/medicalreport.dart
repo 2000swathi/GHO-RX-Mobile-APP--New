@@ -38,9 +38,8 @@ class Medicalreport extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min, 
         children: [
-          SizedBox(height: 10),
-          // Header
           Row(
             children: [
               Text(

@@ -72,7 +72,6 @@ class _QueriesTabsState extends State<QueriesTabs> {
           answer: answerText,
           onNext: (text) {
             setState(() {
-          
               answerText = text;
               selectedIndex = 1;
             });

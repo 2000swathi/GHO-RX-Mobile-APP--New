@@ -55,7 +55,6 @@ class _ReviewpageState extends State<Reviewpage>
 
   @override
   Widget build(BuildContext context) {
-    print(widget.summaryRecords);
     return Container(
       constraints: const BoxConstraints(maxWidth: 600),
       margin: const EdgeInsets.symmetric(horizontal: 4.0),

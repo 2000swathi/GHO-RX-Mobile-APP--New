@@ -18,11 +18,7 @@ class _OpenCasesTabState extends State<OpenCasesTab> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final bloc = context.read<OpenClosedBloc>();
-
-      if (bloc.state is! OpenCaseLoaded) {
-        bloc.add(FetchOpenCases());
-      }
+      context.read<OpenClosedBloc>().add(FetchOpenCases());
     });
   }
 
@@ -35,7 +31,12 @@ class _OpenCasesTabState extends State<OpenCasesTab> {
         } else if (state is OpenCaseLoaded) {
           final openCases = state.openCases;
           if (openCases.isEmpty) {
-            return const Center(child: Text('No open cases available',style: AppFonts.textprimary,));
+            return const Center(
+              child: Text(
+                'No open cases available',
+                style: AppFonts.textprimary,
+              ),
+            );
           }
           return ListView.separated(
             physics: BouncingScrollPhysics(),

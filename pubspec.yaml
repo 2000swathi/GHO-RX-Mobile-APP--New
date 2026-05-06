@@ -62,14 +62,17 @@ dependencies:
   fl_chart: ^1.1.1
   async: ^2.13.0
   cached_network_image: ^3.4.1
-  package_info_plus: ^8.3.1
   image: ^4.5.4
   android_intent_plus: ^6.0.0
-  flutter_lints: ^6.0.0
+  firebase_remote_config: ^6.4.0
+  in_app_update: ^4.2.5
+  package_info_plus: ^9.0.0
+  firebase_core: ^4.7.0
 
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4
+  flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
 

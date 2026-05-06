@@ -66,6 +66,8 @@ import 'package:ghorx_mobile_app_new/features/payment/repository/graph/month/mon
 import 'package:ghorx_mobile_app_new/features/payment/repository/graph/payment_graph_repo.dart';
 import 'package:ghorx_mobile_app_new/features/payment/tab_sheets/repository/bloc/payment_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/payment/tab_sheets/repository/payment_repo.dart';
+import 'package:ghorx_mobile_app_new/features/remote_config/Bloc/update_bloc.dart';
+import 'package:ghorx_mobile_app_new/features/remote_config/remote_config_service.dart';
 import 'package:ghorx_mobile_app_new/features/send%20mail/repository/bloc/sendmail_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/send%20mail/repository/sendmail_repo.dart';
 import 'package:ghorx_mobile_app_new/features/splash/bloc/spalsh_event.dart';
@@ -196,7 +198,10 @@ class AppBlocProvider extends StatelessWidget {
           create: (_) => DoctfileBloc(repository: DoctFileRepo()),
         ),
         BlocProvider<ProfessinalExperinceBloc>(
-          create: (_) => ProfessinalExperinceBloc(repository: ProfessionalExperienceRepo()),
+          create:
+              (_) => ProfessinalExperinceBloc(
+                repository: ProfessionalExperienceRepo(),
+              ),
         ),
         BlocProvider<ProfessionalrefBloc>(
           create: (_) => ProfessionalrefBloc(repository: ProfessionalrefRepo()),
@@ -210,10 +215,13 @@ class AppBlocProvider extends StatelessWidget {
         ),
         BlocProvider<ConflictInterestBloc>(
           create: (_) => ConflictInterestBloc(repo: ConflictOfInterestRepo()),
-          ),
+        ),
         BlocProvider<NondisclosureBloc>(
           create: (_) => NondisclosureBloc(repo: NonDisclosureRepo()),
-          ),
+        ),
+        BlocProvider<UpdateBloc>(
+          create: (_) => UpdateBloc(RemoteConfigService()),
+        ),
       ],
       child: child,
     );

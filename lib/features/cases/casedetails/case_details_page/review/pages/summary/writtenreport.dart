@@ -10,6 +10,7 @@ import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_pag
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/bloc/case_details_event.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/summary/repository/bloc/summary_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/pages/summary/repository/bloc/summary_event.dart';
+import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/bloc/open_closed_bloc.dart';
 
 class Writtenreport extends StatefulWidget {
   final VoidCallback? onNext;
@@ -43,12 +44,12 @@ class _WrittenreportState extends State<Writtenreport> {
     return BlocListener<SummaryBloc, SummaryState>(
       listener: (context, state) {
         if (state is SummarySuccess) {
-          if(state.response["Data"]==null){
+          if (state.response["Data"] == null) {
             return;
           }
           CustomScaffoldMessenger.showSuccessMessage(
             context,
-            state.response["Data"][0][0]["msg"]??"Summary saved successfully",
+            state.response["Data"][0][0]["msg"] ?? "Summary saved successfully",
           );
           context.read<CaseDetailsBloc>().add(
             CaseDetailsEventRequested(
@@ -106,6 +107,7 @@ class _WrittenreportState extends State<Writtenreport> {
                               summary: summaryController.text.trim(),
                             ),
                           );
+                          context.read<OpenClosedBloc>().add(FetchOpenCases());
                         },
                       ),
                     );

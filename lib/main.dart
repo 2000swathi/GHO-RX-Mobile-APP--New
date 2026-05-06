@@ -1,12 +1,15 @@
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:ghorx_mobile_app_new/core/bloc_provider/app_bloc_provider.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/router/app_router.dart';
+import 'package:ghorx_mobile_app_new/firebase_options.dart';
 import 'package:ghorx_mobile_app_new/utilities/size_config.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -21,31 +24,33 @@ class MyApp extends StatelessWidget {
           data: MediaQuery.of(context).copyWith(
             textScaler: TextScaler.linear(Platform.isIOS ? 0.85 : 1.0),
           ),
-          child: Builder(builder: (context) {
-            SizeConfig.init(context);
+          child: Builder(
+            builder: (context) {
+              SizeConfig.init(context);
 
-            return AppBlocProvider(
-              child: MaterialApp(
-                debugShowCheckedModeBanner: false,
-                title: 'GHORX App',
-                theme: ThemeData(
-                  scaffoldBackgroundColor: AppColors.backgroundcolor,
-                  colorScheme: ColorScheme.fromSeed(
-                    seedColor: AppColors.primarycolor,
-                    brightness: Brightness.light,
+              return AppBlocProvider(
+                child: MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  title: 'GHORX App',
+                  theme: ThemeData(
+                    scaffoldBackgroundColor: AppColors.backgroundcolor,
+                    colorScheme: ColorScheme.fromSeed(
+                      seedColor: AppColors.primarycolor,
+                      brightness: Brightness.light,
+                    ),
+                    appBarTheme: const AppBarTheme(
+                      backgroundColor: AppColors.backgroundcolor,
+                      foregroundColor: AppColors.white,
+                      scrolledUnderElevation: 0,
+                      elevation: 0,
+                    ),
                   ),
-                  appBarTheme: const AppBarTheme(
-                    backgroundColor: AppColors.backgroundcolor,
-                    foregroundColor: AppColors.white,
-                    scrolledUnderElevation: 0,
-                    elevation: 0,
-                  ),
+                  onGenerateRoute: AppRouter.generateRoute,
+                  initialRoute: AppRouter.splash,
                 ),
-                onGenerateRoute: AppRouter.generateRoute,
-                initialRoute: AppRouter.splash,
-              ),
-            );
-          }),
+              );
+            },
+          ),
         );
       },
     );
