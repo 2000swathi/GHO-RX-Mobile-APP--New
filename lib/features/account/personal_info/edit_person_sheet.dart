@@ -363,7 +363,7 @@ class _EditProfileSheetWidgetState extends State<EditProfileSheetWidget> {
 
   Widget _buildCheckboxGrid() {
     final items = [
-      ("Approved", approved, (v) => approved = v),
+      //("Approved", approved, (v) => approved = v),
       ("Board Certified", boardCertified, (v) => boardCertified = v),
       ("Active Practice", activePractice, (v) => activePractice = v),
       ("Active Teaching", activeTeaching, (v) => activeTeaching = v),

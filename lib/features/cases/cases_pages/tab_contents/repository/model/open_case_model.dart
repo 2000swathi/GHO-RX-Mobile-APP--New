@@ -8,7 +8,8 @@ class OpenCaseModel {
   final String medicalSummary;
   final String caseReviewerID;
   final String caseID;
-
+  final int amount;
+  final String completedDate;
   OpenCaseModel({
     required this.id,
     required this.patientName,
@@ -19,6 +20,8 @@ class OpenCaseModel {
     required this.medicalSummary,
     required this.caseReviewerID,
     required this.caseID,
+    required this.amount,
+    required this.completedDate,
   });
 
   factory OpenCaseModel.fromJson(Map<String, dynamic> json) {
@@ -32,6 +35,8 @@ class OpenCaseModel {
       medicalSummary: json['MedicalSummary'] ?? '',
       caseReviewerID: json['CaseReviewerID'] ?? '',
       caseID: json['CaseID'] ?? '',
+      amount: json['Amount'] ??0,
+      completedDate: json['CompletedDate']??''
     );
   }
 

@@ -5,10 +5,15 @@ import 'package:ghorx_mobile_app_new/core/common_widgets/custom_container.dart';
 import 'package:ghorx_mobile_app_new/core/common_widgets/loading_animation.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_fonts.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/claiment/pages/audiosummery.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/claiment/pages/existing_condition_widget.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/claiment/pages/life_style_widget.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/claiment/pages/medical_history.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/claiment/widget/audio_summary_list_widget.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/claiment/widget/report_list_widget.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/bloc/case_details_bloc.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/repository/bloc/case_details_event.dart';
+import 'package:ghorx_mobile_app_new/features/cases/casedetails/case_details_page/review/summary.dart';
 import 'package:ghorx_mobile_app_new/features/cases/casedetails/finalopinionsubmission/widget/common_qa.dart';
 import 'package:ghorx_mobile_app_new/features/cases/cases_pages/tab_contents/repository/model/closed_case_model.dart';
 import 'package:ghorx_mobile_app_new/utilities/size_config.dart';
@@ -89,6 +94,23 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                 ),
               );
             }
+            final rawConditions = caseDetails.caseInfo?.extCondition ?? '';
+
+            final conditions =
+                rawConditions
+                    .split(',')
+                    .map((e) => e.trim())
+                    .where((e) => e.isNotEmpty)
+                    .toList();
+            final lifestyleData = {
+              "Diet": caseDetails.caseInfo?.diet?.toString() ?? '',
+              "Smoking Status": caseDetails.caseInfo?.smoke?.toString() ?? '',
+              "Alcohol Use": caseDetails.caseInfo?.alcoholUse?.toString() ?? '',
+              "Exercise Status":
+                  caseDetails.caseInfo?.exercise?.toString() ?? '',
+              "Weight": caseDetails.caseInfo?.weight?.toString() ?? '',
+              "Height": caseDetails.caseInfo?.height?.toString() ?? '',
+            };
             final audioItemsdr = caseDetails.reviewerDocuments ?? [];
             final audioItemsPat = caseDetails.clientDocuments ?? [];
             final audioListdr =
@@ -140,79 +162,86 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                       ],
                     ),
                     SizedBox(height: 6.h),
-                    // Row(
-                    //   children: [
-                    //     const Icon(Icons.person),
-                    //     Text(
-                    //       caseDetails.caseInfo!.gender,
-                    //       style: AppFonts.subtext,
-                    //     ),
-                    //     SizedBox(width: 14.w),
-                    //     const Icon(Icons.cake, size: 18),
-                    //     SizedBox(width: 5),
-                    //     Text(
-                    //       caseDetails.caseInfo!.dob.toString(),
-                    //       style: AppFonts.subtext,
-                    //     ),
-                    //   ],
-                    // ),
-                    SizedBox(height: 6.h),
+                    Text(
+                      "Ethnicity : ${caseDetails.caseInfo?.ethnicity}",
+                      style: AppFonts.textSecondary.copyWith(
+                        fontSize: 14,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Icon(
+                          Icons.circle,
+                          size: 6,
+                          color: AppColors.textPrimary,
+                        ),
+                        const SizedBox(width: 3),
+                        Text(
+                          "Assigned Date : ${caseDetails.caseInfo?.dateAssigned}",
+                          style: AppFonts.textSecondary.copyWith(
+                            fontSize: 14,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         const Icon(Icons.circle, size: 6, color: AppColors.red),
-                        SizedBox(width: 4),
+                        const SizedBox(width: 3),
                         Text(
-                          caseDetails.caseInfo!.dueDate.toString(),
+                          "Due Date : ${caseDetails.caseInfo?.dueDate}",
                           style: AppFonts.textSecondary.copyWith(
-                            fontSize: 16,
+                            fontSize: 14,
                             color: AppColors.red,
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 24),
-                    CustomContainer(
-                      greyHeading: "Patient Report",
 
-                      datas: caseDetails.caseInfo!.medicalSummary,
-                    ),
-                    caseDetails.medications.isEmpty
-                        ? SizedBox()
-                        : SizedBox(height: 16.h),
+                    SizedBox(height: 24),
+                    Summerypage(medicalSummary: caseDetails.caseInfo),
+                    SizedBox(height: 10),
+                    ConditionListWidget(conditions: conditions),
+                    SizedBox(height: 10),
+                    LifestyleWidget(lifestyleData: lifestyleData),
+                    const SizedBox(height: 10),
+                    const MedicalHistoryWidget(),
+                    SizedBox(height: 10),
+                    Audiosummery(documents: caseDetails.clientDocuments),
+
                     caseDetails.medications.isEmpty
                         ? SizedBox()
                         : CustomContainer(
                           greyHeading: "Medication",
                           customWidgets1: [
                             SizedBox(height: 10),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: caseDetails.medications.length,
-                              itemBuilder: (context, index) {
-                                var medications =
-                                    caseDetails.medications[index];
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          medications.name,
-                                          style: AppFonts.buttontxt.copyWith(
-                                            color: AppColors.textPrimary,
+                            Column(
+                              children:
+                                  caseDetails.medications.map((medications) {
+                                    return Padding(
+                                      padding: const EdgeInsets.only(bottom: 6),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            medications.name,
+                                            style: AppFonts.buttontxt.copyWith(
+                                              color: AppColors.textPrimary,
+                                            ),
                                           ),
-                                        ),
-                                        Spacer(),
-                                        Text(
-                                          "${medications.startPeriod} ${medications.endPeriod}",
-                                          style: AppFonts.labelItalic,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                );
-                              },
+                                          const Spacer(),
+                                          Text(
+                                            "${medications.startPeriod} ${medications.endPeriod}",
+                                            style: AppFonts.labelItalic,
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
                             ),
                           ],
                         ),
@@ -269,9 +298,9 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                                   ]
                                   : [],
                         ),
-                    // caseDetails.questions!.isEmpty
-                    //     ? SizedBox()
-                    //     : SizedBox(height: 16.h),
+                    caseDetails.questions!.isEmpty
+                        ? SizedBox()
+                        : SizedBox(height: 16.h),
                     caseDetails.questions!.isEmpty
                         ? SizedBox()
                         : CustomContainer(
@@ -294,12 +323,12 @@ class _ClosedCaseDetailsState extends State<ClosedCaseDetails> {
                             ),
                           ],
                         ),
-                    SizedBox(height: 16),
+                    
                     CustomContainer(
                       greyHeading: "Doctor Report",
                       datas: caseDetails.caseInfo!.summaryOfRecords,
                     ),
-                    docList.isEmpty ? SizedBox() : SizedBox(height: 16),
+                    docList.isEmpty ? SizedBox() : SizedBox(),
                     docList.isEmpty
                         ? SizedBox()
                         : CustomContainer(

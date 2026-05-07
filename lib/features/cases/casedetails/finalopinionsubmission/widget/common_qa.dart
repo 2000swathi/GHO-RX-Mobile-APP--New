@@ -9,7 +9,12 @@ class CommonQa extends StatelessWidget {
   final String ans;
   final String support;
 
-  const CommonQa({super.key, required this.question, required this.ans,required this.support});
+  const CommonQa({
+    super.key,
+    required this.question,
+    required this.ans,
+    required this.support,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +40,15 @@ class CommonQa extends StatelessWidget {
             ),
           ],
         ),
-        Text("Answer : ${ans}",style: AppFonts.buttontxt.copyWith(color: AppColors.successcolor),),
-        SizedBox(height: 7,),
-        Text("Support : ${support}",style: AppFonts.buttontxt.copyWith(color: AppColors.successcolor)),
-         SizedBox(height: 10,),
+        Text(
+          "Answer : ${ans}",
+          style: AppFonts.buttontxt.copyWith(color: AppColors.successcolor),
+        ),
+        SizedBox(height: 7),
+        Text(
+          "Support : ${support}",
+          style: AppFonts.buttontxt.copyWith(color: AppColors.successcolor),
+        ),
       ],
     );
   }

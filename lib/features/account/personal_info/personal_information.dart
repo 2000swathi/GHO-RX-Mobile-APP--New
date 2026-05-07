@@ -85,7 +85,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                   {"label": "NPI", "value": info.npi},
                   {"label": "Nationality", "value": info.countryName},
                   {"label": "FullAddress", "value": info.address1},
-                  {"label": "Approved", "value": info.approved ? "Yes" : "No"},
+                  {"label": "Approved", "value": info.approved},
                   {"label": "Board Certified", "value": info.boardCertified},
                   {"label": "Active Practice", "value": info.activePractice},
                   {"label": "Active Teaching", "value": info.activeTeaching},

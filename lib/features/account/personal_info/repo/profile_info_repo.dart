@@ -27,12 +27,12 @@ class ProfileInfoRepo {
 
     try {
       final response = await _dioHandler.post('', data: data);
-      print(response);
+
       final dataList = response['Data'];
       if (dataList == null || dataList.isEmpty) {
         throw "Data is null or empty";
       }
-  final innerList = dataList[0];
+      final innerList = dataList[0];
       if (innerList == null || innerList.isEmpty) {
         throw "Inner data is null or empty";
       }
@@ -46,8 +46,7 @@ class ProfileInfoRepo {
 
       if (info.email.isNotEmpty) {
         await SharedPreference.setEmail(info.email);
-      } else {
-      }
+      } else {}
 
       return info;
     } catch (e) {
@@ -75,7 +74,7 @@ class ProfileInfoRepo {
     };
     try {
       final response = await _dioHandler.post('', data: requestData);
-      print(response);
+
       return response;
     } catch (e) {
       throw (e.toString());

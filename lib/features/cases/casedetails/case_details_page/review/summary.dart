@@ -8,36 +8,16 @@ class Summerypage extends StatelessWidget {
 
   const Summerypage({super.key, required this.medicalSummary});
 
- @override
-Widget build(BuildContext context) {
-  if (medicalSummary == null) {
-    return const SizedBox();
-  }
+  @override
+  Widget build(BuildContext context) {
+    if (medicalSummary == null) {
+      return const SizedBox();
+    }
 
     final summaryText = medicalSummary?.medicalSummary.trim() ?? "";
-    final reason =
-        '''
-The patient is seeking a second opinion due to persistent symptoms that have not improved despite ongoing treatment. 
-There is uncertainty regarding the current treatment plan and a need to confirm the diagnosis and explore alternative therapies. 
-The patient also wishes to understand the long-term prognosis and possible complications associated with the condition.
-''' *
-        2;
-
-    final diagnosis =
-        '''
-The patient is currently diagnosed with a chronic inflammatory condition affecting multiple systems. 
-Symptoms include fatigue, pain, and intermittent fever. Previous investigations suggest an autoimmune origin, 
-but further evaluation is required to confirm the diagnosis and rule out other underlying causes.
-''' *
-        2;
-
-    final allergies =
-        '''
-The patient reports allergic reactions to certain medications including antibiotics and pain relievers. 
-There is also a history of seasonal allergies triggered by pollen and dust. 
-Food allergies include sensitivity to nuts and dairy products, which cause mild to moderate reactions.
-''' *
-        2;
+    final reason = medicalSummary?.sopReason ?? "";
+    final diagnosis = medicalSummary?.currentDiagnosis ?? "";
+    final allergies = medicalSummary?.allergies ?? "";
 
     return Container(
       width: double.infinity,

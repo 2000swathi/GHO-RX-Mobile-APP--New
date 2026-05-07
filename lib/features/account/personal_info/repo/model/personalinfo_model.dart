@@ -18,7 +18,7 @@ class PersonalInfoModel {
   final String city;
   final String zipCode;
 
-  final bool approved;
+  final String approved;
   final String boardCertified;
   final String activePractice;
   final String activeTeaching;
@@ -83,7 +83,7 @@ class PersonalInfoModel {
       city: '',
       zipCode: '',
 
-      approved: json['Approved'] == 1,
+      approved: json['Approved'] ??'',
       boardCertified: json['BoardCertified'] ?? '',
       activePractice: json['ActivePractice'] ?? '',
       activeTeaching: json['ActiveTeaching'] ?? '',

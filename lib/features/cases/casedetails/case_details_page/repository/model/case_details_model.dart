@@ -99,6 +99,18 @@ class CaseInfo {
   final String specialty;
   final String summaryOfRecords;
   final String submittedDate;
+  final String? diet;
+  final String? weight;
+  final String? height;
+  final String? exercise;
+  final String? smoke;
+  final String? alcoholUse;
+  final String? sopReason;
+  final String? allergies;
+  final String? extCondition;
+  final String? familyiistory;
+  final String? previousSurgery;
+  final String? currentDiagnosis;
 
   CaseInfo({
     required this.caseId,
@@ -112,6 +124,18 @@ class CaseInfo {
     required this.specialty,
     required this.summaryOfRecords,
     required this.submittedDate,
+    this.diet,
+    this.smoke,
+    this.alcoholUse,
+    this.exercise,
+    this.height,
+    this.weight,
+    this.sopReason,
+    this.allergies,
+    this.extCondition,
+    this.familyiistory,
+    this.previousSurgery,
+    this.currentDiagnosis,
   });
 
   factory CaseInfo.fromJson(Map<String, dynamic> json) => CaseInfo(
@@ -126,6 +150,18 @@ class CaseInfo {
     specialty: json['Specialty'] ?? '',
     summaryOfRecords: json['SummaryOfRecords'] ?? '',
     submittedDate: json['SubmittedDate'] ?? '',
+    diet: json['Diet'] ?? '',
+    smoke: json['Smoke'] ?? '',
+    height: json['Height'] ?? '',
+    weight: json['Weight'] ?? '',
+    alcoholUse: json['AlcoholUse'] ?? '',
+    exercise: json['Exercise'] ?? '',
+    sopReason: json['CaseTitle'] ?? '',
+    allergies: json['Allergies'] ?? '',
+    extCondition: json['ExistingConditions'] ?? '',
+    familyiistory: json['FamilyHistory'] ?? '',
+    previousSurgery: json['PreviousSurgeries'] ?? '',
+    currentDiagnosis: json['CurrentDiagnosis'] ?? '',
   );
 }
 
@@ -232,6 +268,4 @@ class DeclarationModel {
         description: json['d'] ?? '',
         status: json['s'] ?? 0,
       );
-
-      
 }

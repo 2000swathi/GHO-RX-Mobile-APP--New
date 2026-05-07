@@ -52,8 +52,11 @@ class _SupportTabState extends State<SupportTab> {
             state.response["Data"][0][0]["msg"],
           );
           context.read<CaseDetailsBloc>().add(
-            CaseDetailsEventRequested(caseID: widget.saltID, silent: true,
-            caseReviewerID: widget.saltID,),
+            CaseDetailsEventRequested(
+              caseID: widget.saltID,
+              silent: true,
+              caseReviewerID: widget.saltID,
+            ),
           );
 
           FocusScope.of(context).unfocus();
@@ -113,6 +116,9 @@ class _SupportTabState extends State<SupportTab> {
                           support: supportController.text.trim(),
                         ),
                       );
+                      FocusScope.of(context).unfocus();
+
+                      Navigator.pop(context);
                     },
                   );
                 },

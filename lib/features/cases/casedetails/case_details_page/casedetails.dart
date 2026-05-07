@@ -112,6 +112,13 @@ class _CaseDetailsPageState extends State<CaseDetailsPage> {
                       ],
                     ),
 
+                    Text(
+                      "Ethnicity : ${caseInfo.ethnicity}",
+                      style: AppFonts.textSecondary.copyWith(
+                        fontSize: 14,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [

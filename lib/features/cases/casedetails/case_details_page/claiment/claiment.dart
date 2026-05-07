@@ -14,14 +14,21 @@ class Clainment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final conditions = ["COPD", "Asthma", "Anemia"];
+    final rawConditions = caseDetailsModel.caseInfo?.extCondition ?? '';
+
+    final conditions =
+        rawConditions
+            .split(',')
+            .map((e) => e.trim())
+            .where((e) => e.isNotEmpty)
+            .toList();
     final lifestyleData = {
-      "Diet": "Vegetarian",
-      "Smoking Status": "Non-smoker",
-      "Alcohol Use": "Occasionally",
-      "Exercise Status": "Regular",
-      "Weight": "70 kg",
-      "Height": "175 cm",
+      "Diet": caseDetailsModel.caseInfo?.diet?.toString() ?? '',
+      "Smoking Status": caseDetailsModel.caseInfo?.smoke?.toString() ?? '',
+      "Alcohol Use": caseDetailsModel.caseInfo?.alcoholUse?.toString() ?? '',
+      "Exercise Status": caseDetailsModel.caseInfo?.exercise?.toString() ?? '',
+      "Weight": caseDetailsModel.caseInfo?.weight?.toString() ?? '',
+      "Height": caseDetailsModel.caseInfo?.height?.toString() ?? '',
     };
     return Column(
       children: [

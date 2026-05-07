@@ -38,7 +38,6 @@ class ReportListWidget extends StatelessWidget {
       itemBuilder: (context, index) {
         final report = fileList[index];
 
-        print(report.fileName);
         return Row(
           children: [
             Expanded(
