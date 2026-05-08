@@ -22,14 +22,14 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+    jvmTarget = "17"
     }
-
+    
     defaultConfig {
         applicationId = "in.globalhealthopinionrx"
         minSdk = flutter.minSdkVersion
@@ -40,10 +40,12 @@ android {
 
 signingConfigs {
     create("release") {
-        keyAlias = keystoreProperties["keyAlias"] as String?
-        keyPassword = keystoreProperties["keyPassword"] as String?
-        storeFile = keystoreProperties["storeFile"]?.let { file(it as String) }
-        storePassword = keystoreProperties["storePassword"] as String?
+        if (keystoreProperties.isNotEmpty()) {
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
+            storeFile = file(keystoreProperties["storeFile"] as String)
+            storePassword = keystoreProperties["storePassword"] as String
+        }
     }
 }
 
