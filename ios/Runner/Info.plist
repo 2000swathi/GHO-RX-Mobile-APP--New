@@ -30,7 +30,7 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>This app needs access to your camera to take photos or record videos.</string>
+	<string>This app needs access to your camera to take photos.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We need access to the microphone to record audio.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

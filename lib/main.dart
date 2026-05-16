@@ -5,15 +5,18 @@ import 'package:ghorx_mobile_app_new/core/bloc_provider/app_bloc_provider.dart';
 import 'package:ghorx_mobile_app_new/core/constants/app_colors.dart';
 import 'package:ghorx_mobile_app_new/core/router/app_router.dart';
 import 'package:ghorx_mobile_app_new/firebase_options.dart';
+import 'package:ghorx_mobile_app_new/utilities/network/http_over_ride.dart';
 import 'package:ghorx_mobile_app_new/utilities/size_config.dart';
 
 Future<void> main() async {
+  HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {  const MyApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

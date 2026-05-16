@@ -142,7 +142,7 @@ class _AudioSummaryListWidgetState extends State<AudioSummaryListWidget> {
                     children: [
                       SvgPicture.asset('assets/svg/audio.svg', width: 30),
                       const SizedBox(width: 10),
-          
+
                       /// --- AUDIO DETAILS ---
                       Expanded(
                         child: StreamBuilder<Duration>(
@@ -158,10 +158,10 @@ class _AudioSummaryListWidgetState extends State<AudioSummaryListWidget> {
                                     ? current.inMilliseconds /
                                         total.inMilliseconds
                                     : 0.0;
-          
+
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min, 
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
                                   audio.fileName,
@@ -213,9 +213,9 @@ class _AudioSummaryListWidgetState extends State<AudioSummaryListWidget> {
                           },
                         ),
                       ),
-          
+
                       const SizedBox(width: 12),
-          
+
                       /// --- PLAY/PAUSE BUTTON ---
                       ElevatedButton(
                         onPressed: () => _playAudio(audio.url, index),
@@ -259,7 +259,9 @@ class _AudioSummaryListWidgetState extends State<AudioSummaryListWidget> {
                               ),
                             const SizedBox(width: 4),
                             Text(
-                              (isSelected && _player.playing) ? 'Pause' : 'Play',
+                              (isSelected && _player.playing)
+                                  ? 'Pause'
+                                  : 'Play',
                               style: AppFonts.textwhite.copyWith(fontSize: 13),
                             ),
                           ],
@@ -274,7 +276,7 @@ class _AudioSummaryListWidgetState extends State<AudioSummaryListWidget> {
                     onPressed: () {
                       context.read<GetFileIdBloc>().add(
                         DeleteFileEvent(
-                          saltID: widget.caseID!,
+                          saltID: widget.saltID.toString(),
                           docTypeId: 6,
                           fileUploadedID: audio.id,
                           filePath: "",

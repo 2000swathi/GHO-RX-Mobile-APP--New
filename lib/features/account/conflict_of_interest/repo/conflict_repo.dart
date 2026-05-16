@@ -53,7 +53,7 @@ class ConflictOfInterestRepo {
 
     try {
       final response = await _dioHandler.post('', data: data);
-      print(response);
+
       return response;
     } catch (e) {
       throw Exception(e.toString());

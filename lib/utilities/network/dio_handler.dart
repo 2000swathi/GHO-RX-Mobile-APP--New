@@ -26,6 +26,7 @@ class DioHandler {
       final response = await _dio.post(path, data: data);
       return response.data;
     } on DioException catch (e) {
+      print(e);
       throw Exception(e.response?.data ?? e.message);
     }
   }

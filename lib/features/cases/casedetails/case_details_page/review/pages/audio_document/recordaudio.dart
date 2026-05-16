@@ -41,8 +41,20 @@ class _RecordaudioState extends State<Recordaudio> {
   Timer? _timer;
   int _seconds = 0;
   bool isSelcted = false;
-
+  File? _selectedFile;
   final List<Map<String, dynamic>> _recordings = [];
+
+  bool _isImageFile(String path) {
+    final ext = path.toLowerCase();
+    return ext.endsWith('.png') ||
+        ext.endsWith('.jpg') ||
+        ext.endsWith('.jpeg') ||
+        ext.endsWith('.heic');
+  }
+
+  bool _isPdfFile(String path) {
+    return path.toLowerCase().endsWith('.pdf');
+  }
 
   Future<void> _startRecording() async {
     try {
@@ -205,6 +217,12 @@ class _RecordaudioState extends State<Recordaudio> {
 
                                           if (picker.fileList.isNotEmpty) {
                                             final file = picker.fileList.first;
+
+                                            setState(() {
+                                              _selectedFile =
+                                                  file; // ✅ STORE FILE
+                                            });
+
                                             final fileSize =
                                                 (await file.length())
                                                     .toString();
@@ -250,6 +268,12 @@ class _RecordaudioState extends State<Recordaudio> {
 
                                           if (picker.fileList.isNotEmpty) {
                                             final file = picker.fileList.first;
+
+                                            setState(() {
+                                              _selectedFile =
+                                                  file; // ✅ STORE IMAGE
+                                            });
+
                                             final fileSize =
                                                 (await file.length())
                                                     .toString();

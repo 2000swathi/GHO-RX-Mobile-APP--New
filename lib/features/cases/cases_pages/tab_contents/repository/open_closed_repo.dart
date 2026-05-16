@@ -50,6 +50,7 @@ class OpenClosedRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
+
       return (response['Data'][0] as List)
           .map((caseJson) => ClosedCaseModel.fromJson(caseJson))
           .toList();

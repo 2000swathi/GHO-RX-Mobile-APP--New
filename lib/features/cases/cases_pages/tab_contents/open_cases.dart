@@ -136,7 +136,7 @@ class OpenCaseCard extends StatelessWidget {
                           const SizedBox(height: 8),
 
                           Text(
-                            ' $dueDate',
+                            dueDate,
                             style: AppFonts.subtext.copyWith(
                               fontWeight: FontWeight.w500,
                             ),

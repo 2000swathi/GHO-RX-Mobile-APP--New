@@ -31,6 +31,7 @@ class Clainment extends StatelessWidget {
       "Height": caseDetailsModel.caseInfo?.height?.toString() ?? '',
     };
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Summerypage(medicalSummary: caseDetailsModel.caseInfo),
         SizedBox(height: 10),
@@ -38,7 +39,11 @@ class Clainment extends StatelessWidget {
         SizedBox(height: 10),
         LifestyleWidget(lifestyleData: lifestyleData),
         const SizedBox(height: 10),
-        const MedicalHistoryWidget(),
+        MedicalHistoryWidget(
+          familyHistory: caseDetailsModel.caseInfo?.familyiistory ?? '',
+          previousSurgeryHistory:
+              caseDetailsModel.caseInfo?.previousSurgery ?? '',
+        ),
         SizedBox(height: 10),
         Audiosummery(documents: caseDetailsModel.clientDocuments),
         Medicalreport(medicalsummery: caseDetailsModel.clientDocuments),

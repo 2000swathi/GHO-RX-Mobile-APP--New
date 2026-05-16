@@ -17,7 +17,9 @@ class _ClosedCasesTabState extends State<ClosedCasesTab> {
   @override
   void initState() {
     super.initState();
-    context.read<OpenClosedBloc>().add(FetchClosedCases());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<OpenClosedBloc>().add(FetchClosedCases());
+    });
   }
 
   @override

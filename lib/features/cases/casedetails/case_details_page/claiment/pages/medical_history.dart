@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
 class MedicalHistoryWidget extends StatelessWidget {
-  const MedicalHistoryWidget({super.key});
+  final String? familyHistory;
+  final String? previousSurgeryHistory;
+  const MedicalHistoryWidget({
+    super.key,
+    this.previousSurgeryHistory,
+    this.familyHistory,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +20,7 @@ class MedicalHistoryWidget extends StatelessWidget {
           /// 🔹 MAIN TITLE
           const Text(
             "Medical History",
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-            ),
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
           ),
 
           const SizedBox(height: 12),
@@ -32,12 +35,11 @@ class MedicalHistoryWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 4),
-          const Text(
-            "Patient has a family history of diabetes and hypertension. Father diagnosed with type 2 diabetes, mother with high blood pressure.",
-            style: TextStyle(
-              fontSize: 13,
-              color: Colors.black,
-            ),
+          Text(
+            familyHistory == null || familyHistory.toString().trim().isEmpty
+                ? 'No medical history added'
+                : familyHistory.toString(),
+            style: TextStyle(fontSize: 13, color: Colors.black),
           ),
 
           const SizedBox(height: 12),
@@ -52,12 +54,12 @@ class MedicalHistoryWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 4),
-          const Text(
-            "Patient underwent appendix surgery in 2018 and was hospitalized for 3 days. No complications reported.",
-            style: TextStyle(
-              fontSize: 13,
-              color: Colors.black,
-            ),
+          Text(
+            previousSurgeryHistory == null ||
+                    previousSurgeryHistory.toString().trim().isEmpty
+                ? "No previous surgery added"
+                : previousSurgeryHistory.toString(),
+            style: TextStyle(fontSize: 13, color: Colors.black),
           ),
         ],
       ),

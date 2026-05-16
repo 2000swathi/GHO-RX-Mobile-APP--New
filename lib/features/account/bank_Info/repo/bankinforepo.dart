@@ -24,13 +24,14 @@ class Bankinforepo {
 
     try {
       final response = await _dioHandler.post('', data: data);
-      print(response);
+
       return BankInfoResponseModel.fromJson(response);
     } catch (e) {
       throw Exception(e.toString());
     }
   }
-   //add banking
+
+  //add banking
   Future addBankInfo({
     required String accountType,
     required String routingNumber,
@@ -59,12 +60,13 @@ class Bankinforepo {
 
     try {
       final response = await _dioHandler.post('', data: data);
-      print(response);
+
       return response;
     } catch (e) {
       throw Exception("Failed to add Bank Info: $e");
     }
   }
+
   // edit Bank information
   Future editBankInfo({
     required String accountType,
@@ -95,7 +97,7 @@ class Bankinforepo {
 
     try {
       final response = await _dioHandler.post('', data: data);
-      print(response);
+
       return response;
     } catch (e) {
       throw Exception("Failed to edit Bank Info: $e");

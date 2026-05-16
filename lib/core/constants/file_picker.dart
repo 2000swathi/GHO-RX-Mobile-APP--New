@@ -82,57 +82,6 @@ class ImagePickerService {
     }
   }
 
-  // Future<void> pickProfileImageFromCamera(BuildContext context) async {
-  //   bool permissionGranted = await requestStoragePermission(context);
-
-  //   if (permissionGranted) {
-  //     final XFile? image = await _imagePicker.pickImage(
-  //       source: ImageSource.camera,
-  //     );
-
-  //     if (image != null) {
-  //       File file = File(image.path);
-
-  //       // ✅ Open image editor (same as gallery)
-  //       final editedImage = await Navigator.push(
-  //         context,
-  //         MaterialPageRoute(
-  //           builder:
-  //               (context) => ImageEditor(
-  //                 image: file.readAsBytesSync(),
-  //                 blurOption: null,
-  //                 brushOption: null,
-  //                 emojiOption: null,
-  //                 filtersOption: null,
-  //                 flipOption: null,
-  //                 textOption: null,
-  //                 cropOption: CropOption(),
-  //                 rotateOption: const RotateOption(),
-  //               ),
-  //         ),
-  //       );
-
-  //       if (editedImage != null) {
-  //         Directory tempDir = await getApplicationDocumentsDirectory();
-  //         String newPath =
-  //             "${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg";
-  //         File newFile = await File(newPath).writeAsBytes(editedImage);
-
-  //         imageFileList
-  //           ..clear()
-  //           ..add(XFile(newFile.path));
-  //         fileList
-  //           ..clear()
-  //           ..add(newFile);
-  //       }
-  //     } else {
-  //       CustomScaffoldMessenger.showErrorMessage(
-  //         context,
-  //         "Please capture an image.",
-  //       );
-  //     }
-  //   }
-  // }
   Future<void> picksingleImageFromCamera(BuildContext context) async {
     final XFile? image = await _imagePicker.pickImage(
       source: ImageSource.camera,
@@ -191,52 +140,68 @@ class ImagePickerService {
 
   /// Pick an image from the camera
   Future<void> pickImageFromCamera(BuildContext context) async {
-  PermissionStatus status = await Permission.camera.request();
+    PermissionStatus status = await Permission.camera.request();
 
-  if (!status.isGranted) {
-    CustomScaffoldMessenger.showErrorMessage(
-      context,
-      "Camera permission is required to take photos",
+    if (!status.isGranted) {
+      CustomScaffoldMessenger.showErrorMessage(
+        context,
+        "Camera permission is required to take photos",
+      );
+      return;
+    }
+
+    final XFile? image = await _imagePicker.pickImage(
+      source: ImageSource.camera,
+      imageQuality: 80,
     );
-    return;
+
+    if (image != null) {
+      Directory tempDir = await getApplicationDocumentsDirectory();
+      String newPath =
+          "${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg";
+      File newFile = await File(image.path).copy(newPath);
+
+      imageFileList.insert(0, XFile(newFile.path));
+      fileList.insert(0, newFile);
+    } else {
+      CustomScaffoldMessenger.showCommonMessage(
+        context,
+        "Please capture an image.",
+      );
+    }
   }
-
-  final XFile? image = await _imagePicker.pickImage(
-    source: ImageSource.camera,
-    imageQuality: 80,
-  );
-
-  if (image != null) {
-    Directory tempDir = await getApplicationDocumentsDirectory();
-    String newPath =
-        "${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg";
-    File newFile = await File(image.path).copy(newPath);
-
-    imageFileList.insert(0, XFile(newFile.path));
-    fileList.insert(0, newFile);
-  } else {
-    CustomScaffoldMessenger.showCommonMessage(
-      context,
-      "Please capture an image.",
-    );
-  }
-}
 
   /// Handle permission requests for storage or photos
   Future<bool> requestStoragePermission(BuildContext context) async {
-  if (Platform.isAndroid) {
-    final androidInfo = await DeviceInfoPlugin().androidInfo;
-    final sdkInt = androidInfo.version.sdkInt;
+    if (Platform.isAndroid) {
+      final androidInfo = await DeviceInfoPlugin().androidInfo;
+      final sdkInt = androidInfo.version.sdkInt;
 
-    if (sdkInt >= 33) {
-      return true; // Android 13+ system picker
-    }
+      if (sdkInt >= 33) {
+        return true; // Android 13+ system picker
+      }
 
-    if (sdkInt >= 30) {
-      var status = await Permission.manageExternalStorage.status;
+      if (sdkInt >= 30) {
+        var status = await Permission.manageExternalStorage.status;
+        if (status.isGranted) return true;
+
+        status = await Permission.manageExternalStorage.request();
+        if (status.isGranted) return true;
+
+        if (status.isPermanentlyDenied) {
+          CustomScaffoldMessenger.showSuccessMessage(
+            context,
+            "Please enable storage access in settings.",
+          );
+          await openAppSettings();
+        }
+        return false;
+      }
+
+      var status = await Permission.storage.status;
       if (status.isGranted) return true;
 
-      status = await Permission.manageExternalStorage.request();
+      status = await Permission.storage.request();
       if (status.isGranted) return true;
 
       if (status.isPermanentlyDenied) {
@@ -249,26 +214,9 @@ class ImagePickerService {
       return false;
     }
 
-    var status = await Permission.storage.status;
-    if (status.isGranted) return true;
-
-    status = await Permission.storage.request();
-    if (status.isGranted) return true;
-
-    if (status.isPermanentlyDenied) {
-      CustomScaffoldMessenger.showSuccessMessage(
-        context,
-        "Please enable storage access in settings.",
-      );
-      await openAppSettings();
-    }
-    return false;
+    // ✅ iOS → Always allow picker
+    return true;
   }
-
-  // ✅ iOS → Always allow picker
-  return true;
-}
-
 
   /// Pick files (e.g. PDFs, docs, etc.)
   Future<void> pickFile(BuildContext context) async {
