@@ -66,7 +66,9 @@ class _HomePageState extends State<HomePage> {
                 data[0] == null ||
                 data[0].isEmpty ||
                 data[0][0] == null) {
-              return Scaffold(body: const Center(child: Text("No data available")));
+              return Scaffold(
+                body: const Center(child: Text("No data available")),
+              );
             }
             final cases = (data.length > 1 ? data[1] : []);
             final snapShot = (data.length > 2 ? data[2] : []);
@@ -99,10 +101,9 @@ class _HomePageState extends State<HomePage> {
                           ? SizedBox.shrink()
                           : UpcomingCase(cases: cases[0]),
 
-                     
                       KPIHeader(),
                       PerformanceSnapshotWidget(performanceData: snapShot),
-                       const SizedBox(height: 30),
+                      const SizedBox(height: 30),
                     ],
                   ),
                 ),

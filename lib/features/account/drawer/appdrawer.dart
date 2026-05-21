@@ -120,14 +120,14 @@ class AppDrawer extends StatelessWidget {
 
                   SettingsGroupContainer(
                     children: [
-                      SettingRow(
-                        title: "Change Password",
-                        subTitle: "Reset your password anytime for safety.",
-                        svgPath: "assets/svg/account/lockblack.svg",
-                        onTap: () {
-                          Navigator.pushNamed(context, AppRouter.changePW);
-                        },
-                      ),
+                      // SettingRow(
+                      //   title: "Change Password",
+                      //   subTitle: "Reset your password anytime for safety.",
+                      //   svgPath: "assets/svg/account/lockblack.svg",
+                      //   onTap: () {
+                      //     Navigator.pushNamed(context, AppRouter.changePW);
+                      //   },
+                      // ),
                       SettingRow(
                         title: "Privacy Policy",
                         subTitle: "Review our data protection practices.",

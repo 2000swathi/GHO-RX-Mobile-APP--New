@@ -18,6 +18,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool readOnly;
   final TextCapitalization? textCapitalization;
   final TextInputAction? textInputAction;
+  final int? maxLength;
 
   const CustomTextFormField({
     super.key,
@@ -35,11 +36,12 @@ class CustomTextFormField extends StatelessWidget {
     this.readOnly = false,
     this.textCapitalization,
     this.textInputAction,
+    this.maxLength,
   });
 
   @override
   Widget build(BuildContext context) {
-    Color borderColor = AppColors.offgreycolor;
+    const borderColor = AppColors.offgreycolor;
 
     final capitalization =
         textCapitalization ??
@@ -48,52 +50,42 @@ class CustomTextFormField extends StatelessWidget {
                 keyboardType == TextInputType.number
             ? TextCapitalization.none
             : TextCapitalization.words);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(name, style: AppFonts.textSecondary),
         const SizedBox(height: 8),
         TextFormField(
-          readOnly: readOnly,
-          onTap: onTap,
-          keyboardType: keyboardType,
           controller: controller,
           obscureText: obscureText,
+          keyboardType: keyboardType,
           validator: validator,
           inputFormatters: inputFormatters,
+          maxLength: maxLength,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           textInputAction: textInputAction ?? TextInputAction.done,
-          onChanged: (value) {
-            String finalValue = value;
-            if (keyboardType == TextInputType.emailAddress) {
-              final lower = value.toLowerCase();
-              if (value != lower) {
-                controller?.value = controller!.value.copyWith(
-                  text: lower,
-                  selection: TextSelection.collapsed(offset: lower.length),
-                );
-              }
-              finalValue = lower;
-            }
-            onChanged?.call(finalValue);
-          },
+          onTap: onTap,
+          readOnly: readOnly,
+          onChanged: onChanged,
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: AppFonts.hinttext,
             suffixIcon: suffixIcon,
+            counterText: "",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: borderColor),
+              borderSide: const BorderSide(color: borderColor),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: borderColor),
+              borderSide: const BorderSide(color: borderColor),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: borderColor),
+              borderSide: const BorderSide(color: borderColor),
             ),
           ),
-
           textCapitalization: capitalization,
         ),
       ],

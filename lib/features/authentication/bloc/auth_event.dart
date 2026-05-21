@@ -1,10 +1,10 @@
 abstract class AuthEvent {}
 
 class LoginRequested extends AuthEvent {
-  final String email;
-  final String password;
+  final String countryCode;
+  final String phone;
 
-  LoginRequested({required this.email, required this.password});
+  LoginRequested({required this.countryCode, required this.phone});
 }
 
 class OTPValidate extends AuthEvent {

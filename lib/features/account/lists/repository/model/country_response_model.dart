@@ -16,11 +16,15 @@ class CountryResponseModel {
       status: json['Status'] ?? 0,
       error: json['Error'] ?? '',
       info: json['Info'] ?? '',
-      data: (json['Data'] as List<dynamic>? ?? [])
-          .map((innerList) => (innerList as List<dynamic>)
-              .map((item) => Country.fromJson(item))
-              .toList())
-          .toList(),
+      data:
+          (json['Data'] as List<dynamic>? ?? [])
+              .map(
+                (innerList) =>
+                    (innerList as List<dynamic>)
+                        .map((item) => Country.fromJson(item))
+                        .toList(),
+              )
+              .toList(),
     );
   }
 
@@ -29,9 +33,10 @@ class CountryResponseModel {
       'Status': status,
       'Error': error,
       'Info': info,
-      'Data': data
-          .map((innerList) => innerList.map((c) => c.toJson()).toList())
-          .toList(),
+      'Data':
+          data
+              .map((innerList) => innerList.map((c) => c.toJson()).toList())
+              .toList(),
     };
   }
 }
@@ -40,11 +45,15 @@ class Country {
   final int countryID;
   final String countryName;
   final String countryCode;
+  final int minLength;
+  final int maxLength;
 
   Country({
     required this.countryID,
     required this.countryName,
     required this.countryCode,
+    required this.minLength,
+    required this.maxLength,
   });
 
   factory Country.fromJson(Map<String, dynamic> json) {
@@ -52,6 +61,8 @@ class Country {
       countryID: json['CountryID'] ?? 0,
       countryName: json['CountryName'] ?? '',
       countryCode: json['CountryCode'] ?? '',
+      minLength: (json['MinLength'] ?? 6) as int,
+      maxLength: (json['MaxLength'] ?? 12) as int,
     );
   }
 
@@ -60,6 +71,8 @@ class Country {
       'CountryID': countryID,
       'CountryName': countryName,
       'CountryCode': countryCode,
+      'MinLength': minLength,
+      'MaxLength': maxLength,
     };
   }
 }

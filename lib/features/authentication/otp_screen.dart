@@ -91,7 +91,7 @@ class _OtpScreenState extends State<OtpScreen> {
           Navigator.pushNamedAndRemoveUntil(
             context,
             AppRouter.mainPage,
-            (route) => false, 
+            (route) => false,
           );
         } else if (state is ResendOTPSuccess) {
           CustomSnackbar.show(context, "OTP resent successfully", true);
@@ -105,6 +105,21 @@ class _OtpScreenState extends State<OtpScreen> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: AppColors.black),
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/login',
+                (route) => false,
+              );
+            },
+          ),
+        ),
+
         body: SafeArea(
           child: LayoutBuilder(
             builder: (context, constraints) {
@@ -126,6 +141,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           style: AppFonts.subtext,
                           textAlign: TextAlign.center,
                         ),
+
                         const SizedBox(height: 40),
                         Pinput(
                           length: 6,
@@ -184,7 +200,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                 }
                                 context.read<AuthBloc>().add(
                                   OTPValidate(
-                                    email: widget.otpResponse.data[0][0].email,
+                                    email: widget.otpResponse.data[0][0].phone,
                                     otp: otp,
                                   ),
                                 );

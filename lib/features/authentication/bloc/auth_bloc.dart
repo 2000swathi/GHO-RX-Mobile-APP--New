@@ -13,8 +13,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthLoading());
       try {
         final otpResponse = await authRepository.login(
-          email: event.email,
-          password: event.password,
+          countryCode: event.countryCode,
+          phone: event.phone,
         );
         if (otpResponse.status == 1) {
           emit(AuthSuccess(otpResponse));
@@ -37,7 +37,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthLoading());
       try {
         final otpVerifyResponse = await authRepository.otp(
-          email: event.email,
+          phone: event.email,
           otp: event.otp,
         );
         if (otpVerifyResponse.status == 1) {
@@ -95,10 +95,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     //forgot email
     on<ForgotEmail>((event, emit) async {
       emit(AuthLoading());
-      try { 
-        final message = await authRepository.forgotEmail(
-          email: event.email,
-        );
+      try {
+        final message = await authRepository.forgotEmail(email: event.email);
         emit(ForgotEmailSuccess(message));
       } catch (e) {
         emit(AuthFailure(e.toString()));

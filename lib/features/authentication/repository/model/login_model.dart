@@ -1,24 +1,20 @@
 class OtpData {
   final String email;
-  final int otp;
+  final String phone;
+  final String otp;
 
-  OtpData({
-    required this.email,
-    required this.otp,
-  });
+  OtpData({required this.email, required this.phone, required this.otp});
 
   factory OtpData.fromJson(Map<String, dynamic> json) {
     return OtpData(
-      email: json['eml'] ?? '',
-      otp: json['Otp'] ?? 0,
+      email: json['eml']?.toString() ?? '',
+      phone: json['phone']?.toString() ?? '',
+      otp: json['Otp']?.toString() ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'eml': email,
-      'Otp': otp,
-    };
+    return {'eml': email, 'phone': phone, 'Otp': otp};
   }
 }
 
@@ -37,10 +33,13 @@ class OtpResponse {
 
   factory OtpResponse.fromJson(Map<String, dynamic> json) {
     var outerList = json['Data'] as List<dynamic>? ?? [];
-    List<List<OtpData>> dataList = outerList.map<List<OtpData>>((inner) {
-      var innerList = inner as List<dynamic>? ?? [];
-      return innerList.map<OtpData>((item) => OtpData.fromJson(item)).toList();
-    }).toList();
+    List<List<OtpData>> dataList =
+        outerList.map<List<OtpData>>((inner) {
+          var innerList = inner as List<dynamic>? ?? [];
+          return innerList
+              .map<OtpData>((item) => OtpData.fromJson(item))
+              .toList();
+        }).toList();
 
     return OtpResponse(
       status: json['Status'] ?? 0,
@@ -55,7 +54,8 @@ class OtpResponse {
       'Status': status,
       'Error': error,
       'Info': info,
-      'Data': data.map((inner) => inner.map((e) => e.toJson()).toList()).toList(),
+      'Data':
+          data.map((inner) => inner.map((e) => e.toJson()).toList()).toList(),
     };
   }
 }

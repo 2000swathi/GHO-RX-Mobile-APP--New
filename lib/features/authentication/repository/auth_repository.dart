@@ -9,20 +9,21 @@ class AuthRepository {
 
   // login
   Future<OtpResponse> login({
-    required String email,
-    required String password,
+    required String countryCode,
+    required String phone,
   }) async {
     final data = {
       ...ApiUtils.getCommonParams(action: "reviewer", token: ""),
       "Tags": [
-        {"T": "dk1", "V": email},
-        {"T": "dk2", "V": password},
+        {"T": "dk1", "V": countryCode},
+        {"T": "dk2", "V": phone},
         {"T": "c10", "V": "91"},
       ],
     };
 
     try {
       final response = await _dioHandler.post('', data: data);
+
       return OtpResponse.fromJson(response);
     } on DioException catch (e) {
       throw Exception("${e.message}");
@@ -33,13 +34,13 @@ class AuthRepository {
 
   //otp validate
   Future<OtpVerifyResponse> otp({
-    required String email,
+    required String phone,
     required String otp,
   }) async {
     final data = {
       ...ApiUtils.getCommonParams(action: "reviewer", token: ""),
       "Tags": [
-        {"T": "dk1", "V": email},
+        {"T": "dk1", "V": phone},
         {"T": "dk2", "V": otp},
         {"T": "c10", "V": "93"},
       ],
@@ -47,6 +48,7 @@ class AuthRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
+
       return OtpVerifyResponse.fromJson(response);
     } on DioException catch (e) {
       throw Exception("${e.message}");
@@ -87,8 +89,8 @@ class AuthRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
-   
-      if(response["Status"] == 1) {
+
+      if (response["Status"] == 1) {
         return response["Data"][0][0]["msg"];
       } else {
         throw Exception(response["Error"] ?? "Something went wrong");

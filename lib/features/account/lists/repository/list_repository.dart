@@ -23,6 +23,7 @@ class ListRepository {
 
     try {
       final response = await _dioHandler.post('', data: data);
+
       return CountryResponseModel.fromJson(response);
     } catch (e) {
       throw Exception("Failed to fetch countries: $e");
